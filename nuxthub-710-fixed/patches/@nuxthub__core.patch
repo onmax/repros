@@ -1,0 +1,13 @@
+diff --git a/dist/db/lib/build.mjs b/dist/db/lib/build.mjs
+index 3d0683d00bee28b137fa6a9439a24c48ba8d0b90..d10b04309fb56e82a378638db9ddc46a917448a0 100644
+--- a/dist/db/lib/build.mjs
++++ b/dist/db/lib/build.mjs
+@@ -68,7 +68,7 @@ export async function buildDatabaseSchema(buildDir, { relativeDir } = {}) {
+     outDir: join(buildDir, "hub/db"),
+     outExtensions: () => ({
+       js: ".mjs",
+-      dts: ".d.ts"
++      dts: ".d.mts"
+     }),
+     alias: {
+       "hub:db:schema": entry
