@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nuxthub-realtime-722",
+  "account_id": "ba6e044dfdaaffec3cac45e9feccd237",
+  "main": ".output/server/index.mjs",
+  "compatibility_date": "2025-01-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "durable_objects": {
+    "bindings": [{ "name": "$DurableObject", "class_name": "$DurableObject" }]
+  },
+  "migrations": [{ "tag": "v1", "new_classes": ["$DurableObject"] }]
+}
