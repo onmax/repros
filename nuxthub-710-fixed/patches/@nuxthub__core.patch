@@ -11,3 +11,16 @@ index 3d0683d00bee28b137fa6a9439a24c48ba8d0b90..d10b04309fb56e82a378638db9ddc46a
      }),
      alias: {
        "hub:db:schema": entry
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 8f80a9b9dee5fdfa22525854e955e395416432a0..916f74a1f38a32158ad7610117a0b25940d7ed9e 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -218,7 +218,7 @@ declare module 'hub:db' {
+    * The database schema object
+    * Defined in server/db/schema.ts and server/db/schema/*.ts
+    */
+-  export * as schema from './db/schema.mjs'
++  export { schema }
+   /**
+    * The ${driver} database client.
+    */

@@ -1,2 +1,6 @@
+onlyBuiltDependencies:
+  - '@parcel/watcher'
+  - esbuild
+
 patchedDependencies:
   '@nuxthub/core': patches/@nuxthub__core.patch
