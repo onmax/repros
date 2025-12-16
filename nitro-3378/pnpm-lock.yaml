@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   nitropack@2.12.9:
-    hash: ab6a359f14ff0cf03d7afe4b87d4d3389c0768e205d5b340f4d74820e5c2ebbf
+    hash: 4af5d8940f5951c8360a5860c284be6fa8efd21663ec147e4ce10218cc17035f
     path: patches/nitropack@2.12.9.patch
 
 importers:
@@ -4805,7 +4805,7 @@ snapshots:
       impound: 1.0.0
       klona: 2.0.6
       mocked-exports: 0.1.1
-      nitropack: 2.12.9(patch_hash=ab6a359f14ff0cf03d7afe4b87d4d3389c0768e205d5b340f4d74820e5c2ebbf)(rolldown@1.0.0-beta.52)
+      nitropack: 2.12.9(patch_hash=4af5d8940f5951c8360a5860c284be6fa8efd21663ec147e4ce10218cc17035f)(rolldown@1.0.0-beta.52)
       nuxt: 4.2.2(@parcel/watcher@2.5.1)(@vue/compiler-sfc@3.5.25)(cac@6.7.14)(db0@0.3.4)(ioredis@5.8.2)(magicast@0.5.1)(rolldown@1.0.0-beta.52)(rollup@4.53.5)(terser@5.44.1)(vite@7.3.0(jiti@2.6.1)(terser@5.44.1)(yaml@2.8.2))(yaml@2.8.2)
       pathe: 2.0.3
       pkg-types: 2.3.0
@@ -6672,7 +6672,7 @@ snapshots:
 
   nanotar@0.2.0: {}
 
-  nitropack@2.12.9(patch_hash=ab6a359f14ff0cf03d7afe4b87d4d3389c0768e205d5b340f4d74820e5c2ebbf)(rolldown@1.0.0-beta.52):
+  nitropack@2.12.9(patch_hash=4af5d8940f5951c8360a5860c284be6fa8efd21663ec147e4ce10218cc17035f)(rolldown@1.0.0-beta.52):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.1
       '@rollup/plugin-alias': 5.1.1(rollup@4.53.5)
