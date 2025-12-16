@@ -1,0 +1,46 @@
+diff --git a/dist/_build/common2.mjs b/dist/_build/common2.mjs
+index fc8336d516e5ad46169ca181883c82f59743d69e..a3974d2f7a6d77fd088f20323cf06663fd85e1d3 100644
+--- a/dist/_build/common2.mjs
++++ b/dist/_build/common2.mjs
+@@ -43,7 +43,8 @@ function baseBuildConfig(nitro) {
+ 		client: false,
+ 		baseURL: nitro.options.baseURL,
+ 		_asyncContext: nitro.options.experimental.asyncContext,
+-		_tasks: nitro.options.experimental.tasks
++		_tasks: nitro.options.experimental.tasks,
++		_durableBindingName: nitro.options.cloudflare?.durable?.bindingName || "$DurableObject"
+ 	};
+ 	const replacements = {
+ 		...Object.fromEntries(Object.entries(importMetaInjections).map(([key, val]) => [`import.meta.${key}`, JSON.stringify(val)])),
+diff --git a/dist/_presets.mjs b/dist/_presets.mjs
+index 140aa7f3b549664a7fceb0711e519997c374729d..d3f516bc4b597ba06490054adf01e1151d3b69cd 100644
+--- a/dist/_presets.mjs
++++ b/dist/_presets.mjs
+@@ -585,6 +585,14 @@ async function writeWranglerConfig(nitro, cfTarget) {
+ 			type: "ESModule",
+ 			globs: ["**/*.mjs", "**/*.js"]
+ 		});
++		// Durable Objects config for cloudflare-durable preset
++		if (nitro.options.preset === "cloudflare-durable") {
++			const bindingName = nitro.options.cloudflare?.durable?.bindingName || "$DurableObject";
++			wranglerConfig.durable_objects ??= { bindings: [] };
++			wranglerConfig.durable_objects.bindings ??= [];
++			const hasBinding = wranglerConfig.durable_objects.bindings.some((b) => b.name === bindingName && b.class_name === "$DurableObject");
++			if (!hasBinding) wranglerConfig.durable_objects.bindings.push({ name: bindingName, class_name: "$DurableObject" });
++		}
+ 	}
+ 	await writeFile$1(wranglerConfigPath, JSON.stringify(wranglerConfig, null, 2), true);
+ 	const configPath = join$1(nitro.options.rootDir, ".wrangler/deploy/config.json");
+diff --git a/dist/presets/cloudflare/runtime/cloudflare-durable.mjs b/dist/presets/cloudflare/runtime/cloudflare-durable.mjs
+index b3f582a23fb082d48553a733ea6467f27806445c..9e1fbfe827c4cab2fd6579a7c7fa33426247d2da 100644
+--- a/dist/presets/cloudflare/runtime/cloudflare-durable.mjs
++++ b/dist/presets/cloudflare/runtime/cloudflare-durable.mjs
+@@ -6,7 +6,7 @@ import { useNitroApp, useNitroHooks } from "nitro/app";
+ import { isPublicAssetURL } from "#nitro-internal-virtual/public-assets";
+ import { resolveWebsocketHooks } from "nitro/~internal/runtime/app";
+ import { hasWebSocket } from "#nitro-internal-virtual/feature-flags";
+-const DURABLE_BINDING = "$DurableObject";
++const DURABLE_BINDING = import.meta._durableBindingName || "$DurableObject";
+ const DURABLE_INSTANCE = "server";
+ const nitroApp = useNitroApp();
+ const nitroHooks = useNitroHooks();

@@ -1,0 +1,6 @@
+node_modules
+.output
+.wrangler
+.nitro
+pnpm-lock.yaml
+pnpm-workspace.yaml

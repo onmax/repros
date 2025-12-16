@@ -1,0 +1,1 @@
+{"name":"nitro-3378-v3","type":"module","scripts":{"build":"nitro build","preview":"nitro preview"},"devDependencies":{"nitro":"3.0.1-alpha.1","rollup":"^4.53.5"}}
