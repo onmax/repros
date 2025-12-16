@@ -1,0 +1,2 @@
+patchedDependencies:
+  nitropack@2.12.9: patches/nitropack@2.12.9.patch

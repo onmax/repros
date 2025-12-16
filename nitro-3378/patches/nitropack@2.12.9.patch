@@ -1,0 +1,27 @@
+diff --git a/dist/presets/cloudflare/runtime/cloudflare-durable.mjs b/dist/presets/cloudflare/runtime/cloudflare-durable.mjs
+index daaf8185b9a086dfd0eb0edf17768cce45392582..08ce434b7a820b8f6f40b5018a1d6e5a368ae9a0 100644
+--- a/dist/presets/cloudflare/runtime/cloudflare-durable.mjs
++++ b/dist/presets/cloudflare/runtime/cloudflare-durable.mjs
+@@ -4,7 +4,7 @@ import wsAdapter from "crossws/adapters/cloudflare-durable";
+ import { useNitroApp } from "nitropack/runtime";
+ import { isPublicAssetURL } from "#nitro-internal-virtual/public-assets";
+ import { createHandler, fetchHandler } from "./_module-handler.mjs";
+-const DURABLE_BINDING = "$DurableObject";
++const DURABLE_BINDING = import.meta._durableBindingName || "$DurableObject";
+ const DURABLE_INSTANCE = "server";
+ const nitroApp = useNitroApp();
+ const getDurableStub = (env) => {
+diff --git a/dist/rollup/index.mjs b/dist/rollup/index.mjs
+index 3b04012488c162b264a6bc60967fe7d59de11121..090eaa0ebb914a89ef793f74953211f9bfa757bd 100644
+--- a/dist/rollup/index.mjs
++++ b/dist/rollup/index.mjs
+@@ -1860,7 +1860,8 @@ const getRollupConfig = (nitro) => {
+     // Internal
+     _asyncContext: nitro.options.experimental.asyncContext,
+     _websocket: nitro.options.experimental.websocket,
+-    _tasks: nitro.options.experimental.tasks
++    _tasks: nitro.options.experimental.tasks,
++    _durableBindingName: nitro.options.cloudflare?.durable?.bindingName || "$DurableObject"
+   };
+   rollupConfig.plugins.push(importMeta(nitro));
+   rollupConfig.plugins.push(

@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nitro-3378",
+  "main": ".output/server/index.mjs",
+  "compatibility_date": "2025-01-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // Custom DO binding name (not the default $DurableObject)
+  // This will FAIL until we patch Nitro
+  "durable_objects": {
+    "bindings": [{ "name": "MyDO", "class_name": "$DurableObject" }]
+  },
+  "migrations": [{ "tag": "v1", "new_classes": ["$DurableObject"] }]
+}
