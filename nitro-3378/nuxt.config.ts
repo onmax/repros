@@ -4,6 +4,7 @@ export default defineNuxtConfig({
     preset: 'cloudflare_durable',
     experimental: { websocket: true },
     cloudflare: {
+      deployConfig: true,
       durable: {
         bindingName: 'MyDO'
       }
