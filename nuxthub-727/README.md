@@ -1,75 +1,29 @@
-# Nuxt Minimal Starter
+# nuxthub-727
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Issue: https://github.com/nuxt-hub/core/issues/727
 
-## Setup
+## Problem
 
-Make sure to install dependencies:
+MySQL drizzle client missing `mode` parameter causes "You need to specify mode" error when using relational queries with schema.
+
+## Verify
 
 ```bash
-# npm
-npm install
-
-# pnpm
 pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+MYSQL_URL="mysql://test:test@localhost/test" pnpm nuxi prepare
+cat .nuxt/hub/db.mjs
 ```
 
-## Development Server
+## Expected
 
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+Generated `db.mjs` should include mode parameter:
+```js
+const db = drizzle({ connection: {...}, schema, mode: 'default' })
 ```
 
-## Production
+## Actual
 
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+Generated `db.mjs` is missing mode:
+```js
+const db = drizzle({ connection: {...}, schema })
 ```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
