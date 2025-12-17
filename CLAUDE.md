@@ -40,10 +40,12 @@ Use the `vue`, `nuxt`, and `nuxthub` skills when working in this repo.
 Verification can be:
 - **Generated files**: Check `.nuxt/`, `dist/`, or build output
 - **Runtime behavior**: Run dev server and observe error
-- **Test failure**: Write a test that fails
+- **Test failure**: Write a test that fails (if repo has tests, this is preferred)
 - **Type error**: Check IDE/tsc output
 
 Document the verification method in README.
+
+**Note**: If the target repo has existing tests, try to reproduce the bug with a test first. This helps maintainers and ensures the fix is properly validated.
 
 ### 4. Create Fix Folder
 
@@ -105,8 +107,10 @@ git push
 
 1. Create branch: `fix/{short-description}`
 2. Apply changes from patch to actual source files
-3. Run tests: ensure all pass
-4. Build: ensure it compiles
+3. **Match existing code style and patterns** in the project
+4. If tests exist, consider adding a test reproducing the bug (helpful but not mandatory)
+5. Run tests: ensure all pass
+6. Build: ensure it compiles
 
 ### 3. PR Body Structure
 
