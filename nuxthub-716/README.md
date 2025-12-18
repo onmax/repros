@@ -1,29 +1,17 @@
 # nuxthub-716
 
-Feature: https://github.com/nuxt-hub/core/pull/716
-
-## What
-Test auto-generate wrangler bindings from hub config. No local wrangler.toml needed.
+Demo: auto-generate wrangler bindings from nuxt.config (no wrangler.toml needed).
 
 ## Setup
+
 ```bash
 pnpm install
-wrangler kv namespace create KV
-# Update nuxt.config.ts with returned namespace ID
+wrangler kv namespace create KV  # note the ID
+# Update nuxt.config.ts with namespace ID
 pnpm build
+wrangler deploy --cwd .output
 ```
 
 ## Verify
-After build, check `.output/wrangler.json` has:
-```json
-"kv_namespaces": [{ "binding": "KV", "id": "<your-id>" }]
-```
 
-## Deploy
-```bash
-wrangler deploy
-```
-
-## Test
-- POST `/api/kv/mykey` with body `"myvalue"` - writes to KV
-- GET `/api/kv/mykey` - reads from KV
+After build, `.output/server/wrangler.json` contains auto-generated `kv_namespaces` binding.
