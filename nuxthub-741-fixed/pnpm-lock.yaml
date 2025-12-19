@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   '@nuxthub/core':
-    hash: 53e7c35d4f0c69e5a0be4f7db6884c019fc04832c4b551086974d5c2ef443ffd
+    hash: f3839e1caece228a34f8c19ebf2775f9922252b0455875422c05523c5fef7e6c
     path: patches/@nuxthub__core.patch
 
 importers:
@@ -15,16 +15,13 @@ importers:
     devDependencies:
       '@nuxthub/core':
         specifier: ^0.10.3
-        version: 0.10.3(patch_hash=53e7c35d4f0c69e5a0be4f7db6884c019fc04832c4b551086974d5c2ef443ffd)(db0@0.3.4(drizzle-orm@0.30.10(@cloudflare/workers-types@4.20251219.0)))(ioredis@5.8.2)(magicast@0.5.1)
+        version: 0.10.3(patch_hash=f3839e1caece228a34f8c19ebf2775f9922252b0455875422c05523c5fef7e6c)(db0@0.3.4(drizzle-orm@0.30.10(@cloudflare/workers-types@4.20251219.0)))(ioredis@5.8.2)(magicast@0.5.1)
       drizzle-kit:
         specifier: ^0.20.0
         version: 0.20.18
       drizzle-orm:
         specifier: ^0.30.0
         version: 0.30.10(@cloudflare/workers-types@4.20251219.0)
-      nitro-cloudflare-dev:
-        specifier: ^0.2.2
-        version: 0.2.2
       nuxt:
         specifier: ^3.16.1
         version: 3.20.2(@parcel/watcher@2.5.1)(@vue/compiler-sfc@3.5.26)(cac@6.7.14)(db0@0.3.4(drizzle-orm@0.30.10(@cloudflare/workers-types@4.20251219.0)))(drizzle-orm@0.30.10(@cloudflare/workers-types@4.20251219.0))(ioredis@5.8.2)(magicast@0.5.1)(rolldown@1.0.0-beta.55)(rollup@4.53.5)(terser@5.44.1)(vite@7.3.0(jiti@2.6.1)(terser@5.44.1)(yaml@2.8.2))(yaml@2.8.2)
@@ -2114,8 +2111,8 @@ packages:
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
 
-  baseline-browser-mapping@2.9.10:
-    resolution: {integrity: sha512-2VIKvDx8Z1a9rTB2eCkdPE5nSe28XnA+qivGnWHoB40hMMt/h1hSz0960Zqsn6ZyxWXUie0EBdElKv8may20AA==}
+  baseline-browser-mapping@2.9.11:
+    resolution: {integrity: sha512-Sg0xJUNDU1sJNGdfGWhVHX0kkZ+HWcvmVymJbj6NSgZZmW/8S9Y2HQ5euytnIgakgxN6papOAWiwDo1ctFDcoQ==}
     hasBin: true
 
   bindings@1.5.0:
@@ -3238,9 +3235,6 @@ packages:
 
   next-tick@1.1.0:
     resolution: {integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==}
-
-  nitro-cloudflare-dev@0.2.2:
-    resolution: {integrity: sha512-aZfNTVdgXPQeAmXW0Tw8hm3usAHr4qVG4Bg3WhHBGeZYuXr9OyT04Ztb+STkMzhyaXvfMHViAaPUPg06iAYqag==}
 
   nitropack@2.12.9:
     resolution: {integrity: sha512-t6qqNBn2UDGMWogQuORjbL2UPevB8PvIPsPHmqvWpeGOlPr4P8Oc5oA8t3wFwGmaolM2M/s2SwT23nx9yARmOg==}
@@ -5540,7 +5534,7 @@ snapshots:
       - vue-tsc
       - yaml
 
-  '@nuxthub/core@0.10.3(patch_hash=53e7c35d4f0c69e5a0be4f7db6884c019fc04832c4b551086974d5c2ef443ffd)(db0@0.3.4(drizzle-orm@0.30.10(@cloudflare/workers-types@4.20251219.0)))(ioredis@5.8.2)(magicast@0.5.1)':
+  '@nuxthub/core@0.10.3(patch_hash=f3839e1caece228a34f8c19ebf2775f9922252b0455875422c05523c5fef7e6c)(db0@0.3.4(drizzle-orm@0.30.10(@cloudflare/workers-types@4.20251219.0)))(ioredis@5.8.2)(magicast@0.5.1)':
     dependencies:
       '@cloudflare/workers-types': 4.20251219.0
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
@@ -6299,7 +6293,7 @@ snapshots:
 
   base64-js@1.5.1: {}
 
-  baseline-browser-mapping@2.9.10: {}
+  baseline-browser-mapping@2.9.11: {}
 
   bindings@1.5.0:
     dependencies:
@@ -6323,7 +6317,7 @@ snapshots:
 
   browserslist@4.28.1:
     dependencies:
-      baseline-browser-mapping: 2.9.10
+      baseline-browser-mapping: 2.9.11
       caniuse-lite: 1.0.30001761
       electron-to-chromium: 1.5.267
       node-releases: 2.0.27
@@ -7455,12 +7449,6 @@ snapshots:
   nanotar@0.2.0: {}
 
   next-tick@1.1.0: {}
-
-  nitro-cloudflare-dev@0.2.2:
-    dependencies:
-      consola: 3.4.2
-      mlly: 1.8.0
-      pkg-types: 2.3.0
 
   nitropack@2.12.9(drizzle-orm@0.30.10(@cloudflare/workers-types@4.20251219.0))(rolldown@1.0.0-beta.55):
     dependencies:

@@ -1,23 +1,8 @@
-diff --git a/dist/blob/lib/drivers/cloudflare-r2.mjs b/dist/blob/lib/drivers/cloudflare-r2.mjs
-index bdf365160b62ac9570a69cd436ea7a9f21bad05d..e78f8c6ac520d0e4f723ddcf9f83e38f3926432e 100644
---- a/dist/blob/lib/drivers/cloudflare-r2.mjs
-+++ b/dist/blob/lib/drivers/cloudflare-r2.mjs
-@@ -13,7 +13,9 @@ function mapR2ObjectToBlob(object) {
- export function createDriver(options) {
-   const getBucket = () => {
-     const binding = options.binding || "BLOB";
--    const bucket = globalThis[binding] || globalThis.__env__?.[binding] || process.env[binding];
-+    // Check for resolved env (nitro-cloudflare-dev sets globalThis.__env__ as Promise initially)
-+    const env = globalThis.__env__;
-+    const bucket = globalThis[binding] || (env && typeof env.then !== 'function' ? env[binding] : undefined) || process.env[binding];
-     if (!bucket) {
-       throw new Error(`R2 binding "${options.binding}" not found`);
-     }
 diff --git a/dist/db/runtime/plugins/migrations.dev.mjs b/dist/db/runtime/plugins/migrations.dev.mjs
-index 4c7c77812705c020c4849fa738c3a51a70104118..ec4cad9775ea156c8d35bf447f776a7928795bc9 100644
+index 4c7c77812705c020c4849fa738c3a51a70104118..e0c5d8dd00404817d95d3879824650eb97d9bca1 100644
 --- a/dist/db/runtime/plugins/migrations.dev.mjs
 +++ b/dist/db/runtime/plugins/migrations.dev.mjs
-@@ -1,10 +1,16 @@
+@@ -1,10 +1,10 @@
  import { applyDatabaseMigrations, applyDatabaseQueries } from "../../lib/migrations";
 -import { db } from "hub:db";
  import { defineNitroPlugin, useRuntimeConfig } from "#imports";
@@ -25,66 +10,255 @@ index 4c7c77812705c020c4849fa738c3a51a70104118..ec4cad9775ea156c8d35bf447f776a79
    if (!import.meta.dev) return;
    const hub = useRuntimeConfig().hub;
    if (!hub.db) return;
-+
-+  // Wait for nitro-cloudflare-dev bindings if present
-+  if (globalThis.__env__ && typeof globalThis.__env__.then === 'function') {
-+    await globalThis.__env__;
-+  }
-+
 +  const { db } = await import("hub:db");
    await applyDatabaseMigrations(hub, db);
    await applyDatabaseQueries(hub, db);
  });
 diff --git a/dist/module.mjs b/dist/module.mjs
-index 44ed2eb03cbaf2bbdd682a70a8574e4669eb2473..09b558f58cc567ac344e6d14d28b435a91c68bd9 100644
+index 44ed2eb03cbaf2bbdd682a70a8574e4669eb2473..c2d4870d5ebd081137fc14bc995ba5bbf3412b87 100644
 --- a/dist/module.mjs
 +++ b/dist/module.mjs
-@@ -1,5 +1,5 @@
- import { readFile, writeFile, mkdir } from 'node:fs/promises';
--import { logger, createResolver, addServerPlugin, getLayerDirectories, updateTemplates, addTemplate, addTypeTemplate, addServerHandler, addServerImports, addImportsDir, defineNuxtModule } from '@nuxt/kit';
-+import { logger, createResolver, addServerPlugin, getLayerDirectories, updateTemplates, addTemplate, addTypeTemplate, addServerHandler, addServerImports, addImportsDir, defineNuxtModule, installModule } from '@nuxt/kit';
- import { join, resolve as resolve$1, relative } from 'pathe';
- import { defu } from 'defu';
- import { readPackageJSON, findWorkspaceDir } from 'pkg-types';
-@@ -270,6 +270,19 @@ async function setupDatabase(nuxt, hub, deps) {
+@@ -37,13 +37,13 @@ function addWranglerBinding(nuxt, type, binding) {
+   }
+ }
+ 
+-function resolveCacheConfig(hub) {
++function resolveCacheConfig(hub, nuxt) {
+   if (!hub.cache) return false;
+   const userConfig = typeof hub.cache === "object" ? hub.cache : {};
+   if (userConfig.driver) {
+     return userConfig;
+   }
+-  if (hub.hosting.includes("cloudflare")) {
++  if (hub.hosting.includes("cloudflare") || nuxt.options.dev && hub.remote) {
+     return defu(userConfig, {
+       driver: "cloudflare-kv-binding",
+       binding: "CACHE"
+@@ -60,11 +60,13 @@ function resolveCacheConfig(hub) {
+   });
+ }
+ async function setupCache(nuxt, hub, _deps) {
+-  hub.cache = resolveCacheConfig(hub);
++  hub.cache = resolveCacheConfig(hub, nuxt);
+   if (!hub.cache) return;
+   const cacheConfig = hub.cache;
+   if (cacheConfig.driver === "cloudflare-kv-binding" && cacheConfig.namespaceId) {
+-    addWranglerBinding(nuxt, "kv_namespaces", { binding: cacheConfig.binding || "CACHE", id: cacheConfig.namespaceId });
++    const binding = { binding: cacheConfig.binding || "CACHE", id: cacheConfig.namespaceId };
++    if (nuxt.options.dev && hub.remote) binding.remote = true;
++    addWranglerBinding(nuxt, "kv_namespaces", binding);
+   }
+   const { namespaceId: _namespaceId, ...cacheStorageConfig } = cacheConfig;
+   nuxt.options.nitro.storage ||= {};
+@@ -270,6 +272,10 @@ async function setupDatabase(nuxt, hub, deps) {
    } else if (driver === "libsql" && !deps["@libsql/client"]) {
      logWhenReady(nuxt, "Please run `npx nypm i @libsql/client` to use SQLite as database.", "error");
    }
-+  // Auto-configure nitro-cloudflare-dev for D1 local emulation (restored from v0.9)
 +  if (nuxt.options.dev && driver === "d1") {
-+    if (!deps["nitro-cloudflare-dev"]) {
-+      logWhenReady(nuxt, "Please run `npx nypm i -D nitro-cloudflare-dev` for local D1 emulation.", "error");
-+    } else {
-+      const wranglerPath = join(hub.dir, "wrangler.toml");
-+      const tomlContent = `[[d1_databases]]\nbinding = "DB"\ndatabase_name = "default"\ndatabase_id = "default"\n`;
-+      await mkdir(hub.dir, { recursive: true });
-+      await writeFile(wranglerPath, tomlContent, "utf-8");
-+      nuxt.options.nitro.cloudflareDev = { persistDir: hub.dir, configPath: wranglerPath, silent: true };
-+      await installModule("nitro-cloudflare-dev");
-+    }
++    const databaseId = hub.remote ? connection?.databaseId || "default" : "default";
++    addWranglerBinding(nuxt, "d1_databases", { binding: "DB", database_name: "default", database_id: databaseId });
 +  }
    addServerPlugin(resolve("db/runtime/plugins/migrations.dev"));
    nuxt.hook("modules:done", async () => {
      await generateDatabaseSchema(nuxt, hub);
-@@ -419,7 +432,9 @@ import * as schema from './db/schema.mjs'
- let _db
- function getDb() {
-   if (!_db) {
--    const binding = process.env.DB || globalThis.__env__?.DB || globalThis.DB
-+    // Check for resolved env (nitro-cloudflare-dev sets globalThis.__env__)
-+    const env = globalThis.__env__
-+    const binding = process.env.DB || (env && typeof env.then !== 'function' ? env.DB : undefined) || globalThis.DB
-     if (!binding) throw new Error('DB binding not found')
-     _db = drizzle(binding, { schema${casingOption} })
+@@ -344,6 +350,12 @@ async function generateDatabaseSchema(nuxt, hub) {
    }
-@@ -492,7 +507,9 @@ import * as schema from './db/schema.mjs'
- let _db
- function getDb() {
-   if (!_db) {
--    const hyperdrive = process.env.${bindingName} || globalThis.__env__?.${bindingName} || globalThis.${bindingName}
-+    // Check for resolved env (nitro-cloudflare-dev sets globalThis.__env__ as Promise initially)
-+    const env = globalThis.__env__
-+    const hyperdrive = process.env.${bindingName} || (env && typeof env.then !== 'function' ? env.${bindingName} : undefined) || globalThis.${bindingName}
-     if (!hyperdrive) throw new Error('${bindingName} binding not found')
-     _db = drizzle({ connection: hyperdrive.connectionString, schema${modeOption}${casingOption} })
+   nuxt.options.alias ||= {};
+   nuxt.options.alias["hub:db:schema"] = join(nuxt.options.buildDir, "hub/db/schema.mjs");
++  addTypeTemplate({
++    filename: "hub/db/schema.d.ts",
++    getContents: () => `declare module 'hub:db:schema' {
++  export * from '#build/hub/db/schema.mjs'
++}`
++  }, { nitro: true, nuxt: true });
+ }
+ async function setupDatabaseClient(nuxt, hub) {
+   const { dialect, driver, connection, mode, casing } = hub.db;
+@@ -528,7 +540,7 @@ export default defineConfig({
+   });
+ }
+ 
+-function resolveKVConfig(hub) {
++function resolveKVConfig(hub, nuxt) {
+   if (!hub.kv) return false;
+   if (typeof hub.kv === "object" && "driver" in hub.kv) {
+     return hub.kv;
+@@ -556,7 +568,7 @@ function resolveKVConfig(hub) {
+       endpoint: process.env.S3_ENDPOINT || void 0
+     });
    }
+-  if (hub.hosting.includes("cloudflare")) {
++  if (hub.hosting.includes("cloudflare") || nuxt.options.dev && hub.remote) {
+     return defu(hub.kv, {
+       driver: "cloudflare-kv-binding",
+       binding: "KV"
+@@ -573,11 +585,13 @@ function resolveKVConfig(hub) {
+   });
+ }
+ function setupKV(nuxt, hub, deps) {
+-  hub.kv = resolveKVConfig(hub);
++  hub.kv = resolveKVConfig(hub, nuxt);
+   if (!hub.kv) return;
+   const kvConfig = hub.kv;
+   if (kvConfig.driver === "cloudflare-kv-binding" && kvConfig.namespaceId) {
+-    addWranglerBinding(nuxt, "kv_namespaces", { binding: kvConfig.binding || "KV", id: kvConfig.namespaceId });
++    const binding = { binding: kvConfig.binding || "KV", id: kvConfig.namespaceId };
++    if (nuxt.options.dev && hub.remote) binding.remote = true;
++    addWranglerBinding(nuxt, "kv_namespaces", binding);
+   }
+   if (kvConfig.driver === "upstash" && !deps["@upstash/redis"]) {
+     logWhenReady(nuxt, "Please run `npx nypm i @upstash/redis` to use Upstash Redis KV storage", "error");
+@@ -614,7 +628,7 @@ export const kv = createStorage({
+ 
+ const log$2 = logger.withTag("nuxt:hub");
+ const supportedDrivers = ["fs", "s3", "vercel-blob", "cloudflare-r2"];
+-function resolveBlobConfig(hub, deps) {
++function resolveBlobConfig(hub, deps, nuxt) {
+   if (!hub.blob) return false;
+   if (typeof hub.blob === "object" && "driver" in hub.blob) {
+     return hub.blob;
+@@ -641,7 +655,7 @@ function resolveBlobConfig(hub, deps) {
+       access: "public"
+     });
+   }
+-  if (hub.hosting.includes("cloudflare")) {
++  if (hub.hosting.includes("cloudflare") || nuxt.options.dev && hub.remote) {
+     return defu(hub.blob, {
+       driver: "cloudflare-r2",
+       binding: "BLOB"
+@@ -653,11 +667,13 @@ function resolveBlobConfig(hub, deps) {
+   });
+ }
+ function setupBlob(nuxt, hub, deps) {
+-  hub.blob = resolveBlobConfig(hub, deps);
++  hub.blob = resolveBlobConfig(hub, deps, nuxt);
+   if (!hub.blob) return;
+   const blobConfig = hub.blob;
+   if (blobConfig.driver === "cloudflare-r2" && blobConfig.bucketName) {
+-    addWranglerBinding(nuxt, "r2_buckets", { binding: blobConfig.binding || "BLOB", bucket_name: blobConfig.bucketName });
++    const binding = { binding: blobConfig.binding || "BLOB", bucket_name: blobConfig.bucketName };
++    if (nuxt.options.dev && hub.remote) binding.remote = true;
++    addWranglerBinding(nuxt, "r2_buckets", binding);
+   }
+   addImportsDir(resolve("blob/runtime/app/composables"));
+   const { driver, bucketName: _bucketName, ...driverOptions } = blobConfig;
+@@ -780,6 +796,8 @@ const module$1 = defineNuxtModule({
+       // Local storage
+       dir: ".data",
+       hosting,
++      // Remote Cloudflare bindings (connects to production during dev)
++      remote: false,
+       // NuxtHub features
+       blob: false,
+       cache: false,
+@@ -796,6 +814,41 @@ const module$1 = defineNuxtModule({
+     await setupCache(nuxt, hub);
+     await setupDatabase(nuxt, hub, deps);
+     await setupKV(nuxt, hub, deps);
++    if (nuxt.options.dev && hub.remote) {
++      const wranglerPath = join(hub.dir, "wrangler.toml");
++      const wrangler = nuxt.options.nitro.cloudflare?.wrangler || {};
++      let tomlContent = "";
++      for (const db of wrangler.d1_databases || []) {
++        tomlContent += `[[d1_databases]]
++binding = "${db.binding}"
++database_name = "${db.database_name || "default"}"
++database_id = "${db.database_id || "default"}"
++remote = true
++
++`;
++      }
++      for (const kv of wrangler.kv_namespaces || []) {
++        tomlContent += `[[kv_namespaces]]
++binding = "${kv.binding}"
++id = "${kv.id}"
++remote = true
++
++`;
++      }
++      for (const r2 of wrangler.r2_buckets || []) {
++        tomlContent += `[[r2_buckets]]
++binding = "${r2.binding}"
++bucket_name = "${r2.bucket_name}"
++remote = true
++
++`;
++      }
++      if (tomlContent) {
++        await writeFile(wranglerPath, tomlContent, "utf-8");
++        hub._remote = { configPath: wranglerPath, persistDir: hub.dir };
++        addServerPlugin(resolve("remote/runtime/plugin.dev"));
++      }
++    }
+     const runtimeConfig = nuxt.options.runtimeConfig;
+     runtimeConfig.hub = hub;
+     runtimeConfig.public.hub ||= {};
+diff --git a/dist/remote/runtime/plugin.dev.d.ts b/dist/remote/runtime/plugin.dev.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..ff75e2f10ca2cf2ad51cb7a599fa76c97e8a2ae8
+--- /dev/null
++++ b/dist/remote/runtime/plugin.dev.d.ts
+@@ -0,0 +1,3 @@
++import type { NitroAppPlugin } from 'nitropack';
++declare const _default: NitroAppPlugin;
++export default _default;
+diff --git a/dist/remote/runtime/plugin.dev.mjs b/dist/remote/runtime/plugin.dev.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..579ad08b62aeae6d081851099878b339f1eb7028
+--- /dev/null
++++ b/dist/remote/runtime/plugin.dev.mjs
+@@ -0,0 +1,54 @@
++import { useRuntimeConfig } from "#imports";
++const _proxy = _getPlatformProxy().catch((error) => {
++  console.error("[nuxt:hub] Failed to initialize wrangler bindings proxy", error);
++  return _createStubProxy();
++}).then((proxy) => {
++  globalThis.__env__ = proxy.env;
++  return proxy;
++});
++globalThis.__env__ = _proxy.then((proxy) => proxy.env);
++export default (function(nitroApp) {
++  nitroApp.hooks.hook("request", async (event) => {
++    const proxy = await _proxy;
++    event.context.cf = proxy.cf;
++    event.context.waitUntil = proxy.ctx.waitUntil.bind(proxy.ctx);
++    event.context.cloudflare = {
++      ...event.context.cloudflare,
++      env: proxy.env,
++      context: proxy.ctx
++    };
++    event.node.req.__unenv__ = {
++      ...event.node.req.__unenv__,
++      waitUntil: event.context.waitUntil
++    };
++  });
++  nitroApp.hooks._hooks.request?.unshift(nitroApp.hooks._hooks.request?.pop());
++  nitroApp.hooks.hook("close", () => {
++    return _proxy?.then((proxy) => proxy.dispose);
++  });
++});
++async function _getPlatformProxy() {
++  const _pkg = "wrangler";
++  const { getPlatformProxy } = await import(_pkg).catch(() => {
++    throw new Error("[nuxt:hub] Package `wrangler` not found. Please install it with: `npx nypm@latest add -D wrangler`");
++  });
++  const runtimeConfig = useRuntimeConfig();
++  const proxyOptions = {
++    configPath: runtimeConfig.hub._remote.configPath,
++    persist: { path: runtimeConfig.hub._remote.persistDir }
++  };
++  return await getPlatformProxy(proxyOptions);
++}
++function _createStubProxy() {
++  return {
++    env: {},
++    cf: {},
++    ctx: {
++      waitUntil() {
++      },
++      passThroughOnException() {
++      }
++    },
++    dispose: () => Promise.resolve()
++  };
++}
