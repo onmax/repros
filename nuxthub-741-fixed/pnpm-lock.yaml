@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   '@nuxthub/core':
-    hash: 5752d83afe8bfa64e0aaf2d35b635d551bb5b23103e73f6b23fa1f6e542734c0
+    hash: 53e7c35d4f0c69e5a0be4f7db6884c019fc04832c4b551086974d5c2ef443ffd
     path: patches/@nuxthub__core.patch
 
 importers:
@@ -15,7 +15,7 @@ importers:
     devDependencies:
       '@nuxthub/core':
         specifier: ^0.10.3
-        version: 0.10.3(patch_hash=5752d83afe8bfa64e0aaf2d35b635d551bb5b23103e73f6b23fa1f6e542734c0)(db0@0.3.4(drizzle-orm@0.30.10(@cloudflare/workers-types@4.20251219.0)))(ioredis@5.8.2)(magicast@0.5.1)
+        version: 0.10.3(patch_hash=53e7c35d4f0c69e5a0be4f7db6884c019fc04832c4b551086974d5c2ef443ffd)(db0@0.3.4(drizzle-orm@0.30.10(@cloudflare/workers-types@4.20251219.0)))(ioredis@5.8.2)(magicast@0.5.1)
       drizzle-kit:
         specifier: ^0.20.0
         version: 0.20.18
@@ -5540,7 +5540,7 @@ snapshots:
       - vue-tsc
       - yaml
 
-  '@nuxthub/core@0.10.3(patch_hash=5752d83afe8bfa64e0aaf2d35b635d551bb5b23103e73f6b23fa1f6e542734c0)(db0@0.3.4(drizzle-orm@0.30.10(@cloudflare/workers-types@4.20251219.0)))(ioredis@5.8.2)(magicast@0.5.1)':
+  '@nuxthub/core@0.10.3(patch_hash=53e7c35d4f0c69e5a0be4f7db6884c019fc04832c4b551086974d5c2ef443ffd)(db0@0.3.4(drizzle-orm@0.30.10(@cloudflare/workers-types@4.20251219.0)))(ioredis@5.8.2)(magicast@0.5.1)':
     dependencies:
       '@cloudflare/workers-types': 4.20251219.0
       '@nuxt/kit': 4.2.2(magicast@0.5.1)

@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
-  modules: ['nitro-cloudflare-dev', '@nuxthub/core'],
+  modules: ['@nuxthub/core'],
   hub: {
-    db: { dialect: 'sqlite', driver: 'd1', connection: { databaseId: 'test-db-id' } },
+    db: { dialect: 'sqlite', driver: 'd1' },
   },
   compatibilityDate: '2025-01-01',
 })

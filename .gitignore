@@ -3,3 +3,6 @@ node_modules
 .output
 .data
 *.log
+
+better-auth-6613/.data
+better-auth-6613-fixed/.data

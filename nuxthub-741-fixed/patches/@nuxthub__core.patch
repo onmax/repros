@@ -1,3 +1,18 @@
+diff --git a/dist/blob/lib/drivers/cloudflare-r2.mjs b/dist/blob/lib/drivers/cloudflare-r2.mjs
+index bdf365160b62ac9570a69cd436ea7a9f21bad05d..e78f8c6ac520d0e4f723ddcf9f83e38f3926432e 100644
+--- a/dist/blob/lib/drivers/cloudflare-r2.mjs
++++ b/dist/blob/lib/drivers/cloudflare-r2.mjs
+@@ -13,7 +13,9 @@ function mapR2ObjectToBlob(object) {
+ export function createDriver(options) {
+   const getBucket = () => {
+     const binding = options.binding || "BLOB";
+-    const bucket = globalThis[binding] || globalThis.__env__?.[binding] || process.env[binding];
++    // Check for resolved env (nitro-cloudflare-dev sets globalThis.__env__ as Promise initially)
++    const env = globalThis.__env__;
++    const bucket = globalThis[binding] || (env && typeof env.then !== 'function' ? env[binding] : undefined) || process.env[binding];
+     if (!bucket) {
+       throw new Error(`R2 binding "${options.binding}" not found`);
+     }
 diff --git a/dist/db/runtime/plugins/migrations.dev.mjs b/dist/db/runtime/plugins/migrations.dev.mjs
 index 4c7c77812705c020c4849fa738c3a51a70104118..ec4cad9775ea156c8d35bf447f776a7928795bc9 100644
 --- a/dist/db/runtime/plugins/migrations.dev.mjs
@@ -21,10 +36,37 @@ index 4c7c77812705c020c4849fa738c3a51a70104118..ec4cad9775ea156c8d35bf447f776a79
    await applyDatabaseQueries(hub, db);
  });
 diff --git a/dist/module.mjs b/dist/module.mjs
-index 44ed2eb03cbaf2bbdd682a70a8574e4669eb2473..78b451aed94f3e0cdb70b4988665a39e32e6040c 100644
+index 44ed2eb03cbaf2bbdd682a70a8574e4669eb2473..09b558f58cc567ac344e6d14d28b435a91c68bd9 100644
 --- a/dist/module.mjs
 +++ b/dist/module.mjs
-@@ -419,7 +419,9 @@ import * as schema from './db/schema.mjs'
+@@ -1,5 +1,5 @@
+ import { readFile, writeFile, mkdir } from 'node:fs/promises';
+-import { logger, createResolver, addServerPlugin, getLayerDirectories, updateTemplates, addTemplate, addTypeTemplate, addServerHandler, addServerImports, addImportsDir, defineNuxtModule } from '@nuxt/kit';
++import { logger, createResolver, addServerPlugin, getLayerDirectories, updateTemplates, addTemplate, addTypeTemplate, addServerHandler, addServerImports, addImportsDir, defineNuxtModule, installModule } from '@nuxt/kit';
+ import { join, resolve as resolve$1, relative } from 'pathe';
+ import { defu } from 'defu';
+ import { readPackageJSON, findWorkspaceDir } from 'pkg-types';
+@@ -270,6 +270,19 @@ async function setupDatabase(nuxt, hub, deps) {
+   } else if (driver === "libsql" && !deps["@libsql/client"]) {
+     logWhenReady(nuxt, "Please run `npx nypm i @libsql/client` to use SQLite as database.", "error");
+   }
++  // Auto-configure nitro-cloudflare-dev for D1 local emulation (restored from v0.9)
++  if (nuxt.options.dev && driver === "d1") {
++    if (!deps["nitro-cloudflare-dev"]) {
++      logWhenReady(nuxt, "Please run `npx nypm i -D nitro-cloudflare-dev` for local D1 emulation.", "error");
++    } else {
++      const wranglerPath = join(hub.dir, "wrangler.toml");
++      const tomlContent = `[[d1_databases]]\nbinding = "DB"\ndatabase_name = "default"\ndatabase_id = "default"\n`;
++      await mkdir(hub.dir, { recursive: true });
++      await writeFile(wranglerPath, tomlContent, "utf-8");
++      nuxt.options.nitro.cloudflareDev = { persistDir: hub.dir, configPath: wranglerPath, silent: true };
++      await installModule("nitro-cloudflare-dev");
++    }
++  }
+   addServerPlugin(resolve("db/runtime/plugins/migrations.dev"));
+   nuxt.hook("modules:done", async () => {
+     await generateDatabaseSchema(nuxt, hub);
+@@ -419,7 +432,9 @@ import * as schema from './db/schema.mjs'
  let _db
  function getDb() {
    if (!_db) {
@@ -34,4 +76,15 @@ index 44ed2eb03cbaf2bbdd682a70a8574e4669eb2473..78b451aed94f3e0cdb70b4988665a39e
 +    const binding = process.env.DB || (env && typeof env.then !== 'function' ? env.DB : undefined) || globalThis.DB
      if (!binding) throw new Error('DB binding not found')
      _db = drizzle(binding, { schema${casingOption} })
+   }
+@@ -492,7 +507,9 @@ import * as schema from './db/schema.mjs'
+ let _db
+ function getDb() {
+   if (!_db) {
+-    const hyperdrive = process.env.${bindingName} || globalThis.__env__?.${bindingName} || globalThis.${bindingName}
++    // Check for resolved env (nitro-cloudflare-dev sets globalThis.__env__ as Promise initially)
++    const env = globalThis.__env__
++    const hyperdrive = process.env.${bindingName} || (env && typeof env.then !== 'function' ? env.${bindingName} : undefined) || globalThis.${bindingName}
+     if (!hyperdrive) throw new Error('${bindingName} binding not found')
+     _db = drizzle({ connection: hyperdrive.connectionString, schema${modeOption}${casingOption} })
    }
