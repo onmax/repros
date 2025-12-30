@@ -1,0 +1,1 @@
+{ "name": "nuxthub-707", "private": true, "type": "module", "scripts": { "dev": "nuxt dev", "build": "nuxt build", "prepare": "nuxt prepare" }, "dependencies": { "nuxt": "^3.16.1", "@nuxthub/core": "latest", "drizzle-orm": "^0.45.1" } }
