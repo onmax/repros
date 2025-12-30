@@ -1,0 +1,14 @@
+{
+  "name": "hub-754-repro",
+  "type": "module",
+  "scripts": {"build": "nuxt build"},
+  "dependencies": {
+    "nuxt": "^4.2.2",
+    "@nuxthub/core": "^0.10.4",
+    "@nuxt/content": "^3.10.0",
+    "sqlite3": "^5.1.7"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["sqlite3", "esbuild", "@parcel/watcher"]
+  }
+}
