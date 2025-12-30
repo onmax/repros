@@ -74,7 +74,7 @@ index d3e7ba77f87d59b8996417860bfa97515686ba5c..b078e909de2d1d385f62a2f57fe07f01
      const db = await createDrizzleClient(hubConfig.db, hubDir)
  
 diff --git a/dist/db/lib/client.mjs b/dist/db/lib/client.mjs
-index daca46e490ae0d3c974b5f8924167453dfca5a90..b6f22128d9031da651edb431a0c20046cc4d37b1 100644
+index daca46e490ae0d3c974b5f8924167453dfca5a90..d74fc6948b817e41a0e05bca4e6500eecacabb15 100644
 --- a/dist/db/lib/client.mjs
 +++ b/dist/db/lib/client.mjs
 @@ -1,10 +1,41 @@
@@ -113,7 +113,7 @@ index daca46e490ae0d3c974b5f8924167453dfca5a90..b6f22128d9031da651edb431a0c20046
 +    const databaseId = connection?.databaseId || process.env.NUXT_HUB_CLOUDFLARE_DATABASE_ID;
 +    const apiToken = connection?.apiToken || process.env.NUXT_HUB_CLOUDFLARE_API_TOKEN;
 +    if (!accountId || !databaseId || !apiToken) {
-+      throw new Error("D1 requires Cloudflare API credentials for CLI commands. Set NUXT_HUB_CLOUDFLARE_ACCOUNT_ID, NUXT_HUB_CLOUDFLARE_DATABASE_ID, and NUXT_HUB_CLOUDFLARE_API_TOKEN environment variables.");
++      throw new Error("D1 CLI commands require Cloudflare API credentials. Set NUXT_HUB_CLOUDFLARE_ACCOUNT_ID, NUXT_HUB_CLOUDFLARE_DATABASE_ID, and NUXT_HUB_CLOUDFLARE_API_TOKEN, or use `npx wrangler d1 migrations apply <DATABASE_NAME>` instead.");
 +    }
 +    return createD1HttpClient(accountId, databaseId, apiToken, casing);
 +  } else if (driver === "postgres-js") {
