@@ -1,0 +1,1 @@
+{ "name": "nuxthub-755", "private": true, "type": "module", "scripts": { "dev": "nuxt dev", "build": "nuxt build", "prepare": "nuxt prepare", "typecheck": "nuxt typecheck" }, "dependencies": { "nuxt": "^3.16.1", "@nuxthub/core": "latest", "drizzle-orm": "^0.45.1" }, "devDependencies": { "typescript": "^5.7.2", "vue-tsc": "^2.2.0" } }
