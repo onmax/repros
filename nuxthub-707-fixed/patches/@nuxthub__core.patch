@@ -74,43 +74,48 @@ index d3e7ba77f87d59b8996417860bfa97515686ba5c..b078e909de2d1d385f62a2f57fe07f01
      const db = await createDrizzleClient(hubConfig.db, hubDir)
  
 diff --git a/dist/db/lib/client.mjs b/dist/db/lib/client.mjs
-index daca46e490ae0d3c974b5f8924167453dfca5a90..f93da7aafc81e2417ff78dc3a639590eb5a9158c 100644
+index daca46e490ae0d3c974b5f8924167453dfca5a90..b6f22128d9031da651edb431a0c20046cc4d37b1 100644
 --- a/dist/db/lib/client.mjs
 +++ b/dist/db/lib/client.mjs
-@@ -4,7 +4,36 @@ export async function createDrizzleClient(config, hubDir) {
+@@ -1,10 +1,41 @@
+ import { mkdir } from "node:fs/promises";
+ import { join } from "pathe";
++async function createD1HttpClient(accountId, databaseId, apiToken, casing) {
++  const d1HttpDriver = async (sql, params, method) => {
++    if (method === "values") method = "all";
++    const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId}/d1/db/${databaseId}/raw`, {
++      method: "POST",
++      headers: { Authorization: `Bearer ${apiToken}`, "Content-Type": "application/json" },
++      body: JSON.stringify({ sql, params })
++    });
++    const data = await response.json();
++    if (data.errors?.length || !data.success) {
++      throw new Error(`D1 HTTP error: ${JSON.stringify(data)}`);
++    }
++    const queryResult = data.result?.[0];
++    if (!queryResult?.success) {
++      throw new Error(`D1 HTTP error: ${JSON.stringify(data)}`);
++    }
++    const rows = queryResult.results?.rows || [];
++    if (method === "get") return { rows: rows.length ? rows[0] : [] };
++    return { rows };
++  };
++  const { drizzle } = await import("drizzle-orm/sqlite-proxy");
++  return drizzle(d1HttpDriver, { casing });
++}
+ export async function createDrizzleClient(config, hubDir) {
    const { driver, connection, casing } = config;
    let client;
    let pkg = "";
 -  if (driver === "postgres-js") {
-+  if (driver === "d1") {
-+    throw new Error("D1 driver cannot be used with CLI commands. Use `d1-http` driver with API credentials, or run migrations directly with `npx wrangler d1 migrations apply DB`.");
-+  } else if (driver === "d1-http") {
-+    const { accountId, databaseId, apiToken } = connection;
++  if (driver === "d1" || driver === "d1-http") {
++    const accountId = connection?.accountId || process.env.NUXT_HUB_CLOUDFLARE_ACCOUNT_ID;
++    const databaseId = connection?.databaseId || process.env.NUXT_HUB_CLOUDFLARE_DATABASE_ID;
++    const apiToken = connection?.apiToken || process.env.NUXT_HUB_CLOUDFLARE_API_TOKEN;
 +    if (!accountId || !databaseId || !apiToken) {
-+      throw new Error("D1 HTTP driver requires `accountId`, `databaseId`, and `apiToken` in connection config");
++      throw new Error("D1 requires Cloudflare API credentials for CLI commands. Set NUXT_HUB_CLOUDFLARE_ACCOUNT_ID, NUXT_HUB_CLOUDFLARE_DATABASE_ID, and NUXT_HUB_CLOUDFLARE_API_TOKEN environment variables.");
 +    }
-+    const d1HttpDriver = async (sql, params, method) => {
-+      if (method === "values") method = "all";
-+      const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId}/d1/db/${databaseId}/raw`, {
-+        method: "POST",
-+        headers: { Authorization: `Bearer ${apiToken}`, "Content-Type": "application/json" },
-+        body: JSON.stringify({ sql, params })
-+      });
-+      const data = await response.json();
-+      if (data.errors?.length || !data.success) {
-+        throw new Error(`D1 HTTP error: ${JSON.stringify(data)}`);
-+      }
-+      const queryResult = data.result?.[0];
-+      if (!queryResult?.success) {
-+        throw new Error(`D1 HTTP error: ${JSON.stringify(data)}`);
-+      }
-+      const rows = queryResult.results?.rows || [];
-+      if (method === "get") return { rows: rows.length ? rows[0] : [] };
-+      return { rows };
-+    };
-+    pkg = "drizzle-orm/sqlite-proxy";
-+    const { drizzle } = await import(pkg);
-+    return drizzle(d1HttpDriver, { casing });
++    return createD1HttpClient(accountId, databaseId, apiToken, casing);
 +  } else if (driver === "postgres-js") {
      const clientPkg = "postgres";
      const { default: postgres } = await import(clientPkg);
