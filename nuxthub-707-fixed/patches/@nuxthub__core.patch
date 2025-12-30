@@ -1,0 +1,117 @@
+diff --git a/cli/commands/db/drop-all.mjs b/cli/commands/db/drop-all.mjs
+index f0f4322be839dc000eda8baeef9107f0fbb5ce38..7f1e7c435c9d623130ec8be0e161bcbfe992499c 100644
+--- a/cli/commands/db/drop-all.mjs
++++ b/cli/commands/db/drop-all.mjs
+@@ -73,8 +73,8 @@ export default defineCommand({
+     const hubConfig = JSON.parse(await readFile(join(cwd, '.nuxt/hub/db/config.json'), 'utf-8'))
+     const dialect = hubConfig.db.dialect
+     consola.info(`Database: \`${dialect}\` with \`${hubConfig.db.driver}\` driver`)
+-    const url = hubConfig.db.connection.uri || hubConfig.db.connection.url
+-    consola.debug(`Database connection: \`${url}\``)
++    const url = hubConfig.db.connection?.uri || hubConfig.db.connection?.url
++    if (url) consola.debug(`Database connection: \`${url}\``)
+ 
+     const hubDir = join(cwd, hubConfig.dir)
+     const db = await createDrizzleClient(hubConfig.db, hubDir)
+diff --git a/cli/commands/db/drop.mjs b/cli/commands/db/drop.mjs
+index d96c3cb1a48b9ceee4e2be0f42f12a733aae66bb..84119c399bf287a905dd33d39bbcb77be27342a2 100644
+--- a/cli/commands/db/drop.mjs
++++ b/cli/commands/db/drop.mjs
+@@ -46,8 +46,8 @@ export default defineCommand({
+     })`nuxt prepare`
+     const hubConfig = JSON.parse(await readFile(join(cwd, '.nuxt/hub/db/config.json'), 'utf-8'))
+     consola.info(`Database: \`${hubConfig.db.dialect}\` with \`${hubConfig.db.driver}\` driver`)
+-    const url = hubConfig.db.connection.uri || hubConfig.db.connection.url
+-    consola.debug(`Database connection: \`${url}\``)
++    const url = hubConfig.db.connection?.uri || hubConfig.db.connection?.url
++    if (url) consola.debug(`Database connection: \`${url}\``)
+     const hubDir = join(cwd, hubConfig.dir)
+     const db = await createDrizzleClient(hubConfig.db, hubDir)
+     const execute = hubConfig.db.dialect === 'sqlite' ? 'run' : 'execute'
+diff --git a/cli/commands/db/mark-as-migrated.mjs b/cli/commands/db/mark-as-migrated.mjs
+index 267286c754d3be4adcd15accaa08ea6c8823ec49..8c2289be55a3958378ce09a69e07433045a63e90 100644
+--- a/cli/commands/db/mark-as-migrated.mjs
++++ b/cli/commands/db/mark-as-migrated.mjs
+@@ -47,8 +47,8 @@ export default defineCommand({
+     const hubConfig = JSON.parse(await readFile(join(cwd, '.nuxt/hub/db/config.json'), 'utf-8'))
+     const dialect = hubConfig.db.dialect
+     consola.info(`Database: \`${dialect}\` with \`${hubConfig.db.driver}\` driver`)
+-    const url = hubConfig.db.connection.uri || hubConfig.db.connection.url
+-    consola.debug(`Database connection: \`${url}\``)
++    const url = hubConfig.db.connection?.uri || hubConfig.db.connection?.url
++    if (url) consola.debug(`Database connection: \`${url}\``)
+     const localMigrations = await getDatabaseMigrationFiles(hubConfig)
+     if (localMigrations.length === 0) {
+       consola.info('No local migrations found.')
+diff --git a/cli/commands/db/migrate.mjs b/cli/commands/db/migrate.mjs
+index 77cc430d51ba67059b8cc5411c67e8734ea630f5..0e06c0b594b263e437c0ec4415dfbc838f63068c 100644
+--- a/cli/commands/db/migrate.mjs
++++ b/cli/commands/db/migrate.mjs
+@@ -41,8 +41,8 @@ export default defineCommand({
+     consola.info('Applying database migrations...')
+     const hubConfig = JSON.parse(await readFile(join(cwd, '.nuxt/hub/db/config.json'), 'utf-8'))
+     consola.info(`Database: \`${hubConfig.db.dialect}\` with \`${hubConfig.db.driver}\` driver`)
+-    const url = hubConfig.db.connection.uri || hubConfig.db.connection.url
+-    consola.debug(`Database connection: \`${url}\``)
++    const url = hubConfig.db.connection?.uri || hubConfig.db.connection?.url
++    if (url) consola.debug(`Database connection: \`${url}\``)
+     const hubDir = join(cwd, hubConfig.dir)
+     const db = await createDrizzleClient(hubConfig.db, hubDir)
+     const migrationsApplied = await applyDatabaseMigrations(hubConfig, db)
+diff --git a/cli/commands/db/sql.mjs b/cli/commands/db/sql.mjs
+index d3e7ba77f87d59b8996417860bfa97515686ba5c..b078e909de2d1d385f62a2f57fe07f010cfa9438 100644
+--- a/cli/commands/db/sql.mjs
++++ b/cli/commands/db/sql.mjs
+@@ -48,8 +48,8 @@ export default defineCommand({
+     const hubConfig = JSON.parse(await readFile(join(cwd, '.nuxt/hub/db/config.json'), 'utf-8'))
+     const dialect = hubConfig.db.dialect
+     consola.info(`Database: \`${dialect}\` with \`${hubConfig.db.driver}\` driver`)
+-    const url = hubConfig.db.connection.uri || hubConfig.db.connection.url
+-    consola.debug(`Database connection: \`${url}\``)
++    const url = hubConfig.db.connection?.uri || hubConfig.db.connection?.url
++    if (url) consola.debug(`Database connection: \`${url}\``)
+     const hubDir = join(cwd, hubConfig.dir)
+     const db = await createDrizzleClient(hubConfig.db, hubDir)
+ 
+diff --git a/dist/db/lib/client.mjs b/dist/db/lib/client.mjs
+index daca46e490ae0d3c974b5f8924167453dfca5a90..f93da7aafc81e2417ff78dc3a639590eb5a9158c 100644
+--- a/dist/db/lib/client.mjs
++++ b/dist/db/lib/client.mjs
+@@ -4,7 +4,36 @@ export async function createDrizzleClient(config, hubDir) {
+   const { driver, connection, casing } = config;
+   let client;
+   let pkg = "";
+-  if (driver === "postgres-js") {
++  if (driver === "d1") {
++    throw new Error("D1 driver cannot be used with CLI commands. Use `d1-http` driver with API credentials, or run migrations directly with `npx wrangler d1 migrations apply DB`.");
++  } else if (driver === "d1-http") {
++    const { accountId, databaseId, apiToken } = connection;
++    if (!accountId || !databaseId || !apiToken) {
++      throw new Error("D1 HTTP driver requires `accountId`, `databaseId`, and `apiToken` in connection config");
++    }
++    const d1HttpDriver = async (sql, params, method) => {
++      if (method === "values") method = "all";
++      const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId}/d1/db/${databaseId}/raw`, {
++        method: "POST",
++        headers: { Authorization: `Bearer ${apiToken}`, "Content-Type": "application/json" },
++        body: JSON.stringify({ sql, params })
++      });
++      const data = await response.json();
++      if (data.errors?.length || !data.success) {
++        throw new Error(`D1 HTTP error: ${JSON.stringify(data)}`);
++      }
++      const queryResult = data.result?.[0];
++      if (!queryResult?.success) {
++        throw new Error(`D1 HTTP error: ${JSON.stringify(data)}`);
++      }
++      const rows = queryResult.results?.rows || [];
++      if (method === "get") return { rows: rows.length ? rows[0] : [] };
++      return { rows };
++    };
++    pkg = "drizzle-orm/sqlite-proxy";
++    const { drizzle } = await import(pkg);
++    return drizzle(d1HttpDriver, { casing });
++  } else if (driver === "postgres-js") {
+     const clientPkg = "postgres";
+     const { default: postgres } = await import(clientPkg);
+     client = postgres(connection.url, {
