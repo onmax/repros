@@ -1,0 +1,4 @@
+packages: []
+
+overrides:
+  '@onmax/nuxt-better-auth': link:../../nuxt/better-auth

@@ -1,0 +1,27 @@
+{
+  "name": "formula-100-29",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "typecheck": "nuxt typecheck",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@better-auth/stripe": "latest",
+    "@libsql/client": "^0.15.15",
+    "@nuxthub/core": "^0.10.4",
+    "@onmax/nuxt-better-auth": "workspace:*",
+    "better-auth": "latest",
+    "drizzle-kit": "^0.31.8",
+    "drizzle-orm": "latest",
+    "nuxt": "^4.0.0",
+    "stripe": "latest",
+    "vue": "latest"
+  },
+  "devDependencies": {
+    "vue-tsc": "^2.0.0"
+  }
+}
