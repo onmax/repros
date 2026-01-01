@@ -1,0 +1,12 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index a58eb0d167f4887ad8b7e363d3a5d290dec0560e..e02d2438e18adfe9ef7178a7ca2ffd9ae8ecd640 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -1431,6 +1431,7 @@ const pagesModule = defineNuxtModule({
+     const prerenderRoutes = /* @__PURE__ */ new Set();
+     function processPages(pages, currentPath = "/") {
+       for (const page of pages) {
++        if (page._sync) { continue; }
+         if (OPTIONAL_PARAM_RE.test(page.path) && !page.children?.length) {
+           prerenderRoutes.add(currentPath);
+         }
