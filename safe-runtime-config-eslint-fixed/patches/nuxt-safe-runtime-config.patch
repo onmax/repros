@@ -1,0 +1,11 @@
+diff --git a/dist/eslint.mjs b/dist/eslint.mjs
+index 14e1786de52f55e1d701fbb2201306d99cac2c1c..8936b98ea8839fb0678fcfeb4eeab97a7c2483eb 100644
+--- a/dist/eslint.mjs
++++ b/dist/eslint.mjs
+@@ -35,4 +35,5 @@ const configs = {
+   }
+ };
+ 
+-export { configs, plugin as default };
++export { configs };
++export default { ...plugin, configs };

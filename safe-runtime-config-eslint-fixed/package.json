@@ -1,0 +1,1 @@
+{"name":"safe-runtime-config-eslint","type":"module","private":true,"scripts":{"prepare":"nuxt prepare","lint":"eslint ."},"dependencies":{"nuxt":"^4.1.0","nuxt-safe-runtime-config":"^0.0.16","zod":"^4.3.4"},"devDependencies":{"@nuxt/eslint":"^1.4.1","eslint":"^9.0.0"}}
