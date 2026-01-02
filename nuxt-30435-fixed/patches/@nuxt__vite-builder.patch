@@ -1,11 +1,15 @@
 diff --git a/dist/index.mjs b/dist/index.mjs
-index e8ba90c0d8410d3718875007c469e44ee5b7cd69..b4d218457a186550b03b993891e2caae8d59b8c2 100644
+index e8ba90c0d8410d3718875007c469e44ee5b7cd69..b9ae4608ba9e2227f5b12567247ad9582d0b6be6 100644
 --- a/dist/index.mjs
 +++ b/dist/index.mjs
-@@ -1601,10 +1601,20 @@ function SSRStylesPlugin(nuxt) {
-       if (!chunk) {
-         continue;
-       }
+@@ -1598,13 +1598,20 @@ function SSRStylesPlugin(nuxt) {
+     const entryIds = /* @__PURE__ */ new Set();
+     for (const id of chunksWithInlinedCSS) {
+       const chunk = manifest[id];
+-      if (!chunk) {
+-        continue;
+-      }
++      if (!chunk) { continue; }
 +      chunk.css &&= [];
        if (chunk.isEntry && chunk.src) {
          entryIds.add(chunk.src);
@@ -13,13 +17,12 @@ index e8ba90c0d8410d3718875007c469e44ee5b7cd69..b4d218457a186550b03b993891e2caae
 -        chunk.css &&= [];
 +      }
 +    }
-+    // Clear entry CSS when shouldInline is true, or when function returns true for entry
++    // Clear entry CSS when inlineStyles is enabled (not false)
++    // Entry aggregates CSS from all components - if ANY have inlined styles, we don't need the aggregated CSS file
 +    const shouldInline = nuxt.options.features.inlineStyles;
-+    for (const chunk of Object.values(manifest)) {
-+      if (chunk.isEntry && chunk.src) {
-+        entryIds.add(chunk.src);
-+        const shouldClearCSS = shouldInline === true || (typeof shouldInline === "function" && shouldInline(entry));
-+        if (shouldClearCSS) {
++    if (shouldInline !== false) {
++      for (const chunk of Object.values(manifest)) {
++        if (chunk.isEntry && chunk.src) {
 +          chunk.css &&= [];
 +        }
        }

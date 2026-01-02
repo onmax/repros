@@ -5,15 +5,36 @@ PR: https://github.com/nuxt/nuxt/pull/34008
 
 ## Problem
 
-CSS duplication when using `inlineStyles` function. Entry CSS linked even when function returns true.
+CSS duplication when using `inlineStyles`. Entry CSS file linked even when styles are inlined.
 
-## Fix
+## Original PR Bug
 
-Test entry path against `shouldInline` function when it's a function. Only clear entry CSS if function returns true for entry.
+PR used undefined `entry` variable:
+```ts
+shouldInline(entry)  // entry is undefined at hook execution time
+```
+
+Also, checking `shouldInline(entry.src)` doesn't make sense - entry files are `.ts` not `.vue`.
+
+## Correct Fix
+
+Clear entry CSS when `inlineStyles !== false`. Entry chunks aggregate CSS from inlined components, so if inlining is enabled at all, the aggregated CSS file shouldn't be linked.
 
 ```ts
-const shouldClearCSS = shouldInline === true ||
-  (typeof shouldInline === "function" && shouldInline(entry));
+if (shouldInline !== false) {
+  for (const chunk of Object.values(manifest)) {
+    if (chunk.isEntry && chunk.src) {
+      chunk.css &&= []
+    }
+  }
+}
+```
+
+## Note
+
+`inlineStyles` function can receive `undefined` for `importer` in resolveId hook. Always guard:
+```ts
+inlineStyles: (id) => !!id && id.includes('.vue')
 ```
 
 ## Verify
@@ -23,10 +44,4 @@ pnpm i && pnpm generate
 cat .output/public/index.html | grep -oE '(<style[^>]*>|<link[^>]*stylesheet[^>]*>)'
 ```
 
-## Expected
-
-Only inline `<style>` tags.
-
-## Actual (with fix)
-
-Only `<style>` tags present - no CSS link duplication.
+Expected: Only `<style>` tags - no CSS link.
