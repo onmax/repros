@@ -5,24 +5,19 @@ PR: https://github.com/nuxt/nuxt/pull/34008
 
 ## Problem
 
-CSS duplication when using `inlineStyles: true` with `nuxt generate`. HTML contains both inline `<style>` AND `<link>` to CSS files.
+CSS duplication when using `inlineStyles` function with `nuxt generate`. Even when function returns `true` for all files, entry CSS is still linked.
 
 ## Verify
 
 ```bash
-pnpm i
-pnpm generate
-cat .output/public/index.html | grep -E '(<style|<link.*stylesheet)'
+pnpm i && pnpm generate
+cat .output/public/index.html | grep -oE '(<style[^>]*>|<link[^>]*stylesheet[^>]*>)'
 ```
 
 ## Expected
 
-Only inline `<style>` tags, no `<link rel="stylesheet">` to CSS files.
+Only inline `<style>` tags (function says inline everything).
 
-## Actual (before fix)
+## Actual
 
-Both inline `<style>` AND `<link rel="stylesheet" href="/_nuxt/entry.*.css">` present in the HTML.
-
-## Note
-
-The fix works when `inlineStyles: true`. When using a function filter (e.g., `id => id.includes('.vue')`), entry.css is preserved as it may contain non-inlineable CSS.
+Both `<style>` AND `<link rel="stylesheet" href="/_nuxt/entry.*.css">` present.

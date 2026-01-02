@@ -1,8 +1,8 @@
 diff --git a/dist/index.mjs b/dist/index.mjs
-index e8ba90c0d8410d3718875007c469e44ee5b7cd69..aee60ac3bf58c65fc21f4f69f1c5ea606545fd9b 100644
+index e8ba90c0d8410d3718875007c469e44ee5b7cd69..b4d218457a186550b03b993891e2caae8d59b8c2 100644
 --- a/dist/index.mjs
 +++ b/dist/index.mjs
-@@ -1601,10 +1601,19 @@ function SSRStylesPlugin(nuxt) {
+@@ -1601,10 +1601,20 @@ function SSRStylesPlugin(nuxt) {
        if (!chunk) {
          continue;
        }
@@ -13,12 +13,13 @@ index e8ba90c0d8410d3718875007c469e44ee5b7cd69..aee60ac3bf58c65fc21f4f69f1c5ea60
 -        chunk.css &&= [];
 +      }
 +    }
-+    // Also clear CSS for entry chunks when inlineStyles is enabled
++    // Clear entry CSS when shouldInline is true, or when function returns true for entry
 +    const shouldInline = nuxt.options.features.inlineStyles;
-+    if (shouldInline !== false) {
-+      for (const chunk of Object.values(manifest)) {
-+        if (chunk.isEntry && chunk.src) {
-+          entryIds.add(chunk.src);
++    for (const chunk of Object.values(manifest)) {
++      if (chunk.isEntry && chunk.src) {
++        entryIds.add(chunk.src);
++        const shouldClearCSS = shouldInline === true || (typeof shouldInline === "function" && shouldInline(entry));
++        if (shouldClearCSS) {
 +          chunk.css &&= [];
 +        }
        }

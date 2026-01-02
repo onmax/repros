@@ -1,30 +1,31 @@
 # nuxt-30435-fixed
 
 Issue: https://github.com/nuxt/nuxt/issues/30435
+PR: https://github.com/nuxt/nuxt/pull/34008
 
 ## Problem
 
-CSS duplication when using `inlineStyles` with `nuxt generate`. HTML contains both inline `<style>` AND `<link>` to CSS files.
+CSS duplication when using `inlineStyles` function. Entry CSS linked even when function returns true.
 
 ## Fix
 
-In `@nuxt/vite-builder`'s `build:manifest` hook, entry chunks weren't having their CSS cleared because their manifest keys didn't match the `chunksWithInlinedCSS` Set keys.
+Test entry path against `shouldInline` function when it's a function. Only clear entry CSS if function returns true for entry.
 
-The fix:
-1. Always clear `chunk.css` for chunks in `chunksWithInlinedCSS`
-2. Also iterate all manifest chunks and clear CSS for entry chunks when `inlineStyles !== false`
+```ts
+const shouldClearCSS = shouldInline === true ||
+  (typeof shouldInline === "function" && shouldInline(entry));
+```
 
 ## Verify
 
 ```bash
-pnpm i
-pnpm generate
+pnpm i && pnpm generate
 cat .output/public/index.html | grep -oE '(<style[^>]*>|<link[^>]*stylesheet[^>]*>)'
 ```
 
 ## Expected
 
-Only inline `<style>` tags, no `<link rel="stylesheet">` to CSS files.
+Only inline `<style>` tags.
 
 ## Actual (with fix)
 
