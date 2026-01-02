@@ -1,0 +1,1 @@
+{"name":"nuxthub-754","private":true,"type":"module","scripts":{"build":"NITRO_PRESET=cloudflare-pages nuxt build","dev":"nuxt dev"},"dependencies":{"@nuxt/content":"^3.10.0","@nuxthub/core":"^0.10.4","better-sqlite3":"^12.5.0","nuxt":"^3.17.5"}}

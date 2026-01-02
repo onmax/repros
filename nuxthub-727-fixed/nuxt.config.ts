@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   hub: {
     db: {
       dialect: 'mysql',
-      mode: 'default',
+      mode: 'planetscale',
     },
   },
 })
