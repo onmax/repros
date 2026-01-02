@@ -1,0 +1,26 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index e8ba90c0d8410d3718875007c469e44ee5b7cd69..aee60ac3bf58c65fc21f4f69f1c5ea606545fd9b 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -1601,10 +1601,19 @@ function SSRStylesPlugin(nuxt) {
+       if (!chunk) {
+         continue;
+       }
++      chunk.css &&= [];
+       if (chunk.isEntry && chunk.src) {
+         entryIds.add(chunk.src);
+-      } else {
+-        chunk.css &&= [];
++      }
++    }
++    // Also clear CSS for entry chunks when inlineStyles is enabled
++    const shouldInline = nuxt.options.features.inlineStyles;
++    if (shouldInline !== false) {
++      for (const chunk of Object.values(manifest)) {
++        if (chunk.isEntry && chunk.src) {
++          entryIds.add(chunk.src);
++          chunk.css &&= [];
++        }
+       }
+     }
+     nitro.options.virtual["#internal/nuxt/entry-ids.mjs"] = () => `export default ${JSON.stringify(Array.from(entryIds))}`;
