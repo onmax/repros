@@ -30,10 +30,8 @@ Use the `vue`, `nuxt`, and `nuxthub` skills when working in this repo.
 
 1. Create minimal project reproducing the issue
 2. Include only what's necessary to demonstrate the bug
-3. Add README.md explaining:
-   - Link to original issue
-   - What the bug is
-   - How to verify it (command to run, file to check, expected vs actual)
+3. Add `.gitignore` with: `node_modules`, `.data`, `.nuxt`, `.output`
+4. Add README.md (see structure below)
 
 ### 3. Verify the Bug
 
@@ -68,7 +66,9 @@ Issue: {link-to-github-issue}
 {Brief description}
 
 ## Verify
-{Commands to reproduce/verify the issue}
+```bash
+pnpm i && pnpm build
+```
 
 ## Expected
 {What should happen}
@@ -115,18 +115,37 @@ git push
 ### 3. PR Body Structure
 
 ```md
-Fixes #{issue-number}
+Closes #{issue-number}
 
-## Problem
-{1-2 sentences explaining the bug}
+## Summary
+{1-2 sentences explaining the bug and fix}
 
-## Reproduction
-{Sparse checkout commands to clone repro folder}
+## StackBlitz
+
+| | Link | Expected |
+|---|---|---|
+| Bug | [{library}-{issue}](https://stackblitz.com/github/onmax/repros/tree/main/{library}-{issue}?startScript=build) | ❌ Build fails |
+| Fix | [{library}-{issue}-fixed](https://stackblitz.com/github/onmax/repros/tree/main/{library}-{issue}-fixed?startScript=build) | ✅ Build succeeds |
+
+## CLI Reproduction
+
+```bash
+git clone --depth 1 --filter=blob:none --sparse https://github.com/onmax/repros.git
+cd repros && git sparse-checkout set {library}-{issue}
+cd {library}-{issue} && pnpm i && pnpm build
+```
 
 ## Verify fix
-{Commands to verify with -fixed folder}
+
+```bash
+git sparse-checkout add {library}-{issue}-fixed
+cd ../{library}-{issue}-fixed && pnpm i && pnpm build
+```
 
 The `-fixed` folder includes a pnpm patch with the fix.
+
+## Related
+- {link-to-original-issue}
 ```
 
 ### 4. Commit Message
@@ -153,6 +172,13 @@ pnpm patch-commit '{extracted-path}'
 # Sparse checkout for repro
 git clone --depth 1 --filter=blob:none --sparse https://github.com/onmax/repros.git
 cd repros && git sparse-checkout set {folder-name}
+
+# StackBlitz URLs (with auto-install and build)
+# Bug: https://stackblitz.com/github/onmax/repros/tree/main/{library}-{issue}?startScript=build
+# Fix: https://stackblitz.com/github/onmax/repros/tree/main/{library}-{issue}-fixed?startScript=build
+#
+# startScript param runs the script from package.json after install
+# Other useful params: terminal=true, file=path/to/file.ts
 
 # Create PR
 gh pr create --repo {org}/{repo} --title "{title}" --body "{body}"

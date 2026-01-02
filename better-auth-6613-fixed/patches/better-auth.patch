@@ -1,0 +1,15 @@
+diff --git a/dist/api/to-auth-endpoints.mjs b/dist/api/to-auth-endpoints.mjs
+index 836cc938e798e4cc79b6f0cfd767c39bb30ff40a..f1c0805c1a6ec16fa72fe3191db1825bc924371a 100644
+--- a/dist/api/to-auth-endpoints.mjs
++++ b/dist/api/to-auth-endpoints.mjs
+@@ -88,8 +88,8 @@ function toAuthEndpoints(endpoints, ctx) {
+ 					} : result.response;
+ 				});
+ 			};
+-			if (await hasRequestState()) return run();
+-			else return runWithRequestState(/* @__PURE__ */ new WeakMap(), run);
++			// Fix: Always wrap with runWithRequestState to ensure context exists on Cloudflare Workers
++			return runWithRequestState(/* @__PURE__ */ new WeakMap(), run);
+ 		};
+ 		api[key].path = endpoint.path;
+ 		api[key].options = endpoint.options;

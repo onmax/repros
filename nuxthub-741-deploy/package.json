@@ -1,0 +1,1 @@
+{ "name": "nuxthub-741-fixed", "private": true, "type": "module", "scripts": { "dev": "nuxi dev", "build": "nuxi build" }, "devDependencies": { "@nuxthub/core": "^0.10.3", "drizzle-orm": "^0.30.0", "drizzle-kit": "^0.20.0", "nitro-cloudflare-dev": "^0.2.2", "nuxt": "^3.16.1", "wrangler": "^4.0.0" } }

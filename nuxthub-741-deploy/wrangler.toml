@@ -1,0 +1,7 @@
+name = "nuxthub-741-repro"
+compatibility_date = "2025-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "test-db"
+database_id = "test-db-id"

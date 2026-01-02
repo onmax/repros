@@ -1,0 +1,67 @@
+diff --git a/dist/context-DblZrIwO.mjs b/dist/context-DblZrIwO.mjs
+index 941aae59412c7f5ff19e42eb5e390f11b0ab9d30..91b9d6f1810f18d370c2de6ec1cde47ebf5211fb 100644
+--- a/dist/context-DblZrIwO.mjs
++++ b/dist/context-DblZrIwO.mjs
+@@ -1,10 +1,21 @@
+ import { getAsyncLocalStorage } from "@better-auth/core/async_hooks";
+ 
+ //#region src/context/endpoint-context.ts
+-let currentContextAsyncStorage = null;
++// Fix: Use globalThis + promises to prevent race conditions in async singleton creation
++const BA_SYMBOLS = globalThis.__BETTER_AUTH_CONTEXT__ = globalThis.__BETTER_AUTH_CONTEXT__ || {
++	ctx: null, req: null, db: null,
++	ctxPromise: null, reqPromise: null, dbPromise: null
++};
++
+ const ensureAsyncStorage$2 = async () => {
+-	if (!currentContextAsyncStorage) currentContextAsyncStorage = new (await (getAsyncLocalStorage()))();
+-	return currentContextAsyncStorage;
++	if (BA_SYMBOLS.ctx) return BA_SYMBOLS.ctx;
++	if (!BA_SYMBOLS.ctxPromise) {
++		BA_SYMBOLS.ctxPromise = getAsyncLocalStorage().then(ALS => {
++			BA_SYMBOLS.ctx = new ALS();
++			return BA_SYMBOLS.ctx;
++		});
++	}
++	return BA_SYMBOLS.ctxPromise;
+ };
+ /**
+ * This is for internal use only. Most users should use `getCurrentAuthContext` instead.
+@@ -25,10 +36,15 @@ async function runWithEndpointContext(context, fn) {
+ 
+ //#endregion
+ //#region src/context/request-state.ts
+-let requestStateAsyncStorage = null;
+ const ensureAsyncStorage$1 = async () => {
+-	if (!requestStateAsyncStorage) requestStateAsyncStorage = new (await (getAsyncLocalStorage()))();
+-	return requestStateAsyncStorage;
++	if (BA_SYMBOLS.req) return BA_SYMBOLS.req;
++	if (!BA_SYMBOLS.reqPromise) {
++		BA_SYMBOLS.reqPromise = getAsyncLocalStorage().then(ALS => {
++			BA_SYMBOLS.req = new ALS();
++			return BA_SYMBOLS.req;
++		});
++	}
++	return BA_SYMBOLS.reqPromise;
+ };
+ async function getRequestStateAsyncLocalStorage() {
+ 	return ensureAsyncStorage$1();
+@@ -67,10 +83,15 @@ function defineRequestState(initFn) {
+ 
+ //#endregion
+ //#region src/context/transaction.ts
+-let currentAdapterAsyncStorage = null;
+ const ensureAsyncStorage = async () => {
+-	if (!currentAdapterAsyncStorage) currentAdapterAsyncStorage = new (await (getAsyncLocalStorage()))();
+-	return currentAdapterAsyncStorage;
++	if (BA_SYMBOLS.db) return BA_SYMBOLS.db;
++	if (!BA_SYMBOLS.dbPromise) {
++		BA_SYMBOLS.dbPromise = getAsyncLocalStorage().then(ALS => {
++			BA_SYMBOLS.db = new ALS();
++			return BA_SYMBOLS.db;
++		});
++	}
++	return BA_SYMBOLS.dbPromise;
+ };
+ /**
+ * This is for internal use only. Most users should use `getCurrentAdapter` instead.

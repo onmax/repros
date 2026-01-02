@@ -1,0 +1,37 @@
+diff --git a/dist/db/runtime/plugins/migrations.dev.mjs b/dist/db/runtime/plugins/migrations.dev.mjs
+index 4c7c77812705c020c4849fa738c3a51a70104118..ec4cad9775ea156c8d35bf447f776a7928795bc9 100644
+--- a/dist/db/runtime/plugins/migrations.dev.mjs
++++ b/dist/db/runtime/plugins/migrations.dev.mjs
+@@ -1,10 +1,16 @@
+ import { applyDatabaseMigrations, applyDatabaseQueries } from "../../lib/migrations";
+-import { db } from "hub:db";
+ import { defineNitroPlugin, useRuntimeConfig } from "#imports";
+ export default defineNitroPlugin(async () => {
+   if (!import.meta.dev) return;
+   const hub = useRuntimeConfig().hub;
+   if (!hub.db) return;
++
++  // Wait for nitro-cloudflare-dev bindings if present
++  if (globalThis.__env__ && typeof globalThis.__env__.then === 'function') {
++    await globalThis.__env__;
++  }
++
++  const { db } = await import("hub:db");
+   await applyDatabaseMigrations(hub, db);
+   await applyDatabaseQueries(hub, db);
+ });
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 44ed2eb03cbaf2bbdd682a70a8574e4669eb2473..78b451aed94f3e0cdb70b4988665a39e32e6040c 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -419,7 +419,9 @@ import * as schema from './db/schema.mjs'
+ let _db
+ function getDb() {
+   if (!_db) {
+-    const binding = process.env.DB || globalThis.__env__?.DB || globalThis.DB
++    // Check for resolved env (nitro-cloudflare-dev sets globalThis.__env__)
++    const env = globalThis.__env__
++    const binding = process.env.DB || (env && typeof env.then !== 'function' ? env.DB : undefined) || globalThis.DB
+     if (!binding) throw new Error('DB binding not found')
+     _db = drizzle(binding, { schema${casingOption} })
+   }

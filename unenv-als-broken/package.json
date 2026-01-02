@@ -1,0 +1,15 @@
+{
+  "name": "unenv-als-broken",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build"
+  },
+  "dependencies": {
+    "nuxt": "^4.2.2"
+  },
+  "devDependencies": {
+    "wrangler": "^4.21.0"
+  }
+}
