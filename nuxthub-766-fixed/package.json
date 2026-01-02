@@ -1,0 +1,1 @@
+{ "name": "nuxthub-766", "type": "module", "scripts": { "build": "nuxt build" }, "devDependencies": { "@nuxthub/core": "^0.10.0", "nuxt": "^3.17.0" } }
