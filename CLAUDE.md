@@ -142,7 +142,7 @@ git sparse-checkout add {library}-{issue}-fixed
 cd ../{library}-{issue}-fixed && pnpm i && pnpm build
 ```
 
-The `-fixed` folder includes a pnpm patch with the fix.
+The `-fixed` folder uses [pnpm patch](https://pnpm.io/cli/patch) to apply the fix locally.
 
 ## Related
 - {link-to-original-issue}
