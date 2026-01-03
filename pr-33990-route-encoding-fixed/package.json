@@ -1,0 +1,19 @@
+{
+  "name": "pr-33990-route-encoding-fixed",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "preview": "nuxt preview",
+    "prerender": "nuxt generate",
+    "postinstall": "patch-package"
+  },
+  "dependencies": {
+    "nuxt": "^3.15.4",
+    "vue": "latest"
+  },
+  "devDependencies": {
+    "patch-package": "^8.0.0"
+  }
+}

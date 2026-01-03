@@ -1,0 +1,1 @@
+{"name":"nuxt-33990-test","type":"module","private":true,"scripts":{"dev":"nuxt dev","build":"nuxt build","preview":"nuxt preview"},"devDependencies":{"nuxt":"latest","vue":"latest"},"packageManager":"pnpm@10.26.2"}

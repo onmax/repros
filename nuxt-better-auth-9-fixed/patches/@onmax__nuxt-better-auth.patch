@@ -1,0 +1,20 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index e9303f2747c6e4bbd78c474976a46e3cf4600a3d..b77eb45c601130503cacff89c8d7745f9eb08fde 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -85,11 +85,15 @@ function generateField(fieldName, field, dialect, allTables, options) {
+       fieldDef += `.default(${field.defaultValue})`;
+     else if (typeof field.defaultValue === "string")
+       fieldDef += `.default('${field.defaultValue}')`;
++    else if (typeof field.defaultValue === "function")
++      fieldDef += `.$defaultFn(${field.defaultValue})`;
+     else
+       fieldDef += `.default(${field.defaultValue})`;
+     if (field.required)
+       fieldDef += ".notNull()";
+   }
++  if (typeof field.onUpdate === "function" && field.type === "date")
++    fieldDef += `.$onUpdate(${field.onUpdate})`;
+   if (field.references) {
+     const refTable = field.references.model;
+     if (allTables[refTable])

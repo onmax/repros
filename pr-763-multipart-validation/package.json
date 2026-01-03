@@ -1,0 +1,1 @@
+{"name":"pr-763-multipart-validation","type":"module","scripts":{"dev":"nuxt dev --port 3763","test":"node test.mjs"},"dependencies":{"@nuxthub/core":"latest","nuxt":"latest","h3":"latest"},"devDependencies":{"@vercel/blob":"latest"},"packageManager":"pnpm@10.26.2"}

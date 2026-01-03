@@ -1,0 +1,61 @@
+================================
+PR #7082 Test Execution Output
+================================
+
+Date: 2026-01-01
+Package: @better-auth/cli@1.4.7
+Commit: 26af83082 (pr-7082 branch)
+
+=== RUNTIME TESTS ===
+
+
+> pr-7082-cli-api-export-test@1.0.0 test /home/maxi/repros/pr-7082-cli-api-export
+> node test.mjs
+
+Testing @better-auth/cli/api subpath exports
+
+============================================================
+
+1. Testing import statement
+
+✓ Import @better-auth/cli/api
+
+2. Testing schema generator function exports
+
+✓ Export: generateDrizzleSchema
+✓ Export: generatePrismaSchema
+✓ Export: generateKyselySchema
+
+3. Testing utility exports
+
+✓ Export: generateSchema
+✓ Export: adapters
+✓ Export: adapters.prisma
+✓ Export: adapters.drizzle
+✓ Export: adapters.kysely
+
+4. Testing type exports (runtime check)
+
+✓ No undefined exports
+
+5. Verifying all expected exports are present
+
+✓ All expected exports present
+
+============================================================
+
+Test Summary:
+  Passed: 11
+  Failed: 0
+  Total:  11
+
+✅ All tests passed!
+
+=== TYPESCRIPT TESTS ===
+
+> pr-7082-cli-api-export-test@1.0.0 test:types /home/maxi/repros/pr-7082-cli-api-export
+> tsc --noEmit
+
+
+=== FINAL STATUS ===
+✅ ALL TESTS PASSED

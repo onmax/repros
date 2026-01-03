@@ -1,12 +1,12 @@
 diff --git a/dist/module.mjs b/dist/module.mjs
-index 4d59df6ff1e84832b835d220175acf62fe68a7b4..69707f81a25a7b29277e9dbdbd215b90c83ca861 100644
+index 4d59df6ff1e84832b835d220175acf62fe68a7b4..df3286fc5d2679a578547689593b64bdf046e7d2 100644
 --- a/dist/module.mjs
 +++ b/dist/module.mjs
 @@ -1,6 +1,6 @@
  import { existsSync } from 'node:fs';
  import { mkdir, writeFile } from 'node:fs/promises';
 -import { defineNuxtModule, createResolver, hasNuxtModule, addTemplate, addTypeTemplate, updateTemplates, addServerImportsDir, addServerScanDir, addServerHandler, addImportsDir, addPlugin, addComponentsDir, extendPages } from '@nuxt/kit';
-+import { defineNuxtModule, createResolver, hasNuxtModule, addTemplate, addTypeTemplate, updateTemplates, addServerImports, addServerImportsDir, addServerScanDir, addServerHandler, addImportsDir, addPlugin, addComponentsDir, extendPages } from '@nuxt/kit';
++import { defineNuxtModule, createResolver, hasNuxtModule, addTemplate, addTypeTemplate, updateTemplates, addServerImportsDir, addServerImports, addServerScanDir, addServerHandler, addImportsDir, addPlugin, addComponentsDir, extendPages } from '@nuxt/kit';
  import { consola as consola$1 } from 'consola';
  import { defu } from 'defu';
  import { join } from 'pathe';
@@ -15,9 +15,9 @@ index 4d59df6ff1e84832b835d220175acf62fe68a7b4..69707f81a25a7b29277e9dbdbd215b90
  async function loadUserAuthConfig(configPath, throwOnError = false) {
    const { createJiti } = await import('jiti');
 -  const jiti = createJiti(import.meta.url, { interopDefault: true });
-+  const { defineServerAuth } = await import('./runtime/config.js');
++  const { defineServerAuth } = await import('../dist/runtime/config.js');
 +  const jiti = createJiti(import.meta.url, { interopDefault: true, moduleCache: false });
-+  const key = 'defineServerAuth';
++  const key = "defineServerAuth";
 +  const g = globalThis;
 +  if (!g[key]) {
 +    defineServerAuth._count = 0;

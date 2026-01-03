@@ -1,0 +1,19 @@
+diff --git a/dist/runtime/utils/renderer/app.js b/dist/runtime/utils/renderer/app.js
+index 8bb362c45f40db463a1dde8fe081e61cd49c11f7..677fe24394c32ecb0175fb6ceff41ed9de1679ae 100644
+--- a/dist/runtime/utils/renderer/app.js
++++ b/dist/runtime/utils/renderer/app.js
+@@ -1,12 +1,13 @@
+ import process from "node:process";
+ import { createHead } from "@unhead/vue/server";
++import { decodePath } from "ufo";
+ import { sharedPrerenderCache } from "../cache.js";
+ import { useRuntimeConfig } from "#internal/nitro";
+ import unheadOptions from "#internal/unhead-options.mjs";
+ const PRERENDER_NO_SSR_ROUTES = /* @__PURE__ */ new Set(["/index.html", "/200.html", "/404.html"]);
+ export function createSSRContext(event) {
+   const ssrContext = {
+-    url: event.path,
++    url: decodePath(event.path),
+     event,
+     runtimeConfig: useRuntimeConfig(event),
+     noSSR: !!process.env.NUXT_NO_SSR || event.context.nuxt?.noSSR || (import.meta.prerender ? PRERENDER_NO_SSR_ROUTES.has(event.path) : false),

@@ -1,0 +1,11 @@
+{
+  "name": "nuxt-better-auth-9",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "node test.mjs"
+  },
+  "dependencies": {
+    "@onmax/nuxt-better-auth": "0.0.2-alpha.3"
+  }
+}
