@@ -1,0 +1,86 @@
+diff --git a/dist/module.cjs b/dist/module.cjs
+index b13ddbdc316fcf9eaea8b6ec40dc5e574fc77344..6df5b05a18deb1fffdee4219ee1de09c14832de5 100644
+--- a/dist/module.cjs
++++ b/dist/module.cjs
+@@ -399,7 +399,8 @@ async function getLocalDatabase(database, { connector, sqliteConnector } = {}) {
+     fetchDevelopmentCacheForKey,
+     insertDevelopmentCache,
+     deleteDevelopmentCache,
+-    dropContentTables
++    dropContentTables,
++    supportsTransactions: database.type === 'sqlite'
+   };
+ }
+ async function findBestSqliteAdapter(opts) {
+@@ -3256,8 +3257,26 @@ async function processCollectionItems(nuxt, collections, options) {
+   }
+   const sqlDumpList = Object.values(collectionDump).flatMap((a) => a);
+   db.exec(`DROP TABLE IF EXISTS ${infoCollection.tableName}`);
+-  for (const sql of sqlDumpList) {
+-    db.exec(sql);
++  // Use transaction for faster execution (SQLite only)
++  try {
++    if (db.supportsTransactions) {
++      db.exec('BEGIN TRANSACTION');
++    }
++    for (const sql of sqlDumpList) {
++      db.exec(sql);
++    }
++    if (db.supportsTransactions) {
++      db.exec('COMMIT');
++    }
++  } catch (error) {
++    if (db.supportsTransactions) {
++      try {
++        db.exec('ROLLBACK');
++      } catch {
++        // Ignore rollback errors
++      }
++    }
++    throw error;
+   }
+   const tags = sqlDumpList.flatMap((sql) => sql.match(/(?<=(^|,|\[)\[")[^"]+(?=")/g) || []);
+   const uniqueTags = [
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 0d20b16616966904ec76211abf5a131a787130bf..3fc722acb9e75d5a19af83d50c30b26705c0e344 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -380,7 +380,8 @@ async function getLocalDatabase(database, { connector, sqliteConnector } = {}) {
+     fetchDevelopmentCacheForKey,
+     insertDevelopmentCache,
+     deleteDevelopmentCache,
+-    dropContentTables
++    dropContentTables,
++    supportsTransactions: database.type === 'sqlite'
+   };
+ }
+ async function findBestSqliteAdapter(opts) {
+@@ -3237,8 +3238,26 @@ async function processCollectionItems(nuxt, collections, options) {
+   }
+   const sqlDumpList = Object.values(collectionDump).flatMap((a) => a);
+   db.exec(`DROP TABLE IF EXISTS ${infoCollection.tableName}`);
+-  for (const sql of sqlDumpList) {
+-    db.exec(sql);
++  // Use transaction for faster execution (SQLite only)
++  try {
++    if (db.supportsTransactions) {
++      db.exec('BEGIN TRANSACTION');
++    }
++    for (const sql of sqlDumpList) {
++      db.exec(sql);
++    }
++    if (db.supportsTransactions) {
++      db.exec('COMMIT');
++    }
++  } catch (error) {
++    if (db.supportsTransactions) {
++      try {
++        db.exec('ROLLBACK');
++      } catch {
++        // Ignore rollback errors
++      }
++    }
++    throw error;
+   }
+   const tags = sqlDumpList.flatMap((sql) => sql.match(/(?<=(^|,|\[)\[")[^"]+(?=")/g) || []);
+   const uniqueTags = [

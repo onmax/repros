@@ -1,0 +1,13 @@
+{
+  "name": "content-3669",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build"
+  },
+  "dependencies": {
+    "@nuxt/content": "^3.9.0",
+    "nuxt": "^3.14.0"
+  }
+}
