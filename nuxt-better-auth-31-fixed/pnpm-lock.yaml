@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   '@onmax/nuxt-better-auth':
-    hash: 2b6514138e347ac7a98db4056bb86df1bf4b0f97e0283620b8b313e810e8691f
+    hash: 0f696ef8d6d210a6bc7674432893fb3de5a78389a4376e68cd2fe1a31361e589
     path: patches/@onmax__nuxt-better-auth.patch
 
 importers:
@@ -15,7 +15,7 @@ importers:
     dependencies:
       '@onmax/nuxt-better-auth':
         specifier: 0.0.2-alpha.9
-        version: 0.0.2-alpha.9(patch_hash=2b6514138e347ac7a98db4056bb86df1bf4b0f97e0283620b8b313e810e8691f)(better-auth@1.4.10(vue@3.5.26))(magicast@0.5.1)
+        version: 0.0.2-alpha.9(patch_hash=0f696ef8d6d210a6bc7674432893fb3de5a78389a4376e68cd2fe1a31361e589)(better-auth@1.4.10(vue@3.5.26))(magicast@0.5.1)
       better-auth:
         specifier: ^1.1.9
         version: 1.4.10(vue@3.5.26)
@@ -4174,7 +4174,7 @@ snapshots:
       - vue-tsc
       - yaml
 
-  '@onmax/nuxt-better-auth@0.0.2-alpha.9(patch_hash=2b6514138e347ac7a98db4056bb86df1bf4b0f97e0283620b8b313e810e8691f)(better-auth@1.4.10(vue@3.5.26))(magicast@0.5.1)':
+  '@onmax/nuxt-better-auth@0.0.2-alpha.9(patch_hash=0f696ef8d6d210a6bc7674432893fb3de5a78389a4376e68cd2fe1a31361e589)(better-auth@1.4.10(vue@3.5.26))(magicast@0.5.1)':
     dependencies:
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
       better-auth: 1.4.10(vue@3.5.26)

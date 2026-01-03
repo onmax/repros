@@ -22,4 +22,5 @@ Server starts successfully ✅
 
 ## Fix
 
-Added `addServerImports` call to register `defineServerAuth` as a server auto-import, and inject `defineServerAuth` into global scope for jiti-loaded configs.
+1. Added `addServerImports` to register `defineServerAuth` as server auto-import
+2. Inject `defineServerAuth` into global scope with reference counting and cleanup (Nuxt Core pattern)
