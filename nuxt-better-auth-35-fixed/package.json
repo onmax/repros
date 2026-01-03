@@ -1,0 +1,16 @@
+{
+  "name": "nuxt-better-auth-35-fixed",
+  "private": true,
+  "type": "module",
+  "scripts": { "dev": "nuxt dev", "build": "nuxt build" },
+  "dependencies": {
+    "@onmax/nuxt-better-auth": "0.0.2-alpha.9",
+    "better-auth": "^1.4.7",
+    "nuxt": "^4.2.2"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@onmax/nuxt-better-auth@0.0.2-alpha.9": "patches/@onmax__nuxt-better-auth.patch"
+    }
+  }
+}
