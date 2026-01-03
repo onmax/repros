@@ -1,0 +1,14 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index e9303f2747c6e4bbd78c474976a46e3cf4600a3d..8ae28e6909a02568ba441030972815ec4425c81d 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -220,8 +220,7 @@ const module$1 = defineNuxtModule({
+     nuxt.options.alias["#nuxt-better-auth"] = resolver.resolve("./runtime/types/augment");
+     nuxt.options.alias["#auth/server"] = serverConfigPath;
+     nuxt.options.alias["#auth/client"] = clientConfigPath;
+-    const secondaryStorageCode = secondaryStorageEnabled ? `import { kv } from 'hub:kv'
+-export function createSecondaryStorage() {
++    const secondaryStorageCode = secondaryStorageEnabled ? `export function createSecondaryStorage() {
+   return {
+     get: async (key) => kv.get(\`_auth:\${key}\`),
+     set: async (key, value, ttl) => kv.set(\`_auth:\${key}\`, value, { ttl }),
