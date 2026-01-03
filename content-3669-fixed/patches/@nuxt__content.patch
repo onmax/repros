@@ -8,7 +8,7 @@ index b13ddbdc316fcf9eaea8b6ec40dc5e574fc77344..6df5b05a18deb1fffdee4219ee1de09c
      deleteDevelopmentCache,
 -    dropContentTables
 +    dropContentTables,
-+    supportsTransactions: database.type === 'sqlite'
++    supportsTransactions: database.type !== 'd1'
    };
  }
  async function findBestSqliteAdapter(opts) {
@@ -51,7 +51,7 @@ index 0d20b16616966904ec76211abf5a131a787130bf..3fc722acb9e75d5a19af83d50c30b267
      deleteDevelopmentCache,
 -    dropContentTables
 +    dropContentTables,
-+    supportsTransactions: database.type === 'sqlite'
++    supportsTransactions: database.type !== 'd1'
    };
  }
  async function findBestSqliteAdapter(opts) {
