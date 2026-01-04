@@ -5,27 +5,24 @@ Issue: https://github.com/nuxt/nuxt/issues/33999
 ## Problem
 `buildId` uses `randomUUID()` on every production build. Even with unchanged source, each `nuxt generate` creates a new buildId, causing CDN cache invalidation issues.
 
-## Solution (Daniel Roe's approach)
-Keep random buildId BUT include manifest files (`latest.json`, `meta/{buildId}.json`) in the build cache.
+## Fix
+Cache manifest files (`latest.json`, `meta/{buildId}.json`) alongside the Vue build cache. When cache hits, restore both the build AND the manifest with original buildId.
 
-When `experimental.buildCache` hits:
-1. Restore `.nuxt` directory (Vue build)
-2. Restore manifest files from previous build
-3. Restore original buildId to runtimeConfig
+Changes:
+1. Move cache collection from `nitro:build:before` to `build:done` (after manifest is created)
+2. Cache manifest files and buildId alongside Vue build
+3. Restore manifest files and buildId when cache is restored
 
-This ensures cached builds retain their original buildId.
+## Verify
+```bash
+pnpm i
+pnpm generate
+cat .output/public/_nuxt/builds/latest.json  # Note buildId
 
-## Implementation Status
-Pending - requires changes to:
-- `packages/nuxt/src/core/builder.ts` - move cache collection to after nitro
-- `packages/nuxt/src/core/cache.ts` - include manifest + buildId in cache
-
-## Workaround (current)
-Enable build caching:
-```typescript
-export default defineNuxtConfig({
-  experimental: { buildCache: true }
-})
+# Run again - should use cache and preserve buildId
+pnpm generate
+cat .output/public/_nuxt/builds/latest.json  # Same buildId!
 ```
 
-Note: Full fix requires Nuxt core changes to cache manifest files.
+## Requirements
+Requires `experimental.buildCache: true` in nuxt.config (enabled in this repro).

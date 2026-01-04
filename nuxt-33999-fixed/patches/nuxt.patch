@@ -1,0 +1,63 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index a58eb0d167f4887ad8b7e363d3a5d290dec0560e..8eac3fd64a5541940b6646eb05b000e66c25e2b6 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -6534,22 +6534,45 @@ async function getVueHash(nuxt) {
+     }
+   });
+   const cacheFile = join(getCacheDir(nuxt), id, hash2 + ".tar");
++  const manifestCacheFile = cacheFile.replace(".tar", "-manifest.tar");
++  const buildIdCacheFile = cacheFile.replace(".tar", ".buildid");
+   return {
+     hash: hash2,
+     async collectCache() {
+       const start = Date.now();
+       await writeCache(nuxt.options.buildDir, nuxt.options.buildDir, cacheFile);
++      // Cache manifest files (latest.json, meta/{buildId}.json) to preserve buildId across cached builds
++      const outputManifestDir = join(nuxt.options.buildDir, "../.output/public/_nuxt/builds");
++      if (existsSync(outputManifestDir)) {
++        await writeCache(outputManifestDir, outputManifestDir, manifestCacheFile);
++      }
++      // Cache buildId for runtimeConfig restoration
++      await mkdir(dirname(buildIdCacheFile), { recursive: true });
++      await writeFile(buildIdCacheFile, nuxt.options.buildId);
+       const elapsed = Date.now() - start;
+       consola$1.success(`Cached Vue client and server builds in \`${elapsed}ms\`.`);
+     },
+     async restoreCache() {
+       const start = Date.now();
+       const res = await restoreCache(nuxt.options.buildDir, cacheFile);
+-      const elapsed = Date.now() - start;
+-      if (res) {
+-        consola$1.success(`Restored Vue client and server builds from cache in \`${elapsed}ms\`.`);
++      if (!res) {
++        return false;
++      }
++      // Restore manifest files
++      const outputManifestDir = join(nuxt.options.buildDir, "../.output/public/_nuxt/builds");
++      if (existsSync(manifestCacheFile)) {
++        await mkdir(outputManifestDir, { recursive: true });
++        await restoreCache(outputManifestDir, manifestCacheFile);
+       }
+-      return res;
++      // Restore buildId to ensure runtimeConfig matches cached manifest
++      if (existsSync(buildIdCacheFile)) {
++        const cachedBuildId = await readFile(buildIdCacheFile, "utf-8");
++        nuxt.options.buildId = cachedBuildId;
++        nuxt.options.runtimeConfig.app.buildId = cachedBuildId;
++      }
++      const elapsed = Date.now() - start;
++      consola$1.success(`Restored Vue client and server builds from cache in \`${elapsed}ms\`.`);
++      return true;
+     }
+   };
+ }
+@@ -6773,7 +6796,7 @@ async function build(nuxt) {
+       await nuxt.callHook("build:done");
+       return await nuxt.callHook("close", nuxt);
+     }
+-    nuxt.hooks.hookOnce("nitro:build:before", () => collectCache());
++    nuxt.hooks.hookOnce("build:done", () => collectCache());
+     nuxt.hooks.hookOnce("close", () => cleanupCaches(nuxt));
+   }
+   await nuxt.callHook("build:before");
