@@ -1,14 +1,15 @@
 # nuxthub-754-fixed
 
 Issue: https://github.com/nuxt-hub/core/issues/754
+PR: https://github.com/nuxt/content/pull/3668
 
 ## Problem
 
-With `@nuxthub/core` + `@nuxt/content` + `prerender.crawlLinks: true`, the `sql_dump.txt` routes fail to prerender because the handler needs cloudflare `ASSETS` binding unavailable at build time.
+With `@nuxthub/core` + `@nuxt/content` + `prerender.crawlLinks: true`, the `sql_dump.txt` routes fail to prerender with 404 because handlers aren't registered when database is not enabled.
 
 ## Fix
 
-Patched `@nuxt/content` to add `prerender.ignore` for `/__nuxt_content/*/sql_dump.txt` routes in cloudflare and node presets.
+Patched `@nuxt/content` nuxthub preset to remove early return when database not enabled. This allows cloudflare/node preset `setup()` to always run, registering the `sql_dump.txt` handlers.
 
 ## Verify
 
@@ -18,7 +19,7 @@ pnpm i && NITRO_PRESET=cloudflare-pages pnpm build
 
 ## Expected
 
-Build succeeds, pages are prerendered without sql_dump.txt errors.
+Build succeeds, `sql_dump.txt` route is prerendered successfully.
 
 ## Note
 

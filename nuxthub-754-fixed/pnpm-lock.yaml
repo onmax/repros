@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   '@nuxt/content':
-    hash: 8e36388c731ecc7666bb192a2a11db3d4bb87610f336f552d5b25978efc924eb
+    hash: d4c170b2c5a57fa34921af38626edda15aebb616fc52500e0c7e6568d43e3a95
     path: patches/@nuxt__content.patch
 
 importers:
@@ -15,7 +15,7 @@ importers:
     dependencies:
       '@nuxt/content':
         specifier: ^3.10.0
-        version: 3.10.0(patch_hash=8e36388c731ecc7666bb192a2a11db3d4bb87610f336f552d5b25978efc924eb)(better-sqlite3@12.5.0)(magicast@0.5.1)
+        version: 3.10.0(patch_hash=d4c170b2c5a57fa34921af38626edda15aebb616fc52500e0c7e6568d43e3a95)(better-sqlite3@12.5.0)(magicast@0.5.1)
       '@nuxthub/core':
         specifier: ^0.10.4
         version: 0.10.4(db0@0.3.4(better-sqlite3@12.5.0))(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.9.3)
@@ -4931,7 +4931,7 @@ snapshots:
       - magicast
       - supports-color
 
-  '@nuxt/content@3.10.0(patch_hash=8e36388c731ecc7666bb192a2a11db3d4bb87610f336f552d5b25978efc924eb)(better-sqlite3@12.5.0)(magicast@0.5.1)':
+  '@nuxt/content@3.10.0(patch_hash=d4c170b2c5a57fa34921af38626edda15aebb616fc52500e0c7e6568d43e3a95)(better-sqlite3@12.5.0)(magicast@0.5.1)':
     dependencies:
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
       '@nuxtjs/mdc': 0.19.2(magicast@0.5.1)

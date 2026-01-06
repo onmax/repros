@@ -1,24 +1,41 @@
 diff --git a/dist/module.mjs b/dist/module.mjs
-index 0d20b16616966904ec76211abf5a131a787130bf..c44fc14a52041d654a653418ebbe4f0f5a8196b4 100644
+index 0d20b16616966904ec76211abf5a131a787130bf..e922963cd3bdfe620715fc0df37bdd37076ddf75 100644
 --- a/dist/module.mjs
 +++ b/dist/module.mjs
-@@ -2645,6 +2645,9 @@ const node = definePreset({
-     });
-   },
-   setupNitro(nitroConfig, { manifest }) {
-+    nitroConfig.prerender ||= {};
-+    nitroConfig.prerender.ignore ||= [];
-+    nitroConfig.prerender.ignore.push(/^\/__nuxt_content\/.*\/sql_dump\.txt/);
-     nitroConfig.publicAssets ||= [];
-     nitroConfig.alias = nitroConfig.alias || {};
-     nitroConfig.handlers ||= [];
-@@ -2699,6 +2702,9 @@ const cloudflare = definePreset({
-       logger.warn("Deploying to Cloudflare requires using D1 database, switching to D1 database with binding `DB`.");
-       nitroConfig.runtimeConfig.content.database = { type: "d1", bindingName: "DB" };
+@@ -2730,22 +2730,22 @@ const nuxthub = definePreset({
+   name: "nuxthub",
+   async setup(options, nuxt, config) {
+     const nuxtOptions = nuxt.options;
+-    if (!nuxtOptions.hub?.db && !nuxtOptions.hub?.database) {
+-      logger.warn("NuxtHub dedected but the database is not enabled. Using local SQLite as default database instead.");
+-      return;
+-    }
+-    const runtimeConfig = nuxt.options.runtimeConfig;
+-    const hubDb = runtimeConfig.hub.db || runtimeConfig.hub.database;
+-    if (nuxtOptions.hub?.database === true) {
+-      options.database ||= { type: "d1", bindingName: "DB" };
+-    } else if (typeof nuxtOptions.hub?.db === "string" && typeof hubDb === "object") {
+-      if (hubDb.driver === "d1") {
++    if (nuxtOptions.hub?.db || nuxtOptions.hub?.database) {
++      const runtimeConfig = nuxt.options.runtimeConfig;
++      const hubDb = runtimeConfig.hub.db || runtimeConfig.hub.database;
++      if (nuxtOptions.hub?.database === true) {
+         options.database ||= { type: "d1", bindingName: "DB" };
+-      } else if (hubDb.driver === "node-postgres") {
+-        options.database ||= { type: "postgresql", url: hubDb.connection.url };
+-      } else {
+-        options.database ||= { type: hubDb.driver, ...hubDb.connection };
++      } else if (typeof nuxtOptions.hub?.db === "string" && typeof hubDb === "object") {
++        if (hubDb.driver === "d1") {
++          options.database ||= { type: "d1", bindingName: "DB" };
++        } else if (hubDb.driver === "node-postgres") {
++          options.database ||= { type: "postgresql", url: hubDb.connection.url };
++        } else {
++          options.database ||= { type: hubDb.driver, ...hubDb.connection };
++        }
+       }
++    } else {
++      logger.warn("NuxtHub dedected but the database is not enabled. Using local SQLite as default database instead.");
      }
-+    nitroConfig.prerender ||= {};
-+    nitroConfig.prerender.ignore ||= [];
-+    nitroConfig.prerender.ignore.push(/^\/__nuxt_content\/.*\/sql_dump\.txt/);
-     nitroConfig.publicAssets ||= [];
-     nitroConfig.alias = nitroConfig.alias || {};
-     nitroConfig.handlers ||= [];
+     const preset = (process.env.NITRO_PRESET || nuxt.options.nitro.preset || provider).replace(/_/g, "-");
+     if (preset.includes("cloudflare")) {
