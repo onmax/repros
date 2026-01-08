@@ -1,0 +1,14 @@
+{
+  "name": "a11y-209",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "nuxt": "^3.16.1",
+    "@nuxt/a11y": "^1.0.0-alpha.1"
+  }
+}
