@@ -1,0 +1,19 @@
+diff --git a/dist/app/components/nuxt-island.js b/dist/app/components/nuxt-island.js
+index a4c4faf4b3e28a6920ed7b934a191e4fc193d577..c1dbcba7c1a061d5fbd4dbb8b58c187ef1cba111 100644
+--- a/dist/app/components/nuxt-island.js
++++ b/dist/app/components/nuxt-island.js
+@@ -151,9 +151,11 @@ export default defineComponent({
+         }
+       }
+       ssrHTML.value = getFragmentHTML(instance.vnode.el, true)?.join("") || "";
+-      const key2 = `${props.name}_${hashId.value}`;
+-      nuxtApp.payload.data[key2] ||= {};
+-      nuxtApp.payload.data[key2].html = ssrHTML.value.replaceAll(new RegExp(`data-island-uid="${ssrHTML.value.match(SSR_UID_RE)?.[1] || ""}"`, "g"), `data-island-uid=""`);
++      // Note: we don't cache ssrHTML to payload.data[key].html here because the SSR HTML
++      // contains teleported content (from replaceIslandTeleports). Caching it would cause
++      // duplication on client-side navigation since both the cached HTML and teleports
++      // would render the same content. The clean HTML from fetchComponent is already
++      // cached via setPayload() during SSR.
+     }
+     const uid = ref(ssrHTML.value.match(SSR_UID_RE)?.[1] || getId());
+     const currentSlots = new Set(Object.keys(slots));
