@@ -1,20 +1,18 @@
-# nimiq-core-3278
+# nimiq-core-3278-fixed
 
 Issue: https://github.com/nimiq/core-rs-albatross/pull/3278
 
 ## Problem
 @nimiq/core Node.js build uses `import Comlink from 'comlink'` in 3 files (crypto.mjs, index.mjs, worker.mjs) but comlink has no default export. This breaks in Cloudflare Workers and Vercel Edge Runtime with strict ESM bundling.
 
-## Verify
+## Verify Fix
 ```bash
-pnpm i && pnpm start
+pnpm i
+grep "import \* as Comlink from" node_modules/@nimiq/core/nodejs/*.mjs
+# Should show 3 files with correct namespace import
+pnpm start
+# Works correctly
 ```
-
-## Expected
-Module loads successfully
-
-## Actual
-Works in Node.js but fails in Cloudflare Workers/Vercel Edge with bundling error about missing default export
 
 ## Fix
 Changed 3 files (crypto.mjs, index.mjs, worker.mjs) from:
