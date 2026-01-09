@@ -1,0 +1,11 @@
+{
+  "name": "nimiq-core-3278",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@nimiq/core": "2.2.1"
+  }
+}
