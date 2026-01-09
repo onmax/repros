@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 const props = defineProps<{ id: string }>()
 const count = ref(0)
 </script>
