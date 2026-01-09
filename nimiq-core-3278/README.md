@@ -3,34 +3,40 @@
 Issue: https://github.com/nimiq/core-rs-albatross/pull/3278
 
 ## Problem
-@nimiq/core Node.js build uses `import Comlink from 'comlink'` in 3 files (crypto.mjs, index.mjs, worker.mjs) but comlink has no default export. This breaks in Cloudflare Workers and Vercel Edge Runtime with strict ESM bundling.
+@nimiq/core@2.2.0 Node.js build uses incorrect comlink import in 3 files:
+- nodejs/crypto.mjs
+- nodejs/index.mjs
+- nodejs/worker.mjs
 
-## Reproduce
+Uses: `import Comlink from 'comlink'` (default import)
+Should be: `import * as Comlink from 'comlink'` (namespace import)
 
-### 1. Verify incorrect import exists
+Comlink has no default export, breaking strict ESM bundlers.
+
+## Verify
+
+### 1. Check nodejs build has bug
 ```bash
 pnpm i
 grep "import Comlink from" node_modules/@nimiq/core/nodejs/*.mjs
-# Should show 3 files with incorrect default import
 ```
+Expected: 3 files with incorrect default import
 
-### 2. Check comlink has no default export
+### 2. Check comlink exports
 ```bash
-tail -5 node_modules/.pnpm/comlink@*/node_modules/comlink/dist/esm/comlink.mjs
-# Shows: export { createEndpoint, expose, ... } - NO default export
+cat node_modules/.pnpm/comlink@*/node_modules/comlink/dist/esm/comlink.mjs | grep "export {"
 ```
+Shows: `export { createEndpoint, expose, ... }` - no default
 
-### 3. Test in Node.js (works but incorrect)
+### 3. Run dev server
 ```bash
-pnpm start
-# Node.js is lenient and allows this, but it violates ESM spec
+pnpm dev
 ```
-
-### 4. Deploy to Cloudflare Workers or Vercel Edge (fails)
-See [nimiq/starter](https://github.com/nimiq/starter) cloudflare-d1 example which needs patches/@nimiq__core@2.2.0.patch to work around this issue.
+Note: Browser build (bundler/*.js) works fine and has correct imports.
+Bug only affects nodejs/*.mjs used by Node.js and edge runtimes.
 
 ## Expected
-Code should use `import * as Comlink from 'comlink'` (namespace import)
+Files should use namespace import: `import * as Comlink from 'comlink'`
 
 ## Actual
-Uses `import Comlink from 'comlink'` (default import) which fails in strict bundlers
+Files use default import: `import Comlink from 'comlink'` which fails in strict bundlers

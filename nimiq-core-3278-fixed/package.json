@@ -1,11 +1,30 @@
 {
-  "name": "nimiq-core-3278",
+  "name": "nimiq-core-3278-fixed",
   "type": "module",
   "private": true,
   "scripts": {
-    "start": "node index.js"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@nimiq/core": "2.2.1"
+    "@nimiq/core": "2.2.0",
+    "vue": "^3.5.22"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^7.1.12",
+    "vite-plugin-top-level-await": "^1.4.4",
+    "vite-plugin-wasm": "^3.3.0"
+  },
+  "pnpmfile": {
+    "hooks": {
+      "readPackage": "pnpmfile.js"
+    }
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@nimiq/core@2.2.0": "patches/@nimiq__core.patch"
+    }
   }
 }
