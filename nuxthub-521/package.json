@@ -1,0 +1,12 @@
+{
+  "name": "nuxthub-521",
+  "type": "module",
+  "private": true,
+  "scripts": { "dev": "nuxt dev", "build": "nuxt build" },
+  "dependencies": {
+    "@nuxt/image": "^1.10.0",
+    "@nuxt/ui": "^4.2.1",
+    "@nuxthub/core": "^0.10.4",
+    "nuxt": "^4.2.2"
+  }
+}
