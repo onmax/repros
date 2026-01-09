@@ -1,0 +1,140 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 8f7e606f6fba2ad14e0e0e02782c368614a459c3..7c4aed04f192e9e87f5c371f3e64f0cb2f3090ad 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -1,9 +1,9 @@
++import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
++import { dirname, join } from 'pathe';
+ import { defineNuxtModule, createResolver, addPlugin, addTemplate } from '@nuxt/kit';
+ import { g as getTypeDecorations, a as getNuxtCompilerOptions } from './shared/nuxt-content-twoslash.73ecc6f5.mjs';
+-import 'node:fs';
+ import 'node:fs/promises';
+ import 'fast-glob';
+-import 'pathe';
+ import 'typescript';
+ 
+ const module = defineNuxtModule({
+@@ -21,13 +21,38 @@ const module = defineNuxtModule({
+     addPlugin(resolver.resolve("./runtime/plugin"));
+     const types = {};
+     let compilerOptions = {};
++
++    // Write twoslash-meta.mjs immediately with initial values
++    // Content v3's jiti needs this file to exist when it imports mdc config
++    const twoslashMetaPath = join(nuxt.options.buildDir, 'twoslash-meta.mjs');
++    const writeTwoslashMeta = () => {
++      const content = [
++        `export const rootDir = ${JSON.stringify(nuxt.options.rootDir)};`,
++        `export const moduleOptions = ${JSON.stringify(options, null, 2)}`,
++        `/** @type { Record<string, string> } */`,
++        `export const typeDecorations = ${JSON.stringify(types, null, 2)}`,
++        `/** @type { Record<string, string> } */`,
++        `export const compilerOptions = ${JSON.stringify(compilerOptions, null, 2)}`
++      ].join('\n');
++      if (!existsSync(dirname(twoslashMetaPath)))
++        mkdirSync(dirname(twoslashMetaPath), { recursive: true });
++      writeFileSync(twoslashMetaPath, content);
++    };
++
++    // Write initial version immediately
++    writeTwoslashMeta();
++
++    // Also register as template for Nuxt's type generation
+     const path = addTemplate({
+       filename: "twoslash-meta.mjs",
+       write: true,
+       getContents: () => {
+         return [
++          `export const rootDir = ${JSON.stringify(nuxt.options.rootDir)};`,
+           `export const moduleOptions = ${JSON.stringify(options, null, 2)}`,
++          `/** @type { Record<string, string> } */`,
+           `export const typeDecorations = ${JSON.stringify(types, null, 2)}`,
++          `/** @type { Record<string, string> } */`,
+           `export const compilerOptions = ${JSON.stringify(compilerOptions, null, 2)}`
+         ].join("\n");
+       }
+@@ -36,11 +61,70 @@ const module = defineNuxtModule({
+     nuxt.options.alias["#twoslash-meta"] = path.dst;
+     nuxt.options.nitro.alias ||= {};
+     nuxt.options.nitro.alias["#twoslash-meta"] = path.dst;
++
+     let isHookCalled = false;
++
++    // Generate mdc config for Content v3 compatibility
++    // Content v3 runs parsing in Node.js where import.meta.server is undefined
++    // and #aliases don't resolve through native ESM imports
++    // We write this file immediately so it exists when mdc:configSources hook fires
++    const mdcConfigContent = `
++import { defineConfig } from '@nuxtjs/mdc/config'
++
++export default defineConfig({
++  shiki: {
++    async setup(shiki) {
++      await shiki.loadLanguage(
++        import('shiki/langs/javascript.mjs'),
++        import('shiki/langs/typescript.mjs'),
++        import('shiki/langs/vue.mjs'),
++      )
++    },
++    transformers: async (_code, _lang, _theme, options) => {
++      if (typeof options.meta !== 'string' || !options.meta?.match(/\\btwoslash\\b/))
++        return []
++
++      // Use typeof window instead of import.meta.server (works in Node.js)
++      const isServer = typeof globalThis.window === 'undefined'
++      if (!isServer) {
++        const { removeTwoslashNotations } = await import('twoslash/fallback')
++        return [{ name: 'twoslash:fallback', preprocess(code) { return removeTwoslashNotations(code) } }]
++      }
++
++      try {
++        // Use relative import (both files in .nuxt/)
++        const { rootDir, typeDecorations, moduleOptions, compilerOptions } = await import('./twoslash-meta.mjs')
++
++        // Use process.env instead of import.meta.dev
++        const isDev = process.env.NODE_ENV === 'development'
++        if (isDev && !moduleOptions.enableInDev) {
++          const { removeTwoslashNotations } = await import('twoslash/fallback')
++          return [{ name: 'twoslash:fallback', preprocess(code) { return removeTwoslashNotations(code) } }]
++        }
++
++        const { createTransformer } = await import('nuxt-content-twoslash/runtime/transformer')
++        return [await createTransformer(rootDir, moduleOptions, typeDecorations, compilerOptions)]
++      } catch (e) {
++        console.warn('[nuxt-content-twoslash] Failed:', e.message)
++        const { removeTwoslashNotations } = await import('twoslash/fallback')
++        return [{ name: 'twoslash:fallback', preprocess(code) { return removeTwoslashNotations(code) } }]
++      }
++    },
++  },
++})
++`;
++    const mdcConfigPath = join(nuxt.options.buildDir, 'twoslash-mdc.config.mjs');
++
++    // Write the file immediately so it exists when mdc:configSources is called
++    if (!existsSync(dirname(mdcConfigPath)))
++      mkdirSync(dirname(mdcConfigPath), { recursive: true });
++    writeFileSync(mdcConfigPath, mdcConfigContent);
++
+     nuxt.hook("mdc:configSources", async (sources) => {
+-      sources.push(resolver.resolve("./runtime/mdc.config"));
++      sources.push(mdcConfigPath);
+       isHookCalled = true;
+     });
++
+     if (options.includeNuxtTypes) {
+       nuxt.hook("app:templatesGenerated", async () => {
+         await Promise.all([
+@@ -51,9 +135,10 @@ const module = defineNuxtModule({
+         ]);
+       });
+     }
++
+     nuxt.hook("app:resolve", () => {
+-      if (!isHookCalled)
+-        console.error("[nuxt-content-twoslash] TwoSlash doesn't get initialized properly, you may need to put this module before `@nuxt/content`.");
++      if (!isHookCalled && !nuxt.options._prepare)
++        console.error("[nuxt-content-twoslash] TwoSlash didn't get initialized properly. You may need to put this module before `@nuxt/content`.");
+     });
+   }
+ });

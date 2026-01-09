@@ -1,0 +1,2 @@
+patchedDependencies:
+  nuxt-content-twoslash: patches/nuxt-content-twoslash.patch

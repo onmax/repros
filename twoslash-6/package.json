@@ -1,0 +1,15 @@
+{
+  "name": "twoslash-6",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build"
+  },
+  "dependencies": {
+    "@nuxt/content": "^3.3.0",
+    "better-sqlite3": "^12.5.0",
+    "nuxt": "^3.20.2",
+    "nuxt-content-twoslash": "^0.1.2"
+  }
+}
