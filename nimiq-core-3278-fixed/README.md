@@ -2,11 +2,9 @@
 
 Issue: https://github.com/nimiq/core-rs-albatross/pull/3278
 
-## Problem
-@nimiq/core@2.2.0 Node.js build uses incorrect comlink import
+## Fix Applied
 
-## Fix
-Changed 3 files via pnpm patch:
+Used pnpm patch to fix 3 files in @nimiq/core@2.2.0:
 - nodejs/crypto.mjs
 - nodejs/index.mjs
 - nodejs/worker.mjs
@@ -16,20 +14,26 @@ Changed 3 files via pnpm patch:
 +import * as Comlink from 'comlink'
 ```
 
-## Verify
+## Verify Fix
 
-### 1. Check patch applied
 ```bash
 pnpm i
-grep "import.*Comlink.*from" node_modules/@nimiq/core/nodejs/*.mjs
+grep "import \* as Comlink from" node_modules/@nimiq/core/nodejs/*.mjs
 ```
-Expected: 3 files with `import * as Comlink from 'comlink'`
 
-### 2. Run dev server
+Expected output:
+```
+node_modules/@nimiq/core/nodejs/crypto.mjs:import * as Comlink from 'comlink';
+node_modules/@nimiq/core/nodejs/index.mjs:import * as Comlink from 'comlink';
+node_modules/@nimiq/core/nodejs/worker.mjs:import * as Comlink from 'comlink';
+```
+
+## Patch File
+
+See `patches/@nimiq__core.patch` for the exact changes.
+
+## Demo
+
 ```bash
 pnpm dev
 ```
-Works correctly with the patch applied.
-
-## Patch
-See `patches/@nimiq__core.patch` for the fix applied to @nimiq/core@2.2.0

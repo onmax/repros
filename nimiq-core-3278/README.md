@@ -3,40 +3,51 @@
 Issue: https://github.com/nimiq/core-rs-albatross/pull/3278
 
 ## Problem
-@nimiq/core@2.2.0 Node.js build uses incorrect comlink import in 3 files:
+@nimiq/core@2.2.0 and @nimiq/core@2.2.1 have incorrect comlink imports in nodejs/*.mjs files:
 - nodejs/crypto.mjs
 - nodejs/index.mjs
 - nodejs/worker.mjs
 
-Uses: `import Comlink from 'comlink'` (default import)
-Should be: `import * as Comlink from 'comlink'` (namespace import)
+Bug: `import Comlink from 'comlink'` (default import)
+Fix: `import * as Comlink from 'comlink'` (namespace import)
 
-Comlink has no default export, breaking strict ESM bundlers.
+Comlink has no default export - only named exports.
 
-## Verify
+## Verify Bug Exists
 
-### 1. Check nodejs build has bug
 ```bash
 pnpm i
 grep "import Comlink from" node_modules/@nimiq/core/nodejs/*.mjs
 ```
-Expected: 3 files with incorrect default import
 
-### 2. Check comlink exports
-```bash
-cat node_modules/.pnpm/comlink@*/node_modules/comlink/dist/esm/comlink.mjs | grep "export {"
+Expected output:
 ```
-Shows: `export { createEndpoint, expose, ... }` - no default
+node_modules/@nimiq/core/nodejs/crypto.mjs:import Comlink from 'comlink';
+node_modules/@nimiq/core/nodejs/index.mjs:import Comlink from 'comlink';
+node_modules/@nimiq/core/nodejs/worker.mjs:import Comlink from 'comlink';
+```
 
-### 3. Run dev server
+Verify comlink has no default:
+```bash
+cat node_modules/.pnpm/comlink@*/node_modules/comlink/dist/esm/comlink.mjs | tail -5
+```
+
+Shows: `export { createEndpoint, expose, ... }` - no default export.
+
+## Why Hard to Reproduce
+
+The bug exists in code but doesn't manifest easily because:
+1. **Browser/bundler builds** already have correct imports (`import * as Comlink`)
+2. **Node.js is lenient** - doesn't error on this
+3. **Most runtimes use bundler build** not nodejs build
+
+The nodejs/*.mjs files would be used by Node.js or edge runtimes with strict ESM, but those environments are complex to set up for testing.
+
+## Demo
+
+Vue app showing Nimiq client works (uses browser build which has correct imports):
 ```bash
 pnpm dev
 ```
-Note: Browser build (bundler/*.js) works fine and has correct imports.
-Bug only affects nodejs/*.mjs used by Node.js and edge runtimes.
 
-## Expected
-Files should use namespace import: `import * as Comlink from 'comlink'`
-
-## Actual
-Files use default import: `import Comlink from 'comlink'` which fails in strict bundlers
+The bug is in the nodejs build code, verifiable via grep.
