@@ -62,73 +62,58 @@
 <body>
     <h1>❌ Comlink Import Bug</h1>
 
-    <p>Tests @nimiq/core Node.js build in Vercel Edge Runtime</p>
+    <p>Import @nimiq/core via esm.sh CDN</p>
 
     <div class="instructions">
         <p><strong>📋 Instructions:</strong></p>
         <ol style="margin: 10px 0; padding-left: 20px;">
             <li>Open browser DevTools console (F12)</li>
             <li>Click the button below</li>
-            <li>Vercel Edge Function will import @nimiq/core</li>
-            <li>Watch console for errors from nodejs/*.mjs files</li>
+            <li>Watch for import errors in console</li>
         </ol>
     </div>
 
-    <button id="connectBtn" onclick="testImport()">Test Import in Edge Runtime</button>
+    <button id="connectBtn" onclick="testImport()">Import @nimiq/core</button>
 
     <p style="color: #888; font-size: 14px;">
         Bug: <code>import Comlink from 'comlink'</code> in nodejs/*.mjs<br>
         Issue: <a href="https://github.com/nimiq/core-rs-albatross/pull/3278" style="color: #ff6b6b;">PR #3278</a>
     </p>
 
-    <script>
+    <script type="module">
         console.log('%c🔴 Bug Reproduction: nimiq-core-3278', 'font-size: 16px; font-weight: bold; color: #ff6b6b;');
-        console.log('This tests the Node.js build in Vercel Edge Runtime');
-        console.log('Waiting for button click...\n');
+        console.log('Testing @nimiq/core import via esm.sh CDN');
+        console.log('Open DevTools and click the button...\n');
 
-        async function testImport() {
+        window.testImport = async function() {
             const btn = document.getElementById('connectBtn');
             btn.disabled = true;
-            btn.textContent = 'Testing...';
+            btn.textContent = 'Importing...';
 
             console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'color: #666;');
-            console.log('%c🚀 Testing @nimiq/core import in Edge Runtime', 'font-weight: bold; color: #4ecdc4;');
+            console.log('%c🚀 Importing @nimiq/core from esm.sh', 'font-weight: bold; color: #4ecdc4;');
             console.log('%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n', 'color: #666;');
 
             try {
-                console.log('📡 Calling Edge Function /api/test...');
-                const response = await fetch('/api/test');
-                const data = await response.json();
+                console.log('📦 Importing: https://esm.sh/@nimiq/core@2.2.1');
+                const nimiq = await import('https://esm.sh/@nimiq/core@2.2.1');
 
-                console.log('Response:', data);
-
-                if (data.success) {
-                    console.log('%c✅ IMPORT SUCCESSFUL', 'font-size: 14px; font-weight: bold; color: #51cf66; background: #1a3a1a; padding: 5px 10px;');
-                    console.log(data.message);
-                    btn.textContent = '✅ Success';
-                    btn.style.background = '#51cf66';
-                } else {
-                    console.log('%c❌ IMPORT FAILED', 'font-size: 14px; font-weight: bold; color: #ff6b6b; background: #3a1a1a; padding: 5px 10px;');
-                    console.log('Error:', data.error);
-                    if (data.stack) {
-                        console.log('Stack:', data.stack);
-                    }
-
-                    if (data.error && (data.error.includes('wbindgen') || data.error.includes('WASM'))) {
-                        console.log('\n%c⚠️  WASM initialization error', 'font-weight: bold; color: #ffa94d; background: #3a2a1a; padding: 5px 10px;');
-                        console.log('This is expected - Edge Runtime has WASM limitations');
-                        console.log('The important part: Did the import succeed?');
-                    }
-
-                    btn.textContent = '❌ Failed';
-                    btn.disabled = false;
-                }
+                console.log('%c✅ IMPORT SUCCESSFUL', 'font-size: 14px; font-weight: bold; color: #51cf66; background: #1a3a1a; padding: 5px 10px;');
+                console.log('Module:', nimiq);
+                btn.textContent = '✅ Success';
+                btn.style.background = '#51cf66';
 
             } catch (error) {
-                console.log('%c❌ FETCH FAILED', 'font-size: 14px; font-weight: bold; color: #ff6b6b; background: #3a1a1a; padding: 5px 10px;');
+                console.log('%c❌ IMPORT FAILED', 'font-size: 14px; font-weight: bold; color: #ff6b6b; background: #3a1a1a; padding: 5px 10px;');
                 console.error('Error:', error.message);
                 console.error('Full error:', error);
-                btn.textContent = '❌ Failed';
+
+                if (error.message.includes('default') || error.message.includes('comlink')) {
+                    console.log('\n%c⚠️  COMLINK IMPORT BUG DETECTED', 'font-weight: bold; color: #ffa94d; background: #3a2a1a; padding: 5px 10px;');
+                    console.log('This is the bug! nodejs/*.mjs files use incorrect default import');
+                }
+
+                btn.textContent = '❌ Failed - Check Console';
                 btn.disabled = false;
             }
 
