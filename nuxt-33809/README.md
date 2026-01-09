@@ -1,29 +1,15 @@
 # Bug Reproduction: #33809
 
-**Issue:** Client component with nuxt-client duplicated when navigating back to server page
+## Bug: Client component duplication on navigation back
 
-## Problem
+### Test 1: Single component (#33809)
+1. `pnpm dev` → http://localhost:3000
+2. Click Like button - works
+3. Navigate to About → Home
+4. **BUG:** TWO Like buttons appear
 
-When using a server page (`*.server.vue`) with `experimental.componentIslands.selectiveClient: "deep"` and a client component via `nuxt-client` directive:
-
-1. Visit the home page (/) - LikeButton works
-2. Navigate to About (/about)
-3. Navigate back to Home
-4. **Bug:** TWO LikeButton components appear - one interactive, one not
-
-## Steps to Reproduce
-
-```bash
-pnpm install
-pnpm dev
-```
-
-1. Open http://localhost:3000
-2. Click "Like" button - works
-3. Click "About" link
-4. Click "Home" link
-5. **See two Like buttons**
-
-## Expected
-
-Only ONE Like button should appear after navigation.
+### Test 2: Multiple components (#30767 regression)
+1. Navigate to Multi page
+2. Click + on each counter - should work independently
+3. Navigate to About → Multi
+4. Check: counters in correct boxes? No duplicates?

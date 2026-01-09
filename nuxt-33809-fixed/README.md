@@ -1,26 +1,18 @@
 # Bug Fix Verification: #33809
 
-This reproduction includes a pnpm patch that fixes the client component duplication issue.
+Includes pnpm patch that fixes client component duplication.
+
+## Test 1: Single component (#33809 fix)
+1. `pnpm dev` → http://localhost:3000
+2. Click Like button - works
+3. Navigate to About → Home
+4. **FIXED:** Only ONE Like button ✓
+
+## Test 2: Multiple components (#30767 regression check)
+1. Navigate to Multi page
+2. Click + on each counter - should work independently  
+3. Navigate to About → Multi
+4. **Verify:** Each counter in correct box, no duplicates, all interactive ✓
 
 ## The Fix
-
-The issue was in `nuxt-island.ts` where during hydration, the SSR HTML (which contains teleported client component content) was cached to `payload.data[key].html`. On client-side navigation, this cached HTML was used instead of fetching fresh HTML, causing duplication because:
-
-1. Cached HTML had client component content inside
-2. Teleports ALSO added the same client component
-3. Result: TWO components
-
-The fix removes the unnecessary caching of SSR HTML during hydration, since the clean HTML from `setPayload()` during SSR is already available.
-
-## Steps to Verify Fix
-
-```bash
-pnpm install
-pnpm dev
-```
-
-1. Open http://localhost:3000
-2. Click "Like" button - works
-3. Click "About" link
-4. Click "Home" link
-5. **Only ONE Like button appears** ✓
+Removes DOM HTML caching during hydration. SSR already caches clean HTML via setPayload().
