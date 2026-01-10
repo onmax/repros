@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   '@nuxthub/core':
-    hash: 9d07acc7f4bde41c425b5b36f8e22b40c39732f5e0cc0448bea9997e2e2c7891
+    hash: 30f0a56d3289b9a17fca22e8a0cfaf54e7cc7052cad71d3fe35264b9e0f434ad
     path: patches/@nuxthub__core.patch
 
 importers:
@@ -25,7 +25,7 @@ importers:
         version: 0.15.15
       '@nuxthub/core':
         specifier: ^0.10.4
-        version: 0.10.4(patch_hash=9d07acc7f4bde41c425b5b36f8e22b40c39732f5e0cc0448bea9997e2e2c7891)(db0@0.3.4(@libsql/client@0.15.15)(drizzle-orm@0.44.7(@cloudflare/workers-types@4.20260109.0)(@libsql/client@0.15.15)))(ioredis@5.9.1)(magicast@0.5.1)(typescript@5.9.3)
+        version: 0.10.4(patch_hash=30f0a56d3289b9a17fca22e8a0cfaf54e7cc7052cad71d3fe35264b9e0f434ad)(db0@0.3.4(@libsql/client@0.15.15)(drizzle-orm@0.44.7(@cloudflare/workers-types@4.20260109.0)(@libsql/client@0.15.15)))(ioredis@5.9.1)(magicast@0.5.1)(typescript@5.9.3)
       drizzle-kit:
         specifier: ^0.31.0
         version: 0.31.8
@@ -4932,7 +4932,7 @@ snapshots:
       - vue-tsc
       - yaml
 
-  '@nuxthub/core@0.10.4(patch_hash=9d07acc7f4bde41c425b5b36f8e22b40c39732f5e0cc0448bea9997e2e2c7891)(db0@0.3.4(@libsql/client@0.15.15)(drizzle-orm@0.44.7(@cloudflare/workers-types@4.20260109.0)(@libsql/client@0.15.15)))(ioredis@5.9.1)(magicast@0.5.1)(typescript@5.9.3)':
+  '@nuxthub/core@0.10.4(patch_hash=30f0a56d3289b9a17fca22e8a0cfaf54e7cc7052cad71d3fe35264b9e0f434ad)(db0@0.3.4(@libsql/client@0.15.15)(drizzle-orm@0.44.7(@cloudflare/workers-types@4.20260109.0)(@libsql/client@0.15.15)))(ioredis@5.9.1)(magicast@0.5.1)(typescript@5.9.3)':
     dependencies:
       '@cloudflare/workers-types': 4.20260109.0
       '@nuxt/kit': 4.2.2(magicast@0.5.1)

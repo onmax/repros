@@ -1,13 +1,19 @@
 diff --git a/dist/module.mjs b/dist/module.mjs
-index cb0df587e07404f133284b5f8d94c2a9ac46e000..d9ef89ae421a186db47aac91a6b0af7b1322e282 100644
+index cb0df587e07404f133284b5f8d94c2a9ac46e000..09401dce69b90e4f6d1c8d7083e0c66f70368e49 100644
 --- a/dist/module.mjs
 +++ b/dist/module.mjs
-@@ -201,6 +201,8 @@ async function resolveDatabaseConfig(nuxt, hub) {
+@@ -200,7 +200,13 @@ async function resolveDatabaseConfig(nuxt, hub) {
+         break;
        }
        if (hub.hosting.includes("cloudflare")) {
-         config.driver = "d1";
-+        config.connection = defu(config.connection, { url: `file:${join(hub.dir, "db/sqlite.db")}` });
-+        await mkdir(join(hub.dir, "db"), { recursive: true });
+-        config.driver = "d1";
++        if (nuxt.options.dev) {
++          config.driver = "libsql";
++          config.connection = defu(config.connection, { url: `file:${join(hub.dir, "db/sqlite.db")}` });
++          await mkdir(join(hub.dir, "db"), { recursive: true });
++        } else {
++          config.driver = "d1";
++        }
          break;
        }
        config.driver ||= "libsql";
