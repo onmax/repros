@@ -16,10 +16,5 @@
     "drizzle-kit": "^0.31.0",
     "drizzle-orm": "^0.44.2",
     "typescript": "^5.9.3"
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "@nuxthub/core@0.10.4": "patches/@nuxthub__core@0.10.4.patch"
-    }
   }
 }

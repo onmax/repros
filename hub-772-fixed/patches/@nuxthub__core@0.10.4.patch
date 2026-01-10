@@ -1,18 +1,19 @@
 diff --git a/dist/db/runtime/api/studio.get.dev.d.ts b/dist/db/runtime/api/studio.get.dev.d.ts
 new file mode 100644
-index 0000000000000000000000000000000000000000..5298df7f0f673c97fe02c77b016ac9998ade2291
+index 0000000000000000000000000000000000000000..b4e45f92542b4b0588bdd732c09d7bb4b624d229
 --- /dev/null
 +++ b/dist/db/runtime/api/studio.get.dev.d.ts
 @@ -0,0 +1,2 @@
-+declare const _default: any;
++declare const _default: import("h3").EventHandler<import("h3").EventHandlerRequest, Promise<any>>;
 +export default _default;
 diff --git a/dist/db/runtime/api/studio.get.dev.mjs b/dist/db/runtime/api/studio.get.dev.mjs
 new file mode 100644
-index 0000000000000000000000000000000000000000..b9ba4ddbc7d37ad964573090cecada2045f4fcae
+index 0000000000000000000000000000000000000000..3d71152845ff621baeff91ea97015d346cfec811
 --- /dev/null
 +++ b/dist/db/runtime/api/studio.get.dev.mjs
-@@ -0,0 +1,47 @@
-+export default defineEventHandler(async (event) => {
+@@ -0,0 +1,48 @@
++import { eventHandler, getQuery, setHeader, createError } from "h3";
++export default eventHandler(async (event) => {
 +  const query = getQuery(event);
 +  const port = parseInt(String(query.port)) || 4983;
 +  if (port < 1 || port > 65535) {

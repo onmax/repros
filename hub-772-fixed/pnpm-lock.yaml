@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   '@nuxthub/core@0.10.4':
-    hash: a8ba1c13ac060b3333c1cc9ebf196a28b686bb2ffd3d20b046471ccc757ae3e2
+    hash: 61f6d3dfa8437443872480d8739a590cde61647ad07313a5556f3131fa1da9b0
     path: patches/@nuxthub__core@0.10.4.patch
 
 importers:
@@ -15,7 +15,7 @@ importers:
     dependencies:
       '@nuxthub/core':
         specifier: 0.10.4
-        version: 0.10.4(patch_hash=a8ba1c13ac060b3333c1cc9ebf196a28b686bb2ffd3d20b046471ccc757ae3e2)(db0@0.3.4(@libsql/client@0.15.15)(drizzle-orm@0.44.7(@cloudflare/workers-types@4.20260109.0)(@libsql/client@0.15.15)))(ioredis@5.9.1)(magicast@0.5.1)(typescript@5.9.3)
+        version: 0.10.4(patch_hash=61f6d3dfa8437443872480d8739a590cde61647ad07313a5556f3131fa1da9b0)(db0@0.3.4(@libsql/client@0.15.15)(drizzle-orm@0.44.7(@cloudflare/workers-types@4.20260109.0)(@libsql/client@0.15.15)))(ioredis@5.9.1)(magicast@0.5.1)(typescript@5.9.3)
       nuxt:
         specifier: ^3.17.0
         version: 3.20.2(@libsql/client@0.15.15)(@parcel/watcher@2.5.1)(@types/node@25.0.6)(@vue/compiler-sfc@3.5.26)(cac@6.7.14)(db0@0.3.4(@libsql/client@0.15.15)(drizzle-orm@0.44.7(@cloudflare/workers-types@4.20260109.0)(@libsql/client@0.15.15)))(drizzle-orm@0.44.7(@cloudflare/workers-types@4.20260109.0)(@libsql/client@0.15.15))(ioredis@5.9.1)(magicast@0.5.1)(rolldown@1.0.0-beta.57)(rollup@4.55.1)(terser@5.44.1)(typescript@5.9.3)(vite@7.3.1(@types/node@25.0.6)(jiti@2.6.1)(terser@5.44.1)(yaml@2.8.2))(yaml@2.8.2)
@@ -4932,7 +4932,7 @@ snapshots:
       - vue-tsc
       - yaml
 
-  '@nuxthub/core@0.10.4(patch_hash=a8ba1c13ac060b3333c1cc9ebf196a28b686bb2ffd3d20b046471ccc757ae3e2)(db0@0.3.4(@libsql/client@0.15.15)(drizzle-orm@0.44.7(@cloudflare/workers-types@4.20260109.0)(@libsql/client@0.15.15)))(ioredis@5.9.1)(magicast@0.5.1)(typescript@5.9.3)':
+  '@nuxthub/core@0.10.4(patch_hash=61f6d3dfa8437443872480d8739a590cde61647ad07313a5556f3131fa1da9b0)(db0@0.3.4(@libsql/client@0.15.15)(drizzle-orm@0.44.7(@cloudflare/workers-types@4.20260109.0)(@libsql/client@0.15.15)))(ioredis@5.9.1)(magicast@0.5.1)(typescript@5.9.3)':
     dependencies:
       '@cloudflare/workers-types': 4.20260109.0
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
