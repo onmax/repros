@@ -1,0 +1,8 @@
+{
+  "name": "nuxt-ui-5847",
+  "type": "module",
+  "private": true,
+  "scripts": {"dev": "nuxt dev", "build": "nuxt build", "typecheck": "nuxt typecheck"},
+  "dependencies": {"@nuxt/ui": "^4.2.0", "nuxt": "^4.2.2", "vue": "latest"},
+  "devDependencies": {"typescript": "^5.7.2", "vue-tsc": "^2.2.0"}
+}
