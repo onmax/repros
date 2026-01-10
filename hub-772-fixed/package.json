@@ -12,14 +12,9 @@
   },
   "devDependencies": {
     "@libsql/client": "^0.15.2",
-    "@nuxthub/core": "^0.10.4",
+    "@nuxthub/core": "link:/home/maxi/nuxt/hub",
     "drizzle-kit": "^0.31.0",
     "drizzle-orm": "^0.44.2",
     "typescript": "^5.9.3"
-  },
-  "pnpm": {
-    "patchedDependencies": {
-      "@nuxthub/core": "patches/@nuxthub__core.patch"
-    }
   }
 }
