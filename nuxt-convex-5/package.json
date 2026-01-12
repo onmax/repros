@@ -1,0 +1,15 @@
+{
+  "name": "nuxt-convex-5",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build"
+  },
+  "dependencies": {
+    "nuxt": "^4.2.2",
+    "nuxt-convex": "0.0.2",
+    "@convex-vue/core": "^0.0.4",
+    "convex": "^1.31.3"
+  }
+}
