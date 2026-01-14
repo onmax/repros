@@ -2,30 +2,14 @@
 
 Issue: https://github.com/nuxt/nuxt/issues/32154
 
-## Problem
-
-`v-once` with `useAsyncData` causes "Cannot read properties of null" error upon navigation.
-
 ## Fix
 
-Backport of [nuxt/nuxt#32096](https://github.com/nuxt/nuxt/commit/b0d777b60) (already in v4.x):
+Use optional chaining in slot content to handle undefined data during navigation:
 
-Wrap `clearNuxtDataByKey` in `nextTick()` to allow stale effects from `v-once` components to dispose before clearing data.
-
-```js
-// Before
-if (purgeCachedData && !hasCustomGetCachedData) {
-  clearNuxtDataByKey(nuxtApp, key);
-}
-
-// After
-if (purgeCachedData && !hasCustomGetCachedData) {
-  nextTick(() => {
-    if (!asyncData._init) {
-      clearNuxtDataByKey(nuxtApp, key);
-    }
-  });
-}
+```vue
+<DataDisplay v-once>
+  <div>{{ data?.foo }}</div>
+</DataDisplay>
 ```
 
 ## Verify
@@ -38,4 +22,10 @@ pnpm i && pnpm dev
 2. Click "Go to Cart"
 3. Click "Go to Home"
 4. Click "Go to Cart" again
-5. No error in console ✅
+5. No error in console
+
+## Root Cause
+
+`v-once` components don't properly unmount in Nuxt - they keep watching reactive deps after effect scope disposes. When data is cleared during navigation, stale watchers access undefined data.
+
+This is a Vue-level optimization issue with `v-once` + Nuxt's page transitions.
