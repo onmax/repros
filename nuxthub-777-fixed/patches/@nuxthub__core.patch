@@ -1,0 +1,13 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index cb0df587e07404f133284b5f8d94c2a9ac46e000..61f5ed1c7d90372e5ea97fc9c8953fa7f8faeb91 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -490,7 +490,7 @@ const db = drizzle(d1HttpDriver, { schema${casingOption} })
+ export { db, schema }
+ `;
+   }
+-  if (["postgres-js", "mysql2"].includes(driver) && hub.hosting.includes("cloudflare")) {
++  if (["postgres-js", "mysql2"].includes(driver) && hub.hosting.includes("cloudflare") && connection?.hyperdriveId) {
+     const bindingName = driver === "postgres-js" ? "POSTGRES" : "MYSQL";
+     drizzleOrmContent = `import { drizzle } from 'drizzle-orm/${driver}'
+ import * as schema from './db/schema.mjs'

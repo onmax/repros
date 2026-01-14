@@ -1,0 +1,1 @@
+{"name":"nuxthub-777","private":true,"type":"module","scripts":{"dev":"nuxt dev","build":"nuxt build"},"devDependencies":{"@nuxthub/core":"^0.10.4","drizzle-kit":"^0.30.0","drizzle-orm":"^0.38.0","nuxt":"^4.2.1","postgres":"^3.4.0","typescript":"^5.9.3"}}
