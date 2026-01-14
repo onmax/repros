@@ -5,9 +5,10 @@ const { data } = await useAsyncData('test', () => Promise.resolve({ foo: 'bar' }
 <template>
   <div>
     <h1>Home</h1>
-    <!-- Wrapping v-once data in component triggers the bug -->
-    <DataDisplay :data="data" />
-    <br>
+    <!-- v-once with slot content triggers the bug (not props) -->
+    <DataDisplay v-once>
+      <div>{{ data.foo }}</div>
+    </DataDisplay>
     <NuxtLink to="/cart" id="to-cart">Go to Cart</NuxtLink>
   </div>
 </template>

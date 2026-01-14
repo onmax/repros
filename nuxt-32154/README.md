@@ -6,7 +6,16 @@ Issue: https://github.com/nuxt/nuxt/issues/32154
 
 `v-once` with `useAsyncData` causes "Cannot read properties of null" error upon navigation.
 
-Reported as regression in Nuxt 3.17.0+ (works in 3.16.2).
+**Key finding**: Bug only reproduces when passing data via **slot**, not props. The `v-once` must be on the wrapper component.
+
+```vue
+<!-- This triggers the bug -->
+<DataDisplay v-once>
+  <div>{{ data.foo }}</div>
+</DataDisplay>
+```
+
+Root cause (from @Saeid-Za): Component marked with `v-once` never unmounts, keeps watching reactive deps even after effect scope disposes. Only happens in Nuxt (`<NuxtPage>` related), not raw vue + vue-router.
 
 ## Verify
 
@@ -22,8 +31,8 @@ pnpm i && pnpm dev
 
 ## Expected
 
+No error on navigation.
+
+## Actual
+
 Console error on step 4-5.
-
-## Status
-
-**Needs verification** - Unable to reproduce with Nuxt 3.20.2. Asking issue author to confirm if still reproducible.
