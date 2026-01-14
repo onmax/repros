@@ -1,0 +1,20 @@
+diff --git a/dist/app/composables/asyncData.js b/dist/app/composables/asyncData.js
+index 0864c6af59ae59d8e5a2bd2fef8a798d957fff88..c5ad19e307f79e60b41dbca70c374d3396740c2e 100644
+--- a/dist/app/composables/asyncData.js
++++ b/dist/app/composables/asyncData.js
+@@ -363,9 +363,12 @@ function createAsyncData(nuxtApp, key, _handler, options, initialCachedData) {
+       unsubRefreshAsyncData();
+       asyncData._init = false;
+       if (purgeCachedData && !hasCustomGetCachedData) {
+-        clearNuxtDataByKey(nuxtApp, key);
+-        asyncData.execute = () => Promise.resolve();
+-        asyncData.data.value = asyncDataDefaults.value;
++        nextTick(() => {
++          if (!asyncData._init) {
++            clearNuxtDataByKey(nuxtApp, key);
++            asyncData.execute = () => Promise.resolve();
++          }
++        });
+       }
+     }
+   };
