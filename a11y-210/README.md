@@ -10,7 +10,9 @@ Reported error with `entities` package:
 ```
 The requested module '.../entities/dist/esm/decode.js' does not provide an export named 'default'
 ```
-**Status**: Could not reproduce on macOS + Node 24 + pnpm 10.27
+**Status**: Could not reproduce on macOS ARM64
+- Node 20/22/24 + pnpm ✓
+- Node 24 + npm ✓
 
 ### 2. Double-nested output path (REPRODUCED)
 Report written to `.nuxt/.nuxt/a11y-report.md` instead of `.nuxt/a11y-report.md`

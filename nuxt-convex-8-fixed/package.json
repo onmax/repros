@@ -1,0 +1,7 @@
+{
+  "name": "nuxt-convex-8-fixed",
+  "private": true,
+  "type": "module",
+  "scripts": { "dev": "nuxi dev", "build": "nuxi build" },
+  "dependencies": { "nuxt": "^4.2.2", "nuxt-convex": "file:nuxt-convex-0.0.4-fixed.tgz", "@convex-vue/core": "^0.0.4", "convex": "^1.31.3" }
+}
