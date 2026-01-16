@@ -1,0 +1,12 @@
+diff --git a/dist/db/lib/build.mjs b/dist/db/lib/build.mjs
+index de92f655f6ea4d8b192760cd65f736de14ad8289..f879db3263e036057808b2e34ff317ba373a66cb 100644
+--- a/dist/db/lib/build.mjs
++++ b/dist/db/lib/build.mjs
+@@ -76,6 +76,7 @@ export async function buildDatabaseSchema(buildDir, { relativeDir } = {}) {
+     platform: "neutral",
+     format: "esm",
+     skipNodeModulesBundle: true,
++    tsconfig: false,
+     dts: {
+       build: false,
+       tsconfig: false,
