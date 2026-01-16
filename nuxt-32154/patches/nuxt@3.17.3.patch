@@ -1,0 +1,36 @@
+diff --git a/dist/app/composables/asyncData.js b/dist/app/composables/asyncData.js
+index 0864c6af59ae59d8e5a2bd2fef8a798d957fff88..a9ff13d0d43456ec6d2d45796a0a3af998f18720 100644
+--- a/dist/app/composables/asyncData.js
++++ b/dist/app/composables/asyncData.js
+@@ -1,4 +1,4 @@
+-import { computed, getCurrentInstance, getCurrentScope, inject, isShallow, onBeforeMount, onScopeDispose, onServerPrefetch, onUnmounted, ref, shallowRef, toRef, toValue, unref, watch } from "vue";
++import { computed, getCurrentInstance, getCurrentScope, inject, isShallow, nextTick, onBeforeMount, onScopeDispose, onServerPrefetch, onUnmounted, ref, shallowRef, toRef, toValue, unref, watch } from "vue";
+ import { captureStackTrace } from "errx";
+ import { debounce } from "perfect-debounce";
+ import { hash } from "ohash";
+@@ -61,7 +61,8 @@ ${warnings.map((w) => `- ${w}`).join("\n")}
+ You can use a different key or move the call to a composable to ensure the options are shared across calls.`);
+     }
+   }
+-  const initialCachedData = options.getCachedData(key.value, nuxtApp, { cause: "initial" });
++  const previousData = nuxtApp._asyncData[key.value]?.data.value;
++  const initialCachedData = previousData ?? options.getCachedData(key.value, nuxtApp, { cause: "initial" });
+   if (!nuxtApp._asyncData[key.value]?._init) {
+     nuxtApp._asyncData[key.value] = createAsyncData(nuxtApp, key.value, _handler, options, initialCachedData);
+   }
+@@ -363,9 +364,12 @@ function createAsyncData(nuxtApp, key, _handler, options, initialCachedData) {
+       unsubRefreshAsyncData();
+       asyncData._init = false;
+       if (purgeCachedData && !hasCustomGetCachedData) {
+-        clearNuxtDataByKey(nuxtApp, key);
+-        asyncData.execute = () => Promise.resolve();
+-        asyncData.data.value = asyncDataDefaults.value;
++        nextTick(() => {
++          if (!asyncData._init) {
++            clearNuxtDataByKey(nuxtApp, key);
++            asyncData.execute = () => Promise.resolve();
++          }
++        });
+       }
+     }
+   };

@@ -1,0 +1,26 @@
+diff --git a/dist/app/composables/asyncData.js b/dist/app/composables/asyncData.js
+index 0864c6af59ae59d8e5a2bd2fef8a798d957fff88..e3e204880e984f752e83c1e804b006907e08c95d 100644
+--- a/dist/app/composables/asyncData.js
++++ b/dist/app/composables/asyncData.js
+@@ -1,4 +1,5 @@
+-import { computed, getCurrentInstance, getCurrentScope, inject, isShallow, onBeforeMount, onScopeDispose, onServerPrefetch, onUnmounted, ref, shallowRef, toRef, toValue, unref, watch } from "vue";
++import { computed, getCurrentInstance, getCurrentScope, inject, isShallow, nextTick, onBeforeMount, onScopeDispose, onServerPrefetch, onUnmounted, ref, shallowRef, toRef, toValue, unref, watch } from "vue";
++import { pauseTracking, resetTracking } from "@vue/reactivity";
+ import { captureStackTrace } from "errx";
+ import { debounce } from "perfect-debounce";
+ import { hash } from "ohash";
+@@ -240,7 +241,13 @@ function clearNuxtDataByKey(nuxtApp, key) {
+     nuxtApp.payload._errors[key] = asyncDataDefaults.errorValue;
+   }
+   if (nuxtApp._asyncData[key]) {
+-    nuxtApp._asyncData[key].data.value = resetAsyncDataToUndefined ? void 0 : unref(nuxtApp._asyncData[key]._default());
++    // Pause tracking to prevent reactive triggers in unmounting components (#32154)
++    pauseTracking();
++    try {
++      nuxtApp._asyncData[key].data.value = resetAsyncDataToUndefined ? void 0 : unref(nuxtApp._asyncData[key]._default());
++    } finally {
++      resetTracking();
++    }
+     nuxtApp._asyncData[key].error.value = asyncDataDefaults.errorValue;
+     if (pendingWhenIdle) {
+       nuxtApp._asyncData[key].pending.value = false;

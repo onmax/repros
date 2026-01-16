@@ -4,13 +4,21 @@ Issue: https://github.com/nuxt/nuxt/issues/32154
 
 ## Fix
 
-Use optional chaining in slot content to handle undefined data during navigation:
+Uses `pauseTracking`/`resetTracking` from `@vue/reactivity` in `clearNuxtDataByKey` to prevent reactive triggers when clearing data during component unmount.
 
-```vue
-<DataDisplay v-once>
-  <div>{{ data?.foo }}</div>
-</DataDisplay>
+```typescript
+import { pauseTracking, resetTracking } from '@vue/reactivity'
+
+// In clearNuxtDataByKey:
+pauseTracking()
+try {
+  asyncData.data.value = unref(asyncData._default())
+} finally {
+  resetTracking()
+}
 ```
+
+This prevents the error because `v-once` components keep their effect scope active even after unmount - `pauseTracking` ensures no reactive triggers fire during cleanup.
 
 ## Verify
 
@@ -23,9 +31,3 @@ pnpm i && pnpm dev
 3. Click "Go to Home"
 4. Click "Go to Cart" again
 5. No error in console
-
-## Root Cause
-
-`v-once` components don't properly unmount in Nuxt - they keep watching reactive deps after effect scope disposes. When data is cleared during navigation, stale watchers access undefined data.
-
-This is a Vue-level optimization issue with `v-once` + Nuxt's page transitions.
