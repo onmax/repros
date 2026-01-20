@@ -1,5 +1,5 @@
 diff --git a/dist/module.mjs b/dist/module.mjs
-index cb0df587e07404f133284b5f8d94c2a9ac46e000..adb282b0f1c8e2a9dcd9ffb6040fb2afca598757 100644
+index cb0df587e07404f133284b5f8d94c2a9ac46e000..e0f9ff0505a5b4ec6a5a29d68d615078521d4007 100644
 --- a/dist/module.mjs
 +++ b/dist/module.mjs
 @@ -41,6 +41,9 @@ function resolveCacheConfig(hub) {
@@ -21,7 +21,29 @@ index cb0df587e07404f133284b5f8d94c2a9ac46e000..adb282b0f1c8e2a9dcd9ffb6040fb2af
    nuxt.options.nitro.cloudflare.deployConfig = true;
    nuxt.options.nitro.prerender ||= {};
    nuxt.options.nitro.prerender.autoSubfolderIndex ||= false;
-@@ -214,8 +217,8 @@ async function resolveDatabaseConfig(nuxt, hub) {
+@@ -170,6 +173,21 @@ async function processWranglerConfigFile(nuxt, targetEnv) {
+ }
+ 
+ const log$3 = logger.withTag("nuxt:hub");
++function generateLazyDbTemplate(imports, getDbBody) {
++  return `${imports}
++import * as schema from './db/schema.mjs'
++
++let _db
++function getDb() {
++  if (!_db) {
++${getDbBody}
++  }
++  return _db
++}
++const db = new Proxy({}, { get(_, prop) { return getDb()[prop] } })
++export { db, schema }
++`;
++}
+ async function resolveDatabaseConfig(nuxt, hub) {
+   if (!hub.db) return false;
+   let config = typeof hub.db === "string" ? { dialect: hub.db } : hub.db;
+@@ -214,8 +232,8 @@ async function resolveDatabaseConfig(nuxt, hub) {
          break;
        }
        config.connection = defu(config.connection, { url: process.env.POSTGRES_URL || process.env.POSTGRESQL_URL || process.env.DATABASE_URL || "" });
@@ -32,7 +54,7 @@ index cb0df587e07404f133284b5f8d94c2a9ac46e000..adb282b0f1c8e2a9dcd9ffb6040fb2af
        }
        if (config.connection.url) {
          config.driver ||= "postgres-js";
-@@ -233,8 +236,8 @@ async function resolveDatabaseConfig(nuxt, hub) {
+@@ -233,8 +251,8 @@ async function resolveDatabaseConfig(nuxt, hub) {
        }
        config.driver ||= "mysql2";
        config.connection = defu(config.connection, { uri: process.env.MYSQL_URL || process.env.DATABASE_URL || "" });
@@ -43,7 +65,7 @@ index cb0df587e07404f133284b5f8d94c2a9ac46e000..adb282b0f1c8e2a9dcd9ffb6040fb2af
        }
        break;
      }
-@@ -337,11 +340,9 @@ async function generateDatabaseSchema(nuxt, hub) {
+@@ -337,11 +355,9 @@ async function generateDatabaseSchema(nuxt, hub) {
      getContents: () => `${schemaPaths.map((path) => `export * from '${path}'`).join("\n")}`,
      write: true
    });
@@ -58,86 +80,103 @@ index cb0df587e07404f133284b5f8d94c2a9ac46e000..adb282b0f1c8e2a9dcd9ffb6040fb2af
    nuxt.options.alias ||= {};
    nuxt.options.alias["hub:db:schema"] = join(nuxt.options.buildDir, "hub/db/schema.mjs");
    addTypeTemplate({
-@@ -409,12 +410,22 @@ export { db, schema }
+@@ -409,31 +425,23 @@ export { db, schema }
  `;
    }
    if (driver === "neon-http") {
-+    const urlExpr = connection.url ? `'${connection.url}'` : `process.env.POSTGRES_URL || process.env.POSTGRESQL_URL || process.env.DATABASE_URL`;
-     drizzleOrmContent = `import { neon } from '@neondatabase/serverless'
- import { drizzle } from 'drizzle-orm/neon-http'
- import * as schema from './db/schema.mjs'
- 
+-    drizzleOrmContent = `import { neon } from '@neondatabase/serverless'
+-import { drizzle } from 'drizzle-orm/neon-http'
+-import * as schema from './db/schema.mjs'
+-
 -const sql = neon('${connection.url}')
 -const db = drizzle(sql, { schema${casingOption} })
-+let _db
-+function getDb() {
-+  if (!_db) {
-+    const url = ${urlExpr}
+-export { db, schema }
+-`;
++    const urlExpr = connection.url ? `'${connection.url}'` : `process.env.POSTGRES_URL || process.env.POSTGRESQL_URL || process.env.DATABASE_URL`;
++    drizzleOrmContent = generateLazyDbTemplate(
++      `import { neon } from '@neondatabase/serverless'
++import { drizzle } from 'drizzle-orm/neon-http'`,
++      `    const url = ${urlExpr}
 +    if (!url) throw new Error('DATABASE_URL, POSTGRES_URL, or POSTGRESQL_URL required')
 +    const sql = neon(url)
-+    _db = drizzle(sql, { schema${casingOption} })
-+  }
-+  return _db
-+}
-+const db = new Proxy({}, { get(_, prop) { return getDb()[prop] } })
- export { db, schema }
- `;
++    _db = drizzle(sql, { schema${casingOption} })`
++    );
    }
-@@ -490,7 +501,7 @@ const db = drizzle(d1HttpDriver, { schema${casingOption} })
+   if (driver === "d1") {
+-    drizzleOrmContent = `import { drizzle } from 'drizzle-orm/d1'
+-import * as schema from './db/schema.mjs'
+-
+-let _db
+-function getDb() {
+-  if (!_db) {
+-    const binding = process.env.DB || globalThis.__env__?.DB || globalThis.DB
++    drizzleOrmContent = generateLazyDbTemplate(
++      `import { drizzle } from 'drizzle-orm/d1'`,
++      `    const binding = process.env.DB || globalThis.__env__?.DB || globalThis.DB
+     if (!binding) throw new Error('DB binding not found')
+-    _db = drizzle(binding, { schema${casingOption} })
+-  }
+-  return _db
+-}
+-const db = new Proxy({}, { get(_, prop) { return getDb()[prop] } })
+-export { db, schema }
+-`;
++    _db = drizzle(binding, { schema${casingOption} })`
++    );
+   }
+   if (driver === "d1-http") {
+     drizzleOrmContent = `import { drizzle } from 'drizzle-orm/sqlite-proxy'
+@@ -490,23 +498,34 @@ const db = drizzle(d1HttpDriver, { schema${casingOption} })
  export { db, schema }
  `;
    }
 -  if (["postgres-js", "mysql2"].includes(driver) && hub.hosting.includes("cloudflare")) {
 +  if (["postgres-js", "mysql2"].includes(driver) && hub.hosting.includes("cloudflare") && connection?.hyperdriveId) {
      const bindingName = driver === "postgres-js" ? "POSTGRES" : "MYSQL";
-     drizzleOrmContent = `import { drizzle } from 'drizzle-orm/${driver}'
- import * as schema from './db/schema.mjs'
-@@ -506,6 +517,44 @@ function getDb() {
- }
- const db = new Proxy({}, { get(_, prop) { return getDb()[prop] } })
- export { db, schema }
-+`;
+-    drizzleOrmContent = `import { drizzle } from 'drizzle-orm/${driver}'
+-import * as schema from './db/schema.mjs'
+-
+-let _db
+-function getDb() {
+-  if (!_db) {
+-    const hyperdrive = process.env.${bindingName} || globalThis.__env__?.${bindingName} || globalThis.${bindingName}
++    drizzleOrmContent = generateLazyDbTemplate(
++      `import { drizzle } from 'drizzle-orm/${driver}'`,
++      `    const hyperdrive = process.env.${bindingName} || globalThis.__env__?.${bindingName} || globalThis.${bindingName}
+     if (!hyperdrive) throw new Error('${bindingName} binding not found')
+-    _db = drizzle({ connection: hyperdrive.connectionString, schema${modeOption}${casingOption} })
+-  }
+-  return _db
+-}
+-const db = new Proxy({}, { get(_, prop) { return getDb()[prop] } })
+-export { db, schema }
+-`;
++    _db = drizzle({ connection: hyperdrive.connectionString, schema${modeOption}${casingOption} })`
++    );
 +  }
 +  if (driver === "postgres-js" && !nuxt.options.dev && !hub.hosting.includes("cloudflare")) {
 +    const urlExpr = connection.url ? `'${connection.url}'` : `process.env.POSTGRES_URL || process.env.POSTGRESQL_URL || process.env.DATABASE_URL`;
-+    drizzleOrmContent = `import { drizzle } from 'drizzle-orm/postgres-js'
-+import postgres from 'postgres'
-+import * as schema from './db/schema.mjs'
-+
-+let _db
-+function getDb() {
-+  if (!_db) {
-+    const url = ${urlExpr}
++    drizzleOrmContent = generateLazyDbTemplate(
++      `import { drizzle } from 'drizzle-orm/postgres-js'
++import postgres from 'postgres'`,
++      `    const url = ${urlExpr}
 +    if (!url) throw new Error('DATABASE_URL, POSTGRES_URL, or POSTGRESQL_URL required')
 +    const client = postgres(url, { onnotice: () => {} })
-+    _db = drizzle({ client, schema${casingOption} })
-+  }
-+  return _db
-+}
-+const db = new Proxy({}, { get(_, prop) { return getDb()[prop] } })
-+export { db, schema }
-+`;
++    _db = drizzle({ client, schema${casingOption} })`
++    );
 +  }
 +  if (driver === "mysql2" && !hub.hosting.includes("cloudflare")) {
 +    const uriExpr = connection.uri ? `'${connection.uri}'` : `process.env.MYSQL_URL || process.env.DATABASE_URL`;
-+    drizzleOrmContent = `import { drizzle } from 'drizzle-orm/mysql2'
-+import * as schema from './db/schema.mjs'
-+
-+let _db
-+function getDb() {
-+  if (!_db) {
-+    const uri = ${uriExpr}
++    drizzleOrmContent = generateLazyDbTemplate(
++      `import { drizzle } from 'drizzle-orm/mysql2'`,
++      `    const uri = ${uriExpr}
 +    if (!uri) throw new Error('DATABASE_URL or MYSQL_URL required')
-+    _db = drizzle({ connection: { uri }, schema${modeOption}${casingOption} })
-+  }
-+  return _db
-+}
-+const db = new Proxy({}, { get(_, prop) { return getDb()[prop] } })
-+export { db, schema }
- `;
++    _db = drizzle({ connection: { uri }, schema${modeOption}${casingOption} })`
++    );
    }
    const databaseTemplate = addTemplate({
-@@ -537,6 +586,9 @@ export default defineConfig({
+     filename: "hub/db.mjs",
+@@ -537,6 +556,9 @@ export default defineConfig({
  function resolveKVConfig(hub) {
    if (!hub.kv) return false;
    if (typeof hub.kv === "object" && "driver" in hub.kv) {
@@ -147,7 +186,7 @@ index cb0df587e07404f133284b5f8d94c2a9ac46e000..adb282b0f1c8e2a9dcd9ffb6040fb2af
      return hub.kv;
    }
    if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
-@@ -712,7 +764,7 @@ async function launchDrizzleStudio(nuxt, hub) {
+@@ -712,7 +734,7 @@ async function launchDrizzleStudio(nuxt, hub) {
      if (dialect === "postgresql") {
        if (driver === "pglite") {
          log$1.info(`Launching Drizzle Studio with PGlite...`);
@@ -156,7 +195,7 @@ index cb0df587e07404f133284b5f8d94c2a9ac46e000..adb282b0f1c8e2a9dcd9ffb6040fb2af
          await fetch(`${nitroDevUrl}/api/_hub/db/launch-studio?port=${port}`, {
            method: "POST"
          });
-@@ -748,7 +800,8 @@ function addDevToolsCustomTabs(nuxt, hub) {
+@@ -748,7 +770,8 @@ function addDevToolsCustomTabs(nuxt, hub) {
        icon: "i-lucide-database",
        view: isReady && port ? {
          type: "iframe",

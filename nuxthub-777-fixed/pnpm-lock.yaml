@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   '@nuxthub/core':
-    hash: 155e6d2ac150c6ce25012a6be666cfa6db970e99e57e530022e55943d8d0af95
+    hash: d9d02d381e4864ef63358f17a4762f1c99e4f196ac6aec8723bbe466e45f675e
     path: patches/@nuxthub__core.patch
 
 importers:
@@ -15,7 +15,7 @@ importers:
     devDependencies:
       '@nuxthub/core':
         specifier: ^0.10.4
-        version: 0.10.4(patch_hash=155e6d2ac150c6ce25012a6be666cfa6db970e99e57e530022e55943d8d0af95)(db0@0.3.4(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20260114.0)(postgres@3.4.8)))(ioredis@5.9.1)(magicast@0.5.1)(typescript@5.9.3)
+        version: 0.10.4(patch_hash=d9d02d381e4864ef63358f17a4762f1c99e4f196ac6aec8723bbe466e45f675e)(db0@0.3.4(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20260114.0)(postgres@3.4.8)))(ioredis@5.9.1)(magicast@0.5.1)(typescript@5.9.3)
       drizzle-kit:
         specifier: ^0.30.0
         version: 0.30.6
@@ -4726,7 +4726,7 @@ snapshots:
       - vue-tsc
       - yaml
 
-  '@nuxthub/core@0.10.4(patch_hash=155e6d2ac150c6ce25012a6be666cfa6db970e99e57e530022e55943d8d0af95)(db0@0.3.4(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20260114.0)(postgres@3.4.8)))(ioredis@5.9.1)(magicast@0.5.1)(typescript@5.9.3)':
+  '@nuxthub/core@0.10.4(patch_hash=d9d02d381e4864ef63358f17a4762f1c99e4f196ac6aec8723bbe466e45f675e)(db0@0.3.4(drizzle-orm@0.38.4(@cloudflare/workers-types@4.20260114.0)(postgres@3.4.8)))(ioredis@5.9.1)(magicast@0.5.1)(typescript@5.9.3)':
     dependencies:
       '@cloudflare/workers-types': 4.20260114.0
       '@nuxt/kit': 4.2.2(magicast@0.5.1)
