@@ -4,30 +4,28 @@ Issue: https://github.com/nuxt-hub/core/issues/777
 
 ## Problem
 
-`DATABASE_URL` env var is ignored when building for Cloudflare. Generated code looks for `POSTGRES` Hyperdrive binding instead.
+Building without `DATABASE_URL` fails even when `applyMigrationsDuringBuild: false`. Docker multi-client scenario broken: can't build once, deploy many with different DATABASE_URLs.
 
 ## Verify
 
 ```bash
-pnpm i && NITRO_PRESET=cloudflare-pages pnpm build
+pnpm i && pnpm build
 cat .nuxt/hub/db.mjs
 ```
 
 ## Expected
 
-Generated `db.mjs` should use `DATABASE_URL` connection string directly.
+Build succeeds, `db.mjs` resolves URL from env at runtime.
 
 ## Actual (after fix)
 
-Generated `db.mjs` uses connection URL directly:
+Build succeeds. Generated `db.mjs`:
 ```js
-const db = drizzle({ connection: {"url":"postgresql://..."}, schema })
+const url = process.env.POSTGRES_URL || process.env.POSTGRESQL_URL || process.env.DATABASE_URL
+if (!url) throw new Error('DATABASE_URL, POSTGRES_URL, or POSTGRESQL_URL required')
 ```
 
 ## Fix
 
-Patch modifies condition at line 493 to only use Hyperdrive code when `hyperdriveId` is configured:
-```diff
-- if (["postgres-js", "mysql2"].includes(driver) && hub.hosting.includes("cloudflare")) {
-+ if (["postgres-js", "mysql2"].includes(driver) && hub.hosting.includes("cloudflare") && connection?.hyperdriveId) {
-```
+1. Only throw missing URL error when `applyMigrationsDuringBuild: true`
+2. Generate lazy Proxy template for non-CF postgres-js/neon-http/mysql2 that resolves env at runtime

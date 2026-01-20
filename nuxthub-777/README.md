@@ -4,23 +4,20 @@ Issue: https://github.com/nuxt-hub/core/issues/777
 
 ## Problem
 
-`DATABASE_URL` env var is ignored when building for Cloudflare. Generated code looks for `POSTGRES` Hyperdrive binding instead.
+Building without `DATABASE_URL` fails even when `applyMigrationsDuringBuild: false`. Docker multi-client scenario broken: can't build once, deploy many with different DATABASE_URLs.
 
 ## Verify
 
 ```bash
-pnpm i && NITRO_PRESET=cloudflare-pages pnpm build
-cat .nuxt/hub/db.mjs
+pnpm i && pnpm build
 ```
 
 ## Expected
 
-Generated `db.mjs` should use `DATABASE_URL` connection string directly.
+Build succeeds, `db.mjs` resolves URL from env at runtime.
 
 ## Actual
 
-Generated `db.mjs` contains:
-```js
-const hyperdrive = process.env.POSTGRES || globalThis.__env__?.POSTGRES || globalThis.POSTGRES
-if (!hyperdrive) throw new Error('POSTGRES binding not found')
+```
+ERROR postgres-js driver requires DATABASE_URL, POSTGRES_URL, or POSTGRESQL_URL environment variable
 ```
