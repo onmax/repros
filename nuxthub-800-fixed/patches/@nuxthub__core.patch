@@ -1,0 +1,43 @@
+diff --git a/dist/db/lib/build.mjs b/dist/db/lib/build.mjs
+index f879db3263e036057808b2e34ff317ba373a66cb..768477014333c3947fb4a15e2fb82329204948bc 100644
+--- a/dist/db/lib/build.mjs
++++ b/dist/db/lib/build.mjs
+@@ -58,7 +58,7 @@ export async function applyBuildTimeMigrations(nitro, hub) {
+     throw error;
+   }
+ }
+-export async function buildDatabaseSchema(buildDir, { relativeDir } = {}) {
++export async function buildDatabaseSchema(buildDir, { relativeDir, alias } = {}) {
+   relativeDir = relativeDir || buildDir;
+   const entry = join(buildDir, "hub/db/schema.entry.ts");
+   await build({
+@@ -71,6 +71,7 @@ export async function buildDatabaseSchema(buildDir, { relativeDir } = {}) {
+       dts: ".d.mts"
+     }),
+     alias: {
++      ...alias,
+       "hub:db:schema": entry
+     },
+     platform: "neutral",
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 134fd3c5a270edbe7974e64713e0f91b0c6a773b..26720a26c2caefe26ad05928594ceec5c60e7195 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -353,7 +353,7 @@ async function generateDatabaseSchema(nuxt, hub) {
+       log$3.info("Make sure to run `npx nuxt db generate` to generate the database migrations.");
+       schemaPaths = await getSchemaPaths();
+       await updateTemplates({ filter: (template) => template.filename.includes("hub/db/schema.entry.ts") });
+-      await buildDatabaseSchema(nuxt.options.buildDir, { relativeDir: nuxt.options.rootDir });
++      await buildDatabaseSchema(nuxt.options.buildDir, { relativeDir: nuxt.options.rootDir, alias: nuxt.options.alias });
+       const physicalDbDir = join(nuxt.options.rootDir, "node_modules", "@nuxthub", "db");
+       try {
+         await copyFile(join(nuxt.options.buildDir, "hub/db/schema.mjs"), join(physicalDbDir, "schema.mjs"));
+@@ -370,7 +370,7 @@ async function generateDatabaseSchema(nuxt, hub) {
+   });
+   if (!nuxt.options._prepare) {
+     nuxt.hooks.hookOnce("app:templatesGenerated", async () => {
+-      await buildDatabaseSchema(nuxt.options.buildDir, { relativeDir: nuxt.options.rootDir });
++      await buildDatabaseSchema(nuxt.options.buildDir, { relativeDir: nuxt.options.rootDir, alias: nuxt.options.alias });
+       const physicalDbDir = join(nuxt.options.rootDir, "node_modules", "@nuxthub", "db");
+       await mkdir(physicalDbDir, { recursive: true });
+       try {

@@ -1,0 +1,1 @@
+{"name":"nuxthub-800","private":true,"type":"module","scripts":{"build":"nuxt build","dev":"nuxt dev","prepare":"nuxt prepare"},"dependencies":{"@nuxthub/core":"^0.10.5","drizzle-orm":"^0.44.2","nuxt":"^3.16.2"},"devDependencies":{"@libsql/client":"^0.15.0","drizzle-kit":"^0.31.1","typescript":"^5.9.3"}}
