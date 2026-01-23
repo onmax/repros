@@ -1,0 +1,23 @@
+diff --git a/dist/head/runtime/components.js b/dist/head/runtime/components.js
+index f251e49ac83c2594389325b06142b5da0c8d6c8f..39bf280790e2ceb17f54831d7ce7c7b7a53cc4b6 100644
+--- a/dist/head/runtime/components.js
++++ b/dist/head/runtime/components.js
+@@ -165,12 +165,17 @@ export const Link = defineComponent({
+     const { input, update } = useHeadComponentCtx();
+     input.link ||= [];
+     const idx = input.link.push({}) - 1;
+-    const key = useVNodeStringKey();
++    const vnodeKey = useVNodeStringKey();
+     onUnmounted(() => {
+       input.link[idx] = null;
+       update();
+     });
+     return () => {
++      // Auto-generate key for rel="alternate" deduplication
++      let key = vnodeKey;
++      if (!key && props.rel === 'alternate') {
++        key = `link:alternate:${props.hreflang || 'default'}`;
++      }
+       input.link[idx] = normalizeProps(props, key);
+       update();
+       return null;
