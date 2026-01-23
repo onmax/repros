@@ -1,5 +1,5 @@
 diff --git a/dist/head/runtime/components.js b/dist/head/runtime/components.js
-index f251e49ac83c2594389325b06142b5da0c8d6c8f..39bf280790e2ceb17f54831d7ce7c7b7a53cc4b6 100644
+index f251e49ac83c2594389325b06142b5da0c8d6c8f..d0b50e404e299d60ba3914d98894f395f49c72fb 100644
 --- a/dist/head/runtime/components.js
 +++ b/dist/head/runtime/components.js
 @@ -165,12 +165,17 @@ export const Link = defineComponent({
@@ -16,7 +16,7 @@ index f251e49ac83c2594389325b06142b5da0c8d6c8f..39bf280790e2ceb17f54831d7ce7c7b7
 +      // Auto-generate key for rel="alternate" deduplication
 +      let key = vnodeKey;
 +      if (!key && props.rel === 'alternate') {
-+        key = `link:alternate:${props.hreflang || 'default'}`;
++        key = `alternate:${props.hreflang ?? 'x-default'}:${props.href ?? ''}`;
 +      }
        input.link[idx] = normalizeProps(props, key);
        update();

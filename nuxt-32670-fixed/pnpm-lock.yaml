@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   nuxt:
-    hash: 7d7eb2cd425573af77c403157f62f91c27ed40088f74c8f66f40ff4c216c4329
+    hash: 416860fbb8a0af35735196b2174aa1a3e2514f4f35ffab4ed10ca900ff595262
     path: patches/nuxt.patch
 
 importers:
@@ -15,7 +15,7 @@ importers:
     dependencies:
       nuxt:
         specifier: ^4.3.0
-        version: 4.3.0(patch_hash=7d7eb2cd425573af77c403157f62f91c27ed40088f74c8f66f40ff4c216c4329)(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.56.0)(terser@5.46.0)(vite@7.3.1(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2)
+        version: 4.3.0(patch_hash=416860fbb8a0af35735196b2174aa1a3e2514f4f35ffab4ed10ca900ff595262)(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.56.0)(terser@5.46.0)(vite@7.3.1(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2)
       vue:
         specifier: ^3.5.27
         version: 3.5.27
@@ -3763,7 +3763,7 @@ snapshots:
     transitivePeerDependencies:
       - magicast
 
-  '@nuxt/nitro-server@4.3.0(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(nuxt@4.3.0(patch_hash=7d7eb2cd425573af77c403157f62f91c27ed40088f74c8f66f40ff4c216c4329)(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.56.0)(terser@5.46.0)(vite@7.3.1(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2))':
+  '@nuxt/nitro-server@4.3.0(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(nuxt@4.3.0(patch_hash=416860fbb8a0af35735196b2174aa1a3e2514f4f35ffab4ed10ca900ff595262)(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.56.0)(terser@5.46.0)(vite@7.3.1(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2))':
     dependencies:
       '@nuxt/devalue': 2.0.2
       '@nuxt/kit': 4.3.0(magicast@0.5.1)
@@ -3781,7 +3781,7 @@ snapshots:
       klona: 2.0.6
       mocked-exports: 0.1.1
       nitropack: 2.13.1
-      nuxt: 4.3.0(patch_hash=7d7eb2cd425573af77c403157f62f91c27ed40088f74c8f66f40ff4c216c4329)(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.56.0)(terser@5.46.0)(vite@7.3.1(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2)
+      nuxt: 4.3.0(patch_hash=416860fbb8a0af35735196b2174aa1a3e2514f4f35ffab4ed10ca900ff595262)(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.56.0)(terser@5.46.0)(vite@7.3.1(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2)
       ohash: 2.0.11
       pathe: 2.0.3
       pkg-types: 2.3.0
@@ -3853,7 +3853,7 @@ snapshots:
     transitivePeerDependencies:
       - magicast
 
-  '@nuxt/vite-builder@4.3.0(magicast@0.5.1)(nuxt@4.3.0(patch_hash=7d7eb2cd425573af77c403157f62f91c27ed40088f74c8f66f40ff4c216c4329)(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.56.0)(terser@5.46.0)(vite@7.3.1(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2))(rollup@4.56.0)(terser@5.46.0)(vue@3.5.27)(yaml@2.8.2)':
+  '@nuxt/vite-builder@4.3.0(magicast@0.5.1)(nuxt@4.3.0(patch_hash=416860fbb8a0af35735196b2174aa1a3e2514f4f35ffab4ed10ca900ff595262)(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.56.0)(terser@5.46.0)(vite@7.3.1(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2))(rollup@4.56.0)(terser@5.46.0)(vue@3.5.27)(yaml@2.8.2)':
     dependencies:
       '@nuxt/kit': 4.3.0(magicast@0.5.1)
       '@rollup/plugin-replace': 6.0.3(rollup@4.56.0)
@@ -3872,7 +3872,7 @@ snapshots:
       magic-string: 0.30.21
       mlly: 1.8.0
       mocked-exports: 0.1.1
-      nuxt: 4.3.0(patch_hash=7d7eb2cd425573af77c403157f62f91c27ed40088f74c8f66f40ff4c216c4329)(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.56.0)(terser@5.46.0)(vite@7.3.1(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2)
+      nuxt: 4.3.0(patch_hash=416860fbb8a0af35735196b2174aa1a3e2514f4f35ffab4ed10ca900ff595262)(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.56.0)(terser@5.46.0)(vite@7.3.1(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2)
       pathe: 2.0.3
       pkg-types: 2.3.0
       postcss: 8.5.6
@@ -5550,16 +5550,16 @@ snapshots:
     dependencies:
       boolbase: 1.0.0
 
-  nuxt@4.3.0(patch_hash=7d7eb2cd425573af77c403157f62f91c27ed40088f74c8f66f40ff4c216c4329)(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.56.0)(terser@5.46.0)(vite@7.3.1(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2):
+  nuxt@4.3.0(patch_hash=416860fbb8a0af35735196b2174aa1a3e2514f4f35ffab4ed10ca900ff595262)(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.56.0)(terser@5.46.0)(vite@7.3.1(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2):
     dependencies:
       '@dxup/nuxt': 0.3.2(magicast@0.5.1)
       '@nuxt/cli': 3.32.0(cac@6.7.14)(magicast@0.5.1)
       '@nuxt/devtools': 3.1.1(vite@7.3.1(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))(vue@3.5.27)
       '@nuxt/kit': 4.3.0(magicast@0.5.1)
-      '@nuxt/nitro-server': 4.3.0(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(nuxt@4.3.0(patch_hash=7d7eb2cd425573af77c403157f62f91c27ed40088f74c8f66f40ff4c216c4329)(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.56.0)(terser@5.46.0)(vite@7.3.1(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2))
+      '@nuxt/nitro-server': 4.3.0(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(nuxt@4.3.0(patch_hash=416860fbb8a0af35735196b2174aa1a3e2514f4f35ffab4ed10ca900ff595262)(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.56.0)(terser@5.46.0)(vite@7.3.1(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2))
       '@nuxt/schema': 4.3.0
       '@nuxt/telemetry': 2.6.6(magicast@0.5.1)
-      '@nuxt/vite-builder': 4.3.0(magicast@0.5.1)(nuxt@4.3.0(patch_hash=7d7eb2cd425573af77c403157f62f91c27ed40088f74c8f66f40ff4c216c4329)(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.56.0)(terser@5.46.0)(vite@7.3.1(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2))(rollup@4.56.0)(terser@5.46.0)(vue@3.5.27)(yaml@2.8.2)
+      '@nuxt/vite-builder': 4.3.0(magicast@0.5.1)(nuxt@4.3.0(patch_hash=416860fbb8a0af35735196b2174aa1a3e2514f4f35ffab4ed10ca900ff595262)(@parcel/watcher@2.5.6)(@vue/compiler-sfc@3.5.27)(cac@6.7.14)(db0@0.3.4)(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.56.0)(terser@5.46.0)(vite@7.3.1(jiti@2.6.1)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2))(rollup@4.56.0)(terser@5.46.0)(vue@3.5.27)(yaml@2.8.2)
       '@unhead/vue': 2.1.2(vue@3.5.27)
       '@vue/shared': 3.5.27
       c12: 3.3.3(magicast@0.5.1)
