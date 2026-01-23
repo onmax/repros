@@ -1,4 +1,4 @@
-# nuxthub-791
+# nuxthub-791-fixed
 
 Issue: https://github.com/nuxt-hub/core/issues/791
 
@@ -14,4 +14,9 @@ pnpm i && pnpm dev
 Local libsql database used in dev mode.
 
 ## Actual
-"DB binding not found" error during prepare phase.
+Dev server starts successfully with libsql.
+
+## Fix
+Added `&& !nuxt.options._prepare` check to skip D1 driver during prepare mode.
+
+Uses [pnpm patch](https://pnpm.io/cli/patch) to apply the fix locally.
