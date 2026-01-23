@@ -1,0 +1,14 @@
+diff --git a/dist/pages/runtime/page.js b/dist/pages/runtime/page.js
+index 5784808e789939a852743be7d124e65f66409269..104ea177e432e3fbc47d1bca366ae792e4cf5974 100644
+--- a/dist/pages/runtime/page.js
++++ b/dist/pages/runtime/page.js
+@@ -47,6 +47,9 @@ export default defineComponent({
+       const removeErrorHook = nuxtApp.hooks.hookOnce("app:error", done);
+       useRouter().beforeEach(removeErrorHook);
+     }
++    if (import.meta.client) {
++      onBeforeUnmount(done);
++    }
+     if (import.meta.client && props.pageKey) {
+       watch(() => props.pageKey, (next, prev) => {
+         if (next !== prev) {
