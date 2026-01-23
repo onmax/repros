@@ -1,0 +1,2 @@
+patchedDependencies:
+  '@nuxthub/core': patches/@nuxthub__core.patch
