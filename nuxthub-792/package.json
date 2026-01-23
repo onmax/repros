@@ -1,0 +1,1 @@
+{ "name": "nuxthub-792", "scripts": { "prepare": "nuxt prepare" }, "dependencies": { "nuxt": "^4.3.0", "@nuxthub/core": "^0.10.5", "drizzle-orm": "^0.45.1", "drizzle-kit": "^0.31.8", "@libsql/client": "^0.17.0" }, "devDependencies": { "typescript": "^5.9.3" } }
