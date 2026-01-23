@@ -1,14 +1,20 @@
 diff --git a/dist/pages/runtime/page.js b/dist/pages/runtime/page.js
-index 5784808e789939a852743be7d124e65f66409269..104ea177e432e3fbc47d1bca366ae792e4cf5974 100644
+index 5784808e789939a852743be7d124e65f66409269..133cd43751533dde331e950fb070037decaad498 100644
 --- a/dist/pages/runtime/page.js
 +++ b/dist/pages/runtime/page.js
-@@ -47,6 +47,9 @@ export default defineComponent({
-       const removeErrorHook = nuxtApp.hooks.hookOnce("app:error", done);
-       useRouter().beforeEach(removeErrorHook);
+@@ -59,12 +59,12 @@ export default defineComponent({
      }
-+    if (import.meta.client) {
+     let pageLoadingEndHookAlreadyCalled = false;
+     if (import.meta.client) {
++      // Ensure hydration completes if unmounted before Suspense resolves (e.g., layout change)
 +      onBeforeUnmount(done);
-+    }
-     if (import.meta.client && props.pageKey) {
-       watch(() => props.pageKey, (next, prev) => {
-         if (next !== prev) {
+       const unsub = useRouter().beforeResolve(() => {
+         pageLoadingEndHookAlreadyCalled = false;
+       });
+-      onBeforeUnmount(() => {
+-        unsub();
+-      });
++      onBeforeUnmount(unsub);
+     }
+     return () => {
+       return h(RouterView, { name: props.name, route: props.route, ...attrs }, {
