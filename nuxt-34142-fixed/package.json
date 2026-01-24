@@ -16,7 +16,7 @@
   },
   "pnpm": {
     "patchedDependencies": {
-      "@nuxt/nitro-server": "patches/@nuxt__nitro-server.patch"
+      "@nuxt/nitro-server@4.3.0": "patches/@nuxt__nitro-server.patch"
     }
   }
 }
