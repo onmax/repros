@@ -1,0 +1,2 @@
+patchedDependencies:
+  '@nuxt/nitro-server': patches/@nuxt__nitro-server.patch
