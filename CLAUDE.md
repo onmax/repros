@@ -24,7 +24,8 @@ Use the `vue`, `nuxt`, and `nuxthub` skills when working in this repo.
 ### 1. Folder Naming
 
 - Bug folder: `{library}-{issue-number}` (e.g., `nuxthub-727`)
-- Fix folder: `{library}-{issue-number}-fixed` (e.g., `nuxthub-727-fixed`)
+- Fix folder: `{library}-{issue-number}-fix` (e.g., `nuxthub-727-fix`)
+  - Use `-fix` not `-fix` (shorter, avoids StackBlitz cache conflicts)
 
 ### 2. Create Bug Reproduction
 
@@ -47,11 +48,31 @@ Document the verification method in README.
 
 ### 4. Create Fix Folder
 
-1. Copy bug folder to `-fixed` version
-2. Create pnpm patch: `pnpm patch {package}`
-3. Apply fix to extracted package
-4. Commit patch: `pnpm patch-commit {path}`
-5. Verify fix using same method as bug verification
+1. Copy bug folder to `-fix` version (use `-fix` not `-fix` to avoid StackBlitz cache issues)
+2. Ensure `package.json` uses npm versions (not `link:` paths from local dev)
+3. Create pnpm patch: `pnpm patch {package}`
+4. Apply fix to extracted package
+5. Commit patch: `pnpm patch-commit {path}`
+6. **Fix pnpm patch for StackBlitz** (see below)
+7. Verify fix using same method as bug verification
+
+#### pnpm Patch StackBlitz Compatibility
+
+After `pnpm patch-commit`, pnpm creates `pnpm-workspace.yaml` with only `patchedDependencies`. This breaks StackBlitz. Fix it:
+
+1. Delete `pnpm-workspace.yaml`
+2. Move config to `package.json` with **version in key**:
+```json
+{
+  "pnpm": {
+    "patchedDependencies": {
+      "@nuxt/nitro-server@4.3.0": "patches/@nuxt__nitro-server.patch"
+    }
+  }
+}
+```
+3. Delete `pnpm-lock.yaml` (StackBlitz generates fresh one)
+4. Test locally: `rm -rf node_modules && pnpm i && pnpm dev`
 
 ### 5. README Structure
 
@@ -77,7 +98,7 @@ pnpm i && pnpm build
 {What actually happens}
 ```
 
-For `-fixed` folders, add:
+For `-fix` folders, add:
 
 ```md
 ## Fix
@@ -88,7 +109,7 @@ For `-fixed` folders, add:
 
 ```bash
 cd ~/repros
-git add {folder-name} {folder-name}-fixed
+git add {folder-name} {folder-name}-fix
 git commit -m "add {library}-{issue} repro"
 git push
 ```
@@ -125,7 +146,7 @@ Closes #{issue-number}
 | | Link | Expected |
 |---|---|---|
 | Bug | [{library}-{issue}](https://stackblitz.com/github/onmax/repros/tree/main/{library}-{issue}?startScript=build) | ❌ Build fails |
-| Fix | [{library}-{issue}-fixed](https://stackblitz.com/github/onmax/repros/tree/main/{library}-{issue}-fixed?startScript=build) | ✅ Build succeeds |
+| Fix | [{library}-{issue}-fix](https://stackblitz.com/github/onmax/repros/tree/main/{library}-{issue}-fix?startScript=build) | ✅ Build succeeds |
 
 ## CLI Reproduction
 
@@ -138,11 +159,11 @@ cd {library}-{issue} && pnpm i && pnpm build
 ## Verify fix
 
 ```bash
-git sparse-checkout add {library}-{issue}-fixed
-cd ../{library}-{issue}-fixed && pnpm i && pnpm build
+git sparse-checkout add {library}-{issue}-fix
+cd ../{library}-{issue}-fix && pnpm i && pnpm build
 ```
 
-The `-fixed` folder uses [pnpm patch](https://pnpm.io/cli/patch) to apply the fix locally.
+The `-fix` folder uses [pnpm patch](https://pnpm.io/cli/patch) to apply the fix locally.
 
 ## Related
 - {link-to-original-issue}
@@ -175,7 +196,7 @@ cd repros && git sparse-checkout set {folder-name}
 
 # StackBlitz URLs (with auto-install and build)
 # Bug: https://stackblitz.com/github/onmax/repros/tree/main/{library}-{issue}?startScript=build
-# Fix: https://stackblitz.com/github/onmax/repros/tree/main/{library}-{issue}-fixed?startScript=build
+# Fix: https://stackblitz.com/github/onmax/repros/tree/main/{library}-{issue}-fix?startScript=build
 #
 # startScript param runs the script from package.json after install
 # Other useful params: terminal=true, file=path/to/file.ts
