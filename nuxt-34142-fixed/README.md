@@ -18,3 +18,4 @@ App renders NuxtWelcome without error
 
 ## Fix
 Patch provides essential imports (`defineAppConfig`, `buildAssetsURL`, `publicAssetsURL`) even when `nitroAutoImports` is disabled by `compatibilityVersion: 5`.
+
