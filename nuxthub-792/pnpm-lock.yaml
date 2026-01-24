@@ -12,8 +12,8 @@ importers:
         specifier: ^0.17.0
         version: 0.17.0
       '@nuxthub/core':
-        specifier: ^0.10.5
-        version: 0.10.5(db0@0.3.4(@libsql/client@0.17.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20260123.0)(@libsql/client@0.17.0)))(ioredis@5.9.2)(magicast@0.5.1)(typescript@5.9.3)
+        specifier: https://pkg.pr.new/@nuxthub/core@797
+        version: https://pkg.pr.new/@nuxthub/core@797(db0@0.3.4(@libsql/client@0.17.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20260123.0)(@libsql/client@0.17.0)))(ioredis@5.9.2)(magicast@0.5.1)(typescript@5.9.3)
       drizzle-kit:
         specifier: ^0.31.8
         version: 0.31.8
@@ -830,8 +830,9 @@ packages:
       rolldown:
         optional: true
 
-  '@nuxthub/core@0.10.5':
-    resolution: {integrity: sha512-I733Mdv2P6FKizo4049bSMfkW4zNchcQmd5iUSnXNaJdQSUze66Qmzv4SgiXtSu7zWC0wiXzHsPYnH25+QNUDA==}
+  '@nuxthub/core@https://pkg.pr.new/@nuxthub/core@797':
+    resolution: {integrity: sha512-+nK+F+iNnF5pGC7gTsFDaSXobqc0I3GMFc3HP7CIvNWMgCmiETpaiMsgwJnF8qkqnDWbpAXmofNnQCqpYuRV3w==, tarball: https://pkg.pr.new/@nuxthub/core@797}
+    version: 0.10.5
     hasBin: true
 
   '@oxc-minify/binding-android-arm-eabi@0.110.0':
@@ -4990,7 +4991,7 @@ snapshots:
       - vue-tsc
       - yaml
 
-  '@nuxthub/core@0.10.5(db0@0.3.4(@libsql/client@0.17.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20260123.0)(@libsql/client@0.17.0)))(ioredis@5.9.2)(magicast@0.5.1)(typescript@5.9.3)':
+  '@nuxthub/core@https://pkg.pr.new/@nuxthub/core@797(db0@0.3.4(@libsql/client@0.17.0)(drizzle-orm@0.45.1(@cloudflare/workers-types@4.20260123.0)(@libsql/client@0.17.0)))(ioredis@5.9.2)(magicast@0.5.1)(typescript@5.9.3)':
     dependencies:
       '@cloudflare/workers-types': 4.20260123.0
       '@nuxt/kit': 4.3.0(magicast@0.5.1)
