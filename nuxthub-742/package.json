@@ -1,0 +1,1 @@
+{ "name": "nuxthub-742", "private": true, "type": "module", "scripts": { "dev": "nuxi dev" }, "devDependencies": { "@nuxthub/core": "^0.10.3", "drizzle-orm": "^0.30.0", "drizzle-kit": "^0.20.0", "nuxt": "^3.16.1", "wrangler": "^4.0.0" } }

@@ -1,6 +1,2 @@
-onlyBuiltDependencies:
-  - workerd
-  - esbuild
-
 overrides:
   '@nuxthub/core': link:../../nuxt/hub

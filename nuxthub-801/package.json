@@ -1,0 +1,12 @@
+{
+  "name": "nuxthub-801-repro",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "prepare": "nuxt prepare",
+    "test": "vitest run",
+    "typecheck": "nuxt typecheck"
+  }
+}
