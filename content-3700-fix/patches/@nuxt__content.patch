@@ -1,0 +1,42 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 681a4ea41437f24dfc0645cb544e858ab2f1a6d0..69d0c435980caad828f09d10571db765d400c8a3 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -1615,7 +1615,7 @@ const componentsManifestTemplate = (manifest) => {
+       const globalComponents = componentsList.filter((c) => c[2]).map((c) => c[0]);
+       const localComponents = componentsList.filter((c) => !c[2]);
+       return [
+-        ...localComponents.map(([pascalName, type]) => `export const ${pascalName} = () => ${type}`),
++        ...localComponents.map(([pascalName, type]) => `export { default as ${pascalName} } from ${type.replace(/^import\(/, "").replace(/\)$/, "")}`),
+         `export const globalComponents: string[] = ${JSON.stringify(globalComponents)}`,
+         `export const localComponents: string[] = ${JSON.stringify(localComponents.map((c) => c[0]))}`
+       ].join("\n");
+diff --git a/dist/runtime/components/ContentRenderer.vue b/dist/runtime/components/ContentRenderer.vue
+index 7afcfcfb30b0bef1ebaa20e60903a5744384f22c..295605aafbd6b99b1a95a36ff4cc0d5ae8d8a21a 100644
+--- a/dist/runtime/components/ContentRenderer.vue
++++ b/dist/runtime/components/ContentRenderer.vue
+@@ -4,7 +4,8 @@ import { resolveComponent, toRaw, defineAsyncComponent, computed } from "vue";
+ import htmlTags from "@nuxtjs/mdc/runtime/parser/utils/html-tags-list";
+ import MDCRenderer from "@nuxtjs/mdc/runtime/components/MDCRenderer.vue";
+ import { toHast } from "minimark/hast";
+-import { globalComponents, localComponents } from "#content/components";
++import * as contentComponents from "#content/components";
++const { globalComponents, localComponents } = contentComponents;
+ import { useRuntimeConfig } from "#imports";
+ const renderFunctions = ["render", "ssrRender", "__ssrInlineRender"];
+ const props = defineProps({
+@@ -103,13 +104,7 @@ function resolveVueComponent(component) {
+     if (globalComponents.includes(pascalCase(component))) {
+       _component = resolveComponent(component, false);
+     } else if (localComponents.includes(pascalCase(component))) {
+-      const loader = () => {
+-        return import("#content/components").then((m) => {
+-          const comp = m[pascalCase(component)];
+-          return comp ? comp() : void 0;
+-        });
+-      };
+-      _component = defineAsyncComponent(loader);
++      _component = contentComponents[pascalCase(component)];
+     }
+     if (typeof _component === "string") {
+       return _component;
