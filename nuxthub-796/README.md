@@ -1,25 +1,29 @@
 # nuxthub-796
 
 Issue: https://github.com/nuxt-hub/core/issues/796
+PR: https://github.com/nuxt-hub/core/pull/797
 
 ## Problem
 
-`@nuxthub/db` package.json not created during `nuxt prepare`, causing TS5090 non-relative path errors.
+After `nuxt prepare` → types generated ✅
+`nuxt build` with `typescript.typeCheck="build"` → TS5090 error (non-relative paths)
 
 ## Verify
 
 ```bash
-pnpm i && pnpm typecheck
+rm -rf node_modules .nuxt && pnpm i
+pnpm prepare  # passes
+pnpm build    # fails with TS5090
 ```
 
 ## Expected
 
-Typecheck passes.
+Build passes with type checking.
 
 ## Actual
 
 ```
-.nuxt/tsconfig.app.json - error TS5090: Non-relative paths are not allowed when 'baseUrl' is not set.
+error TS5090: Non-relative paths are not allowed when 'baseUrl' is not set.
   "@nuxthub/db"
   "@nuxthub/db/schema"
 ```

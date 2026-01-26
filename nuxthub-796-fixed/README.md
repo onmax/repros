@@ -1,25 +1,21 @@
 # nuxthub-796-fixed
 
 Issue: https://github.com/nuxt-hub/core/issues/796
+PR: https://github.com/nuxt-hub/core/pull/797
 
 ## Problem
 
-`@nuxthub/db` package.json and schema files not created during `nuxt prepare`, causing TS5090 non-relative path errors.
+After `nuxt prepare` → types generated ✅
+`nuxt build` with `typescript.typeCheck="build"` → TS5090 error (non-relative paths)
 
 ## Verify
 
 ```bash
-pnpm i && pnpm typecheck
+rm -rf node_modules .nuxt && pnpm i
+pnpm prepare  # passes
+pnpm build    # passes ✅
 ```
-
-## Expected
-
-Typecheck passes.
-
-## Actual
-
-Typecheck passes. ✅
 
 ## Fix
 
-Create `package.json` and stub schema files (`schema.mjs`, `schema.d.mts`) in `setupDatabaseClient` so they exist during prepare. These enable Node.js module resolution of `@nuxthub/db` and `@nuxthub/db/schema` subpaths.
+Uses `@nuxthub/core` from PR #797 (`https://pkg.pr.new/@nuxthub/core@797`) which creates `package.json` and stub schema files (`schema.mjs`, `schema.d.mts`) in `setupDatabaseClient` so they exist during prepare.
