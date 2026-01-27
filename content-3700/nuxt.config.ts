@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxt/content', '@nuxt/ui'],
+  modules: ['@nuxt/content', '@nuxt/ui', '@nuxtjs/seo'],
   compatibilityDate: '2025-05-15',
   nitro: {
     preset: 'cloudflare_module',
