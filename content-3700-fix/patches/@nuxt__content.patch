@@ -1,13 +1,23 @@
 diff --git a/dist/module.mjs b/dist/module.mjs
-index 681a4ea41437f24dfc0645cb544e858ab2f1a6d0..69d0c435980caad828f09d10571db765d400c8a3 100644
+index 681a4ea41437f24dfc0645cb544e858ab2f1a6d0..2e6c2d43692603505f5fd10ee202b99c17fbd3b7 100644
 --- a/dist/module.mjs
 +++ b/dist/module.mjs
-@@ -1615,7 +1615,7 @@ const componentsManifestTemplate = (manifest) => {
+@@ -1607,7 +1607,8 @@ const componentsManifestTemplate = (manifest) => {
+         map[c.pascalName] = map[c.pascalName] || [
+           c.pascalName,
+           `${genDynamicImport(isAbsolute(c.filePath) ? "./" + relative(join(nuxt.options.buildDir, "content"), c.filePath).replace(/\b\.(?!vue)\w+$/g, "") : c.filePath.replace(/\b\.(?!vue)\w+$/g, ""), { wrapper: false, singleQuotes: true })}`,
+-          c.global
++          c.global,
++          c.export || "default"
+         ];
+         return map;
+       }, {});
+@@ -1615,7 +1616,7 @@ const componentsManifestTemplate = (manifest) => {
        const globalComponents = componentsList.filter((c) => c[2]).map((c) => c[0]);
        const localComponents = componentsList.filter((c) => !c[2]);
        return [
 -        ...localComponents.map(([pascalName, type]) => `export const ${pascalName} = () => ${type}`),
-+        ...localComponents.map(([pascalName, type]) => `export { default as ${pascalName} } from ${type.replace(/^import\(/, "").replace(/\)$/, "")}`),
++        ...localComponents.map(([pascalName, type, , exp]) => `export { ${exp} as ${pascalName} } from ${type.replace(/^import\(/, "").replace(/\)$/, "")}`),
          `export const globalComponents: string[] = ${JSON.stringify(globalComponents)}`,
          `export const localComponents: string[] = ${JSON.stringify(localComponents.map((c) => c[0]))}`
        ].join("\n");
