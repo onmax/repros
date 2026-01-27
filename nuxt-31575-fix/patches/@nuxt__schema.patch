@@ -1,0 +1,28 @@
+diff --git a/schema/config.defaults.json b/schema/config.defaults.json
+index 4e7dba2035217b2841bb07cf0a3f8742ac71aa71..a67e43bd09b381a2196c88f5e0e4f89c425017f8 100644
+--- a/schema/config.defaults.json
++++ b/schema/config.defaults.json
+@@ -457,7 +457,8 @@
+     "**/*.{spec,test}.{js,cts,mts,ts,jsx,tsx}",
+     "**/*.d.{cts,mts,ts}",
+     "**/*.d.vue.{cts,mts,ts}",
+-    "**/.{pnpm-store,vercel,netlify,output,git,cache,data}",
++    "**/.{pnpm-store,vercel,netlify,output,git,cache,data,direnv}",
++    "**/vendor",
+     "**/node-compile-cache",
+     "**/test-results",
+     "**/*.sock",
+diff --git a/schema/config.schema.json b/schema/config.schema.json
+index 90c23aedb6b7acc9e68909bdd4ed5780a5d10a7b..80ba59f67f07f1f9e8cc49a09547bd0b1840af73 100644
+--- a/schema/config.schema.json
++++ b/schema/config.schema.json
+@@ -1382,7 +1382,8 @@
+         "**/*.{spec,test}.{js,cts,mts,ts,jsx,tsx}",
+         "**/*.d.{cts,mts,ts}",
+         "**/*.d.vue.{cts,mts,ts}",
+-        "**/.{pnpm-store,vercel,netlify,output,git,cache,data}",
++        "**/.{pnpm-store,vercel,netlify,output,git,cache,data,direnv}",
++        "**/vendor",
+         "**/node-compile-cache",
+         "**/test-results",
+         "**/*.sock",
