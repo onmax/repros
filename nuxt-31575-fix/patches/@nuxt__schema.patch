@@ -8,7 +8,7 @@ index 4e7dba2035217b2841bb07cf0a3f8742ac71aa71..a67e43bd09b381a2196c88f5e0e4f89c
      "**/*.d.vue.{cts,mts,ts}",
 -    "**/.{pnpm-store,vercel,netlify,output,git,cache,data}",
 +    "**/.{pnpm-store,vercel,netlify,output,git,cache,data,direnv}",
-+    "**/vendor",
++    "vendor",
      "**/node-compile-cache",
      "**/test-results",
      "**/*.sock",
