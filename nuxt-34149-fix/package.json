@@ -1,0 +1,1 @@
+{"name":"nuxt-34149-fix","private":true,"type":"module","scripts":{"dev":"nuxt dev","build":"nuxt build"},"dependencies":{"nuxt":"4.3.0"},"pnpm":{"patchedDependencies":{"nuxt@4.3.0":"patches/nuxt.patch"}}}
