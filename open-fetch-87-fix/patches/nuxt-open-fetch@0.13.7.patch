@@ -1,35 +1,29 @@
 diff --git a/dist/module.mjs b/dist/module.mjs
-index 21e674bbb4e8ca9ae054618d9f9ed3660e3610a3..f6ec5826375503c204757356e4a526a34852ff11 100644
+index 21e674bbb4e8ca9ae054618d9f9ed3660e3610a3..1d147c9929e03c947025689cb2f3b38c6d7f04cf 100644
 --- a/dist/module.mjs
 +++ b/dist/module.mjs
-@@ -1,7 +1,7 @@
- import { existsSync } from 'node:fs';
- import { mkdir, readFile, writeFile, readdir, unlink } from 'node:fs/promises';
- import { fileURLToPath } from 'node:url';
--import { defineNuxtModule, createResolver, addTemplate, addImportsSources, addServerImports, addTypeTemplate, addPlugin, addServerPlugin } from '@nuxt/kit';
-+import { defineNuxtModule, createResolver, addTemplate, addImportsSources, addServerImports, addTypeTemplate, addPlugin, addServerPlugin, addVitePlugin } from '@nuxt/kit';
- import { hash } from 'ohash';
- import openapiTS, { astToString } from 'openapi-typescript';
- import { join } from 'pathe';
-@@ -67,6 +67,22 @@ const module$1 = defineNuxtModule({
+@@ -67,6 +67,25 @@ const module$1 = defineNuxtModule({
        "#open-fetch": join(nuxt.options.buildDir, moduleName),
        "#open-fetch-schemas/*": join(nuxt.options.buildDir, "types", moduleName, "schemas", "*")
      };
-+    // Prevent large schema types from being bundled into SSR output
-+    // Types are only needed for TypeScript checking, not runtime
-+    addVitePlugin({
-+      name: 'nuxt-open-fetch:ssr-schema-stub',
-+      enforce: 'pre',
-+      resolveId(id, _importer, options) {
-+        if (options?.ssr && id.startsWith('#open-fetch-schemas/')) {
-+          return { id: '\0virtual:open-fetch-schema-stub', external: false }
-+        }
-+      },
-+      load(id) {
-+        if (id === '\0virtual:open-fetch-schema-stub') {
-+          return 'export {}'
-+        }
-+      },
++    // Stub schema imports in SSR - types are stripped at build time anyway
++    nuxt.hook('vite:extendConfig', (config, { isServer }) => {
++      if (!isServer) return;
++      config.plugins ||= [];
++      config.plugins.push({
++        name: 'nuxt-open-fetch:ssr-schema-stub',
++        enforce: 'pre',
++        resolveId(id) {
++          if (id.startsWith('#open-fetch-schemas/')) {
++            return '\0virtual:open-fetch-schema-stub';
++          }
++        },
++        load(id) {
++          if (id === '\0virtual:open-fetch-schema-stub') {
++            return 'export {}';
++          }
++        },
++      });
 +    });
      nuxt.options.optimization = nuxt.options.optimization || {
        keyedComposables: []
