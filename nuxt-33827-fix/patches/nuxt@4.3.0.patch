@@ -1,0 +1,29 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 932376ed324f47ee20dd785ad569608af70f5fcb..4913989f4942fff082eac251c21d6b6e51d2d7a1 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -7172,7 +7172,7 @@ async function watch(nuxt) {
+ function createWatcher() {
+   const nuxt = useNuxt();
+   const isIgnored2 = createIsIgnored(nuxt);
+-  const watcher = watch$1(getLayerDirectories(nuxt).map((dirs) => dirs.app), {
++  const watcher = watch$1(getLayerDirectories(nuxt).flatMap((dirs) => [dirs.app, dirs.server].filter(Boolean)), {
+     ...nuxt.options.watchers.chokidar,
+     ignoreInitial: true,
+     ignored: [isIgnored2, /[\\/]node_modules[\\/]/]
+@@ -7305,10 +7305,12 @@ async function loadBuilder(nuxt, builder) {
+ function resolvePathsToWatch(nuxt, opts = {}) {
+   const pathsToWatch = /* @__PURE__ */ new Set();
+   for (const dirs of getLayerDirectories(nuxt)) {
+-    if (!dirs.app || isIgnored(dirs.app)) {
+-      continue;
++    if (dirs.app && !isIgnored(dirs.app)) {
++      pathsToWatch.add(dirs.app);
++    }
++    if (dirs.server && !isIgnored(dirs.server)) {
++      pathsToWatch.add(dirs.server);
+     }
+-    pathsToWatch.add(dirs.app);
+   }
+   for (const pattern of nuxt.options.watch) {
+     if (typeof pattern !== "string") {
