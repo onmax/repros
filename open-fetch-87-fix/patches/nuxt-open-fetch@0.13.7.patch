@@ -1,0 +1,35 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 21e674bbb4e8ca9ae054618d9f9ed3660e3610a3..5b8dc4df18389a1270df974e6bda3372282c3967 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -1,7 +1,7 @@
+ import { existsSync } from 'node:fs';
+ import { mkdir, readFile, writeFile, readdir, unlink } from 'node:fs/promises';
+ import { fileURLToPath } from 'node:url';
+-import { defineNuxtModule, createResolver, addTemplate, addImportsSources, addServerImports, addTypeTemplate, addPlugin, addServerPlugin } from '@nuxt/kit';
++import { defineNuxtModule, createResolver, addTemplate, addImportsSources, addServerImports, addTypeTemplate, addPlugin, addServerPlugin, addVitePlugin } from '@nuxt/kit';
+ import { hash } from 'ohash';
+ import openapiTS, { astToString } from 'openapi-typescript';
+ import { join } from 'pathe';
+@@ -67,6 +67,21 @@ const module$1 = defineNuxtModule({
+       "#open-fetch": join(nuxt.options.buildDir, moduleName),
+       "#open-fetch-schemas/*": join(nuxt.options.buildDir, "types", moduleName, "schemas", "*")
+     };
++    // Stub schema imports in SSR to prevent OOM with large schemas
++    addVitePlugin({
++      name: 'nuxt-open-fetch:ssr-schema-stub',
++      enforce: 'pre',
++      resolveId(id, _importer, options) {
++        if (options?.ssr && id.startsWith('#open-fetch-schemas/')) {
++          return { id: '\0virtual:open-fetch-schema-stub', external: false }
++        }
++      },
++      load(id) {
++        if (id === '\0virtual:open-fetch-schema-stub') {
++          return 'export {}'
++        }
++      },
++    }, { server: false });
+     nuxt.options.optimization = nuxt.options.optimization || {
+       keyedComposables: []
+     };

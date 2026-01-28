@@ -1,0 +1,20 @@
+{
+  "name": "open-fetch-87-fix",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "preview": "nuxt preview"
+  },
+  "dependencies": {
+    "nuxt": "^3.16.1",
+    "nuxt-open-fetch": "^0.13.7",
+    "vue": "^3.5.13"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "nuxt-open-fetch@0.13.7": "patches/nuxt-open-fetch@0.13.7.patch"
+    }
+  }
+}
