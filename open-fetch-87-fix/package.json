@@ -14,7 +14,7 @@
   },
   "pnpm": {
     "patchedDependencies": {
-      "nuxt-open-fetch@0.13.7": "patches/nuxt-open-fetch@0.13.7.patch"
+      "nuxt-open-fetch": "patches/nuxt-open-fetch.patch"
     }
   }
 }

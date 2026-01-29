@@ -1,0 +1,31 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 21e674bbb4e8ca9ae054618d9f9ed3660e3610a3..7040545c4e29e3a76031a3ab0f3bd5a21ba8d374 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -79,7 +79,7 @@ const module$1 = defineNuxtModule({
+     ];
+     schemas.forEach(({ name: name2, schema, openAPITS }) => {
+       addTemplate({
+-        filename: `types/${moduleName}/schemas/${kebabCase(name2)}.ts`,
++        filename: `types/${moduleName}/schemas/${kebabCase(name2)}.d.ts`,
+         getContents: () => addCachedSchemaTemplate({
+           name: name2,
+           schema,
+@@ -276,7 +276,7 @@ async function addCachedSchemaTemplate({
+     return astToString(ast2);
+   }
+   const key = hash([schema, openAPITS, moduleName2, shortName, fileBody]);
+-  const cachedPath = resolvePath(cacheDir, `${shortName}-${key}.ts`);
++  const cachedPath = resolvePath(cacheDir, `${shortName}-${key}.d.ts`);
+   if (existsSync(cachedPath)) {
+     return await readFile(cachedPath, "utf-8");
+   }
+@@ -284,7 +284,7 @@ async function addCachedSchemaTemplate({
+   const contents = astToString(ast);
+   await writeFile(cachedPath, contents, "utf-8");
+   for (const file of await readdir(cacheDir)) {
+-    if (file.startsWith(`${shortName}-`) && file !== `${shortName}-${key}.ts`) {
++    if (file.startsWith(`${shortName}-`) && file !== `${shortName}-${key}.d.ts`) {
+       try {
+         await unlink(resolvePath(cacheDir, file));
+       } catch {
