@@ -1,0 +1,76 @@
+diff --git a/cli/commands/db/generate.mjs b/cli/commands/db/generate.mjs
+index b4081932002c142b7180635e400605ad52eb8626..7239ae4e735da7e48033c876a7f1637af836ee69 100644
+--- a/cli/commands/db/generate.mjs
++++ b/cli/commands/db/generate.mjs
+@@ -1,9 +1,25 @@
++import { readFile } from 'node:fs/promises'
+ import { defineCommand } from 'citty'
+ import { consola } from 'consola'
+ import { execa } from 'execa'
+ import { join, resolve } from 'pathe'
+ import { buildDatabaseSchema } from '@nuxthub/core/db'
+
++async function getTsconfigAliases(cwd) {
++  try {
++    const tsconfig = JSON.parse(await readFile(join(cwd, '.nuxt/tsconfig.json'), 'utf-8'))
++    const paths = tsconfig.compilerOptions?.paths || {}
++    const alias = {}
++    for (const [key, values] of Object.entries(paths)) {
++      const resolvedPath = key.endsWith('/*') ? values[0].replace(/\/\*$/, '') : values[0]
++      alias[key.replace(/\/\*$/, '')] = resolve(join(cwd, '.nuxt'), resolvedPath)
++    }
++    return alias
++  } catch {
++    return {}
++  }
++}
++
+ export default defineCommand({
+   meta: {
+     name: 'generate',
+@@ -36,7 +52,8 @@ export default defineCommand({
+     }
+     consola.info('Ensuring database schema is generated...')
+     await execa(options)`nuxt prepare`
+-    await buildDatabaseSchema(join(options.cwd, '.nuxt'), { relativeDir: cwd })
++    const alias = await getTsconfigAliases(cwd)
++    await buildDatabaseSchema(join(options.cwd, '.nuxt'), { relativeDir: cwd, alias })
+     consola.info('Generating database migrations...')
+     const { stderr } = await execa({
+       ...options,
+diff --git a/cli/commands/db/squash.mjs b/cli/commands/db/squash.mjs
+index 54b15c9b0132687e320592f021126259e536a045..d5168f228a82811221842220d0ed7cdf9999bf06 100644
+--- a/cli/commands/db/squash.mjs
++++ b/cli/commands/db/squash.mjs
+@@ -6,6 +6,21 @@ import { join, resolve } from 'pathe'
+ import { buildDatabaseSchema, createDrizzleClient } from '@nuxthub/core/db'
+ import { sql } from 'drizzle-orm'
+
++async function getTsconfigAliases(cwd) {
++  try {
++    const tsconfig = JSON.parse(await readFile(join(cwd, '.nuxt/tsconfig.json'), 'utf-8'))
++    const paths = tsconfig.compilerOptions?.paths || {}
++    const alias = {}
++    for (const [key, values] of Object.entries(paths)) {
++      const resolvedPath = key.endsWith('/*') ? values[0].replace(/\/\*$/, '') : values[0]
++      alias[key.replace(/\/\*$/, '')] = resolve(join(cwd, '.nuxt'), resolvedPath)
++    }
++    return alias
++  } catch {
++    return {}
++  }
++}
++
+ export default defineCommand({
+   meta: {
+     name: 'squash',
+@@ -171,7 +186,8 @@ export default defineCommand({
+     consola.debug('Updated journal file')
+
+     // Build schema and generate fresh migration
+-    await buildDatabaseSchema(join(cwd, '.nuxt'), { relativeDir: cwd })
++    const alias = await getTsconfigAliases(cwd)
++    await buildDatabaseSchema(join(cwd, '.nuxt'), { relativeDir: cwd, alias })
+     consola.info('Generating new migration...')
+     const { stderr } = await execa({
+       ...execaOptions,
