@@ -1,0 +1,50 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Minimal M2A Reproduction",
+    "version": "1.0.0"
+  },
+  "paths": {},
+  "components": {
+    "schemas": {
+      "Collection1": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" }
+        }
+      },
+      "Collection2": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "title": { "type": "string" }
+        }
+      },
+      "JunctionTable": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "collection": {
+            "type": "string",
+            "description": "Indicates which collection the item belongs to"
+          },
+          "item": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                { "type": "string" },
+                [
+                  { "$ref": "#/components/schemas/Collection1" },
+                  { "$ref": "#/components/schemas/Collection2" }
+                ]
+              ]
+            },
+            "description": "Invalid: nested array in oneOf - this is what Directus generates for M2A relations"
+          }
+        },
+        "x-collection": "junction_table"
+      }
+    }
+  }
+}

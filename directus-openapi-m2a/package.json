@@ -1,0 +1,11 @@
+{
+  "name": "directus-openapi-m2a",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node validate-schema.js"
+  },
+  "devDependencies": {
+    "openapi-typescript": "^7.10.1"
+  }
+}

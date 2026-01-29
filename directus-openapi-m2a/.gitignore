@@ -1,0 +1,3 @@
+node_modules
+*.log
+directus-schema.json
