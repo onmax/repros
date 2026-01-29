@@ -1,0 +1,47 @@
+diff --git a/dist/app/components/route-provider.js b/dist/app/components/route-provider.js
+index 8e5f570de0da18f33bb9b8a55a366b15cc814637..e970c7bca2f96d44c1d832733cbd15de63a5e289 100644
+--- a/dist/app/components/route-provider.js
++++ b/dist/app/components/route-provider.js
+@@ -1,5 +1,7 @@
+-import { defineComponent, h, nextTick, onMounted, provide, shallowReactive } from "vue";
++import { defineComponent, h, nextTick, onMounted, provide, shallowReactive, shallowRef, watch } from "vue";
+ import { PageRouteSymbol } from "./injections.js";
++import { useRouter } from "../composables/router.js";
++import { useNuxtApp } from "../nuxt.js";
+ export const defineRouteProvider = (name = "RouteProvider") => defineComponent({
+   name,
+   props: {
+@@ -15,14 +17,32 @@ export const defineRouteProvider = (name = "RouteProvider") => defineComponent({
+   setup(props) {
+     const previousKey = props.renderKey;
+     const previousRoute = props.route;
++    const routeVersion = shallowRef(0);
+     const route = {};
+     for (const key in props.route) {
+       Object.defineProperty(route, key, {
+-        get: () => previousKey === props.renderKey ? props.route[key] : previousRoute[key],
++        get: () => {
++          routeVersion.value;
++          return previousKey === props.renderKey ? props.route[key] : previousRoute[key];
++        },
+         enumerable: true
+       });
+     }
+     provide(PageRouteSymbol, shallowReactive(route));
++    if (import.meta.client) {
++      const nuxtApp = useNuxtApp();
++      const router = useRouter();
++      if (nuxtApp.isHydrating) {
++        const unwatch = watch(
++          () => router.currentRoute.value,
++          () => {
++            routeVersion.value++;
++          },
++          { flush: "sync" }
++        );
++        nuxtApp.hooks.hookOnce("app:suspense:resolve", unwatch);
++      }
++    }
+     let vnode;
+     if (import.meta.dev && import.meta.client && props.trackRootNodes) {
+       onMounted(() => {
