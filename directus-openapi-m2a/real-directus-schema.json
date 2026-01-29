@@ -1,0 +1,60 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Real Directus M2A Schema",
+    "description": "Actual schema from Directus 11.3.0 with M2A relation",
+    "version": "11.3.0"
+  },
+  "paths": {},
+  "components": {
+    "schemas": {
+      "ItemsCustomerattributeGroup": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" }
+        }
+      },
+      "ItemsProductattributeGroup": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "title": { "type": "string" }
+        }
+      },
+      "ItemsConfigurationAttributeGroups": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "nullable": false,
+            "type": "integer"
+          },
+          "collection": {
+            "nullable": true,
+            "type": "string"
+          },
+          "item": {
+            "nullable": true,
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                [
+                  {
+                    "$ref": "#/components/schemas/ItemsCustomerattributeGroup"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ItemsProductattributeGroup"
+                  }
+                ]
+              ]
+            }
+          }
+        },
+        "x-collection": "configuration_attribute_groups"
+      }
+    }
+  }
+}

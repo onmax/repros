@@ -3,7 +3,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node validate-schema.js"
+    "docker": "docker compose up -d",
+    "setup": "node setup-m2a.js",
+    "test": "node validate-schema.js",
+    "stop": "docker compose down"
   },
   "devDependencies": {
     "openapi-typescript": "^7.10.1"

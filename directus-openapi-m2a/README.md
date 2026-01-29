@@ -1,12 +1,12 @@
 # directus-openapi-m2a
 
-Directus generates invalid OpenAPI schemas for Many-to-Any (M2A) relations.
+Reproduction: Directus generates invalid OpenAPI schemas for Many-to-Any (M2A) relations.
 
 ## Problem
 
-When Directus generates OpenAPI specs for M2A relations, it creates nested arrays inside `oneOf`, which violates the OpenAPI 3.0 specification.
+When Directus generates OpenAPI specs for M2A relations, it creates **nested arrays** inside `oneOf`, which violates the OpenAPI 3.0 specification.
 
-**Invalid structure (what Directus generates):**
+### Invalid (what Directus generates)
 ```json
 "items": {
   "oneOf": [
@@ -19,7 +19,7 @@ When Directus generates OpenAPI specs for M2A relations, it creates nested array
 }
 ```
 
-**Valid structure (per OpenAPI spec):**
+### Valid (per OpenAPI spec)
 ```json
 "items": {
   "oneOf": [
@@ -30,22 +30,64 @@ When Directus generates OpenAPI specs for M2A relations, it creates nested array
 }
 ```
 
-## Verify
+## Reproduction
+
+### 1. Install
 
 ```bash
-pnpm i && pnpm test
+pnpm i
 ```
 
-## Expected
+### 2. Run Validation
 
-Schema validation should pass.
-
-## Actual
-
+```bash
+pnpm test
 ```
-❌ Schema validation failed:
 
-Expected SchemaObject, received Array at #/components/schemas/JunctionTable/item
+**Expected**: ✅ Schema is valid
+**Actual**: ❌ `Expected SchemaObject, received Array at #/components/schemas/ItemsConfigurationAttributeGroups/item`
+
+### 3. See the Bug
+
+```bash
+cat real-directus-schema.json | jq '.components.schemas.ItemsConfigurationAttributeGroups.properties.item'
+```
+
+**Output**:
+```json
+{
+  "type": "array",
+  "items": {
+    "oneOf": [
+      { "type": "string" },
+      [                    // ❌ INVALID: nested array
+        { "$ref": "#/components/schemas/ItemsCustomerattributeGroup" },
+        { "$ref": "#/components/schemas/ItemsProductattributeGroup" }
+      ]
+    ]
+  }
+}
+```
+
+## Source
+
+`real-directus-schema.json` contains actual schema from Directus 11.3.0 production instance with M2A relations.
+
+## Reproduce in Your Directus
+
+If you have a Directus instance with M2A relations:
+
+```bash
+# Fetch your schema
+curl http://localhost:8055/server/specs/oas \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -o your-schema.json
+
+# Find M2A junction collections (have 'collection' + 'item' fields)
+cat your-schema.json | jq '.components.schemas | to_entries | .[] | select(.value.properties.collection and .value.properties.item) | .key'
+
+# Check for nested arrays in oneOf
+cat your-schema.json | jq '.components.schemas.YOUR_M2A_COLLECTION.properties.item'
 ```
 
 ## Impact

@@ -1,0 +1,16 @@
+services:
+  directus:
+    image: directus/directus:11.3.3
+    ports:
+      - 8056:8055
+    environment:
+      SECRET: replace-with-random-string
+      ADMIN_EMAIL: admin@example.com
+      ADMIN_PASSWORD: admin
+      DB_CLIENT: sqlite3
+      DB_FILENAME: /directus/database/data.db
+      WEBSOCKETS_ENABLED: true
+    volumes:
+      - ./directus/database:/directus/database
+      - ./directus/uploads:/directus/uploads
+      - ./directus/extensions:/directus/extensions
