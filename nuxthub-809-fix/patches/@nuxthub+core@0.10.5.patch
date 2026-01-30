@@ -1,0 +1,13 @@
+diff --git a/dist/blob/runtime/app/composables/useMultipartUpload.mjs b/dist/blob/runtime/app/composables/useMultipartUpload.mjs
+--- a/dist/blob/runtime/app/composables/useMultipartUpload.mjs
++++ b/dist/blob/runtime/app/composables/useMultipartUpload.mjs
+@@ -100,7 +100,8 @@ export function useMultipartUpload(baseURL, options) {
+     const start = async () => {
+       const hub = useRuntimeConfig().public.hub;
+       if (hub.blobProvider === "vercel-blob") {
+-        return import("@vercel/blob/client").then(({ upload: upload2 }) => {
++        const pkg = "@vercel/blob/client";
++        return import(/* @vite-ignore */ pkg).then(({ upload: upload2 }) => {
+           return upload2(file.name, file, {
+             access: "public",
+             multipart: true,
