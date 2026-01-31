@@ -4,7 +4,7 @@ Issue: https://github.com/nuxt/nuxt/issues/33273
 
 ## Problem
 
-`navigateTo` from middleware drops percent-encoding. The router compares raw `fullPath` with vue-router's percent-encoded `final.fullPath`, causing redirect to fail.
+`navigateTo` from middleware drops percent-encoding. Router compares raw `fullPath` with vue-router's percent-encoded `final.fullPath`, causing redirect to fail.
 
 ## Verify
 
@@ -12,12 +12,12 @@ Issue: https://github.com/nuxt/nuxt/issues/33273
 pnpm i && pnpm dev
 ```
 
-Visit `/trigger` - should redirect to `/target?callback=%2Fother`
+Visit `/trigger` - should redirect to `/target?callback=/other`
 
 ## Expected
 
-Redirect to `/target?callback=%2Fother` with `callback` value `/other`
+Redirect to `/target?callback=/other` (with `callback` value `/other`)
 
 ## Actual
 
-Redirect fails or wrong encoding because comparison `final.fullPath === fullPath` fails when one is encoded and the other isn't.
+Redirect fails because `final.fullPath === fullPath` comparison fails when one is encoded and the other isn't.

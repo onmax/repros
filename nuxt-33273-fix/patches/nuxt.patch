@@ -1,5 +1,5 @@
 diff --git a/dist/app/composables/router.js b/dist/app/composables/router.js
-index e2412d24d4acded3dbf0f170659a09edcbbd35b5..aba9bd1770a664beedab48b7780e370611b1f265 100644
+index ea86cac43f8c306d86b78a57611962033df9e0a1..d1cb5b49399b53ac928a7ea29bfdc84fcac02802 100644
 --- a/dist/app/composables/router.js
 +++ b/dist/app/composables/router.js
 @@ -120,7 +120,7 @@ export const navigateTo = (to, options) => {
