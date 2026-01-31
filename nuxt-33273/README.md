@@ -12,11 +12,11 @@ Issue: https://github.com/nuxt/nuxt/issues/33273
 pnpm i && pnpm dev
 ```
 
-Visit `/trigger` - should redirect to `/target?callback=/other`
+Visit `/trigger` - should redirect to `/target?callback=https://example.com`
 
 ## Expected
 
-Redirect to `/target?callback=/other` (with `callback` value `/other`)
+Redirect to `/target?callback=https://example.com` (with `callback` value `https://example.com`)
 
 ## Actual
 

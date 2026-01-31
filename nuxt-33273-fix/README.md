@@ -16,4 +16,4 @@ Normalize both paths via `encodeURL()` before comparing: `encodeURL(final.fullPa
 pnpm i && pnpm dev
 ```
 
-Visit `/trigger` - redirects to `/target?callback=/other` (with `callback` value `/other`)
+Visit `/trigger` - redirects to `/target?callback=https://example.com` (with `callback` value `https://example.com`)
