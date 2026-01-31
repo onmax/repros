@@ -1,0 +1,8 @@
+{
+  "name": "nuxt-33273-fix",
+  "private": true,
+  "type": "module",
+  "scripts": { "dev": "nuxt dev", "build": "nuxt build" },
+  "devDependencies": { "nuxt": "^3.21.0" },
+  "pnpm": { "patchedDependencies": { "nuxt@3.21.0": "patches/nuxt.patch" } }
+}
