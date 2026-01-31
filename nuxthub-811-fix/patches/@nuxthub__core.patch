@@ -2,26 +2,29 @@ diff --git a/dist/module.mjs b/dist/module.mjs
 index 1ef9c1437928b792369a168489dbf4ac6842e334..f6240e2f195248124cb867a5ca73fdf866832576 100644
 --- a/dist/module.mjs
 +++ b/dist/module.mjs
-@@ -641,6 +641,7 @@ export const db: ReturnType<typeof drizzleCore<typeof schema>>
+@@ -641,6 +641,8 @@ export const db: ReturnType<typeof drizzleCore<typeof schema>>
    };
    try {
      await writeFile(join(physicalDbDir, "package.json"), JSON.stringify(packageJson, null, 2));
++    // Write index.d.ts for TypeScript to resolve relative directory imports
 +    await writeFile(join(physicalDbDir, "index.d.ts"), `export * from './db'`);
      const schemaPath = join(physicalDbDir, "schema.mjs");
      const schemaDtsPath = join(physicalDbDir, "schema.d.mts");
      const schemaExists = await stat(schemaPath).then((s) => s.size > 20).catch(() => false);
-@@ -770,6 +771,7 @@ export const kv = createStorage({
+@@ -770,6 +772,8 @@ export const kv = createStorage({
      join(physicalKvDir, "package.json"),
      JSON.stringify(packageJson, null, 2)
    );
++  // Write index.d.ts for TypeScript to resolve relative directory imports
 +  await writeFile(join(physicalKvDir, "index.d.ts"), `export * from './kv'`);
    nuxt.options.alias["hub:kv"] = "@nuxthub/kv";
    addServerImports({ name: "kv", from: "@nuxthub/kv", meta: { description: `The Key-Value storage instance.` } });
    addTypeTemplate({
-@@ -859,6 +861,7 @@ export const blob = createBlobStorage(createDriver(${JSON.stringify(driverOption
+@@ -859,6 +863,8 @@ export const blob = createBlobStorage(createDriver(${JSON.stringify(driverOption
      }
    };
    await writeFile(join(physicalBlobDir, "package.json"), JSON.stringify(packageJson, null, 2));
++  // Write index.d.ts for TypeScript to resolve relative directory imports
 +  await writeFile(join(physicalBlobDir, "index.d.ts"), `export * from './blob'`);
    nuxt.options.alias["hub:blob"] = "@nuxthub/blob";
    addServerImports({ name: "blob", from: "@nuxthub/blob", meta: { description: `The Blob storage instance.` } });
