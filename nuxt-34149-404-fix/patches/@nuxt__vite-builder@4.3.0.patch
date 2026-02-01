@@ -1,0 +1,18 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 7fb816c6e851a0194ea0a557401081cf2d48ba10..5e3d80dbf20be6174ac9f996c8204a2d0de749e0 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -1,3 +1,4 @@
++import { createError } from "h3";
+ import { isBuiltin } from "node:module";
+ import fs, { existsSync, readFileSync } from "node:fs";
+ import { performance } from "node:perf_hooks";
+@@ -861,7 +862,7 @@ function DevServerPlugin(nuxt) {
+ 						return err ? reject(err) : resolve$1(null);
+ 					});
+ 				});
+-				if (url.startsWith(nuxt.options.app.buildAssetsDir) && !staticBases.some((baseURL) => url.startsWith(baseURL)) && !devHandlerRegexes.some((regex) => regex.test(url))) throw { status: 404 };
++				if (url.startsWith(nuxt.options.app.buildAssetsDir) && !staticBases.some((baseURL) => url.startsWith(baseURL)) && !devHandlerRegexes.some((regex) => regex.test(url))) throw createError({ statusCode: 404 });
+ 			});
+ 			await nuxt.callHook("server:devHandler", viteMiddleware, { cors: (url) => {
+ 				if (useViteCors) return false;
