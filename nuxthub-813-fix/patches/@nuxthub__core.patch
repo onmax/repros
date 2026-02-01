@@ -1,0 +1,13 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 1ef9c1437928b792369a168489dbf4ac6842e334..29b9a507f0bda7e084d5585cf4dc44a73459fcf4 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -314,7 +314,7 @@ async function setupDatabase(nuxt, hub, deps) {
+       const dbBinding = d1Databases.find((db) => db.binding === "DB");
+       if (dbBinding) {
+         dbBinding.migrations_table ||= "_hub_migrations";
+-        dbBinding.migrations_dir ||= ".output/server/db/migrations/";
++        dbBinding.migrations_dir ||= "db/migrations/sqlite/";
+       }
+     });
+   }
