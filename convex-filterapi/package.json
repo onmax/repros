@@ -1,0 +1,8 @@
+{
+  "name": "convex-filterapi-repro",
+  "private": true,
+  "type": "module",
+  "scripts": { "typecheck": "tsc --noEmit" },
+  "dependencies": { "convex": "1.29.3", "@convex-dev/r2": "file:/Users/maxi/references/r2" },
+  "devDependencies": { "typescript": "^5.7.0" }
+}
