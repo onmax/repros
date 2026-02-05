@@ -1,0 +1,1 @@
+{ "private": true, "pnpm": { "patchedDependencies": { "@nuxt/nitro-server@4.3.0": "patches/@nuxt__nitro-server.patch" } } }
