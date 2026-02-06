@@ -13,5 +13,8 @@
     "drizzle-kit": "^0.31.8",
     "drizzle-orm": "^0.45.1",
     "nuxt": "^4.2.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
   }
 }
