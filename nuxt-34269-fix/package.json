@@ -1,0 +1,19 @@
+{
+  "name": "nuxt-34269-fix",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "dependencies": {
+    "nuxt": "^4.3.0"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "nuxt@4.3.0": "patches/nuxt@4.3.0.patch"
+    }
+  }
+}

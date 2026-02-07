@@ -1,0 +1,13 @@
+diff --git a/dist/app/plugins/revive-payload.client.js b/dist/app/plugins/revive-payload.client.js
+index 080fb81d799b56c55aac0b5f9db2a8fb567413ae..931eac0ab1af9288e61b65f46a52d2217954fbec 100644
+--- a/dist/app/plugins/revive-payload.client.js
++++ b/dist/app/plugins/revive-payload.client.js
+@@ -39,6 +39,8 @@ export default defineNuxtPlugin({
+       definePayloadReviver(reviver, fn);
+     }
+     Object.assign(nuxtApp.payload, await nuxtApp.runWithContext(getNuxtClientPayload));
++    // Ensure payload.data is always initialized (fix for ssr:false -> prerendered navigation)
++    nuxtApp.payload.data ||= shallowReactive({});
+     delete window.__NUXT__;
+   }
+ });
