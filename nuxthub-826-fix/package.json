@@ -1,0 +1,1 @@
+{ "private": true, "pnpm": { "patchedDependencies": { "@nuxthub/core@0.10.6": "patches/@nuxthub__core.patch" } } }
