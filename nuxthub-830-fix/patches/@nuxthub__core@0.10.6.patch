@@ -1,0 +1,119 @@
+diff --git a/dist/blob/runtime/blob.d.ts b/dist/blob/runtime/blob.d.ts
+index 35b2030796e78b2b304e40a44a842270d4761132..ae989fb105986bc39b71096d85cb2cbf5c37dc2d 100644
+--- a/dist/blob/runtime/blob.d.ts
++++ b/dist/blob/runtime/blob.d.ts
+@@ -1,4 +1,4 @@
+-import type { BlobStorage, BlobEnsureOptions } from '@nuxthub/core/blob'
++import type { BlobStorage } from '@nuxthub/core/blob'
+ 
+ /**
+  * The Blob storage instance.
+@@ -26,4 +26,4 @@ export const blob: BlobStorage
+  *
+  * @see https://hub.nuxt.com/docs/blob/usage#validation
+  */
+-export const ensureBlob: (blob: Blob, options: BlobEnsureOptions) => void
++export { ensureBlob } from '@nuxthub/core/blob'
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 1ef9c1437928b792369a168489dbf4ac6842e334..20ff008a40dc18dba44689ecefcfd33d0c50e215 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -1,6 +1,7 @@
+-import { readFile, writeFile, mkdir, copyFile, stat } from 'node:fs/promises';
++import { readFile, writeFile, mkdir, copyFile, stat, rename, rm } from 'node:fs/promises';
++import { createHash, randomBytes } from 'node:crypto';
+ import { logger, createResolver, addServerPlugin, getLayerDirectories, updateTemplates, addTemplate, addTypeTemplate, addServerHandler, addServerImports, addImportsDir, defineNuxtModule } from '@nuxt/kit';
+-import { join, resolve as resolve$1, relative } from 'pathe';
++import { join, resolve as resolve$1, relative, dirname } from 'pathe';
+ import { defu } from 'defu';
+ import { readPackageJSON, findWorkspaceDir } from 'pkg-types';
+ import { provider } from 'std-env';
+@@ -37,6 +38,21 @@ function addWranglerBinding(nuxt, type, binding) {
+   }
+ }
+ 
++async function writeFileAtomic(path, contents) {
++  await mkdir(dirname(path), { recursive: true });
++  const tmpPath = join(dirname(path), `.${process.pid}.${randomBytes(6).toString("hex")}.tmp`);
++  await writeFile(tmpPath, contents, "utf-8");
++  try {
++    await rename(tmpPath, path);
++  } catch (err) {
++    if (err?.code !== "EEXIST" && err?.code !== "EPERM") {
++      throw err;
++    }
++    await rm(path, { force: true });
++    await rename(tmpPath, path);
++  }
++}
++
+ function resolveCacheConfig(hub) {
+   if (!hub.cache) return false;
+   const userConfig = typeof hub.cache === "object" ? hub.cache : {};
+@@ -835,18 +851,20 @@ async function setupBlob(nuxt, hub, deps) {
+     return;
+   }
+   const blobContent = `import { createBlobStorage } from "@nuxthub/core/blob";
+-import { createDriver } from "@nuxthub/core/blob/drivers/${driver}";
+-
+-export { ensureBlob } from "@nuxthub/core/blob";
+-export const blob = createBlobStorage(createDriver(${JSON.stringify(driverOptions)}));
+-`;
+-  const physicalBlobDir = join(nuxt.options.rootDir, "node_modules", "@nuxthub", "blob");
+-  await mkdir(physicalBlobDir, { recursive: true });
+-  await writeFile(join(physicalBlobDir, "blob.mjs"), blobContent);
+-  await copyFile(
+-    resolve("blob/runtime/blob.d.ts"),
+-    join(physicalBlobDir, "blob.d.ts")
+-  );
++	import { createDriver } from "@nuxthub/core/blob/drivers/${driver}";
++	
++	export { ensureBlob } from "@nuxthub/core/blob";
++	export const blob = createBlobStorage(createDriver(${JSON.stringify(driverOptions)}));
++	`;
++  const blobHash = createHash("sha256").update(blobContent).digest("hex").slice(0, 12);
++  const blobShimTemplate = addTemplate({
++    filename: `hub/blob.${blobHash}.mjs`,
++    write: true,
++    getContents: () => blobContent
++  });
++  nuxt.options.alias ||= {};
++  nuxt.options.alias["@nuxthub/blob"] = blobShimTemplate.dst;
++  nuxt.options.alias["hub:blob"] = blobShimTemplate.dst;
+   const packageJson = {
+     name: "@nuxthub/blob",
+     version: "0.0.0",
+@@ -858,16 +876,29 @@ export const blob = createBlobStorage(createDriver(${JSON.stringify(driverOption
+       }
+     }
+   };
+-  await writeFile(join(physicalBlobDir, "package.json"), JSON.stringify(packageJson, null, 2));
+-  nuxt.options.alias["hub:blob"] = "@nuxthub/blob";
+   addServerImports({ name: "blob", from: "@nuxthub/blob", meta: { description: `The Blob storage instance.` } });
+   addServerImports({ name: "ensureBlob", from: "@nuxthub/blob", meta: { description: `Ensure the blob is valid and meets the specified requirements.` } });
+   addTypeTemplate({
+     filename: "hub/blob.d.ts",
+-    getContents: () => `declare module 'hub:blob' {
++    getContents: () => `import type { BlobStorage } from '@nuxthub/core/blob'
++
++declare module '@nuxthub/blob' {
++  export const blob: BlobStorage
++  export { ensureBlob } from '@nuxthub/core/blob'
++}
++
++declare module 'hub:blob' {
+   export * from '@nuxthub/blob'
+-}`
++}
++`
+   }, { nitro: true, nuxt: true });
++  nuxt.hook("nitro:build:before", async () => {
++    const physicalBlobDir = join(nuxt.options.rootDir, "node_modules", "@nuxthub", "blob");
++    const blobDts = await readFile(resolve("blob/runtime/blob.d.ts"), "utf-8");
++    await writeFileAtomic(join(physicalBlobDir, "blob.mjs"), blobContent);
++    await writeFileAtomic(join(physicalBlobDir, "blob.d.ts"), blobDts);
++    await writeFileAtomic(join(physicalBlobDir, "package.json"), JSON.stringify(packageJson, null, 2) + "\n");
++  });
+   if (blobConfig.driver === "vercel-blob") {
+     nuxt.options.runtimeConfig.public.hub ||= {};
+     nuxt.options.runtimeConfig.public.hub.blobProvider = "vercel-blob";
