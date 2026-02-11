@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   modules: ['@nuxthub/core'],
   hub: {
-    db: true,
+    db: 'sqlite',
     blob: false,
     kv: false,
     cache: false,

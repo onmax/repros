@@ -41,7 +41,7 @@ index 1ef9c1437928b792369a168489dbf4ac6842e334..73595d934d01852bc5a60a9deee56392
 -    join(physicalDbDir, "db.mjs"),
 -    drizzleOrmContent.replace(/from '\.\/db\/schema\.mjs'/g, "from './schema.mjs'")
 -  );
-+  const dbShimContent = drizzleOrmContent.replace(/from '\.\/db\/schema\.mjs'/g, "from './schema.mjs'");
++  const dbShimContent = drizzleOrmContent;
 +  const dbShimTemplate = addTemplate({
 +    filename: "hub/db.mjs",
 +    write: true,
@@ -84,7 +84,7 @@ index 1ef9c1437928b792369a168489dbf4ac6842e334..73595d934d01852bc5a60a9deee56392
 +  nuxt.hook("nitro:build:before", async () => {
 +    const physicalDbDir = join(nuxt.options.rootDir, "node_modules", "@nuxthub", "db");
 +    await mkdir(physicalDbDir, { recursive: true });
-+    await writeFile(join(physicalDbDir, "db.mjs"), dbShimContent);
++    await writeFile(join(physicalDbDir, "db.mjs"), dbShimContent.replace(/from '\.\/db\/schema\.mjs'/g, "from './schema.mjs'"));
 +    await writeFile(join(physicalDbDir, "db.d.ts"), physicalDbTypes);
 +    try {
 +      await writeFile(join(physicalDbDir, "package.json"), JSON.stringify(packageJson, null, 2));
