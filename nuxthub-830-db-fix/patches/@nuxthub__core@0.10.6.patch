@@ -1,0 +1,103 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 1ef9c1437928b792369a168489dbf4ac6842e334..73595d934d01852bc5a60a9deee56392ead435f8 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -401,17 +401,23 @@ async function generateDatabaseSchema(nuxt, hub) {
+   export * from '#build/hub/db/schema.mjs'
+ }`
+   }, { nitro: true, nuxt: true });
+-  nuxt.options.alias["hub:db:schema"] = "@nuxthub/db/schema";
++  nuxt.options.alias["hub:db:schema"] = join(nuxt.options.buildDir, "hub/db/schema.mjs");
+ }
+ async function setupDatabaseClient(nuxt, hub) {
+   const { dialect, driver, connection, mode, casing, replicas } = hub.db;
+   const driverForTypes = driver === "d1-http" ? "sqlite-proxy" : driver;
+-  const databaseTypes = `declare module 'hub:db' {
+-  export * from '@nuxthub/db'
+-}`;
+   addTypeTemplate({
+     filename: "hub/db.d.ts",
+-    getContents: () => databaseTypes
++    getContents: () => `import type { DrizzleConfig } from 'drizzle-orm'
++
++declare module '@nuxthub/db' {
++  export const db: any
++  export const schema: any
++}
++
++declare module 'hub:db' {
++  export * from '@nuxthub/db'
++}`
+   }, { nitro: true, nuxt: true });
+   const modeOption = dialect === "mysql" ? `, mode: '${mode || "default"}'` : "";
+   const casingOption = casing ? `, casing: '${casing}'` : "";
+@@ -606,12 +612,14 @@ ${hasReplicas ? `    const primary = drizzle({ connection: { uri }, schema${mode
+     _db = drizzle({ connection: { url, authToken }, schema${casingOption} })`
+     );
+   }
+-  const physicalDbDir = join(nuxt.options.rootDir, "node_modules", "@nuxthub", "db");
+-  await mkdir(physicalDbDir, { recursive: true });
+-  await writeFile(
+-    join(physicalDbDir, "db.mjs"),
+-    drizzleOrmContent.replace(/from '\.\/db\/schema\.mjs'/g, "from './schema.mjs'")
+-  );
++  const dbShimContent = drizzleOrmContent.replace(/from '\.\/db\/schema\.mjs'/g, "from './schema.mjs'");
++  const dbShimTemplate = addTemplate({
++    filename: "hub/db.mjs",
++    write: true,
++    getContents: () => dbShimContent
++  });
++  nuxt.options.alias["@nuxthub/db"] = dbShimTemplate.dst;
++  nuxt.options.alias["hub:db"] = dbShimTemplate.dst;
+   const physicalDbTypes = `import type { DrizzleConfig } from 'drizzle-orm'
+ import { drizzle as drizzleCore } from 'drizzle-orm/${driverForTypes}'
+ import * as schema from './schema.mjs'
+@@ -626,10 +634,6 @@ export { schema }
+  */
+ export const db: ReturnType<typeof drizzleCore<typeof schema>>
+ `;
+-  await writeFile(
+-    join(physicalDbDir, "db.d.ts"),
+-    physicalDbTypes
+-  );
+   const packageJson = {
+     name: "@nuxthub/db",
+     version: "0.0.0",
+@@ -639,20 +643,25 @@ export const db: ReturnType<typeof drizzleCore<typeof schema>>
+       "./schema": { types: "./schema.d.mts", default: "./schema.mjs" }
+     }
+   };
+-  try {
+-    await writeFile(join(physicalDbDir, "package.json"), JSON.stringify(packageJson, null, 2));
+-    const schemaPath = join(physicalDbDir, "schema.mjs");
+-    const schemaDtsPath = join(physicalDbDir, "schema.d.mts");
+-    const schemaExists = await stat(schemaPath).then((s) => s.size > 20).catch(() => false);
+-    const schemaDtsExists = await stat(schemaDtsPath).then((s) => s.size > 20).catch(() => false);
+-    if (!schemaExists) await writeFile(schemaPath, "export {}");
+-    if (!schemaDtsExists) await writeFile(schemaDtsPath, "export {}");
+-  } catch (error) {
+-    throw new Error(`Failed to create @nuxthub/db package files: ${error.message}`);
+-  }
+-  nuxt.options.alias["hub:db"] = "@nuxthub/db";
+   addServerImports({ name: "db", from: "@nuxthub/db", meta: { description: `The ${driver} database client.` } });
+   addServerImports({ name: "schema", from: "@nuxthub/db", meta: { description: `The database schema object` } });
++  nuxt.hook("nitro:build:before", async () => {
++    const physicalDbDir = join(nuxt.options.rootDir, "node_modules", "@nuxthub", "db");
++    await mkdir(physicalDbDir, { recursive: true });
++    await writeFile(join(physicalDbDir, "db.mjs"), dbShimContent);
++    await writeFile(join(physicalDbDir, "db.d.ts"), physicalDbTypes);
++    try {
++      await writeFile(join(physicalDbDir, "package.json"), JSON.stringify(packageJson, null, 2));
++      const schemaPath = join(physicalDbDir, "schema.mjs");
++      const schemaDtsPath = join(physicalDbDir, "schema.d.mts");
++      const schemaExists = await stat(schemaPath).then((s) => s.size > 20).catch(() => false);
++      const schemaDtsExists = await stat(schemaDtsPath).then((s) => s.size > 20).catch(() => false);
++      if (!schemaExists) await writeFile(schemaPath, "export {}");
++      if (!schemaDtsExists) await writeFile(schemaDtsPath, "export {}");
++    } catch (error) {
++      throw new Error(`Failed to create @nuxthub/db package files: ${error.message}`);
++    }
++  });
+ }
+ async function setupDatabaseConfig(nuxt, hub) {
+   const { dialect, casing } = hub.db;
