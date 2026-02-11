@@ -1,0 +1,1 @@
+{ "name": "h3-unhandled-false", "type": "module", "scripts": { "dev": "npx tsx server.ts" }, "dependencies": { "h3": "latest" } }

@@ -1,0 +1,14 @@
+{
+  "name": "sandbox-test",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build"
+  },
+  "dependencies": {
+    "@nuxthub/core": "link:/Users/maxi/nuxt/hub",
+    "@vercel/sandbox": "^1.4.1",
+    "nuxt": "^4.3.0"
+  }
+}
