@@ -1,0 +1,25 @@
+{
+  "name": "nuxthub-832-fix",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.29.2",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "BETTER_AUTH_SECRET=abcdefghijklmnopqrstuvwxyz123456 nuxt build",
+    "postinstall": "BETTER_AUTH_SECRET=abcdefghijklmnopqrstuvwxyz123456 nuxt prepare",
+    "verify": "node tools/verify.mjs"
+  },
+  "dependencies": {
+    "@nuxthub/core": "0.10.6",
+    "@onmax/nuxt-better-auth": "0.0.2-alpha.21",
+    "better-auth": "1.5.0-beta.13",
+    "drizzle-kit": "^0.31.9",
+    "drizzle-orm": "^0.45.1",
+    "nuxt": "4.3.1"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@nuxthub/core@0.10.6": "patches/@nuxthub__core@0.10.6.patch"
+    }
+  }
+}
