@@ -1,0 +1,118 @@
+diff --git a/dist/auth-options.js b/dist/auth-options.js
+index 406a0a6e9027f5052327e9735a0414eb06ccca5e..bb7d9333bd96e9beb213c4294d83d1afa920ebc9 100644
+--- a/dist/auth-options.js
++++ b/dist/auth-options.js
+@@ -1,5 +1,4 @@
+ import { anonymous, bearer, emailOTP, genericOAuth, jwt, magicLink, oidcProvider, oneTap, oneTimeToken, phoneNumber, twoFactor, username, } from "better-auth/plugins";
+-import { passkey } from "@better-auth/passkey";
+ import { convex } from "./plugins/convex/index.js";
+ import { convexAdapter } from "./client/adapter.js";
+ // This is the config used to generate the schema
+@@ -15,7 +14,6 @@ export const options = {
+         phoneNumber(),
+         magicLink({ sendMagicLink: async () => { } }),
+         emailOTP({ sendVerificationOTP: async () => { } }),
+-        passkey(),
+         genericOAuth({
+             config: [
+                 {
+diff --git a/dist/plugins/convex/index.js b/dist/plugins/convex/index.js
+index 075f4f1be23c979ebc1ab2341f0f5e0bacba01ae..d5cc3466e9803a6207411b900f24b27ce9ff796c 100644
+--- a/dist/plugins/convex/index.js
++++ b/dist/plugins/convex/index.js
+@@ -1,5 +1,5 @@
+-import { createAuthMiddleware, sessionMiddleware } from "better-auth/api";
+-import { createAuthEndpoint, jwt as jwtPlugin, bearer as bearerPlugin, oidcProvider as oidcProviderPlugin, } from "better-auth/plugins";
++import { createAuthEndpoint, createAuthMiddleware, sessionMiddleware } from "better-auth/api";
++import { jwt as jwtPlugin, bearer as bearerPlugin, oidcProvider as oidcProviderPlugin, } from "better-auth/plugins";
+ import { omit } from "convex-helpers";
+ export const JWT_COOKIE_NAME = "convex_jwt";
+ const getJwksAlg = (authProvider) => {
+diff --git a/dist/plugins/cross-domain/index.js b/dist/plugins/cross-domain/index.js
+index 19d1f47a751867286455f854266277afb51b9586..284d45120113bf314e5f6db252817095a09a2630 100644
+--- a/dist/plugins/cross-domain/index.js
++++ b/dist/plugins/cross-domain/index.js
+@@ -1,6 +1,7 @@
+ import { setSessionCookie } from "better-auth/cookies";
+ import { generateRandomString } from "better-auth/crypto";
+-import { createAuthEndpoint, createAuthMiddleware, oneTimeToken as oneTimeTokenPlugin, } from "better-auth/plugins";
++import { createAuthEndpoint, createAuthMiddleware } from "better-auth/api";
++import { oneTimeToken as oneTimeTokenPlugin, } from "better-auth/plugins";
+ import { z } from "zod";
+ export const crossDomain = ({ siteUrl }) => {
+     const oneTimeToken = oneTimeTokenPlugin();
+diff --git a/package.json b/package.json
+index fcff31a10f8bdfd4fc448c6002e2402e2d394d40..d628f05fce7e67947e1729c5d3262bedda452c66 100644
+--- a/package.json
++++ b/package.json
+@@ -103,7 +103,7 @@
+     }
+   },
+   "peerDependencies": {
+-    "better-auth": "1.4.9",
++    "better-auth": ">=1.4.9 <1.6.0 || >=1.5.0-beta.0 <1.5.0",
+     "convex": "^1.25.0",
+     "react": "^18.3.1 || ^19.0.0",
+     "react-dom": "^18.3.1 || ^19.0.0"
+@@ -142,7 +142,6 @@
+   "types": "./dist/client/index.d.ts",
+   "module": "./dist/client/index.js",
+   "dependencies": {
+-    "@better-auth/passkey": "1.4.9",
+     "@better-fetch/fetch": "^1.1.18",
+     "common-tags": "^1.8.2",
+     "convex-helpers": "^0.1.95",
+diff --git a/src/auth-options.ts b/src/auth-options.ts
+index fa93b799465dc2cd890d0ae53cd225cff2bbb087..2764a46c62114439ce83f74bee064e2adec2ce23 100644
+--- a/src/auth-options.ts
++++ b/src/auth-options.ts
+@@ -13,7 +13,6 @@ import {
+   twoFactor,
+   username,
+ } from "better-auth/plugins";
+-import { passkey } from "@better-auth/passkey";
+ import { convex } from "./plugins/convex/index.js";
+ import { convexAdapter } from "./client/adapter.js";
+ 
+@@ -30,7 +29,6 @@ export const options = {
+     phoneNumber(),
+     magicLink({ sendMagicLink: async () => {} }),
+     emailOTP({ sendVerificationOTP: async () => {} }),
+-    passkey(),
+     genericOAuth({
+       config: [
+         {
+diff --git a/src/plugins/convex/index.ts b/src/plugins/convex/index.ts
+index b10a9dce59983c2605c29ac2958c4f0d32ffeeca..f6907fd69343c4d5108fa382b59e6d9c45f17292 100644
+--- a/src/plugins/convex/index.ts
++++ b/src/plugins/convex/index.ts
+@@ -4,9 +4,12 @@ import type {
+   User,
+ } from "better-auth";
+ import type { BetterAuthOptions } from "better-auth/minimal";
+-import { createAuthMiddleware, sessionMiddleware } from "better-auth/api";
+ import {
+   createAuthEndpoint,
++  createAuthMiddleware,
++  sessionMiddleware,
++} from "better-auth/api";
++import {
+   jwt as jwtPlugin,
+   bearer as bearerPlugin,
+   oidcProvider as oidcProviderPlugin,
+diff --git a/src/plugins/cross-domain/index.ts b/src/plugins/cross-domain/index.ts
+index 397f37a2042bb8cda8ae7bda48f037658d5a1e04..64d2d53c686e391354212165748f479210e1461c 100644
+--- a/src/plugins/cross-domain/index.ts
++++ b/src/plugins/cross-domain/index.ts
+@@ -2,10 +2,9 @@ import type { BetterAuthPlugin } from "better-auth";
+ import { setSessionCookie } from "better-auth/cookies";
+ import { generateRandomString } from "better-auth/crypto";
+ import {
+-  createAuthEndpoint,
+-  createAuthMiddleware,
+   oneTimeToken as oneTimeTokenPlugin,
+ } from "better-auth/plugins";
++import { createAuthEndpoint, createAuthMiddleware } from "better-auth/api";
+ import { z } from "zod";
+ 
+ export const crossDomain = ({ siteUrl }: { siteUrl: string }) => {
