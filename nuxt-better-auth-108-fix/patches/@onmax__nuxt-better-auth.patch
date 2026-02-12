@@ -1,0 +1,30 @@
+diff --git a/src/runtime/app/composables/useUserSession.ts b/src/runtime/app/composables/useUserSession.ts
+--- a/src/runtime/app/composables/useUserSession.ts
++++ b/src/runtime/app/composables/useUserSession.ts
+@@ -19,7 +19,7 @@
+   waitForSession: () => Promise<void>
+   fetchSession: (options?: { headers?: HeadersInit, force?: boolean }) => Promise<void>
+-  updateUser: (updates: Partial<AuthUser>) => void
++  updateUser: (updates: Partial<AuthUser>) => Promise<void>
+ }
+
+@@ -98,9 +98,19 @@
+
+-  function updateUser(updates: Partial<AuthUser>) {
+-    if (user.value)
+-      user.value = { ...user.value, ...updates }
++  async function updateUser(updates: Partial<AuthUser>) {
++    if (!user.value)
++      return
++    const prev = user.value
++    user.value = { ...user.value, ...updates }
++    if (client) {
++      try {
++        await (client as any).updateUser(updates)
++      }
++      catch (e) {
++        user.value = prev
++        throw e
++      }
++    }
+   }
