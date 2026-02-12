@@ -1,0 +1,297 @@
+diff --git a/dist/RangeCalendar/RangeCalendarCellTrigger.cjs b/dist/RangeCalendar/RangeCalendarCellTrigger.cjs
+index ce1d2d7cbe59b7b8af158e356dd577cdebc2bcb2..2b69e3fb016400aa25ba2c1e24e200efc4e1de18 100644
+--- a/dist/RangeCalendar/RangeCalendarCellTrigger.cjs
++++ b/dist/RangeCalendar/RangeCalendarCellTrigger.cjs
+@@ -63,18 +63,20 @@ var RangeCalendarCellTrigger_vue_vue_type_script_setup_true_lang_default = /* @_
+ 		function changeDate(e, date) {
+ 			if (rootContext.readonly.value) return;
+ 			if (rootContext.isDateDisabled(date) || rootContext.isDateUnavailable?.(date)) return;
+-			rootContext.lastPressedDateValue.value = date.copy();
+ 			if (rootContext.startValue.value && rootContext.highlightedRange.value === null) {
+ 				if ((0, __internationalized_date.isSameDay)(date, rootContext.startValue.value) && !rootContext.preventDeselect.value && !rootContext.endValue.value) {
+ 					rootContext.startValue.value = void 0;
+ 					rootContext.onPlaceholderChange(date);
++					rootContext.lastPressedDateValue.value = date.copy();
+ 					return;
+ 				} else if (!rootContext.endValue.value) {
+ 					e.preventDefault();
+ 					if (rootContext.lastPressedDateValue.value && (0, __internationalized_date.isSameDay)(rootContext.lastPressedDateValue.value, date)) rootContext.startValue.value = date.copy();
++					rootContext.lastPressedDateValue.value = date.copy();
+ 					return;
+ 				}
+ 			}
++			rootContext.lastPressedDateValue.value = date.copy();
+ 			if (rootContext.startValue.value && rootContext.endValue.value && (0, __internationalized_date.isSameDay)(rootContext.startValue.value, rootContext.endValue.value) && (0, __internationalized_date.isSameDay)(rootContext.startValue.value, date) && !rootContext.preventDeselect.value) {
+ 				rootContext.startValue.value = void 0;
+ 				rootContext.endValue.value = void 0;
+diff --git a/dist/RangeCalendar/RangeCalendarCellTrigger.js b/dist/RangeCalendar/RangeCalendarCellTrigger.js
+index 97fab1d764678a5eb9aa2d668386fdbfa84fe01e..fa20d5d76c0ca6ddbd5211bd5e602c894484ce27 100644
+--- a/dist/RangeCalendar/RangeCalendarCellTrigger.js
++++ b/dist/RangeCalendar/RangeCalendarCellTrigger.js
+@@ -62,18 +62,20 @@ var RangeCalendarCellTrigger_vue_vue_type_script_setup_true_lang_default = /* @_
+ 		function changeDate(e, date) {
+ 			if (rootContext.readonly.value) return;
+ 			if (rootContext.isDateDisabled(date) || rootContext.isDateUnavailable?.(date)) return;
+-			rootContext.lastPressedDateValue.value = date.copy();
+ 			if (rootContext.startValue.value && rootContext.highlightedRange.value === null) {
+ 				if (isSameDay(date, rootContext.startValue.value) && !rootContext.preventDeselect.value && !rootContext.endValue.value) {
+ 					rootContext.startValue.value = void 0;
+ 					rootContext.onPlaceholderChange(date);
++					rootContext.lastPressedDateValue.value = date.copy();
+ 					return;
+ 				} else if (!rootContext.endValue.value) {
+ 					e.preventDefault();
+ 					if (rootContext.lastPressedDateValue.value && isSameDay(rootContext.lastPressedDateValue.value, date)) rootContext.startValue.value = date.copy();
++					rootContext.lastPressedDateValue.value = date.copy();
+ 					return;
+ 				}
+ 			}
++			rootContext.lastPressedDateValue.value = date.copy();
+ 			if (rootContext.startValue.value && rootContext.endValue.value && isSameDay(rootContext.startValue.value, rootContext.endValue.value) && isSameDay(rootContext.startValue.value, date) && !rootContext.preventDeselect.value) {
+ 				rootContext.startValue.value = void 0;
+ 				rootContext.endValue.value = void 0;
+diff --git a/dist/RangeCalendar/RangeCalendarGrid.cjs b/dist/RangeCalendar/RangeCalendarGrid.cjs
+index 90b26dde2fed5ada0c991d0bc10e200356a71089..1a6e4a53afab1dabc48852b189ccb0bc7289e9de 100644
+--- a/dist/RangeCalendar/RangeCalendarGrid.cjs
++++ b/dist/RangeCalendar/RangeCalendarGrid.cjs
+@@ -29,7 +29,8 @@ var RangeCalendarGrid_vue_vue_type_script_setup_true_lang_default = /* @__PURE__
+ 				"aria-readonly": readonly.value,
+ 				"aria-disabled": disabled.value,
+ 				"data-readonly": readonly.value && "",
+-				"data-disabled": disabled.value && ""
++				"data-disabled": disabled.value && "",
++				onMouseleave: () => { rootContext.focusedValue.value = undefined; }
+ 			}), {
+ 				default: (0, vue.withCtx)(() => [(0, vue.renderSlot)(_ctx.$slots, "default")]),
+ 				_: 3
+diff --git a/dist/RangeCalendar/RangeCalendarGrid.js b/dist/RangeCalendar/RangeCalendarGrid.js
+index e47357ecaeca33b7d7f3b6b8825dc957621658f2..9935674bbb304754cac703ed37a328f670f40cac 100644
+--- a/dist/RangeCalendar/RangeCalendarGrid.js
++++ b/dist/RangeCalendar/RangeCalendarGrid.js
+@@ -28,7 +28,8 @@ var RangeCalendarGrid_vue_vue_type_script_setup_true_lang_default = /* @__PURE__
+ 				"aria-readonly": readonly.value,
+ 				"aria-disabled": disabled.value,
+ 				"data-readonly": readonly.value && "",
+-				"data-disabled": disabled.value && ""
++				"data-disabled": disabled.value && "",
++				onMouseleave: () => { rootContext.focusedValue.value = undefined; }
+ 			}), {
+ 				default: withCtx(() => [renderSlot(_ctx.$slots, "default")]),
+ 				_: 3
+diff --git a/dist/RangeCalendar/RangeCalendarRoot.cjs b/dist/RangeCalendar/RangeCalendarRoot.cjs
+index e9ab6d3ca2279130c1e098ab77049bd0186b5d4d..13854c605e8cc0921da266da40a91a52f42db539 100644
+--- a/dist/RangeCalendar/RangeCalendarRoot.cjs
++++ b/dist/RangeCalendar/RangeCalendarRoot.cjs
+@@ -195,17 +195,19 @@ var RangeCalendarRoot_vue_vue_type_script_setup_true_lang_default = /* @__PURE__
+ 			},
+ 			passive: props.modelValue === void 0
+ 		});
+-		const validModelValue = (0, vue.ref)(modelValue.value);
++		const normalizeRange = (value) => value ?? { start: void 0, end: void 0 };
++		const normalizedModelValue = (0, vue.computed)(() => normalizeRange(modelValue.value));
++		const validModelValue = (0, vue.ref)(normalizeRange(modelValue.value));
+ 		(0, vue.watch)(validModelValue, (value) => {
+ 			emits("update:validModelValue", value);
+ 		});
+ 		const defaultDate = require_date_comparators.getDefaultDate({
+ 			defaultPlaceholder: props.placeholder,
+-			defaultValue: modelValue.value.start,
++			defaultValue: normalizeRange(modelValue.value).start,
+ 			locale: props.locale
+ 		});
+-		const startValue = (0, vue.ref)(modelValue.value.start);
+-		const endValue = (0, vue.ref)(modelValue.value.end);
++		const startValue = (0, vue.ref)(normalizeRange(modelValue.value).start);
++		const endValue = (0, vue.ref)(normalizeRange(modelValue.value).end);
+ 		const placeholder = (0, __vueuse_core.useVModel)(props, "placeholder", emits, {
+ 			defaultValue: props.defaultPlaceholder ?? defaultDate.copy(),
+ 			passive: props.placeholder === void 0
+@@ -241,9 +243,12 @@ var RangeCalendarRoot_vue_vue_type_script_setup_true_lang_default = /* @__PURE__
+ 			fixedDate,
+ 			maximumDays
+ 		});
+-		(0, vue.watch)(modelValue, (_modelValue, _prevValue) => {
+-			if (!_prevValue?.start && _modelValue?.start || !_modelValue || !_modelValue.start || startValue.value && !(0, __internationalized_date.isEqualDay)(_modelValue.start, startValue.value)) startValue.value = _modelValue?.start?.copy?.();
+-			if (!_prevValue?.end && _modelValue.end || !_modelValue || !_modelValue.end || endValue.value && !(0, __internationalized_date.isEqualDay)(_modelValue.end, endValue.value)) endValue.value = _modelValue?.end?.copy?.();
++		(0, vue.watch)(modelValue, (_modelValue) => {
++			const next = normalizeRange(_modelValue);
++			const isStartSynced = (!next.start && !startValue.value) || (!!next.start && !!startValue.value && (0, __internationalized_date.isEqualDay)(next.start, startValue.value));
++			if (!isStartSynced) startValue.value = next.start?.copy?.();
++			const isEndSynced = (!next.end && !endValue.value) || (!!next.end && !!endValue.value && (0, __internationalized_date.isEqualDay)(next.end, endValue.value));
++			if (!isEndSynced) endValue.value = next.end?.copy?.();
+ 		});
+ 		(0, vue.watch)(startValue, (_startValue) => {
+ 			if (_startValue && !(0, __internationalized_date.isEqualDay)(_startValue, placeholder.value)) onPlaceholderChange(_startValue);
+@@ -291,7 +296,7 @@ var RangeCalendarRoot_vue_vue_type_script_setup_true_lang_default = /* @__PURE__
+ 			startValue,
+ 			endValue,
+ 			formatter,
+-			modelValue,
++			modelValue: normalizedModelValue,
+ 			placeholder,
+ 			disabled,
+ 			initialFocus,
+@@ -354,7 +359,7 @@ var RangeCalendarRoot_vue_vue_type_script_setup_true_lang_default = /* @__PURE__
+ 					weekStartsOn: (0, vue.unref)(weekStartsOn),
+ 					locale: (0, vue.unref)(locale),
+ 					fixedWeeks: (0, vue.unref)(fixedWeeks),
+-					modelValue: (0, vue.unref)(modelValue)
++					modelValue: (0, vue.unref)(normalizedModelValue)
+ 				})]),
+ 				_: 3
+ 			}, 8, [
+diff --git a/dist/RangeCalendar/RangeCalendarRoot.js b/dist/RangeCalendar/RangeCalendarRoot.js
+index 7869e71d96cf75b8499883bbbea7db537042f419..b1dbeb64d09354ecdf578b4ac257bb8e71f1a44f 100644
+--- a/dist/RangeCalendar/RangeCalendarRoot.js
++++ b/dist/RangeCalendar/RangeCalendarRoot.js
+@@ -8,7 +8,7 @@ import { Primitive } from "../Primitive/Primitive.js";
+ import { usePrimitiveElement } from "../Primitive/usePrimitiveElement.js";
+ import { useCalendar } from "../Calendar/useCalendar.js";
+ import { useRangeCalendarState } from "./useRangeCalendar.js";
+-import { createBlock, createElementVNode, defineComponent, onMounted, openBlock, ref, renderSlot, toDisplayString, toRefs, unref, watch, withCtx } from "vue";
++import { computed, createBlock, createElementVNode, defineComponent, onMounted, openBlock, ref, renderSlot, toDisplayString, toRefs, unref, watch, withCtx } from "vue";
+ import { useEventListener, useVModel } from "@vueuse/core";
+ import { isEqualDay } from "@internationalized/date";
+ 
+@@ -194,17 +194,19 @@ var RangeCalendarRoot_vue_vue_type_script_setup_true_lang_default = /* @__PURE__
+ 			},
+ 			passive: props.modelValue === void 0
+ 		});
+-		const validModelValue = ref(modelValue.value);
++		const normalizeRange = (value) => value ?? { start: void 0, end: void 0 };
++		const normalizedModelValue = computed(() => normalizeRange(modelValue.value));
++		const validModelValue = ref(normalizeRange(modelValue.value));
+ 		watch(validModelValue, (value) => {
+ 			emits("update:validModelValue", value);
+ 		});
+ 		const defaultDate = getDefaultDate({
+ 			defaultPlaceholder: props.placeholder,
+-			defaultValue: modelValue.value.start,
++			defaultValue: normalizeRange(modelValue.value).start,
+ 			locale: props.locale
+ 		});
+-		const startValue = ref(modelValue.value.start);
+-		const endValue = ref(modelValue.value.end);
++		const startValue = ref(normalizeRange(modelValue.value).start);
++		const endValue = ref(normalizeRange(modelValue.value).end);
+ 		const placeholder = useVModel(props, "placeholder", emits, {
+ 			defaultValue: props.defaultPlaceholder ?? defaultDate.copy(),
+ 			passive: props.placeholder === void 0
+@@ -240,9 +242,12 @@ var RangeCalendarRoot_vue_vue_type_script_setup_true_lang_default = /* @__PURE__
+ 			fixedDate,
+ 			maximumDays
+ 		});
+-		watch(modelValue, (_modelValue, _prevValue) => {
+-			if (!_prevValue?.start && _modelValue?.start || !_modelValue || !_modelValue.start || startValue.value && !isEqualDay(_modelValue.start, startValue.value)) startValue.value = _modelValue?.start?.copy?.();
+-			if (!_prevValue?.end && _modelValue.end || !_modelValue || !_modelValue.end || endValue.value && !isEqualDay(_modelValue.end, endValue.value)) endValue.value = _modelValue?.end?.copy?.();
++		watch(modelValue, (_modelValue) => {
++			const next = normalizeRange(_modelValue);
++			const isStartSynced = (!next.start && !startValue.value) || (!!next.start && !!startValue.value && isEqualDay(next.start, startValue.value));
++			if (!isStartSynced) startValue.value = next.start?.copy?.();
++			const isEndSynced = (!next.end && !endValue.value) || (!!next.end && !!endValue.value && isEqualDay(next.end, endValue.value));
++			if (!isEndSynced) endValue.value = next.end?.copy?.();
+ 		});
+ 		watch(startValue, (_startValue) => {
+ 			if (_startValue && !isEqualDay(_startValue, placeholder.value)) onPlaceholderChange(_startValue);
+@@ -290,7 +295,7 @@ var RangeCalendarRoot_vue_vue_type_script_setup_true_lang_default = /* @__PURE__
+ 			startValue,
+ 			endValue,
+ 			formatter,
+-			modelValue,
++			modelValue: normalizedModelValue,
+ 			placeholder,
+ 			disabled,
+ 			initialFocus,
+@@ -353,7 +358,7 @@ var RangeCalendarRoot_vue_vue_type_script_setup_true_lang_default = /* @__PURE__
+ 					weekStartsOn: unref(weekStartsOn),
+ 					locale: unref(locale),
+ 					fixedWeeks: unref(fixedWeeks),
+-					modelValue: unref(modelValue)
++					modelValue: unref(normalizedModelValue)
+ 				})]),
+ 				_: 3
+ 			}, 8, [
+diff --git a/dist/RangeCalendar/useRangeCalendar.cjs b/dist/RangeCalendar/useRangeCalendar.cjs
+index e9d8053dcbec132b29192ac71cd64b1525fd58fe..fc0299f6796672b9bca03ef45402a8146353898c 100644
+--- a/dist/RangeCalendar/useRangeCalendar.cjs
++++ b/dist/RangeCalendar/useRangeCalendar.cjs
+@@ -17,7 +17,7 @@ function useRangeCalendarState(props) {
+ 		return false;
+ 	});
+ 	const isInvalid = (0, vue.computed)(() => {
+-		if (isStartInvalid.value || isEndInvalid.value) return false;
++		if (isStartInvalid.value || isEndInvalid.value) return true;
+ 		if (props.start.value && props.end.value && require_date_comparators.isBefore(props.end.value, props.start.value)) return true;
+ 		return false;
+ 	});
+@@ -56,7 +56,6 @@ function useRangeCalendarState(props) {
+ 				return !require_date_comparators.isBetween(date, minDate, maxDate);
+ 			}
+ 		}
+-		if (!props.start.value || props.end.value || (0, __internationalized_date.isSameDay)(props.start.value, date)) return false;
+ 		return false;
+ 	};
+ 	const isDateHighlightable = (date) => {
+@@ -74,11 +73,15 @@ function useRangeCalendarState(props) {
+ 			end
+ 		};
+ 		if (props.maximumDays?.value && !props.end.value) {
+-			const cappedEnd = isStartBeforeFocused ? start.add({ days: props.maximumDays.value - 1 }) : start.subtract({ days: props.maximumDays.value });
+-			return {
+-				start,
+-				end: cappedEnd
+-			};
++			const maximumDays = props.maximumDays.value;
++			const anchor = props.start.value;
++			if (isStartBeforeFocused) {
++				const maxEnd = anchor.add({ days: maximumDays - 1 });
++				return { start: anchor, end: maxEnd };
++			} else {
++				const minStart = anchor.subtract({ days: maximumDays - 1 });
++				return { start: minStart, end: anchor };
++			}
+ 		}
+ 		const isValid = require_date_comparators.areAllDaysBetweenValid(start, end, props.allowNonContiguousRanges.value ? () => false : props.isDateUnavailable, rangeIsDateDisabled, props.isDateHighlightable);
+ 		if (isValid) return {
+diff --git a/dist/RangeCalendar/useRangeCalendar.js b/dist/RangeCalendar/useRangeCalendar.js
+index 16c8545ff5ab9ac185dc6bdb3ce924e21128d585..88b8ec09517a5aede8975e95d493d9b0b7eda261 100644
+--- a/dist/RangeCalendar/useRangeCalendar.js
++++ b/dist/RangeCalendar/useRangeCalendar.js
+@@ -16,7 +16,7 @@ function useRangeCalendarState(props) {
+ 		return false;
+ 	});
+ 	const isInvalid = computed(() => {
+-		if (isStartInvalid.value || isEndInvalid.value) return false;
++		if (isStartInvalid.value || isEndInvalid.value) return true;
+ 		if (props.start.value && props.end.value && isBefore(props.end.value, props.start.value)) return true;
+ 		return false;
+ 	});
+@@ -55,7 +55,6 @@ function useRangeCalendarState(props) {
+ 				return !isBetween(date, minDate, maxDate);
+ 			}
+ 		}
+-		if (!props.start.value || props.end.value || isSameDay(props.start.value, date)) return false;
+ 		return false;
+ 	};
+ 	const isDateHighlightable = (date) => {
+@@ -73,11 +72,15 @@ function useRangeCalendarState(props) {
+ 			end
+ 		};
+ 		if (props.maximumDays?.value && !props.end.value) {
+-			const cappedEnd = isStartBeforeFocused ? start.add({ days: props.maximumDays.value - 1 }) : start.subtract({ days: props.maximumDays.value });
+-			return {
+-				start,
+-				end: cappedEnd
+-			};
++			const maximumDays = props.maximumDays.value;
++			const anchor = props.start.value;
++			if (isStartBeforeFocused) {
++				const maxEnd = anchor.add({ days: maximumDays - 1 });
++				return { start: anchor, end: maxEnd };
++			} else {
++				const minStart = anchor.subtract({ days: maximumDays - 1 });
++				return { start: minStart, end: anchor };
++			}
+ 		}
+ 		const isValid = areAllDaysBetweenValid(start, end, props.allowNonContiguousRanges.value ? () => false : props.isDateUnavailable, rangeIsDateDisabled, props.isDateHighlightable);
+ 		if (isValid) return {
