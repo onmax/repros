@@ -1,0 +1,13 @@
+{
+  "name": "unovis-740-fix",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "build:oom": "NODE_OPTIONS='--max-old-space-size=256' vite build",
+    "build:analyze": "ANALYZE=1 vite build",
+    "verify": "node verify.mjs"
+  },
+  "dependencies": { "@unovis/ts": "1.6.4" },
+  "devDependencies": { "typescript": "^5.8.3", "vite": "^6.3.5", "rollup-plugin-visualizer": "^5.14.0" }
+}
