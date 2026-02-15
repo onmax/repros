@@ -1,0 +1,63 @@
+diff --git a/dist/db/lib/client.mjs b/dist/db/lib/client.mjs
+index d74fc6948b817e41a0e05bca4e6500eecacabb15..87f44d8901c55200763db52d7502e8ad27c4a537 100644
+--- a/dist/db/lib/client.mjs
++++ b/dist/db/lib/client.mjs
+@@ -38,10 +38,8 @@ export async function createDrizzleClient(config, hubDir) {
+   } else if (driver === "postgres-js") {
+     const clientPkg = "postgres";
+     const { default: postgres } = await import(clientPkg);
+-    client = postgres(connection.url, {
+-      onnotice: () => {
+-      }
+-    });
++    const { url, connectionString: _cs, host: _h, port: _p, user: _u, password: _pw, database: _d, authToken: _at, accountId: _ai, apiToken: _apt, databaseId: _di, hyperdriveId: _hi, dataDir: _dd, uri: _uri, ...driverOpts } = connection;
++    client = postgres(url, { onnotice: () => {}, ...driverOpts });
+     pkg = "drizzle-orm/postgres-js";
+     const { drizzle: drizzle2 } = await import(pkg);
+     return drizzle2({ client, casing });
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 1ef9c1437928b792369a168489dbf4ac6842e334..c2458f2822aa1d637d281400972014c429f0272d 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -405,6 +405,11 @@ async function generateDatabaseSchema(nuxt, hub) {
+ }
+ async function setupDatabaseClient(nuxt, hub) {
+   const { dialect, driver, connection, mode, casing, replicas } = hub.db;
++  const postgresOpts = (() => {
++    if (driver !== "postgres-js" || !connection) return "{ onnotice: () => {} }";
++    const { url: _u, connectionString: _cs, host: _h, port: _p, user: _usr, password: _pw, database: _d, authToken: _at, accountId: _ai, apiToken: _apt, databaseId: _di, hyperdriveId: _hi, dataDir: _dd, uri: _uri, ...rest } = connection;
++    return Object.keys(rest).length ? `{ onnotice: () => {}, ...${JSON.stringify(rest)} }` : "{ onnotice: () => {} }";
++  })();
+   const driverForTypes = driver === "d1-http" ? "sqlite-proxy" : driver;
+   const databaseTypes = `declare module 'hub:db' {
+   export * from '@nuxthub/db'
+@@ -444,12 +449,12 @@ ${hasReplicas ? `import { withReplicas } from 'drizzle-orm/pg-core'
+ ` : ""}import postgres from 'postgres'
+ import * as schema from './db/schema.mjs'
+ 
+-const client = postgres('${connection.url}', { onnotice: () => {} })
++const client = postgres('${connection.url}', ${postgresOpts})
+ ${hasReplicas ? `const primary = drizzle({ client, schema${casingOption} })
+ 
+ const replicaUrls = ${JSON.stringify(replicaUrls)}
+ const replicaConnections = replicaUrls.map(replicaUrl => {
+-  const replicaClient = postgres(replicaUrl, { onnotice: () => {} })
++  const replicaClient = postgres(replicaUrl, ${postgresOpts})
+   return drizzle({ client: replicaClient, schema${casingOption} })
+ })
+ const db = withReplicas(primary, replicaConnections)` : `const db = drizzle({ client, schema${casingOption} })`}
+@@ -568,12 +573,12 @@ ${hasReplicas ? `import { withReplicas } from 'drizzle-orm/pg-core'
+ ` : ""}import postgres from 'postgres'`,
+       `    const url = ${urlExpr}
+     if (!url) throw new Error('DATABASE_URL, POSTGRES_URL, or POSTGRESQL_URL required')
+-    const client = postgres(url, { onnotice: () => {} })
++    const client = postgres(url, ${postgresOpts})
+ ${hasReplicas ? `    const primary = drizzle({ client, schema${casingOption} })
+ 
+     const replicaUrls = ${JSON.stringify(replicaUrls)}
+     const replicaConnections = replicaUrls.map(replicaUrl => {
+-      const replicaClient = postgres(replicaUrl, { onnotice: () => {} })
++      const replicaClient = postgres(replicaUrl, ${postgresOpts})
+       return drizzle({ client: replicaClient, schema${casingOption} })
+     })
+     _db = withReplicas(primary, replicaConnections)` : `    _db = drizzle({ client, schema${casingOption} })`}`

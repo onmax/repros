@@ -1,0 +1,1 @@
+{ "name": "nuxthub-840-fix", "private": true, "type": "module", "scripts": { "build": "nuxi build", "dev": "nuxi dev" }, "dependencies": { "@nuxthub/core": "0.10.6", "nuxt": "^4.2.2", "drizzle-orm": "^0.43.1", "drizzle-kit": "^0.31.1", "postgres": "^3.4.7" }, "pnpm": { "patchedDependencies": { "@nuxthub/core@0.10.6": "patches/@nuxthub__core.patch" } } }
