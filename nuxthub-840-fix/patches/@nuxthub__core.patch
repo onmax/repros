@@ -1,43 +1,58 @@
 diff --git a/dist/db/lib/client.mjs b/dist/db/lib/client.mjs
-index d74fc6948b817e41a0e05bca4e6500eecacabb15..87f44d8901c55200763db52d7502e8ad27c4a537 100644
+index d74fc6948b817e41a0e05bca4e6500eecacabb15..8806a5639fc9a1af341e1bcf5a48b33ddd1e4cae 100644
 --- a/dist/db/lib/client.mjs
 +++ b/dist/db/lib/client.mjs
-@@ -38,10 +38,8 @@ export async function createDrizzleClient(config, hubDir) {
+@@ -25,7 +25,6 @@ async function createD1HttpClient(accountId, databaseId, apiToken, casing) {
+ }
+ export async function createDrizzleClient(config, hubDir) {
+   const { driver, connection, casing } = config;
+-  let client;
+   let pkg = "";
+   if (driver === "d1" || driver === "d1-http") {
+     const accountId = connection?.accountId || process.env.NUXT_HUB_CLOUDFLARE_ACCOUNT_ID;
+@@ -36,15 +35,9 @@ export async function createDrizzleClient(config, hubDir) {
+     }
+     return createD1HttpClient(accountId, databaseId, apiToken, casing);
    } else if (driver === "postgres-js") {
-     const clientPkg = "postgres";
-     const { default: postgres } = await import(clientPkg);
+-    const clientPkg = "postgres";
+-    const { default: postgres } = await import(clientPkg);
 -    client = postgres(connection.url, {
 -      onnotice: () => {
 -      }
 -    });
-+    const { url, connectionString: _cs, host: _h, port: _p, user: _u, password: _pw, database: _d, authToken: _at, accountId: _ai, apiToken: _apt, databaseId: _di, hyperdriveId: _hi, dataDir: _dd, uri: _uri, ...driverOpts } = connection;
-+    client = postgres(url, { onnotice: () => {}, ...driverOpts });
      pkg = "drizzle-orm/postgres-js";
      const { drizzle: drizzle2 } = await import(pkg);
-     return drizzle2({ client, casing });
+-    return drizzle2({ client, casing });
++    return drizzle2({ connection: { ...connection, onnotice: () => {} }, casing });
+   } else if (driver === "neon-http") {
+     const clientPkg = "@neondatabase/serverless";
+     const { neon } = await import(clientPkg);
 diff --git a/dist/module.mjs b/dist/module.mjs
-index 1ef9c1437928b792369a168489dbf4ac6842e334..c2458f2822aa1d637d281400972014c429f0272d 100644
+index 1ef9c1437928b792369a168489dbf4ac6842e334..4f9329f984c55fe45e0ed85c851e3366323dcbd0 100644
 --- a/dist/module.mjs
 +++ b/dist/module.mjs
-@@ -405,6 +405,11 @@ async function generateDatabaseSchema(nuxt, hub) {
- }
- async function setupDatabaseClient(nuxt, hub) {
-   const { dialect, driver, connection, mode, casing, replicas } = hub.db;
-+  const postgresOpts = (() => {
-+    if (driver !== "postgres-js" || !connection) return "{ onnotice: () => {} }";
-+    const { url: _u, connectionString: _cs, host: _h, port: _p, user: _usr, password: _pw, database: _d, authToken: _at, accountId: _ai, apiToken: _apt, databaseId: _di, hyperdriveId: _hi, dataDir: _dd, uri: _uri, ...rest } = connection;
-+    return Object.keys(rest).length ? `{ onnotice: () => {}, ...${JSON.stringify(rest)} }` : "{ onnotice: () => {} }";
-+  })();
-   const driverForTypes = driver === "d1-http" ? "sqlite-proxy" : driver;
-   const databaseTypes = `declare module 'hub:db' {
-   export * from '@nuxthub/db'
-@@ -444,12 +449,12 @@ ${hasReplicas ? `import { withReplicas } from 'drizzle-orm/pg-core'
- ` : ""}import postgres from 'postgres'
+@@ -439,22 +439,36 @@ export { db, schema, client }
+   if (driver === "postgres-js" && nuxt.options.dev) {
+     const replicaUrls = (replicas || []).filter(Boolean);
+     const hasReplicas = replicaUrls.length > 0;
+-    drizzleOrmContent = `import { drizzle } from 'drizzle-orm/postgres-js'
+-${hasReplicas ? `import { withReplicas } from 'drizzle-orm/pg-core'
+-` : ""}import postgres from 'postgres'
++    if (hasReplicas) {
++      const postgresOpts = (() => {
++        if (!connection) return "{ onnotice: () => {} }";
++        const { url: _, ...rest } = connection;
++        return Object.keys(rest).length ? `{ onnotice: () => {}, ...${JSON.stringify(rest)} }` : "{ onnotice: () => {} }";
++      })();
++      drizzleOrmContent = `import { drizzle } from 'drizzle-orm/postgres-js'
++import { withReplicas } from 'drizzle-orm/pg-core'
++import postgres from 'postgres'
  import * as schema from './db/schema.mjs'
  
 -const client = postgres('${connection.url}', { onnotice: () => {} })
+-${hasReplicas ? `const primary = drizzle({ client, schema${casingOption} })
 +const client = postgres('${connection.url}', ${postgresOpts})
- ${hasReplicas ? `const primary = drizzle({ client, schema${casingOption} })
++const primary = drizzle({ client, schema${casingOption} })
  
  const replicaUrls = ${JSON.stringify(replicaUrls)}
  const replicaConnections = replicaUrls.map(replicaUrl => {
@@ -45,8 +60,33 @@ index 1ef9c1437928b792369a168489dbf4ac6842e334..c2458f2822aa1d637d281400972014c4
 +  const replicaClient = postgres(replicaUrl, ${postgresOpts})
    return drizzle({ client: replicaClient, schema${casingOption} })
  })
- const db = withReplicas(primary, replicaConnections)` : `const db = drizzle({ client, schema${casingOption} })`}
-@@ -568,12 +573,12 @@ ${hasReplicas ? `import { withReplicas } from 'drizzle-orm/pg-core'
+-const db = withReplicas(primary, replicaConnections)` : `const db = drizzle({ client, schema${casingOption} })`}
++const db = withReplicas(primary, replicaConnections)
+ export { db, schema }
+ `;
++    } else {
++      drizzleOrmContent = `import { drizzle } from 'drizzle-orm/postgres-js'
++import * as schema from './db/schema.mjs'
++
++const db = drizzle({ connection: { ...${JSON.stringify(connection)}, onnotice: () => {} }, schema${casingOption} })
++export { db, schema }
++`;
++    }
+   }
+   if (driver === "mysql2" && nuxt.options.dev) {
+     const replicaUrls = (replicas || []).filter(Boolean);
+@@ -562,18 +576,23 @@ export { db, schema }
+     const urlExpr = connection.url ? `'${connection.url}'` : `process.env.POSTGRES_URL || process.env.POSTGRESQL_URL || process.env.DATABASE_URL`;
+     const replicaUrls = (replicas || []).filter(Boolean);
+     const hasReplicas = replicaUrls.length > 0;
++    const postgresOpts = (() => {
++      if (!connection) return "{ onnotice: () => {} }";
++      const { url: _, ...rest } = connection;
++      return Object.keys(rest).length ? `{ onnotice: () => {}, ...${JSON.stringify(rest)} }` : "{ onnotice: () => {} }";
++    })();
+     drizzleOrmContent = generateLazyDbTemplate(
+       `import { drizzle } from 'drizzle-orm/postgres-js'
+ ${hasReplicas ? `import { withReplicas } from 'drizzle-orm/pg-core'
  ` : ""}import postgres from 'postgres'`,
        `    const url = ${urlExpr}
      if (!url) throw new Error('DATABASE_URL, POSTGRES_URL, or POSTGRESQL_URL required')

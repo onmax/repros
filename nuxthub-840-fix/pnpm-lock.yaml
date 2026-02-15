@@ -5,8 +5,8 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
-  '@nuxthub/core@0.10.6':
-    hash: d4c240b8786d85a8cc9a3c505dfd86043b0b0af3896872906017a665ae72e8bb
+  '@nuxthub/core':
+    hash: c61e340519fc8e7f3a78316969f2e211d558894d7ff2f99920345207b1659fb8
     path: patches/@nuxthub__core.patch
 
 importers:
@@ -15,7 +15,7 @@ importers:
     dependencies:
       '@nuxthub/core':
         specifier: 0.10.6
-        version: 0.10.6(patch_hash=d4c240b8786d85a8cc9a3c505dfd86043b0b0af3896872906017a665ae72e8bb)(db0@0.3.4(drizzle-orm@0.43.1(@cloudflare/workers-types@4.20260214.0)(postgres@3.4.8)))(ioredis@5.9.3)(magicast@0.5.2)
+        version: 0.10.6(patch_hash=c61e340519fc8e7f3a78316969f2e211d558894d7ff2f99920345207b1659fb8)(db0@0.3.4(drizzle-orm@0.43.1(@cloudflare/workers-types@4.20260214.0)(postgres@3.4.8)))(ioredis@5.9.3)(magicast@0.5.2)
       drizzle-kit:
         specifier: ^0.31.1
         version: 0.31.9
@@ -4830,7 +4830,7 @@ snapshots:
       - vue-tsc
       - yaml
 
-  '@nuxthub/core@0.10.6(patch_hash=d4c240b8786d85a8cc9a3c505dfd86043b0b0af3896872906017a665ae72e8bb)(db0@0.3.4(drizzle-orm@0.43.1(@cloudflare/workers-types@4.20260214.0)(postgres@3.4.8)))(ioredis@5.9.3)(magicast@0.5.2)':
+  '@nuxthub/core@0.10.6(patch_hash=c61e340519fc8e7f3a78316969f2e211d558894d7ff2f99920345207b1659fb8)(db0@0.3.4(drizzle-orm@0.43.1(@cloudflare/workers-types@4.20260214.0)(postgres@3.4.8)))(ioredis@5.9.3)(magicast@0.5.2)':
     dependencies:
       '@cloudflare/workers-types': 4.20260214.0
       '@nuxt/kit': 4.3.1(magicast@0.5.2)
