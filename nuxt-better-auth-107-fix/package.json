@@ -1,0 +1,19 @@
+{
+  "name": "nuxt-better-auth-107",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare": "nuxi prepare",
+    "typecheck": "vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "nuxt": "^4.2.2",
+    "better-auth": "1.5.0-beta.4",
+    "@better-auth/passkey": "1.4.7",
+    "@onmax/nuxt-better-auth": "github:nuxt-modules/better-auth#57a007a6e7e73427b2f0ee574856708b45ad965c"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3",
+    "vue-tsc": "^3.1.7"
+  }
+}

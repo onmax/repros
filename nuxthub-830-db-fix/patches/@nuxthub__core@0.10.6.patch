@@ -18,11 +18,11 @@ index 1ef9c1437928b792369a168489dbf4ac6842e334..73595d934d01852bc5a60a9deee56392
    addTypeTemplate({
      filename: "hub/db.d.ts",
 -    getContents: () => databaseTypes
-+    getContents: () => `import type { DrizzleConfig } from 'drizzle-orm'
++    getContents: () => `import { drizzle as drizzleCore } from 'drizzle-orm/${driverForTypes}'
 +
 +declare module '@nuxthub/db' {
-+  export const db: any
-+  export const schema: any
++  export const schema: typeof import('hub:db:schema')
++  export const db: ReturnType<typeof drizzleCore<typeof import('hub:db:schema')>>
 +}
 +
 +declare module 'hub:db' {

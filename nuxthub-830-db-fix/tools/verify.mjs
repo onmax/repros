@@ -20,6 +20,14 @@ async function main() {
     process.exit(1)
   }
 
+  const typeCode = await run('pnpm', ['-s', 'exec', 'tsc', '-p', 'tools/tsconfig.typing.json', '--pretty', 'false'])
+  if (typeCode !== 0) {
+    console.error('\nBug: `@nuxthub/db` types are missing (db/schema are `any`).')
+    console.error('This matches the broken IntelliSense seen in:')
+    console.error('https://github.com/nuxt-hub/core/pull/831#issuecomment-3891533442')
+    process.exit(1)
+  }
+
   console.log('\nOK: `nuxt typecheck` did not write node_modules/@nuxthub/db/.')
 }
 

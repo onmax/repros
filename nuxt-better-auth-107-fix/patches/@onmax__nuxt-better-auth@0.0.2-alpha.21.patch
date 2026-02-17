@@ -1,0 +1,63 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 2a8aa76956d65f5e2f71afd28e7fe80040dbef48..9af9889b08c833f32d93236ddad5566523ddc5ed 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -580,11 +580,15 @@ declare module '#auth/database' {
+   addTypeTemplate({
+     filename: "types/nuxt-better-auth-infer.d.ts",
+     getContents: () => `
+-import type { InferUser, InferSession, InferPluginTypes } from 'better-auth'
++import type { InferUser, InferSession, InferPluginTypes, BetterAuthOptions } from 'better-auth'
+ import type { RuntimeConfig } from 'nuxt/schema'
+ import type createServerAuth from '${serverConfigPath}'
+ 
+-type _Config = ReturnType<typeof createServerAuth>
++type _RawConfig = ReturnType<typeof createServerAuth>
++type _RawPlugins = _RawConfig extends { plugins: infer P } ? P : _RawConfig extends { plugins?: infer P } ? P : []
++type _Config = Omit<BetterAuthOptions, 'plugins'> & _RawConfig & {
++  plugins: _RawPlugins extends readonly (infer T)[] ? T[] : _RawPlugins extends (infer T)[] ? T[] : []
++}
+ 
+ declare module '#nuxt-better-auth' {
+   interface AuthUser extends InferUser<_Config> {}
+@@ -603,8 +607,10 @@ interface _AugmentedServerAuthContext {
+ 
+ declare module '@onmax/nuxt-better-auth/config' {
+   import type { BetterAuthOptions } from 'better-auth'
+-  type ServerAuthConfig = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL'>
+-  export function defineServerAuth<T extends ServerAuthConfig>(config: T | ((ctx: _AugmentedServerAuthContext) => T)): (ctx: _AugmentedServerAuthContext) => T
++  type ServerAuthConfigBase = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL' | 'plugins'>
++  type ServerAuthConfig = ServerAuthConfigBase
++  export function defineServerAuth<T extends ServerAuthConfigBase, P extends unknown[]>(config: (T & { plugins: [...P] }) | ((ctx: _AugmentedServerAuthContext) => (T & { plugins: [...P] }))): (ctx: _AugmentedServerAuthContext) => (T & { plugins: [...P] })
++  export function defineServerAuth<T extends ServerAuthConfigBase>(config: T | ((ctx: _AugmentedServerAuthContext) => T)): (ctx: _AugmentedServerAuthContext) => T
+ }
+ `
+   }, { nuxt: true, nitro: true, node: true });
+diff --git a/dist/runtime/config.d.ts b/dist/runtime/config.d.ts
+index 2977cf880dd2ff4737ea468a920156a3802c2a18..53c493fd35bfbb0e84d8eb0c49295a151cfdcbca 100644
+--- a/dist/runtime/config.d.ts
++++ b/dist/runtime/config.d.ts
+@@ -8,7 +8,8 @@ export type { ServerAuthContext };
+ export interface ClientAuthContext {
+     siteUrl: string;
+ }
+-export type ServerAuthConfig = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL'>;
++export type ServerAuthConfigBase = Omit<BetterAuthOptions, 'database' | 'secret' | 'baseURL' | 'plugins'>;
++export type ServerAuthConfig = ServerAuthConfigBase;
+ export type ClientAuthConfig = Omit<BetterAuthClientOptions, 'baseURL'> & {
+     baseURL?: string;
+ };
+@@ -67,5 +68,12 @@ export interface AuthRuntimeConfig {
+ export interface AuthPrivateRuntimeConfig {
+     secondaryStorage: boolean;
+ }
+-export declare function defineServerAuth<T extends ServerAuthConfig>(config: T | ((ctx: ServerAuthContext) => T)): (ctx: ServerAuthContext) => T;
++export declare function defineServerAuth<T extends ServerAuthConfigBase, P extends unknown[]>(config: (T & {
++    plugins: [...P];
++}) | ((ctx: ServerAuthContext) => (T & {
++    plugins: [...P];
++}))): (ctx: ServerAuthContext) => (T & {
++    plugins: [...P];
++});
++export declare function defineServerAuth<T extends ServerAuthConfigBase>(config: T | ((ctx: ServerAuthContext) => T)): (ctx: ServerAuthContext) => T;
+ export declare function defineClientAuth<T extends ClientAuthConfig>(config: T | ((ctx: ClientAuthContext) => T)): (baseURL: string) => ReturnType<typeof createAuthClient<T>>;

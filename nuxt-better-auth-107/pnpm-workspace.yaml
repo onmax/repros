@@ -1,0 +1,2 @@
+onlyBuiltDependencies:
+  - "@onmax/nuxt-better-auth"
