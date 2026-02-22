@@ -1,0 +1,11 @@
+{
+  "name": "nuxt-34164-min",
+  "private": true,
+  "packageManager": "pnpm@10.28.2",
+  "scripts": {
+    "repro": "node tools/repro.mjs",
+    "repro:baseline": "node tools/repro.mjs baseline",
+    "repro:contaminated": "node tools/repro.mjs contaminated",
+    "repro:real": "node tools/repro.mjs real"
+  }
+}
