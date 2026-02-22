@@ -8,7 +8,6 @@ function hasVfs (key: string) {
 }
 
 const scenario = process.env.REPRO_SCENARIO || 'baseline'
-const useCacheDir = process.env.REPRO_CACHE_DIR === '1'
 const useLinkedPlugin = process.env.REPRO_LINKED_PLUGIN === '1'
 const dropRouteRules = process.env.REPRO_DROP_ROUTE_RULES === '1'
 
@@ -27,11 +26,6 @@ export default defineNuxtConfig({
     '/api/**': { isr: true },
   },
   vite: {
-    ...(useCacheDir
-      ? {
-          cacheDir: '../../node_modules/.vite/apps/web',
-        }
-      : {}),
     ...(useLinkedPlugin
       ? {
           plugins: [linkedReproPlugin()],

@@ -12,8 +12,8 @@ const TARGET_ERROR = 'Pre-transform error: Failed to resolve import "#build/rout
 const IMPORT_ANALYSIS_MARKER = 'vite:import-analysis'
 
 const mode = process.argv[2] || 'all'
-if (!['all', 'baseline', 'contaminated', 'real'].includes(mode)) {
-  console.error('Usage: node tools/repro.mjs [all|baseline|contaminated|real]')
+if (!['all', 'baseline', 'contaminated'].includes(mode)) {
+  console.error('Usage: node tools/repro.mjs [all|baseline|contaminated]')
   process.exit(1)
 }
 
@@ -35,49 +35,15 @@ function table (rows) {
     .join('\n')
 }
 
-function runCommand (cmd, args, opts = {}) {
-  return new Promise((resolve, reject) => {
-    const child = spawn(cmd, args, {
-      cwd: opts.cwd,
-      env: { ...process.env, ...opts.env },
-      stdio: ['ignore', 'pipe', 'pipe'],
-      shell: false,
-    })
-
-    let output = ''
-    child.stdout.on('data', chunk => { output += chunk.toString() })
-    child.stderr.on('data', chunk => { output += chunk.toString() })
-
-    child.on('error', reject)
-    child.on('close', code => {
-      if (code === 0 || opts.allowFailure) {
-        resolve({ code, output: stripAnsi(output) })
-      } else {
-        reject(new Error(`${cmd} ${args.join(' ')} failed with code ${code}\n${output}`))
-      }
-    })
-  })
-}
-
 async function copyWorkspace (dest) {
   await mkdir(dest, { recursive: true })
-  const include = [
-    'package.json',
-    'pnpm-workspace.yaml',
-    'apps',
-    'external',
-  ]
-  for (const entry of include) {
+  for (const entry of ['package.json', 'pnpm-workspace.yaml', 'apps', 'external']) {
     await cp(join(ROOT, entry), join(dest, entry), { recursive: true })
   }
   const lockfile = join(ROOT, 'pnpm-lock.yaml')
   if (existsSync(lockfile)) {
     await cp(lockfile, join(dest, 'pnpm-lock.yaml'))
   }
-}
-
-async function installDependencies (cwd) {
-  await runCommand('pnpm', ['i', '--silent'], { cwd })
 }
 
 async function createContaminatedParent (parentDir) {
@@ -89,12 +55,34 @@ async function createContaminatedParent (parentDir) {
     },
   }
   await writeFile(join(parentDir, 'package.json'), JSON.stringify(pkg, null, 2) + '\n')
-  await runCommand('pnpm', ['i', '--silent'], { cwd: parentDir })
+  await run('pnpm', ['i', '--silent'], parentDir)
+}
+
+function run (cmd, args, cwd, extraEnv = {}) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(cmd, args, {
+      cwd,
+      env: { ...process.env, ...extraEnv },
+      stdio: ['ignore', 'pipe', 'pipe'],
+    })
+
+    let output = ''
+    child.stdout.on('data', chunk => { output += chunk.toString() })
+    child.stderr.on('data', chunk => { output += chunk.toString() })
+    child.on('error', reject)
+    child.on('close', code => {
+      if (code === 0) {
+        resolve(stripAnsi(output))
+      } else {
+        reject(new Error(`${cmd} ${args.join(' ')} failed (${code})\n${output}`))
+      }
+    })
+  })
 }
 
 async function waitForPort (state, timeoutMs = 60000) {
-  const start = Date.now()
-  while (Date.now() - start < timeoutMs) {
+  const startedAt = Date.now()
+  while (Date.now() - startedAt < timeoutMs) {
     const match = state.logs.match(/Local:\s+http:\/\/localhost:(\d+)\//)
     if (match) {
       return Number(match[1])
@@ -108,11 +96,11 @@ async function requestURL (url) {
   try {
     await fetch(url, { redirect: 'manual' })
   } catch {
-    // best-effort probe request
+    // best-effort probe
   }
 }
 
-async function stopProcess (child) {
+async function stopChild (child) {
   if (child.killed) {
     return
   }
@@ -126,7 +114,7 @@ async function stopProcess (child) {
   }
 }
 
-function parseHookJSON (logs, label) {
+function parseHook (logs, label) {
   const re = new RegExp(`\\[repro\\] ${label} (\\{.*\\})`, 'g')
   const matches = [...logs.matchAll(re)]
   if (!matches.length) {
@@ -136,23 +124,6 @@ function parseHookJSON (logs, label) {
     return JSON.parse(matches[matches.length - 1][1])
   } catch {
     return null
-  }
-}
-
-function parseResult (spec, logs) {
-  const viteMatch = logs.match(/Nuxt 4\.3\.0 \(with Nitro [^,]+, Vite ([0-9.]+) and Vue [^)]+\)/)
-  const hasTargetError = logs.includes(TARGET_ERROR)
-  const hasImportAnalysis = logs.includes(IMPORT_ANALYSIS_MARKER)
-  return {
-    scenarioId: spec.id,
-    classification: spec.classification,
-    viteVersion: viteMatch?.[1] || 'unknown',
-    hasTargetError,
-    hasImportAnalysis,
-    ready: parseHookJSON(logs, 'ready'),
-    templatesGenerated: parseHookJSON(logs, 'templatesGenerated'),
-    serverCreated: parseHookJSON(logs, 'vite:serverCreated'),
-    logs,
   }
 }
 
@@ -169,7 +140,7 @@ async function runScenario (spec) {
     await createContaminatedParent(parentDir)
   }
 
-  await installDependencies(reproDir)
+  await run('pnpm', ['i', '--silent'], reproDir)
 
   const env = {
     NUXT_TELEMETRY_DISABLED: '1',
@@ -198,86 +169,48 @@ async function runScenario (spec) {
 
     await sleep(1200)
   } finally {
-    await stopProcess(child)
+    await stopChild(child)
   }
 
-  const result = parseResult(spec, state.logs)
+  const result = {
+    id: spec.id,
+    kind: spec.kind,
+    vite: (state.logs.match(/Nuxt 4\.3\.0 \(with Nitro [^,]+, Vite ([0-9.]+) and Vue [^)]+\)/) || [])[1] || 'unknown',
+    targetError: state.logs.includes(TARGET_ERROR),
+    importAnalysis: state.logs.includes(IMPORT_ANALYSIS_MARKER),
+    ready: parseHook(state.logs, 'ready')?.hasBuildRouteRules,
+    templates: parseHook(state.logs, 'templatesGenerated')?.hasRouteRulesTemplate,
+    serverCreated: parseHook(state.logs, 'vite:serverCreated')?.hasBuildRouteRules,
+  }
+
   const logDir = join(ROOT, '.tmp', 'logs')
   await mkdir(logDir, { recursive: true })
   const logPath = join(logDir, `${spec.id}.log`)
   await writeFile(logPath, state.logs)
   result.logPath = logPath
+
   return result
 }
 
-function summarize (results) {
-  const header = [
-    'scenario',
-    'class',
-    'vite',
-    'ready:#build/route-rules',
-    'templates:route-rules',
-    'serverCreated:#build/route-rules',
-    'targetError',
-    'importAnalysis',
-    'log',
-  ]
-
-  const rows = results.map((result) => [
-    result.scenarioId,
-    result.classification,
-    result.viteVersion,
-    String(result.ready?.hasBuildRouteRules ?? 'n/a'),
-    String(result.templatesGenerated?.hasRouteRulesTemplate ?? 'n/a'),
-    String(result.serverCreated?.hasBuildRouteRules ?? 'n/a'),
-    result.hasTargetError ? 'yes' : 'no',
-    result.hasImportAnalysis ? 'yes' : 'no',
-    result.logPath,
-  ])
-
-  console.log(table([header, ...rows]))
-}
-
-const baselineSpec = {
+const baseline = {
   id: 's0-baseline',
-  classification: 'natural',
+  kind: 'natural',
   contaminated: false,
   env: {},
 }
 
-const naturalContaminatedSpecs = [
+const contaminated = [
   {
     id: 's1-parent-node-modules',
-    classification: 'natural',
+    kind: 'natural',
     contaminated: true,
     env: {},
   },
   {
-    id: 's2-cache-dir',
-    classification: 'natural',
+    id: 's9-simulated',
+    kind: 'synthetic',
     contaminated: true,
     env: {
-      REPRO_CACHE_DIR: '1',
-    },
-  },
-  {
-    id: 's3-linked-package-natural',
-    classification: 'natural',
-    contaminated: true,
-    env: {
-      REPRO_CACHE_DIR: '1',
-      REPRO_LINKED_PLUGIN: '1',
-    },
-  },
-]
-
-const syntheticContaminatedSpecs = [
-  {
-    id: 's9-linked-package-simulated',
-    classification: 'synthetic',
-    contaminated: true,
-    env: {
-      REPRO_CACHE_DIR: '1',
       REPRO_LINKED_PLUGIN: '1',
       REPRO_DROP_ROUTE_RULES: '1',
       REPRO_FORCE_IMPORT_ANALYSIS_FAIL: '1',
@@ -285,35 +218,36 @@ const syntheticContaminatedSpecs = [
   },
 ]
 
-function specsForMode (currentMode) {
-  if (currentMode === 'baseline') {
-    return [baselineSpec]
-  }
-  if (currentMode === 'contaminated') {
-    return [...naturalContaminatedSpecs, ...syntheticContaminatedSpecs]
-  }
-  if (currentMode === 'real') {
-    return [baselineSpec, ...naturalContaminatedSpecs]
-  }
-  return [baselineSpec, ...naturalContaminatedSpecs, ...syntheticContaminatedSpecs]
-}
+const specs = mode === 'baseline'
+  ? [baseline]
+  : mode === 'contaminated'
+    ? contaminated
+    : [baseline, ...contaminated]
 
-const specs = specsForMode(mode)
 const results = []
 for (const spec of specs) {
   results.push(await runScenario(spec))
 }
 
-summarize(results)
+const rows = [
+  ['scenario', 'kind', 'vite', 'ready:#build/route-rules', 'templates:route-rules', 'serverCreated:#build/route-rules', 'targetError', 'importAnalysis', 'log'],
+  ...results.map(r => [
+    r.id,
+    r.kind,
+    r.vite,
+    String(r.ready),
+    String(r.templates),
+    String(r.serverCreated),
+    r.targetError ? 'yes' : 'no',
+    r.importAnalysis ? 'yes' : 'no',
+    r.logPath,
+  ]),
+]
 
-const baselineResult = results.find(r => r.scenarioId === baselineSpec.id)
-const contaminatedResults = results.filter(r => r.scenarioId !== baselineSpec.id)
-const naturalContaminatedResults = contaminatedResults.filter(r => r.classification === 'natural')
+console.log(table(rows))
 
-const canonicalAny = contaminatedResults.find(r => r.hasTargetError && r.hasImportAnalysis)
-const canonicalNatural = naturalContaminatedResults.find(r => r.hasTargetError && r.hasImportAnalysis)
-
-if (baselineResult?.hasTargetError) {
+const baselineResult = results.find(r => r.id === baseline.id)
+if (baselineResult?.targetError) {
   console.error('\nBaseline unexpectedly reproduced the target error.')
   process.exit(1)
 }
@@ -322,23 +256,16 @@ if (mode === 'baseline') {
   process.exit(0)
 }
 
-if (mode === 'real') {
-  if (!canonicalNatural) {
-    console.error('\nNo natural scenario reproduced the target import-analysis error.')
-    process.exit(1)
-  }
-  console.log(`\nCanonical natural scenario: ${canonicalNatural.scenarioId}`)
-  process.exit(0)
-}
-
-if (!canonicalAny) {
+const canonical = results.find(r => r.targetError && r.importAnalysis)
+if (!canonical) {
   console.error('\nNo contaminated scenario reproduced the target import-analysis error.')
   process.exit(1)
 }
 
-if (canonicalNatural) {
-  console.log(`\nCanonical natural scenario: ${canonicalNatural.scenarioId}`)
+const naturalHit = results.find(r => r.kind === 'natural' && r.targetError && r.importAnalysis)
+if (naturalHit) {
+  console.log(`\nCanonical natural scenario: ${naturalHit.id}`)
 } else {
-  console.log('\nNatural scenarios are still negative; synthetic canonical scenario is used.')
+  console.log('\nNatural scenario is still negative; using synthetic canonical scenario.')
 }
-console.log(`Canonical scenario: ${canonicalAny.scenarioId}`)
+console.log(`Canonical scenario: ${canonical.id}`)

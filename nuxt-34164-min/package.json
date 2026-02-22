@@ -5,7 +5,6 @@
   "scripts": {
     "repro": "node tools/repro.mjs",
     "repro:baseline": "node tools/repro.mjs baseline",
-    "repro:contaminated": "node tools/repro.mjs contaminated",
-    "repro:real": "node tools/repro.mjs real"
+    "repro:contaminated": "node tools/repro.mjs contaminated"
   }
 }
