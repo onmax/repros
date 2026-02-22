@@ -8,9 +8,6 @@
     "prepare": "nuxt prepare"
   },
   "dependencies": {
-    "nuxt": "4.3.0",
-    "vue": "3.5.27",
-    "vue-router": "4.5.1",
-    "linked-repro-plugin": "link:../../external/linked-plugin"
+    "nuxt": "4.3.0"
   }
 }

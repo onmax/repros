@@ -1,43 +1,34 @@
 # nuxt-34164-min
 
-Minimal local repro harness for [nuxt/nuxt#34164](https://github.com/nuxt/nuxt/issues/34164) and PR [nuxt/nuxt#34251](https://github.com/nuxt/nuxt/pull/34251).
+Bare minimum realistic repro attempt for [nuxt/nuxt#34164](https://github.com/nuxt/nuxt/issues/34164) / [nuxt/nuxt#34251](https://github.com/nuxt/nuxt/pull/34251).
 
-It keeps only essential checks:
+This repo keeps only:
 
-- one baseline run
-- one natural contamination probe
-- one deterministic canonical failure path
+- pnpm workspace (`apps/web`)
+- Nuxt `4.3.0`
+- `routeRules` using `swr` / `isr`
+- `nitro.preset = 'cloudflare_module'`
+- parent `node_modules` containing `vite@6.4.1` (root devDependency) to mimic contamination reports
 
 ## Run
 
 ```bash
 cd /Users/maxi/repros/nuxt-34164-min
-pnpm repro
+pnpm i
+pnpm prepare
+pnpm dev
 ```
 
-Extra modes:
+## Expected on affected environments
 
-```bash
-pnpm repro:baseline
-pnpm repro:contaminated
+You may see Vite import-analysis errors like:
+
+```text
+Pre-transform error: Failed to resolve import "#build/route-rules.mjs"
+Plugin: vite:import-analysis
 ```
-
-## Pass/fail
-
-- `repro:baseline` must not include the target error.
-- `repro:contaminated` must include at least one scenario with:
-  - `Pre-transform error: Failed to resolve import "#build/route-rules.mjs"`
-  - `vite:import-analysis`
-- `repro` exits non-zero if expectations fail.
-
-## Scenario set
-
-- `s0-baseline` (`natural`): clean workspace.
-- `s1-parent-node-modules` (`natural`): parent `node_modules` contamination with `vite@6.4.1`.
-- `s9-simulated` (`synthetic`): deterministic resolver-failure simulation used when natural scenario does not reproduce.
 
 ## Notes
 
-- This intentionally avoids using `.nuxt/route-rules.mjs` disk presence as a bug signal.
-- Diagnostics are logged at `ready`, `app:templatesGenerated`, and `vite:serverCreated`.
-- Run logs are written to `/Users/maxi/repros/nuxt-34164-min/.tmp/logs/`.
+- This is intentionally realistic and manual (no synthetic plugin/error injection).
+- If it does not fail on your machine, that is still useful: it confirms environment sensitivity.
