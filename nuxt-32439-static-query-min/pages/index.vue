@@ -7,19 +7,9 @@ const route = useRoute()
     <p data-testid="query">query preview: {{ route.query.preview }}</p>
     <div
       data-testid="mode"
-      :class="route.query.preview === 'true' ? 'preview-mode' : 'normal-mode'"
+      :style="{ backgroundColor: route.query.preview === 'true' ? 'red' : 'blue' }"
     >
-      expected preview-mode when ?preview=true
+      expected red when ?preview=true
     </div>
   </main>
 </template>
-
-<style scoped>
-.preview-mode {
-  background: red;
-}
-
-.normal-mode {
-  background: blue;
-}
-</style>

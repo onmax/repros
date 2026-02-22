@@ -15,16 +15,16 @@ const state = await page.evaluate(() => {
 
   return {
     routeQuery: nuxtApp?._route?.query?.preview ?? null,
-    className: mode?.className ?? null,
     backgroundColor: mode ? getComputedStyle(mode).backgroundColor : null,
+    queryText: document.querySelector('[data-testid="query"]')?.textContent?.trim() ?? null,
   }
 })
 
 console.log(JSON.stringify(state, null, 2))
 await browser.close()
 
-if (state.routeQuery === 'true' && state.className !== 'preview-mode') {
-  console.error('FAIL: query true but class not preview-mode')
+if (state.routeQuery === 'true' && state.backgroundColor !== 'rgb(255, 0, 0)') {
+  console.error('FAIL: query true but background is not red')
   process.exit(1)
 }
 
