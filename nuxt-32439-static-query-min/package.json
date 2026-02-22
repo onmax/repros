@@ -1,0 +1,16 @@
+{
+  "name": "nuxt-32439-static-query-min",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev --port 3000",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview --port 3000",
+    "check": "node scripts/assert-mode.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "nuxt": "latest",
+    "vue": "^3.5.28"
+  }
+}
