@@ -1,4 +1,7 @@
 node_modules
+pnpm-debug.log*
 .data
 .nuxt
 .output
+dist
+*.log

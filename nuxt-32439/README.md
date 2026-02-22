@@ -1,17 +1,46 @@
-# Nuxt 32439 - Query Params Hydration Bug
+# nuxt-32439
 
-## Problem
-Prerendered pages don't apply reactive bindings (:class, :style) based on query params on initial load.
+Issue: https://github.com/nuxt/nuxt/issues/32439
 
-## Verify
+## Setup
+
 ```bash
-pnpm i && nr generate && nr preview
+pnpm i
 ```
 
-Open http://localhost:3000?preview=true
+## Reproduce in dev (works)
 
-## Expected
-Red background (preview-mode class applied)
+```bash
+cd apps/web
+pnpm dev --port 3000
+```
 
-## Actual
-Blue background (normal-mode class applied, query param not reactive)
+Open `http://localhost:3000/?preview=true`.
+
+Expected in dev:
+
+- `query preview: true`
+- bar is red
+
+## Reproduce in prerendered static preview (fails)
+
+Stop dev server, then run:
+
+```bash
+cd apps/web
+pnpm generate
+pnpm preview --port 3000
+```
+
+Open `http://localhost:3000/?preview=true`.
+
+Actual in static preview:
+
+- `query preview: true`
+- bar stays blue (should be red)
+
+## Why this seems to happen
+
+- static HTML is generated for `/` (no query), so initial render is the false branch (blue)
+- after hydration, route query does become `preview=true`
+- but the visual binding does not update in this prerendered static path
