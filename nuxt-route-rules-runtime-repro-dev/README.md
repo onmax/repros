@@ -8,10 +8,10 @@ Minimal manual dev-server reproduction for:
 
 ```bash
 pnpm install --frozen-lockfile
-pnpm exec nuxi dev ./test/fixtures/plain
+pnpm dev
 ```
 
-After server starts, hit the home route once (for example with curl or browser):
+After server starts, hit the home route once using the printed local URL (for example with curl or browser):
 
 ```bash
 curl -i http://localhost:3000/

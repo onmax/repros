@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "pnpm exec nuxi dev ./test/fixtures/plain"
+    "dev": "pnpm exec nuxi dev ."
   },
   "devDependencies": {
     "@nuxt/test-utils": "3.21.0",
