@@ -1,3 +1,3 @@
 <template>
-  <div>ok</div>
+  <div>plain</div>
 </template>

@@ -3,7 +3,12 @@ node_modules
 .output
 .DS_Store
 
-apps/*/node_modules
-apps/*/.nuxt
-apps/*/.output
-apps/dev.log
+docs/node_modules
+docs/.nuxt
+docs/.output
+playground/node_modules
+playground/.nuxt
+playground/.output
+test/fixtures/plain/.nuxt
+test/fixtures/plain/.output
+.repro

@@ -1,49 +1,51 @@
 # nuxt-route-rules-ci-repro
 
-Nuxt-only minimal repro for `Cannot find module '#build/route-rules.mjs'`.
+Local-only runtime reproduction harness for:
 
-This repro is intentionally reduced from NuxtHub context to isolate the Nuxt issue.
+`Cannot find module '#build/route-rules.mjs'` imported from `nuxt/dist/app/composables/manifest.js`
 
-Issue context:
-- [nuxt/nuxt#34164](https://github.com/nuxt/nuxt/issues/34164)
+This repository no longer treats "file exists on disk" as the reproduction oracle.
 
-## Reproduce
+## Valid Oracle
 
-```bash
-rm -rf /tmp/repros
-cd /tmp
-git clone --depth 1 --single-branch --branch main https://github.com/onmax/repros.git
-cd repros
-git checkout --detach 66eb54c85606c7648bc96f797c702822ad6934ac
-cd nuxt-route-rules-ci-repro
-pnpm install
-cd apps/web
-pnpm prepare
-ls -la .nuxt/app.config.mjs
-if [ -f .nuxt/route-rules.mjs ]; then
-  echo "NOT reproduced: .nuxt/route-rules.mjs exists"
-else
-  echo "Reproduced: .nuxt/route-rules.mjs is missing"
-fi
-```
+A run is considered a valid reproduction only when both are present in logs:
 
-Or, if you are already in `nuxt-route-rules-ci-repro`:
+1. `Cannot find module '#build/route-rules.mjs'`
+2. importer path contains `nuxt/dist/app/composables/manifest.js`
+
+Anything else (including missing `.nuxt/route-rules.mjs` on disk) is non-authoritative.
+
+## Commands
 
 ```bash
-pnpm install
-cd apps/web
-pnpm prepare
-ls .nuxt/route-rules.mjs
+# remove local build artifacts and repro logs
+pnpm repro:clean
+
+# single attempt (fails if the oracle is not matched)
+pnpm repro
+
+# run 3 attempts; all 3 must match oracle
+pnpm repro:verify
+
+# print environment diagnostics + run one attempt + show first relevant stack block
+pnpm repro:debug
 ```
 
-Current behavior:
-- `.nuxt/route-rules.mjs` is missing.
+## Current Harness
 
-Expected:
-- `.nuxt/route-rules.mjs` should exist, matching other generated templates used by runtime imports.
+- Runtime harness uses `vitest` + `@nuxt/test-utils/e2e` with `setup({ dev: true })`.
+- Test root is `test/fixtures/plain` (minimal Nuxt app with no route rules and no extra modules).
+- Workspace includes `docs/` (`nuxt@4.2.2`) and `playground/` (`nuxt@4.3.1`) to preserve the local dependency shape seen in failing environments.
+- Each attempt runs `nuxt-module-build prepare` before Vitest.
+- `tools/repro.mjs` captures logs and enforces the oracle.
 
-In some pnpm monorepo/dev-server contexts, this missing file leads to:
+## Expected Failing Snippet
 
 ```text
-Cannot find module '#build/route-rules.mjs'
+Cannot find module '#build/route-rules.mjs' imported from '.../nuxt/dist/app/composables/manifest.js'
 ```
+
+## Notes
+
+- This is local-only by design: no CI/GitHub integration required.
+- The verifier intentionally rejects unrelated failures (for example port errors without the route-rules signature).
