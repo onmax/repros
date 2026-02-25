@@ -122,10 +122,6 @@ async function runVitest() {
   ])
 }
 
-async function runNuxtModulePrepare() {
-  return runCommand('pnpm', ['exec', 'nuxt-module-build', 'prepare'])
-}
-
 async function ensureLogDir() {
   await mkdir(REPRO_DIR, { recursive: true })
 }
@@ -133,11 +129,10 @@ async function ensureLogDir() {
 async function runAttempt(index) {
   await cleanWorkspace({ deep: false, removeLogs: false })
   const install = await runCommand('pnpm', ['install', '--frozen-lockfile'])
-  const prepare = install.code === 0 ? await runNuxtModulePrepare() : { code: 1, output: '' }
-  const test = (install.code === 0 && prepare.code === 0) ? await runVitest() : { code: 1, output: '' }
+  const test = install.code === 0 ? await runVitest() : { code: 1, output: '' }
 
-  const output = `${install.output}${prepare.output}${test.output}`
-  const code = install.code === 0 && prepare.code === 0 ? test.code : 1
+  const output = `${install.output}${test.output}`
+  const code = install.code === 0 ? test.code : 1
 
   await ensureLogDir()
   const file = join(REPRO_DIR, `run-${index}.log`)
