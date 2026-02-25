@@ -1,0 +1,14 @@
+node_modules
+.nuxt
+.output
+.DS_Store
+
+docs/node_modules
+docs/.nuxt
+docs/.output
+playground/node_modules
+playground/.nuxt
+playground/.output
+test/fixtures/plain/.nuxt
+test/fixtures/plain/.output
+.repro

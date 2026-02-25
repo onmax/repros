@@ -1,4 +1,4 @@
-# nuxt-route-rules-ci-repro
+# nuxt-route-rules-runtime-repro
 
 Local-only runtime reproduction harness for:
 
@@ -41,3 +41,4 @@ Cannot find module '#build/route-rules.mjs' imported from '.../nuxt/dist/app/com
 
 - Local-only by design.
 - `repro:verify` is the gate (3/3 required).
+- For a low-noise manual variant, see `../nuxt-route-rules-runtime-repro-dev`.

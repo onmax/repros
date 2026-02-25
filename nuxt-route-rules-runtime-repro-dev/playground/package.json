@@ -1,0 +1,8 @@
+{
+  "name": "playground-shape",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "nuxt": "4.3.1"
+  }
+}

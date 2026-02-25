@@ -1,0 +1,8 @@
+{
+  "name": "docs-shape",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "nuxt": "4.2.2"
+  }
+}
