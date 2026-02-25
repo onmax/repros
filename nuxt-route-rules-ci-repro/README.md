@@ -10,6 +10,26 @@ Issue context:
 ## Reproduce
 
 ```bash
+rm -rf /tmp/repros
+cd /tmp
+git clone --depth 1 --single-branch --branch main https://github.com/onmax/repros.git
+cd repros
+git checkout --detach 66eb54c85606c7648bc96f797c702822ad6934ac
+cd nuxt-route-rules-ci-repro
+pnpm install
+cd apps/web
+pnpm prepare
+ls -la .nuxt/app.config.mjs
+if [ -f .nuxt/route-rules.mjs ]; then
+  echo "NOT reproduced: .nuxt/route-rules.mjs exists"
+else
+  echo "Reproduced: .nuxt/route-rules.mjs is missing"
+fi
+```
+
+Or, if you are already in `nuxt-route-rules-ci-repro`:
+
+```bash
 pnpm install
 cd apps/web
 pnpm prepare
