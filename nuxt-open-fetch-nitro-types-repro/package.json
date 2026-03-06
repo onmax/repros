@@ -1,0 +1,17 @@
+{
+  "name": "nuxt-open-fetch-nitro-types-repro",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare": "nuxi prepare",
+    "typecheck": "nuxi typecheck"
+  },
+  "dependencies": {
+    "nuxt": "4.3.1",
+    "nuxt-open-fetch": "0.13.8"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3"
+  },
+  "packageManager": "pnpm@10.6.1"
+}

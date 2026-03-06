@@ -1,0 +1,40 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 37cf2377c..361a249be 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -232,9 +232,35 @@ declare module 'nitropack/types' {
+   }
+ }
+ 
++declare module 'nitropack' {
++  interface NitroApp {
++    ${schemas.map(({ name: name2 }) => `$${name2}: OpenFetchClient<${pascalCase(name2)}Paths>`.trimStart()).join("\n    ")}
++  }
++}
++
+ export {}
+ `.trimStart()
+     });
++    await writeFile(join(nuxt.options.rootDir, "open-fetch-nitro.d.ts"), `
++import type { OpenFetchClient } from '#imports'
++${schemas.map(({ name: name2 }) => `
++import type { paths as ${pascalCase(name2)}Paths } from '#open-fetch-schemas/${kebabCase(name2)}'
++`.trimStart()).join("").trimEnd()}
++
++declare module 'nitropack' {
++  interface NitroApp {
++    ${schemas.map(({ name: name2 }) => `$${name2}: OpenFetchClient<${pascalCase(name2)}Paths>`.trimStart()).join("\n    ")}
++  }
++}
++
++declare module 'nitropack/types' {
++  interface NitroApp {
++    ${schemas.map(({ name: name2 }) => `$${name2}: OpenFetchClient<${pascalCase(name2)}Paths>`.trimStart()).join("\n    ")}
++  }
++}
++
++export {}
++`.trimStart());
+     nuxt.hook("nitro:config", (nitroConfig) => {
+       nitroConfig.typescript?.tsConfig?.include?.push(`./types/${moduleName}/nitro.d.ts`);
+     });
