@@ -1,0 +1,23 @@
+{
+  "name": "scripts-devalue-use-fix",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@nuxt/scripts": "0.13.2",
+    "nuxt": "^4.3.1",
+    "vue": "^3.5.29",
+    "vue-router": "^4.6.4"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@nuxt/scripts@0.13.2": "patches/@nuxt__scripts.patch"
+    }
+  }
+}
