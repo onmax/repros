@@ -1,0 +1,276 @@
+diff --git a/app/components/app/AppFooterRight.vue b/app/components/app/AppFooterRight.vue
+index b9416dd..c17127e 100644
+--- a/app/components/app/AppFooterRight.vue
++++ b/app/components/app/AppFooterRight.vue
+@@ -1,20 +1,38 @@
+ <script setup lang="ts">
+ const appConfig = useAppConfig()
+ 
+-const links = computed(() => [
+-  ...Object.entries(appConfig.socials || {}).map(([key, url]) => ({
+-    'icon': `i-simple-icons-${key}`,
+-    'to': url,
+-    'target': '_blank',
+-    'aria-label': `${key} social link`,
+-  })),
+-  appConfig.github && appConfig.github.url && {
+-    'icon': 'i-simple-icons-github',
+-    'to': appConfig.github.url,
+-    'target': '_blank',
+-    'aria-label': 'GitHub repository',
+-  },
+-].filter(Boolean))
++interface FooterLink {
++  icon: string
++  to: string
++  target: '_blank'
++  'aria-label': string
++}
++
++const links = computed<FooterLink[]>(() => {
++  const socialLinks = Object.entries(appConfig.socials || {}).flatMap(([key, url]) => {
++    if (typeof url !== 'string' || !url) {
++      return []
++    }
++
++    return [{
++      icon: `i-simple-icons-${key}`,
++      to: url,
++      target: '_blank' as const,
++      'aria-label': `${key} social link`,
++    }]
++  })
++
++  const githubLink = appConfig.github && appConfig.github.url
++    ? [{
++        icon: 'i-simple-icons-github',
++        to: appConfig.github.url,
++        target: '_blank' as const,
++        'aria-label': 'GitHub repository',
++      }]
++    : []
++
++  return [...socialLinks, ...githubLink]
++})
+ </script>
+ 
+ <template>
+diff --git a/app/composables/useDocusI18n.ts b/app/composables/useDocusI18n.ts
+index d08e3b1..312c769 100644
+--- a/app/composables/useDocusI18n.ts
++++ b/app/composables/useDocusI18n.ts
+@@ -1,12 +1,27 @@
++import { useNuxtApp, useRuntimeConfig } from '#imports'
+ import type { LocaleObject } from '@nuxtjs/i18n'
++import type { Ref } from 'vue'
++import { ref } from 'vue'
++
++type DocusNuxtApp = ReturnType<typeof useNuxtApp> & {
++  $i18n?: {
++    locale: Ref<string>
++    t: (key: string) => string
++  }
++  $locale?: string
++  $localeMessages?: Record<string, unknown>
++  $localePath?: (path: string) => string
++  $switchLocalePath?: (locale?: string) => string
++}
+ 
+ export const useDocusI18n = () => {
+   const config = useRuntimeConfig().public
++  const nuxtApp = useNuxtApp() as DocusNuxtApp
+   const isEnabled = ref(!!config.i18n)
+ 
+   if (!isEnabled.value) {
+-    const locale = useNuxtApp().$locale as string
+-    const localeMessages = useNuxtApp().$localeMessages as Record<string, unknown>
++    const locale = nuxtApp.$locale || 'en'
++    const localeMessages = nuxtApp.$localeMessages || {}
+ 
+     return {
+       isEnabled,
+@@ -21,7 +36,8 @@ export const useDocusI18n = () => {
+     }
+   }
+ 
+-  const { locale, t } = useI18n()
++  const locale = nuxtApp.$i18n?.locale || ref('en')
++  const t = nuxtApp.$i18n?.t || ((key: string) => key)
+   const filteredLocales = (config.docus as { filteredLocales: LocaleObject<string>[] })?.filteredLocales || []
+ 
+   return {
+@@ -29,7 +45,7 @@ export const useDocusI18n = () => {
+     locale,
+     locales: filteredLocales,
+     t,
+-    localePath: useLocalePath(),
+-    switchLocalePath: useSwitchLocalePath(),
++    localePath: nuxtApp.$localePath || ((path: string) => path),
++    switchLocalePath: nuxtApp.$switchLocalePath || (() => ''),
+   }
+ }
+diff --git a/modules/config.ts b/modules/config.ts
+index 54ac330..b154ea1 100644
+--- a/modules/config.ts
++++ b/modules/config.ts
+@@ -7,6 +7,13 @@ import { getGitBranch, getGitEnv, getLocalGitInfo } from '../utils/git'
+ 
+ const log = logger.withTag('Docus')
+ 
++type I18nLocale = string | { code: string, name?: string }
++type DocusI18nOptions = { locales?: I18nLocale[], strategy?: string }
++type RegisterModuleOptions = {
++  langDir: string
++  locales: Array<{ code: string, name: string, file: string }>
++}
++
+ export default defineNuxtModule({
+   meta: {
+     name: 'config',
+@@ -54,11 +61,14 @@ export default defineNuxtModule({
+     /*
+     ** I18N
+     */
+-    if (nuxt.options.i18n && nuxt.options.i18n.locales) {
++    const typedNuxtOptions = nuxt.options as typeof nuxt.options & { i18n?: DocusI18nOptions }
++    const i18nOptions = typedNuxtOptions.i18n
++
++    if (i18nOptions?.locales) {
+       const { resolve } = createResolver(import.meta.url)
+ 
+       // Filter locales to only include existing ones
+-      const filteredLocales = nuxt.options.i18n.locales.filter((locale) => {
++      const filteredLocales = i18nOptions.locales.filter((locale: I18nLocale) => {
+         const localeCode = typeof locale === 'string' ? locale : locale.code
+ 
+         // Check for JSON locale file
+@@ -81,8 +91,8 @@ export default defineNuxtModule({
+       })
+ 
+       // Override strategy to prefix
+-      nuxt.options.i18n = {
+-        ...nuxt.options.i18n,
++      typedNuxtOptions.i18n = {
++        ...i18nOptions,
+         strategy: 'prefix',
+       }
+ 
+@@ -91,10 +101,12 @@ export default defineNuxtModule({
+         filteredLocales,
+       }
+ 
+-      nuxt.hook('i18n:registerModule', (register) => {
++      const registerI18nModule = nuxt.hook as unknown as (name: string, callback: (register: (options: RegisterModuleOptions) => void) => void) => void
++
++      registerI18nModule('i18n:registerModule', (register) => {
+         const langDir = resolve('../i18n/locales')
+ 
+-        const locales = filteredLocales?.map((locale) => {
++        const locales = filteredLocales.map((locale: I18nLocale) => {
+           return typeof locale === 'string'
+             ? {
+                 code: locale,
+diff --git a/modules/markdown-rewrite.ts b/modules/markdown-rewrite.ts
+index 687d150..df494a1 100644
+--- a/modules/markdown-rewrite.ts
++++ b/modules/markdown-rewrite.ts
+@@ -4,6 +4,9 @@ import { readFile, writeFile } from 'node:fs/promises'
+ 
+ const log = logger.withTag('Docus')
+ 
++type I18nLocale = string | { code: string }
++type DocusI18nOptions = { locales?: I18nLocale[] }
++
+ export default defineNuxtModule({
+   meta: {
+     name: 'markdown-rewrite',
+@@ -44,13 +47,14 @@ export default defineNuxtModule({
+         ]
+ 
+         // Check if i18n is enabled
+-        const isI18nEnabled = !!(nuxt.options.i18n && nuxt.options.i18n.locales)
++        const i18nOptions = (nuxt.options as typeof nuxt.options & { i18n?: DocusI18nOptions }).i18n
++        const isI18nEnabled = !!i18nOptions?.locales
+         let localeCodes: string[] = []
+ 
+         if (isI18nEnabled) {
+           // Get locale codes
+-          const locales = nuxt.options.i18n.locales || []
+-          localeCodes = locales.map((locale) => {
++          const locales = i18nOptions?.locales || []
++          localeCodes = locales.map((locale: I18nLocale) => {
+             return typeof locale === 'string' ? locale : locale.code
+           })
+ 
+diff --git a/modules/routing.ts b/modules/routing.ts
+index 026e422..5b05bf1 100644
+--- a/modules/routing.ts
++++ b/modules/routing.ts
+@@ -1,6 +1,8 @@
+ import { defineNuxtModule, extendPages, createResolver } from '@nuxt/kit'
+ import { landingPageExists } from '../utils/pages'
+ 
++type DocusI18nOptions = { locales?: Array<string | { code: string }> }
++
+ export default defineNuxtModule({
+   meta: {
+     name: 'routing',
+@@ -8,7 +10,8 @@ export default defineNuxtModule({
+   async setup(_options, nuxt) {
+     const { resolve } = createResolver(import.meta.url)
+ 
+-    const isI18nEnabled = !!(nuxt.options.i18n && nuxt.options.i18n.locales)
++    const i18nOptions = (nuxt.options as typeof nuxt.options & { i18n?: DocusI18nOptions }).i18n
++    const isI18nEnabled = !!i18nOptions?.locales
+ 
+     // Ensure useDocusI18n is available in the app
+     nuxt.hook('imports:extend', (imports) => {
+diff --git a/nuxt.config.ts b/nuxt.config.ts
+index e38841f..8998e11 100644
+--- a/nuxt.config.ts
++++ b/nuxt.config.ts
+@@ -2,6 +2,8 @@ import { extendViteConfig, createResolver, useNuxt } from '@nuxt/kit'
+ 
+ const { resolve } = createResolver(import.meta.url)
+ 
++type DocusI18nOptions = { locales?: Array<string | { code: string }> }
++
+ export default defineNuxtConfig({
+   modules: [
+     resolve('./modules/config'),
+@@ -77,14 +79,14 @@ export default defineNuxtConfig({
+     'nitro:config'(nitroConfig) {
+       const nuxt = useNuxt()
+ 
+-      const i18nOptions = nuxt.options.i18n
++      const i18nOptions = (nuxt.options as typeof nuxt.options & { i18n?: DocusI18nOptions }).i18n
+ 
+       const routes: string[] = []
+       if (!i18nOptions) {
+         routes.push('/')
+       }
+       else {
+-        routes.push(...(i18nOptions.locales?.map(locale => typeof locale === 'string' ? `/${locale}` : `/${locale.code}`) || []))
++        routes.push(...(i18nOptions.locales?.map((locale: string | { code: string }) => typeof locale === 'string' ? `/${locale}` : `/${locale.code}`) || []))
+       }
+ 
+       nitroConfig.prerender = nitroConfig.prerender || {}
+diff --git a/server/routes/sitemap.xml.ts b/server/routes/sitemap.xml.ts
+index 933eeab..92978ca 100644
+--- a/server/routes/sitemap.xml.ts
++++ b/server/routes/sitemap.xml.ts
+@@ -27,11 +27,11 @@ export default defineEventHandler(async (event) => {
+ 
+   for (const collection of collections) {
+     try {
+-      const pages = await queryCollection(event, collection as 'docs').all()
++      const pages = await (queryCollection as unknown as (event: unknown, collection: string) => { all: () => Promise<Array<Record<string, unknown> & { path?: string }>> })(event, collection).all()
+ 
+       for (const page of pages) {
+-        const meta = page as unknown as Record<string, unknown>
+-        const pagePath = (page.path as string) || '/'
++        const meta = page as Record<string, unknown>
++        const pagePath = page.path || '/'
+ 
+         // Skip pages with sitemap: false in frontmatter
+         if (meta.sitemap === false) continue
