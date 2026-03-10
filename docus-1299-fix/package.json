@@ -7,13 +7,13 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
-    "docus": "5.7.0",
+    "docus": "github:onmax/docus#dist/typecheck-consumer-app-bug",
     "nuxt": "4.3.1"
   },
   "packageManager": "pnpm@10.19.0",
   "pnpm": {
     "patchedDependencies": {
-      "docus@5.7.0": "patches/docus@5.7.0.patch"
+      "docus@5.6.1": "patches/docus@5.6.1.patch"
     }
   }
 }
