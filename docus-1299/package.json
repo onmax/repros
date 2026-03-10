@@ -1,0 +1,14 @@
+{
+  "name": "docus-1299",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "docus": "5.7.0",
+    "nuxt": "4.3.1"
+  },
+  "packageManager": "pnpm@10.19.0"
+}
