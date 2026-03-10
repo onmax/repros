@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   docus@5.6.1:
-    hash: 17356d12b31c77853da5f55e93882c6a028195cda0e5c4a5c8be0a0da5c90dae
+    hash: 6d122a771e73b7203a3d27d7112b1eb90c3fb98b4938304ec92476d59c3f52fe
     path: patches/docus@5.6.1.patch
 
 importers:
@@ -15,7 +15,7 @@ importers:
     dependencies:
       docus:
         specifier: github:onmax/docus#dist/typecheck-consumer-app-bug
-        version: https://codeload.github.com/onmax/docus/tar.gz/cf182a665fcb4862530d11f8fb955f765a61306b(patch_hash=17356d12b31c77853da5f55e93882c6a028195cda0e5c4a5c8be0a0da5c90dae)(3bd795494661b46620b5c795761f9f75)
+        version: https://codeload.github.com/onmax/docus/tar.gz/cf182a665fcb4862530d11f8fb955f765a61306b(patch_hash=6d122a771e73b7203a3d27d7112b1eb90c3fb98b4938304ec92476d59c3f52fe)(3bd795494661b46620b5c795761f9f75)
       nuxt:
         specifier: 4.3.1
         version: 4.3.1(@parcel/watcher@2.5.6)(@types/node@25.4.0)(@vue/compiler-sfc@3.5.30)(better-sqlite3@12.6.2)(cac@6.7.14)(db0@0.3.4(better-sqlite3@12.6.2))(eslint@10.0.3(jiti@2.6.1))(ioredis@5.10.0)(lightningcss@1.32.0)(magicast@0.5.2)(optionator@0.9.4)(rollup@4.59.0)(terser@5.46.0)(typescript@5.9.3)(vite@7.3.1(@types/node@25.4.0)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2)
@@ -9939,7 +9939,7 @@ snapshots:
 
   diff@8.0.3: {}
 
-  docus@https://codeload.github.com/onmax/docus/tar.gz/cf182a665fcb4862530d11f8fb955f765a61306b(patch_hash=17356d12b31c77853da5f55e93882c6a028195cda0e5c4a5c8be0a0da5c90dae)(3bd795494661b46620b5c795761f9f75):
+  docus@https://codeload.github.com/onmax/docus/tar.gz/cf182a665fcb4862530d11f8fb955f765a61306b(patch_hash=6d122a771e73b7203a3d27d7112b1eb90c3fb98b4938304ec92476d59c3f52fe)(3bd795494661b46620b5c795761f9f75):
     dependencies:
       '@ai-sdk/gateway': 3.0.66(zod@4.3.6)
       '@ai-sdk/mcp': 1.0.25(zod@4.3.6)
