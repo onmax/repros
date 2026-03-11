@@ -1,0 +1,66 @@
+diff --git a/server/mcp/tools/get-page.ts b/server/mcp/tools/get-page.ts
+index dadf3cb..d167339 100644
+--- a/server/mcp/tools/get-page.ts
++++ b/server/mcp/tools/get-page.ts
+@@ -1,6 +1,7 @@
+ import { z } from 'zod'
+ import { queryCollection } from '@nuxt/content/server'
+ import type { Collections } from '@nuxt/content'
++import { stringify } from 'minimark/stringify'
+ import { getAvailableLocales, getCollectionFromPath } from '../../utils/content'
+ import { inferSiteURL } from '../../../utils/meta'
+ 
+@@ -24,7 +25,7 @@ WORKFLOW: This tool returns the complete page content including title, descripti
+   handler: async ({ path }) => {
+     const event = useEvent()
+     const config = useRuntimeConfig(event).public
+-    const siteUrl = import.meta.dev ? 'http://localhost:3000' : inferSiteURL()
++    const siteUrl = getRequestURL(event).origin || inferSiteURL()
+ 
+     const availableLocales = getAvailableLocales(config)
+     const collectionName = config.i18n?.locales
+@@ -34,16 +35,19 @@ WORKFLOW: This tool returns the complete page content including title, descripti
+     try {
+       const page = await queryCollection(event, collectionName as keyof Collections)
+         .where('path', '=', path)
+-        .select('title', 'path', 'description')
++        .select('title', 'path', 'description', 'body')
+         .first()
+ 
+       if (!page) {
+         return errorResult('Page not found')
+       }
+ 
+-      const content = await $fetch<string>(`/raw${path}.md`, {
+-        baseURL: siteUrl,
+-      })
++      const body = page.body ? stringify(page.body).trim() : ''
++      const content = [
++        `# ${page.title}`,
++        page.description ? `> ${page.description}` : '',
++        body,
++      ].filter(Boolean).join('\n\n')
+ 
+       return jsonResult({
+         title: page.title,
+diff --git a/server/mcp/tools/list-pages.ts b/server/mcp/tools/list-pages.ts
+index 5d34acc..66df7da 100644
+--- a/server/mcp/tools/list-pages.ts
++++ b/server/mcp/tools/list-pages.ts
+@@ -2,6 +2,7 @@ import { z } from 'zod'
+ import { queryCollection } from '@nuxt/content/server'
+ import type { Collections } from '@nuxt/content'
+ import { getCollectionsToQuery, getAvailableLocales } from '../../utils/content'
++import { inferSiteURL } from '../../../utils/meta'
+ 
+ export default defineMcpTool({
+   description: `Lists all available documentation pages with their categories and basic information.
+@@ -30,7 +31,7 @@ OUTPUT: Returns a structured list with:
+     const event = useEvent()
+     const config = useRuntimeConfig(event).public
+ 
+-    const siteUrl = import.meta.dev ? 'http://localhost:3000' : getRequestURL(event).origin
++    const siteUrl = getRequestURL(event).origin || inferSiteURL()
+     const availableLocales = getAvailableLocales(config)
+     const collections = getCollectionsToQuery(locale, availableLocales)
+ 
