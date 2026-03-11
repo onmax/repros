@@ -1,6 +1,6 @@
 # Docus MCP `get-page` Cloudflare repro
 
-This is a minimal Docus app that reproduces a Cloudflare Worker bug in Docus `get-page`.
+This is a minimal Docus app that reproduces the Cloudflare Worker regression in Docus `get-page` after switching MCP page URLs to the request origin.
 
 ## Repro
 
@@ -23,4 +23,4 @@ curl -sS \
 
 ## Actual
 
-On the broken implementation, `list-pages` works but `get-page` returns `Failed to get page`.
+With the request-origin patch applied, `list-pages` works but `get-page` returns `Failed to get page` on the deployed worker.

@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  docus@5.7.0:
+    hash: 7b0e4eef0c9f1492be5346d29793eee4e8533d79af86b22e037d6de5e553b9a6
+    path: patches/docus@5.7.0.patch
+
 importers:
 
   .:
@@ -13,7 +18,7 @@ importers:
         version: 0.7.5(@cloudflare/workers-types@4.20260310.1)(ai@6.0.86(zod@4.3.6))(react@19.2.4)(zod@4.3.6)
       docus:
         specifier: 5.7.0
-        version: 5.7.0(475377272c3d6d2638b0e24a7a9528ca)
+        version: 5.7.0(patch_hash=7b0e4eef0c9f1492be5346d29793eee4e8533d79af86b22e037d6de5e553b9a6)(475377272c3d6d2638b0e24a7a9528ca)
       nuxt:
         specifier: 4.3.1
         version: 4.3.1(@parcel/watcher@2.5.6)(@types/node@25.4.0)(@vue/compiler-sfc@3.5.30)(better-sqlite3@12.6.2)(cac@6.7.14)(db0@0.3.4(better-sqlite3@12.6.2))(eslint@10.0.3(jiti@2.6.1))(ioredis@5.10.0)(lightningcss@1.32.0)(magicast@0.5.2)(optionator@0.9.4)(rollup@4.59.0)(terser@5.46.0)(typescript@5.9.3)(vite@7.3.1(@types/node@25.4.0)(jiti@2.6.1)(lightningcss@1.32.0)(terser@5.46.0)(yaml@2.8.2))(yaml@2.8.2)
@@ -10267,7 +10272,7 @@ snapshots:
 
   diff@8.0.3: {}
 
-  docus@5.7.0(475377272c3d6d2638b0e24a7a9528ca):
+  docus@5.7.0(patch_hash=7b0e4eef0c9f1492be5346d29793eee4e8533d79af86b22e037d6de5e553b9a6)(475377272c3d6d2638b0e24a7a9528ca):
     dependencies:
       '@ai-sdk/gateway': 3.0.66(zod@4.3.6)
       '@ai-sdk/mcp': 1.0.25(zod@4.3.6)

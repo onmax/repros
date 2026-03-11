@@ -16,5 +16,10 @@
   },
   "devDependencies": {
     "wrangler": "^4.58.0"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "docus@5.7.0": "patches/docus@5.7.0.patch"
+    }
   }
 }

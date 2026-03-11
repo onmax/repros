@@ -1,5 +1,5 @@
 diff --git a/server/mcp/tools/get-page.ts b/server/mcp/tools/get-page.ts
-index dadf3cb..d167339 100644
+index dadf3cb..ea4ce30 100644
 --- a/server/mcp/tools/get-page.ts
 +++ b/server/mcp/tools/get-page.ts
 @@ -1,6 +1,7 @@
@@ -19,7 +19,7 @@ index dadf3cb..d167339 100644
  
      const availableLocales = getAvailableLocales(config)
      const collectionName = config.i18n?.locales
-@@ -34,16 +35,19 @@ WORKFLOW: This tool returns the complete page content including title, descripti
+@@ -34,16 +35,21 @@ WORKFLOW: This tool returns the complete page content including title, descripti
      try {
        const page = await queryCollection(event, collectionName as keyof Collections)
          .where('path', '=', path)
@@ -35,11 +35,13 @@ index dadf3cb..d167339 100644
 -        baseURL: siteUrl,
 -      })
 +      const body = page.body ? stringify(page.body).trim() : ''
-+      const content = [
-+        `# ${page.title}`,
-+        page.description ? `> ${page.description}` : '',
-+        body,
-+      ].filter(Boolean).join('\n\n')
++      const frontmatter = [
++        '---',
++        `title: ${JSON.stringify(page.title)}`,
++        page.description ? `description: ${JSON.stringify(page.description)}` : '',
++        '---',
++      ].filter(Boolean).join('\n')
++      const content = [frontmatter, body].filter(Boolean).join('\n\n')
  
        return jsonResult({
          title: page.title,
