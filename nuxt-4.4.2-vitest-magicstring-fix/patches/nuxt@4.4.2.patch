@@ -1,0 +1,49 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 30bcabbd3a989e99499b26de68e1c1306ce7c2c9..0a18c52a47b346c64c48b11a5ee40e9ee5188fdc 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -8307,6 +8307,31 @@ async function checkAndWarnAboutConfigFileExistence(options) {
+     return createWarningMessage(basename(configFile));
+   }
+ }
++async function buildInSubprocess(nuxt) {
++  const { spawn } = await import('node:child_process');
++  const nuxtBin = fileURLToPath(new URL("../bin/nuxt.mjs", import.meta.url));
++  const rootDir = relative(process.cwd(), nuxt.options.rootDir) || ".";
++  await new Promise((resolve$2, reject) => {
++    const env = { ...process.env, NUXT_VITEST_SUBPROCESS: "1" };
++    delete env.VITEST;
++    delete env.VITEST_MODE;
++    delete env.VITEST_POOL_ID;
++    delete env.VITEST_WORKER_ID;
++    const child = spawn(process.execPath, [nuxtBin, "build", rootDir], {
++      cwd: process.cwd(),
++      env,
++      stdio: "inherit"
++    });
++    child.on("error", reject);
++    child.on("exit", (code) => {
++      if (code === 0) {
++        resolve$2();
++        return;
++      }
++      reject(new Error(`Nuxt subprocess build failed with exit code ${code ?? "unknown"}`));
++    });
++  });
++}
+ 
+ async function build(nuxt) {
+   nuxt._perf?.startPhase("app:generate");
+@@ -8361,6 +8386,12 @@ async function build(nuxt) {
+       checkForExternalConfigurationFiles().catch((e) => logger.warn("Problem checking for external configuration files.", e));
+     });
+   }
++  if (!nuxt.options.dev && process.env.VITEST && !process.env.NUXT_VITEST_SUBPROCESS) {
++    await buildInSubprocess(nuxt);
++    await nuxt.callHook("build:done");
++    await nuxt.callHook("close", nuxt);
++    return;
++  }
+   nuxt._perf?.startPhase("build:bundle");
+   await bundle(nuxt);
+   nuxt._perf?.endPhase("build:bundle");

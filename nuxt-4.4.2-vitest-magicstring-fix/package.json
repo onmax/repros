@@ -1,0 +1,21 @@
+{
+  "name": "nuxt-4-4-2-vitest-magicstring-fix",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.15.1",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@nuxt/test-utils": "4.0.0",
+    "@vue/test-utils": "^2.4.6",
+    "jsdom": "^29.0.0",
+    "nuxt": "4.4.2",
+    "vitest": "^4.1.0"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "nuxt@4.4.2": "patches/nuxt@4.4.2.patch"
+    }
+  }
+}
