@@ -1,0 +1,1 @@
+{ "name": "nuxt-better-auth-signout", "private": true, "type": "module", "scripts": { "dev": "nuxt dev", "build": "nuxt build" }, "dependencies": { "nuxt": "^4.0.0", "@onmax/nuxt-better-auth": "https://pkg.pr.new/nuxt-modules/better-auth/@onmax/nuxt-better-auth@f5f9350", "better-auth": "^1.5.5" } }
