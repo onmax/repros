@@ -4,18 +4,20 @@ Issue: https://github.com/nuxt-modules/better-auth/issues/269
 
 ## Problem
 
-`config.d.ts` imports `CasingOption` from `../schema-generator.js`, but `dist/schema-generator.d.ts` is never emitted by `nuxt-module-build` (only `dist/runtime/**` is included). This makes `auth.schema.casing` typed as `any` in `nuxt.config.ts`.
+`auth.schema.casing` in `nuxt.config.ts` is typed as `any` instead of `'camelCase' | 'snake_case'`.
+
+Root cause: `dist/runtime/config.d.ts` imports `CasingOption` from `../schema-generator.js`, but `dist/schema-generator.d.ts` doesn't exist (`nuxt-module-build` only emits `dist/runtime/**`).
 
 ## Verify
 
 ```bash
-pnpm i && pnpm verify
+pnpm i && npx nuxi typecheck
 ```
 
 ## Expected
 
-`casing` should be typed as `'camelCase' | 'snake_case'`.
+Typecheck passes — `@ts-expect-error` suppresses the error from `casing: 123`.
 
 ## Actual
 
-`casing` is `any` because `dist/schema-generator.d.ts` doesn't exist and the import in `config.d.ts` is broken.
+`error TS2578: Unused '@ts-expect-error' directive` — `casing: 123` is accepted because `casing` is `any`.

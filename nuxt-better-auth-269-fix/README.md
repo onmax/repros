@@ -4,24 +4,24 @@ Issue: https://github.com/nuxt-modules/better-auth/issues/269
 
 ## Problem
 
-`config.d.ts` imports `CasingOption` from `../schema-generator.js`, but `dist/schema-generator.d.ts` is never emitted by `nuxt-module-build` (only `dist/runtime/**` is included). This makes `auth.schema.casing` typed as `any` in `nuxt.config.ts`.
+`auth.schema.casing` in `nuxt.config.ts` is typed as `any` instead of `'camelCase' | 'snake_case'`.
+
+## Fix
+
+pnpm patch replaces the broken import in `dist/runtime/config.d.ts`:
+- Before: `import type { CasingOption } from '../schema-generator.js'` (file doesn't exist)
+- After: `import type { Casing as CasingOption } from 'drizzle-orm/utils'`
 
 ## Verify
 
 ```bash
-pnpm i && pnpm verify
+pnpm i && npx nuxi typecheck
 ```
 
 ## Expected
 
-`casing` should be typed as `'camelCase' | 'snake_case'`.
+Typecheck passes — `@ts-expect-error` correctly suppresses the error from `casing: 123` (proving `casing` is now properly typed).
 
-## Actual (without fix)
+## Actual
 
-`casing` is `any` because `dist/schema-generator.d.ts` doesn't exist.
-
-## Fix
-
-pnpm patch replaces the broken `import type { CasingOption } from '../schema-generator.js'` with an inline `type CasingOption = 'camelCase' | 'snake_case'` in `dist/runtime/config.d.ts`.
-
-The real fix in the source should move `CasingOption` into `src/runtime/` so it's included in `dist/runtime/`.
+Typecheck passes.

@@ -1,12 +1,12 @@
 diff --git a/dist/runtime/config.d.ts b/dist/runtime/config.d.ts
-index 5e776f79d31a82d150124fa3dbc2be3f25d8963b..2c64d8619fb985988e77c46f01c4889301655999 100644
+index 5e776f79d31a82d150124fa3dbc2be3f25d8963b..961e7b3a68eaed505ab46dec5113ce9f94ea9298 100644
 --- a/dist/runtime/config.d.ts
 +++ b/dist/runtime/config.d.ts
 @@ -1,6 +1,6 @@
  import type { BetterAuthOptions, BetterAuthPlugin } from 'better-auth';
  import type { BetterAuthClientOptions } from 'better-auth/client';
 -import type { CasingOption } from '../schema-generator.js';
-+type CasingOption = 'camelCase' | 'snake_case';
++import type { Casing as CasingOption } from 'drizzle-orm/utils';
  import type { ServerAuthContext } from './types/augment.js';
  import { createAuthClient } from 'better-auth/vue';
  export type { ServerAuthContext };
