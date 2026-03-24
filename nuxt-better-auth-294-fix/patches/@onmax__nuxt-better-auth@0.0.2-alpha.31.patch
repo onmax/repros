@@ -1,0 +1,71 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 37075b38bfd7a09fbb62f1d6820cace0b42d7b13..438c3ed9318ece838b87dd05956669f3d2b45ee1 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -527,6 +527,31 @@ export function createSecondaryStorage() {
+ }
+ function buildDatabaseCode(input) {
+   if (input.provider === "nuxthub") {
++    if (input.hubDialect === "postgresql") {
++      return `import { db } from '@nuxthub/db'
++import * as schema from './schema.${input.hubDialect}.mjs'
++import { drizzleAdapter } from 'better-auth/adapters/drizzle'
++import { drizzle } from 'drizzle-orm/postgres-js'
++import postgres from 'postgres'
++
++const dialect = 'pg'
++
++function resolveBetterAuthDb() {
++  const hyperdrive = process.env.POSTGRES || globalThis.__env__?.POSTGRES || globalThis.POSTGRES
++  if (!hyperdrive?.connectionString)
++    return db
++
++  const client = postgres(hyperdrive.connectionString, {
++    prepare: false,
++    onnotice: () => {},
++  })
++
++  return drizzle({ client, schema })
++}
++
++export function createDatabase() { return drizzleAdapter(resolveBetterAuthDb(), { provider: dialect, schema, usePlural: ${input.usePlural}, camelCase: ${input.camelCase} }) }
++export { db }`;
++    }
+     return `import { db } from '@nuxthub/db'
+ import * as schema from './schema.${input.hubDialect}.mjs'
+ import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+diff --git a/dist/runtime/server/utils/auth.js b/dist/runtime/server/utils/auth.js
+index 02f03b667ac8a2343d0dc0835d1aa6677d6cb63e..933d75e88bf4bdf7a5c341bae3d83bcf90a28191 100644
+--- a/dist/runtime/server/utils/auth.js
++++ b/dist/runtime/server/utils/auth.js
+@@ -185,9 +185,6 @@ export function serverAuth(event) {
+   const siteUrl = getBaseURL(event);
+   const hasExplicitSiteUrl = runtimeConfig.public.siteUrl && typeof runtimeConfig.public.siteUrl === "string";
+   const cacheKey = hasExplicitSiteUrl ? "__explicit__" : siteUrl;
+-  const cached = _authCache.get(cacheKey);
+-  if (cached)
+-    return cached;
+   const database = createDatabase();
+   const userConfig = createServerAuth({ runtimeConfig, db });
+   const trustedOrigins = withDevTrustedOrigins(userConfig.trustedOrigins, Boolean(hasExplicitSiteUrl));
+@@ -199,6 +196,11 @@ export function serverAuth(event) {
+     _customSecondaryStorageMisconfigWarned = true;
+     console.warn(customSecondaryStorage.message);
+   }
++  if (!database) {
++    const cached = _authCache.get(cacheKey);
++    if (cached)
++      return cached;
++  }
+   const auth = betterAuth({
+     ...userConfig,
+     ...database && { database },
+@@ -207,6 +209,7 @@ export function serverAuth(event) {
+     baseURL: siteUrl,
+     trustedOrigins
+   });
+-  _authCache.set(cacheKey, auth);
++  if (!database)
++    _authCache.set(cacheKey, auth);
+   return auth;
+ }
