@@ -24,6 +24,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    betterAuthSecret: process.env.NUXT_BETTER_AUTH_SECRET || 'stackblitz-demo-secret-1234567890abcdef',
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || '',
     },
