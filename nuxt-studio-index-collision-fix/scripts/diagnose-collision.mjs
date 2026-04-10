@@ -12,25 +12,28 @@ const collections = {
 }
 
 const marketingPath = 'index.md'
-const guidesPath = 'index.md'
+const guidesPath = 'guides/index.md'
 
 const marketingId = generateIdFromFsPath(marketingPath, collections.marketing)
 const guidesId = generateIdFromFsPath(guidesPath, collections.guides)
 
 const marketingFsPath = generateFsPathFromId(marketingId, collections.marketing.source[0])
 const guidesFsPath = generateFsPathFromId(guidesId, collections.guides.source[0])
-const matchedCollection = getCollectionByFilePath('index.md', collections)?.name
+const matchedMarketingCollection = getCollectionByFilePath('index.md', collections)?.name
+const matchedGuidesCollection = getCollectionByFilePath('guides/index.md', collections)?.name
 
 console.log(`marketing/${marketingPath} -> ${marketingId} -> ${marketingFsPath}`)
-console.log(`guides/guides/${guidesPath} -> ${guidesId} -> ${guidesFsPath}`)
-console.log(`getCollectionByFilePath('index.md') -> ${matchedCollection}`)
+console.log(`${guidesPath} -> ${guidesId} -> ${guidesFsPath}`)
+console.log(`getCollectionByFilePath('index.md') -> ${matchedMarketingCollection}`)
+console.log(`getCollectionByFilePath('guides/index.md') -> ${matchedGuidesCollection}`)
 
 if (
   marketingId !== 'marketing/index.md'
   || guidesId !== 'guides/guides/index.md'
   || marketingFsPath !== 'index.md'
-  || guidesFsPath !== 'index.md'
-  || matchedCollection !== 'guides'
+  || guidesFsPath !== 'guides/index.md'
+  || matchedMarketingCollection !== 'marketing'
+  || matchedGuidesCollection !== 'guides'
 ) {
   process.exitCode = 1
 }

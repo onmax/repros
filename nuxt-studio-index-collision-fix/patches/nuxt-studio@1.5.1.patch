@@ -1,0 +1,70 @@
+diff --git a/dist/module/runtime/utils/collection.js b/dist/module/runtime/utils/collection.js
+index df3d2d4649a3284bd57cfb55d3c63053f9de0583..a98ed9f80cd5d6f0f9d6f7ac4403d4dc5c72d659 100644
+--- a/dist/module/runtime/utils/collection.js
++++ b/dist/module/runtime/utils/collection.js
+@@ -3,27 +3,44 @@ import { minimatch } from "minimatch";
+ import { join, dirname, parse } from "pathe";
+ import { withoutLeadingSlash, withoutTrailingSlash } from "ufo";
+ import { parseSourceBase } from "./source.js";
++function joinSourcePath(root, path) {
++  return !root || root === "/" ? path : join(root, path);
++}
++function getSourceRoot(source) {
++  const { fixed } = parseSourceBase(source);
++  const normalizedFixed = withoutLeadingSlash(withoutTrailingSlash(fixed));
++  const normalizedCwd = withoutLeadingSlash(withoutTrailingSlash(source.cwd || ""));
++  let cwdRoot = "";
++  if (normalizedCwd === "content" || normalizedCwd.endsWith("/content")) {
++    cwdRoot = "";
++  } else if (normalizedCwd.startsWith("content/")) {
++    cwdRoot = normalizedCwd.slice("content/".length);
++  } else if (normalizedCwd.includes("/content/")) {
++    cwdRoot = normalizedCwd.split("/content/").pop() || "";
++  } else if (normalizedCwd && !normalizedCwd.startsWith("/")) {
++    cwdRoot = normalizedCwd;
++  }
++  return withoutLeadingSlash(withoutTrailingSlash(join(cwdRoot, normalizedFixed)));
++}
+ export function generateStemFromFsPath(path) {
+   return withoutLeadingSlash(join(dirname(path), parse(path).name));
+ }
+ export function generateIdFromFsPath(path, collectionInfo) {
+-  const { fixed } = parseSourceBase(collectionInfo.source[0]);
+-  const pathWithoutFixed = path.substring(fixed.length);
+-  return join(collectionInfo.name, collectionInfo.source[0]?.prefix || "", pathWithoutFixed);
++  const source = collectionInfo.source[0];
++  const sourceRoot = getSourceRoot(source);
++  const normalizedPath = withoutLeadingSlash(path);
++  const pathWithoutFixed = sourceRoot && normalizedPath.startsWith(sourceRoot + "/") ? normalizedPath.substring(sourceRoot.length + 1) : normalizedPath;
++  return join(collectionInfo.name, source?.prefix || "", pathWithoutFixed);
+ }
+ export function generateFsPathFromId(id, source) {
+   const [_, ...rest] = id.split(/[/:]/);
+   let path = rest.join("/");
+-  const { fixed } = parseSourceBase(source);
+-  const normalizedFixed = withoutTrailingSlash(fixed);
++  const sourceRoot = getSourceRoot(source);
+   const prefix = withoutTrailingSlash(withoutLeadingSlash(source.prefix || ""));
+   if (prefix && prefix !== "/" && path.startsWith(prefix + "/")) {
+     path = path.substring(prefix.length + 1);
+   }
+-  if (normalizedFixed && path.startsWith(normalizedFixed)) {
+-    return path;
+-  }
+-  return join(fixed, path);
++  return joinSourcePath(sourceRoot, path);
+ }
+ export function getOrderedSchemaKeys(schema) {
+   const shape = Object.values(schema.definitions)[0]?.properties || {};
+@@ -46,8 +63,9 @@ export function getCollectionByFilePath(path, collections) {
+     const paths = path === "/" ? ["index.yml", "index.yaml", "index.md", "index.json"] : [path];
+     return paths.some((p) => {
+       matchedSource = collection2.source.find((source) => {
+-        const include = minimatch(p, source.include, { dot: true });
+-        const exclude = source.exclude?.some((exclude2) => minimatch(p, exclude2));
++        const sourceRoot = getSourceRoot(source);
++        const include = minimatch(p, joinSourcePath(sourceRoot, source.include), { dot: true });
++        const exclude = source.exclude?.some((exclude2) => minimatch(p, joinSourcePath(sourceRoot, exclude2)));
+         return include && !exclude;
+       });
+       return matchedSource;
