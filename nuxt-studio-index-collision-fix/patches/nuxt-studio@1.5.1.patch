@@ -1,30 +1,13 @@
 diff --git a/dist/module/runtime/utils/collection.js b/dist/module/runtime/utils/collection.js
-index df3d2d4649a3284bd57cfb55d3c63053f9de0583..a98ed9f80cd5d6f0f9d6f7ac4403d4dc5c72d659 100644
+index df3d2d4649a3284bd57cfb55d3c63053f9de0583..977c272535167188ffa1514ba2cb4ec23b22439a 100644
 --- a/dist/module/runtime/utils/collection.js
 +++ b/dist/module/runtime/utils/collection.js
-@@ -3,27 +3,44 @@ import { minimatch } from "minimatch";
+@@ -2,28 +2,26 @@ import { hash } from "ohash";
+ import { minimatch } from "minimatch";
  import { join, dirname, parse } from "pathe";
  import { withoutLeadingSlash, withoutTrailingSlash } from "ufo";
- import { parseSourceBase } from "./source.js";
-+function joinSourcePath(root, path) {
-+  return !root || root === "/" ? path : join(root, path);
-+}
-+function getSourceRoot(source) {
-+  const { fixed } = parseSourceBase(source);
-+  const normalizedFixed = withoutLeadingSlash(withoutTrailingSlash(fixed));
-+  const normalizedCwd = withoutLeadingSlash(withoutTrailingSlash(source.cwd || ""));
-+  let cwdRoot = "";
-+  if (normalizedCwd === "content" || normalizedCwd.endsWith("/content")) {
-+    cwdRoot = "";
-+  } else if (normalizedCwd.startsWith("content/")) {
-+    cwdRoot = normalizedCwd.slice("content/".length);
-+  } else if (normalizedCwd.includes("/content/")) {
-+    cwdRoot = normalizedCwd.split("/content/").pop() || "";
-+  } else if (normalizedCwd && !normalizedCwd.startsWith("/")) {
-+    cwdRoot = normalizedCwd;
-+  }
-+  return withoutLeadingSlash(withoutTrailingSlash(join(cwdRoot, normalizedFixed)));
-+}
+-import { parseSourceBase } from "./source.js";
++import { getSourceRoot, joinSourcePath } from "./source.js";
  export function generateStemFromFsPath(path) {
    return withoutLeadingSlash(join(dirname(path), parse(path).name));
  }
@@ -56,7 +39,7 @@ index df3d2d4649a3284bd57cfb55d3c63053f9de0583..a98ed9f80cd5d6f0f9d6f7ac4403d4dc
  }
  export function getOrderedSchemaKeys(schema) {
    const shape = Object.values(schema.definitions)[0]?.properties || {};
-@@ -46,8 +63,9 @@ export function getCollectionByFilePath(path, collections) {
+@@ -46,8 +44,9 @@ export function getCollectionByFilePath(path, collections) {
      const paths = path === "/" ? ["index.yml", "index.yaml", "index.md", "index.json"] : [path];
      return paths.some((p) => {
        matchedSource = collection2.source.find((source) => {
@@ -68,3 +51,47 @@ index df3d2d4649a3284bd57cfb55d3c63053f9de0583..a98ed9f80cd5d6f0f9d6f7ac4403d4dc
          return include && !exclude;
        });
        return matchedSource;
+diff --git a/dist/module/runtime/utils/source.js b/dist/module/runtime/utils/source.js
+index ca540a25ae1a1b2b4141b9fc487a2fef35d37209..765598e8646b8ac16188e58b2a4e60ac1526e7d0 100644
+--- a/dist/module/runtime/utils/source.js
++++ b/dist/module/runtime/utils/source.js
+@@ -8,6 +8,30 @@ export function parseSourceBase(source) {
+     dynamic: "*" + rest.join("*")
+   };
+ }
++export function joinSourcePath(root, path) {
++  const sourcePath = !root || root === "/" ? path : join(root, path);
++  if (!sourcePath || sourcePath === "/") {
++    return "";
++  }
++  return withoutLeadingSlash(withoutTrailingSlash(sourcePath));
++}
++function getContentRoot(cwd) {
++  const normalizedCwd = withoutLeadingSlash(withoutTrailingSlash(cwd));
++  if (normalizedCwd === "content" || normalizedCwd.endsWith("/content")) {
++    return "";
++  }
++  if (normalizedCwd.startsWith("content/")) {
++    return normalizedCwd.slice("content/".length);
++  }
++  if (normalizedCwd.includes("/content/")) {
++    return normalizedCwd.split("/content/").pop() || "";
++  }
++  return normalizedCwd;
++}
++export function getSourceRoot(source) {
++  const { fixed } = parseSourceBase(source);
++  return joinSourcePath(getContentRoot(source.cwd || ""), fixed);
++}
+ export function getCollectionSourceById(id, sources) {
+   const [_, ...rest] = id.split(/[/:]/);
+   const prefixAndPath = rest.join("/");
+@@ -20,7 +44,7 @@ export function getCollectionSourceById(id, sources) {
+       return false;
+     }
+     let fsPath;
+-    const [fixPart] = source.include.includes("*") ? source.include.split("*") : ["", source.include];
++    const { fixed: fixPart } = parseSourceBase(source);
+     const fixed = withoutTrailingSlash(fixPart || "/");
+     if (withoutLeadingSlash(fixed) === withoutLeadingSlash(prefix)) {
+       fsPath = prefixAndPath;
