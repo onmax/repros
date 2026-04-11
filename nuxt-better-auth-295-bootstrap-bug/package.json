@@ -1,0 +1,26 @@
+{
+  "name": "nuxt-better-auth-295-bootstrap-bug",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@nuxthub/core": "0.10.7",
+    "@onmax/nuxt-better-auth": "file:./vendor/onmax-nuxt-better-auth-broken.tgz",
+    "better-auth": "^1.5.6",
+    "drizzle-orm": "^0.45.1",
+    "nuxt": "4.4.2",
+    "postgres": "^3.4.8",
+    "vue": "^3.5.30",
+    "vue-router": "^5.0.4"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.4",
+    "nitro-cloudflare-dev": "^0.2.2",
+    "wrangler": "^4.81.1"
+  }
+}
