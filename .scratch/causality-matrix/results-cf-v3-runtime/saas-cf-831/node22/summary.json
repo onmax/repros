@@ -1,0 +1,20 @@
+{
+  "case": "saas-cf-831",
+  "nodeVersion": "22.22.0",
+  "scenario": "runtime-request-probe",
+  "routeRulesFailure": false,
+  "requests": [
+    "/ 200",
+    "/login 200",
+    "/signup 200",
+    "/app 302",
+    "/app/settings 302",
+    "/docs 307",
+    "/docs/getting-started 404",
+    "/blog 200",
+    "/pricing 200",
+    "/changelog 200",
+    "/_payload.json 200",
+    "/api/auth/session 404"
+  ]
+}

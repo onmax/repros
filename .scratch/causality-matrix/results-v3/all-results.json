@@ -1,0 +1,738 @@
+[
+  {
+    "case": "nuxt-only",
+    "nodeVersion": "22.22.0",
+    "nodeLabel": "node22",
+    "scenario": "install",
+    "command": "fnm exec --using 22.22.0 pnpm i",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-only",
+    "exitCode": 0,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "nuxt-only",
+    "nodeVersion": "22.22.0",
+    "nodeLabel": "node22",
+    "scenario": "dev",
+    "command": "bash -lc 'tmp=$(mktemp); setsid fnm exec --using 22.22.0 pnpm -s run dev >\"$tmp\" 2>&1 & pgid=$!; sleep 35; kill -TERM -$pgid 2>/dev/null || true; sleep 2; kill -KILL -$pgid 2>/dev/null || true; wait $pgid 2>/dev/null || true; cat \"$tmp\"; rm -f \"$tmp\"'",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-only",
+    "exitCode": 0,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "nuxt-only",
+    "nodeVersion": "22.22.0",
+    "nodeLabel": "node22",
+    "scenario": "typecheck",
+    "command": "fnm exec --using 22.22.0 pnpm -s run typecheck",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-only",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": [
+      " ERROR  Cannot find matching tsconfig.json in /Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-only or parent directories"
+    ]
+  },
+  {
+    "case": "nuxt-only",
+    "nodeVersion": "22.22.0",
+    "nodeLabel": "node22",
+    "scenario": "typecheck-build-concurrent",
+    "command": "fnm exec --using 22.22.0 bash -lc 'pnpm -s run typecheck & pid1=$!; pnpm -s run build & pid2=$!; wait $pid1; ec1=$?; wait $pid2; ec2=$?; echo \"__EXIT_TYPECHECK__=$ec1\"; echo \"__EXIT_BUILD__=$ec2\"; test $ec1 -eq 0 -a $ec2 -eq 0'",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-only",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": [
+      " ERROR  Cannot find matching tsconfig.json in /Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-only or parent directories"
+    ]
+  },
+  {
+    "case": "nuxt+hub-old",
+    "nodeVersion": "22.22.0",
+    "nodeLabel": "node22",
+    "scenario": "install",
+    "command": "fnm exec --using 22.22.0 pnpm i",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-old",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": true,
+      "kv": true,
+      "db": true
+    },
+    "notes": [
+      " ERROR  Build failed with 1 error:",
+      "Error: Cannot find module 'typescript'",
+      "    at aggregateBindingErrorsIntoJsError (node_modules/.pnpm/rolldown@1.0.0-beta.57/node_modules/rolldown/dist/shared/bindingify-input-options-B8B4dvr-.mjs:61:18)"
+    ]
+  },
+  {
+    "case": "nuxt+hub-old",
+    "nodeVersion": "22.22.0",
+    "nodeLabel": "node22",
+    "scenario": "dev",
+    "command": "bash -lc 'tmp=$(mktemp); setsid fnm exec --using 22.22.0 pnpm -s run dev >\"$tmp\" 2>&1 & pgid=$!; sleep 35; kill -TERM -$pgid 2>/dev/null || true; sleep 2; kill -KILL -$pgid 2>/dev/null || true; wait $pgid 2>/dev/null || true; cat \"$tmp\"; rm -f \"$tmp\"'",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-old",
+    "exitCode": 0,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "nuxt+hub-old",
+    "nodeVersion": "22.22.0",
+    "nodeLabel": "node22",
+    "scenario": "typecheck",
+    "command": "fnm exec --using 22.22.0 pnpm -s run typecheck",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-old",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": [
+      " ERROR  Cannot find matching tsconfig.json in /Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-old or parent directories"
+    ]
+  },
+  {
+    "case": "nuxt+hub-old",
+    "nodeVersion": "22.22.0",
+    "nodeLabel": "node22",
+    "scenario": "typecheck-build-concurrent",
+    "command": "fnm exec --using 22.22.0 bash -lc 'pnpm -s run typecheck & pid1=$!; pnpm -s run build & pid2=$!; wait $pid1; ec1=$?; wait $pid2; ec2=$?; echo \"__EXIT_TYPECHECK__=$ec1\"; echo \"__EXIT_BUILD__=$ec2\"; test $ec1 -eq 0 -a $ec2 -eq 0'",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-old",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": true,
+      "kv": true,
+      "db": true
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": true,
+      "kv": true,
+      "db": true
+    },
+    "notes": [
+      " ERROR  Cannot find matching tsconfig.json in /Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-old or parent directories",
+      "[nuxt:hub]  ERROR  Please run npx nypm i drizzle-orm drizzle-kit to properly setup Drizzle ORM with NuxtHub.",
+      " ERROR  Build failed with 1 error:",
+      "Error: Cannot find module 'typescript'",
+      "    at aggregateBindingErrorsIntoJsError (node_modules/.pnpm/rolldown@1.0.0-beta.57/node_modules/rolldown/dist/shared/bindingify-input-options-B8B4dvr-.mjs:61:18)"
+    ]
+  },
+  {
+    "case": "nuxt+hub-831",
+    "nodeVersion": "22.22.0",
+    "nodeLabel": "node22",
+    "scenario": "install",
+    "command": "fnm exec --using 22.22.0 pnpm i",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-831",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": [
+      " ERROR  Build failed with 1 error:",
+      "Error: Cannot find module 'typescript'",
+      "    at aggregateBindingErrorsIntoJsError (node_modules/.pnpm/rolldown@1.0.0-beta.57/node_modules/rolldown/dist/shared/bindingify-input-options-B8B4dvr-.mjs:61:18)"
+    ]
+  },
+  {
+    "case": "nuxt+hub-831",
+    "nodeVersion": "22.22.0",
+    "nodeLabel": "node22",
+    "scenario": "dev",
+    "command": "bash -lc 'tmp=$(mktemp); setsid fnm exec --using 22.22.0 pnpm -s run dev >\"$tmp\" 2>&1 & pgid=$!; sleep 35; kill -TERM -$pgid 2>/dev/null || true; sleep 2; kill -KILL -$pgid 2>/dev/null || true; wait $pgid 2>/dev/null || true; cat \"$tmp\"; rm -f \"$tmp\"'",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-831",
+    "exitCode": 0,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "nuxt+hub-831",
+    "nodeVersion": "22.22.0",
+    "nodeLabel": "node22",
+    "scenario": "typecheck",
+    "command": "fnm exec --using 22.22.0 pnpm -s run typecheck",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-831",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": [
+      " ERROR  Cannot find matching tsconfig.json in /Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-831 or parent directories"
+    ]
+  },
+  {
+    "case": "nuxt+hub-831",
+    "nodeVersion": "22.22.0",
+    "nodeLabel": "node22",
+    "scenario": "typecheck-build-concurrent",
+    "command": "fnm exec --using 22.22.0 bash -lc 'pnpm -s run typecheck & pid1=$!; pnpm -s run build & pid2=$!; wait $pid1; ec1=$?; wait $pid2; ec2=$?; echo \"__EXIT_TYPECHECK__=$ec1\"; echo \"__EXIT_BUILD__=$ec2\"; test $ec1 -eq 0 -a $ec2 -eq 0'",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-831",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": [
+      " ERROR  Cannot find matching tsconfig.json in /Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-831 or parent directories",
+      "[nuxt:hub]  ERROR  Please run npx nypm i drizzle-orm drizzle-kit to properly setup Drizzle ORM with NuxtHub.",
+      " ERROR  Build failed with 1 error:",
+      "Error: Cannot find module 'typescript'",
+      "    at aggregateBindingErrorsIntoJsError (node_modules/.pnpm/rolldown@1.0.0-beta.57/node_modules/rolldown/dist/shared/bindingify-input-options-B8B4dvr-.mjs:61:18)"
+    ]
+  },
+  {
+    "case": "saas-pr253-canary",
+    "nodeVersion": "22.22.0",
+    "nodeLabel": "node22",
+    "scenario": "install",
+    "command": "fnm exec --using 22.22.0 pnpm i",
+    "cwd": "/Users/maxi/nuxt/saas",
+    "exitCode": 0,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "saas-pr253-canary",
+    "nodeVersion": "22.22.0",
+    "nodeLabel": "node22",
+    "scenario": "dev",
+    "command": "bash -lc 'tmp=$(mktemp); setsid fnm exec --using 22.22.0 pnpm -s run dev >\"$tmp\" 2>&1 & pgid=$!; sleep 35; kill -TERM -$pgid 2>/dev/null || true; sleep 2; kill -KILL -$pgid 2>/dev/null || true; wait $pgid 2>/dev/null || true; cat \"$tmp\"; rm -f \"$tmp\"'",
+    "cwd": "/Users/maxi/nuxt/saas",
+    "exitCode": 0,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": true,
+      "db": true
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": true,
+      "db": true
+    },
+    "notes": []
+  },
+  {
+    "case": "saas-pr253-canary",
+    "nodeVersion": "22.22.0",
+    "nodeLabel": "node22",
+    "scenario": "typecheck",
+    "command": "fnm exec --using 22.22.0 pnpm -s run typecheck",
+    "cwd": "/Users/maxi/nuxt/saas",
+    "exitCode": 0,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "saas-pr253-canary",
+    "nodeVersion": "22.22.0",
+    "nodeLabel": "node22",
+    "scenario": "typecheck-build-concurrent",
+    "command": "fnm exec --using 22.22.0 bash -lc 'pnpm -s run typecheck & pid1=$!; pnpm -s run build & pid2=$!; wait $pid1; ec1=$?; wait $pid2; ec2=$?; echo \"__EXIT_TYPECHECK__=$ec1\"; echo \"__EXIT_BUILD__=$ec2\"; test $ec1 -eq 0 -a $ec2 -eq 0'",
+    "cwd": "/Users/maxi/nuxt/saas",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": [
+      " ERROR  The module '/Users/maxi/nuxt/saas/node_modules/.pnpm/better-sqlite3@12.6.2/node_modules/better-sqlite3/build/Release/better_sqlite3.node'"
+    ]
+  },
+  {
+    "case": "nuxt-only",
+    "nodeVersion": "25.6.1",
+    "nodeLabel": "node25",
+    "scenario": "install",
+    "command": "fnm exec --using 25.6.1 pnpm i",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-only",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "nuxt-only",
+    "nodeVersion": "25.6.1",
+    "nodeLabel": "node25",
+    "scenario": "dev",
+    "command": "bash -lc 'tmp=$(mktemp); setsid fnm exec --using 25.6.1 pnpm -s run dev >\"$tmp\" 2>&1 & pgid=$!; sleep 35; kill -TERM -$pgid 2>/dev/null || true; sleep 2; kill -KILL -$pgid 2>/dev/null || true; wait $pgid 2>/dev/null || true; cat \"$tmp\"; rm -f \"$tmp\"'",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-only",
+    "exitCode": 0,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "nuxt-only",
+    "nodeVersion": "25.6.1",
+    "nodeLabel": "node25",
+    "scenario": "typecheck",
+    "command": "fnm exec --using 25.6.1 pnpm -s run typecheck",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-only",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "nuxt-only",
+    "nodeVersion": "25.6.1",
+    "nodeLabel": "node25",
+    "scenario": "typecheck-build-concurrent",
+    "command": "fnm exec --using 25.6.1 bash -lc 'pnpm -s run typecheck & pid1=$!; pnpm -s run build & pid2=$!; wait $pid1; ec1=$?; wait $pid2; ec2=$?; echo \"__EXIT_TYPECHECK__=$ec1\"; echo \"__EXIT_BUILD__=$ec2\"; test $ec1 -eq 0 -a $ec2 -eq 0'",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-only",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "nuxt+hub-old",
+    "nodeVersion": "25.6.1",
+    "nodeLabel": "node25",
+    "scenario": "install",
+    "command": "fnm exec --using 25.6.1 pnpm i",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-old",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": true,
+      "kv": true,
+      "db": true
+    },
+    "notes": []
+  },
+  {
+    "case": "nuxt+hub-old",
+    "nodeVersion": "25.6.1",
+    "nodeLabel": "node25",
+    "scenario": "dev",
+    "command": "bash -lc 'tmp=$(mktemp); setsid fnm exec --using 25.6.1 pnpm -s run dev >\"$tmp\" 2>&1 & pgid=$!; sleep 35; kill -TERM -$pgid 2>/dev/null || true; sleep 2; kill -KILL -$pgid 2>/dev/null || true; wait $pgid 2>/dev/null || true; cat \"$tmp\"; rm -f \"$tmp\"'",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-old",
+    "exitCode": 0,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "nuxt+hub-old",
+    "nodeVersion": "25.6.1",
+    "nodeLabel": "node25",
+    "scenario": "typecheck",
+    "command": "fnm exec --using 25.6.1 pnpm -s run typecheck",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-old",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "nuxt+hub-old",
+    "nodeVersion": "25.6.1",
+    "nodeLabel": "node25",
+    "scenario": "typecheck-build-concurrent",
+    "command": "fnm exec --using 25.6.1 bash -lc 'pnpm -s run typecheck & pid1=$!; pnpm -s run build & pid2=$!; wait $pid1; ec1=$?; wait $pid2; ec2=$?; echo \"__EXIT_TYPECHECK__=$ec1\"; echo \"__EXIT_BUILD__=$ec2\"; test $ec1 -eq 0 -a $ec2 -eq 0'",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-old",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "nuxt+hub-831",
+    "nodeVersion": "25.6.1",
+    "nodeLabel": "node25",
+    "scenario": "install",
+    "command": "fnm exec --using 25.6.1 pnpm i",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-831",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "nuxt+hub-831",
+    "nodeVersion": "25.6.1",
+    "nodeLabel": "node25",
+    "scenario": "dev",
+    "command": "bash -lc 'tmp=$(mktemp); setsid fnm exec --using 25.6.1 pnpm -s run dev >\"$tmp\" 2>&1 & pgid=$!; sleep 35; kill -TERM -$pgid 2>/dev/null || true; sleep 2; kill -KILL -$pgid 2>/dev/null || true; wait $pgid 2>/dev/null || true; cat \"$tmp\"; rm -f \"$tmp\"'",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-831",
+    "exitCode": 0,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "nuxt+hub-831",
+    "nodeVersion": "25.6.1",
+    "nodeLabel": "node25",
+    "scenario": "typecheck",
+    "command": "fnm exec --using 25.6.1 pnpm -s run typecheck",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-831",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "nuxt+hub-831",
+    "nodeVersion": "25.6.1",
+    "nodeLabel": "node25",
+    "scenario": "typecheck-build-concurrent",
+    "command": "fnm exec --using 25.6.1 bash -lc 'pnpm -s run typecheck & pid1=$!; pnpm -s run build & pid2=$!; wait $pid1; ec1=$?; wait $pid2; ec2=$?; echo \"__EXIT_TYPECHECK__=$ec1\"; echo \"__EXIT_BUILD__=$ec2\"; test $ec1 -eq 0 -a $ec2 -eq 0'",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-831",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "saas-pr253-canary",
+    "nodeVersion": "25.6.1",
+    "nodeLabel": "node25",
+    "scenario": "install",
+    "command": "fnm exec --using 25.6.1 pnpm i",
+    "cwd": "/Users/maxi/nuxt/saas",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "saas-pr253-canary",
+    "nodeVersion": "25.6.1",
+    "nodeLabel": "node25",
+    "scenario": "dev",
+    "command": "bash -lc 'tmp=$(mktemp); setsid fnm exec --using 25.6.1 pnpm -s run dev >\"$tmp\" 2>&1 & pgid=$!; sleep 35; kill -TERM -$pgid 2>/dev/null || true; sleep 2; kill -KILL -$pgid 2>/dev/null || true; wait $pgid 2>/dev/null || true; cat \"$tmp\"; rm -f \"$tmp\"'",
+    "cwd": "/Users/maxi/nuxt/saas",
+    "exitCode": 0,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "saas-pr253-canary",
+    "nodeVersion": "25.6.1",
+    "nodeLabel": "node25",
+    "scenario": "typecheck",
+    "command": "fnm exec --using 25.6.1 pnpm -s run typecheck",
+    "cwd": "/Users/maxi/nuxt/saas",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "saas-pr253-canary",
+    "nodeVersion": "25.6.1",
+    "nodeLabel": "node25",
+    "scenario": "typecheck-build-concurrent",
+    "command": "fnm exec --using 25.6.1 bash -lc 'pnpm -s run typecheck & pid1=$!; pnpm -s run build & pid2=$!; wait $pid1; ec1=$?; wait $pid2; ec2=$?; echo \"__EXIT_TYPECHECK__=$ec1\"; echo \"__EXIT_BUILD__=$ec2\"; test $ec1 -eq 0 -a $ec2 -eq 0'",
+    "cwd": "/Users/maxi/nuxt/saas",
+    "exitCode": 1,
+    "timedOut": false,
+    "routeRulesFailure": false,
+    "routeRulesFiles": [],
+    "nuxthubPhysicalWrites": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "nuxthubPhysicalWritesDelta": {
+      "blob": false,
+      "kv": false,
+      "db": false
+    },
+    "notes": []
+  },
+  {
+    "case": "contamination-check",
+    "nodeVersion": "22.22.0",
+    "scenario": "dev",
+    "cwd": "/Users/maxi/repros/.scratch/causality-matrix/contamination-check/parent-with-node-modules/project",
+    "routeRulesFailure": false,
+    "notes": [],
+    "parentNodeModules": true,
+    "parentViteVersion": "0.0.0-parent-fake"
+  }
+]

@@ -1,0 +1,80 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 1ef9c1437928b792369a168489dbf4ac6842e334..bda38e637a48980cd14e02071ba1c05f45fc912b 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -1,8 +1,8 @@
+ import { readFile, writeFile, mkdir, copyFile, stat } from 'node:fs/promises';
+ import { logger, createResolver, addServerPlugin, getLayerDirectories, updateTemplates, addTemplate, addTypeTemplate, addServerHandler, addServerImports, addImportsDir, defineNuxtModule } from '@nuxt/kit';
+-import { join, resolve as resolve$1, relative } from 'pathe';
++import { join, resolve as resolve$1, relative, dirname } from 'pathe';
+ import { defu } from 'defu';
+-import { readPackageJSON, findWorkspaceDir } from 'pkg-types';
++import { readPackageJSON, findWorkspaceDir, resolvePackageJSON } from 'pkg-types';
+ import { provider } from 'std-env';
+ import chokidar from 'chokidar';
+ import { glob } from 'tinyglobby';
+@@ -27,6 +27,14 @@ function logWhenReady(nuxt, message, type = "info") {
+   }
+ }
+ const { resolve, resolvePath } = createResolver(import.meta.url);
++async function resolvePhysicalNodeModulesDir(rootDir) {
++  try {
++    const packageJSONPath = await resolvePackageJSON(rootDir);
++    return join(dirname(packageJSONPath), "node_modules");
++  } catch {
++    return join(rootDir, "node_modules");
++  }
++}
+ function addWranglerBinding(nuxt, type, binding) {
+   nuxt.options.nitro.cloudflare ||= {};
+   nuxt.options.nitro.cloudflare.wrangler ||= {};
+@@ -354,7 +362,8 @@ async function generateDatabaseSchema(nuxt, hub) {
+       schemaPaths = await getSchemaPaths();
+       await updateTemplates({ filter: (template) => template.filename.includes("hub/db/schema.entry.ts") });
+       await buildDatabaseSchema(nuxt.options.buildDir, { relativeDir: nuxt.options.rootDir, alias: nuxt.options.alias });
+-      const physicalDbDir = join(nuxt.options.rootDir, "node_modules", "@nuxthub", "db");
++      const nodeModulesDir = await resolvePhysicalNodeModulesDir(nuxt.options.rootDir);
++      const physicalDbDir = join(nodeModulesDir, "@nuxthub", "db");
+       try {
+         await copyFile(join(nuxt.options.buildDir, "hub/db/schema.mjs"), join(physicalDbDir, "schema.mjs"));
+         await copyFile(join(nuxt.options.buildDir, "hub/db/schema.d.mts"), join(physicalDbDir, "schema.d.mts"));
+@@ -370,7 +379,8 @@ async function generateDatabaseSchema(nuxt, hub) {
+   });
+   nuxt.hooks.hookOnce("app:templatesGenerated", async () => {
+     await buildDatabaseSchema(nuxt.options.buildDir, { relativeDir: nuxt.options.rootDir, alias: nuxt.options.alias });
+-    const physicalDbDir = join(nuxt.options.rootDir, "node_modules", "@nuxthub", "db");
++    const nodeModulesDir = await resolvePhysicalNodeModulesDir(nuxt.options.rootDir);
++    const physicalDbDir = join(nodeModulesDir, "@nuxthub", "db");
+     await mkdir(physicalDbDir, { recursive: true });
+     try {
+       await copyFile(join(nuxt.options.buildDir, "hub/db/schema.mjs"), join(physicalDbDir, "schema.mjs"));
+@@ -606,7 +616,8 @@ ${hasReplicas ? `    const primary = drizzle({ connection: { uri }, schema${mode
+     _db = drizzle({ connection: { url, authToken }, schema${casingOption} })`
+     );
+   }
+-  const physicalDbDir = join(nuxt.options.rootDir, "node_modules", "@nuxthub", "db");
++  const nodeModulesDir = await resolvePhysicalNodeModulesDir(nuxt.options.rootDir);
++  const physicalDbDir = join(nodeModulesDir, "@nuxthub", "db");
+   await mkdir(physicalDbDir, { recursive: true });
+   await writeFile(
+     join(physicalDbDir, "db.mjs"),
+@@ -745,7 +756,8 @@ export const kv = createStorage({
+   driver: driver(${JSON.stringify(driverOptions)}),
+ });
+ `;
+-  const physicalKvDir = join(nuxt.options.rootDir, "node_modules", "@nuxthub", "kv");
++  const nodeModulesDir = await resolvePhysicalNodeModulesDir(nuxt.options.rootDir);
++  const physicalKvDir = join(nodeModulesDir, "@nuxthub", "kv");
+   await mkdir(physicalKvDir, { recursive: true });
+   await writeFile(
+     join(physicalKvDir, "kv.mjs"),
+@@ -840,7 +852,8 @@ import { createDriver } from "@nuxthub/core/blob/drivers/${driver}";
+ export { ensureBlob } from "@nuxthub/core/blob";
+ export const blob = createBlobStorage(createDriver(${JSON.stringify(driverOptions)}));
+ `;
+-  const physicalBlobDir = join(nuxt.options.rootDir, "node_modules", "@nuxthub", "blob");
++  const nodeModulesDir = await resolvePhysicalNodeModulesDir(nuxt.options.rootDir);
++  const physicalBlobDir = join(nodeModulesDir, "@nuxthub", "blob");
+   await mkdir(physicalBlobDir, { recursive: true });
+   await writeFile(join(physicalBlobDir, "blob.mjs"), blobContent);
+   await copyFile(

@@ -1,0 +1,40 @@
+diff --git a/dist/app/composables/error.d.ts b/dist/app/composables/error.d.ts
+index 8bac6a077348d937af5ccfc263bc3b067a4db7d7..49641a12c5fa71150b9cf3b530757c452fd542b2 100644
+--- a/dist/app/composables/error.d.ts
++++ b/dist/app/composables/error.d.ts
+@@ -4,6 +4,8 @@ import type { NuxtPayload } from '../nuxt.js';
+ export declare const NUXT_ERROR_SIGNATURE = "__nuxt_error";
+ /** @since 3.0.0 */
+ export declare const useError: () => Ref<NuxtPayload["error"]>;
++export declare class NuxtError<DataT = unknown> extends Error {
++}
+ export interface NuxtError<DataT = unknown> extends Omit<H3Error<DataT>, 'statusCode' | 'statusMessage'> {
+     error?: true;
+     status?: number;
+diff --git a/dist/app/composables/error.js b/dist/app/composables/error.js
+index a745e31cdcf89c45412d4a59d1e022b6ef19269e..87da67d95dfb69bd25ba329568bd9b3338c6a070 100644
+--- a/dist/app/composables/error.js
++++ b/dist/app/composables/error.js
+@@ -4,6 +4,8 @@ import { useNuxtApp } from "../nuxt.js";
+ import { useRouter } from "./router.js";
+ export const NUXT_ERROR_SIGNATURE = "__nuxt_error";
+ export const useError = /* @__NO_SIDE_EFFECTS__ */ () => toRef(useNuxtApp().payload, "error");
++export class NuxtError extends Error {
++}
+ export const showError = (error) => {
+   const nuxtError = createError(error);
+   try {
+@@ -38,5 +40,13 @@ export const createError = (error) => {
+     configurable: false,
+     writable: false
+   });
++  Object.defineProperty(nuxtError, "status", {
++    get: () => nuxtError.statusCode,
++    configurable: true
++  });
++  Object.defineProperty(nuxtError, "statusText", {
++    get: () => nuxtError.statusMessage,
++    configurable: true
++  });
+   return nuxtError;
+ };

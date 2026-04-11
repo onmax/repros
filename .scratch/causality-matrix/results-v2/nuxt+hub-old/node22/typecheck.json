@@ -1,0 +1,25 @@
+{
+  "case": "nuxt+hub-old",
+  "nodeVersion": "22.22.0",
+  "nodeLabel": "node22",
+  "scenario": "typecheck",
+  "command": "fnm exec --using 22.22.0 pnpm -s run typecheck",
+  "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-old",
+  "exitCode": 1,
+  "timedOut": false,
+  "routeRulesFailure": false,
+  "routeRulesFiles": [],
+  "nuxthubPhysicalWrites": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "nuxthubPhysicalWritesDelta": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "notes": [
+    " ERROR  Cannot find matching tsconfig.json in /Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-old or parent directories"
+  ]
+}

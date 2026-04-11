@@ -1,0 +1,10 @@
+{
+  "case": "saas-cf-old",
+  "nodeVersion": "25.6.1",
+  "scenario": "cloudflare-build-dryrun",
+  "installExit": 0,
+  "rebuildBetterSqlite3Exit": 0,
+  "cloudflareBuildExit": 0,
+  "cloudflareDryRunExit": 0,
+  "routeRulesFailure": false
+}

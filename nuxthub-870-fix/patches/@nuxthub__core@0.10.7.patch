@@ -1,0 +1,41 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 09058929602a69dd477019c49e2c66f3771218f9..279b3d301ebceb9f32f801099f6b3183f4a9d9ca 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -94,7 +94,26 @@ function setupCloudflare(nuxt, hub) {
+       compatibility_flags: ["nodejs_compat"]
+     });
+   }
+-  if (nuxt.options.dev || nuxt.options._prepare) {
++  if (nuxt.options._prepare) {
++    return;
++  }
++  if (nuxt.options.dev) {
++    const configPath = join(nuxt.options.buildDir, "wrangler.json");
++    nuxt.hook("nitro:config", async (nitroConfig) => {
++      nitroConfig.cloudflare ||= {};
++      nitroConfig.cloudflare.dev ||= {};
++      nitroConfig.cloudflare.dev.configPath ||= configPath;
++      const wranglerConfig = nitroConfig.cloudflare.wrangler || nuxt.options.nitro.cloudflare?.wrangler;
++      const compatibilityDate = nuxt.options.compatibilityDate?.cloudflare || nuxt.options.compatibilityDate?.default || nuxt.options.compatibilityDate;
++      if (!wranglerConfig) {
++        return;
++      }
++      await mkdir(nuxt.options.buildDir, { recursive: true });
++      await writeFile(configPath, JSON.stringify({
++        compatibility_date: compatibilityDate,
++        ...wranglerConfig
++      }, null, 2), "utf-8");
++    });
+     return;
+   }
+   nuxt.hook("close", async (nuxt2) => {
+@@ -1044,7 +1063,7 @@ const module$1 = defineNuxtModule({
+     }
+     nuxt.options.nitro.experimental = nuxt.options.nitro.experimental || {};
+     nuxt.options.nitro.experimental.asyncContext = true;
+-    if (!nuxt.options.dev && hub.hosting.includes("cloudflare")) {
++    if (hub.hosting.includes("cloudflare")) {
+       setupCloudflare(nuxt, hub);
+     }
+     if (nuxt.options.dev) {

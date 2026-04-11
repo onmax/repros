@@ -1,0 +1,12 @@
+{
+  "name": "route-rules-vite-probe",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "verify": "vite build"
+  },
+  "devDependencies": {
+    "vite": "8.0.0-beta.13"
+  }
+}

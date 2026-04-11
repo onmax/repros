@@ -1,0 +1,12 @@
+### GET /signup
+HTTP/2 200 
+date: Tue, 17 Feb 2026 18:59:47 GMT
+content-type: text/html;charset=utf-8
+content-length: 23632
+x-powered-by: Nuxt
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=QyBGUsiwOMEFwrn8blYAUKex5M%2By1nSI4DpfTJEBRGaD1ALLwx%2F74O62RWZeUvqGwLcJYHynPNzvEIQfcBD8AWbQUBTU%2BvQF0XHfUmQMSjzY2WTEXDYgR6IKMQeLV%2Fd54EnilwumcAeevK%2Bcv25Jy0WrIB7WafxHi9YjnIncQdwBHoVy37Of5z2ONCI32ugisMq%2B"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: 9cf7861d3a49527d-ARN
+alt-svc: h3=":443"; ma=86400
+

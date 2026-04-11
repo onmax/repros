@@ -1,0 +1,12 @@
+### GET /app
+HTTP/2 302 
+date: Tue, 17 Feb 2026 18:59:48 GMT
+content-type: text/html
+content-length: 108
+location: /login?redirect=%2Fapp
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=hIBEgd8j%2FwsN6vjdbWllW146rnCNhuSKO9yaattq6GDn8NGILAKqQyqQm6SG4VYbkZwM0%2F0NfwHZwDHZYjLCMSzT5xkVzjXQgrdX0SI3cNbVjnZ4AFfh4%2FgVXzm4bLhdlhpNQnmz58nIB3aMnfqVAJRIe8TcU05eWtUFVlIFvQV3%2BatrX%2B5AzIpuk7hK50%2Bkuw%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: 9cf78621183782d1-ARN
+alt-svc: h3=":443"; ma=86400
+

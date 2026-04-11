@@ -1,0 +1,23 @@
+{
+  "case": "nuxt+hub-831",
+  "nodeVersion": "25.6.1",
+  "nodeLabel": "node25",
+  "scenario": "typecheck-build-concurrent",
+  "command": "fnm exec --using 25.6.1 bash -lc 'pnpm -s run typecheck & pid1=$!; pnpm -s run build & pid2=$!; wait $pid1; ec1=$?; wait $pid2; ec2=$?; echo \"__EXIT_TYPECHECK__=$ec1\"; echo \"__EXIT_BUILD__=$ec2\"; test $ec1 -eq 0 -a $ec2 -eq 0'",
+  "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-831",
+  "exitCode": 1,
+  "timedOut": false,
+  "routeRulesFailure": false,
+  "routeRulesFiles": [],
+  "nuxthubPhysicalWrites": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "nuxthubPhysicalWritesDelta": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "notes": []
+}

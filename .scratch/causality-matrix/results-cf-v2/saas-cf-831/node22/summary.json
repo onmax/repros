@@ -1,0 +1,14 @@
+{
+  "case": "saas-cf-831",
+  "nodeVersion": "22.22.0",
+  "scenario": "cloudflare-build-deploy-dev",
+  "installExit": 0,
+  "rebuildBetterSqlite3Exit": 0,
+  "cloudflareBuildExit": 0,
+  "cloudflareDryRunExit": 0,
+  "wranglerDevExit": 0,
+  "routeRulesFailure": false,
+  "nuxthubPhysicalWritesBefore": {"blob": false, "kv": false, "db": false},
+  "nuxthubPhysicalWritesAfter": {"blob": false, "kv": true, "db": true},
+  "nuxthubPhysicalWritesDelta": {"blob": false, "kv": true, "db": true}
+}

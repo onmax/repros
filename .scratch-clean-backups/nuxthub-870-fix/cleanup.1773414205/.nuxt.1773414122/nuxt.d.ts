@@ -1,0 +1,23 @@
+/// <reference types="@nuxthub/core" />
+/// <reference types="@nuxt/telemetry" />
+/// <reference types="@nuxt/devtools" />
+/// <reference path="types/nitro-layouts.d.ts" />
+/// <reference path="types/builder-env.d.ts" />
+/// <reference path="types/plugins.d.ts" />
+/// <reference path="types/build.d.ts" />
+/// <reference path="types/app.config.d.ts" />
+/// <reference path="types/runtime-config.d.ts" />
+/// <reference types="nuxt/app" />
+/// <reference path="../node_modules/.pnpm/@nuxt+nitro-server@4.4.2_@babel+core@7.29.0_db0@0.3.4_drizzle-orm@0.45.1_@cloudflare+wo_1cee823f65c49de72dc8677358defeb9/node_modules/@nuxt/nitro-server/dist/index.d.mts" />
+/// <reference path="hub/blob.d.ts" />
+/// <reference path="hub/db.d.ts" />
+/// <reference path="hub/kv.d.ts" />
+/// <reference path="types/middleware.d.ts" />
+/// <reference path="types/components.d.ts" />
+/// <reference path="imports.d.ts" />
+/// <reference path="types/imports.d.ts" />
+/// <reference path="schema/nuxt.schema.d.ts" />
+/// <reference path="hub/db/schema.d.ts" />
+/// <reference path="types/nitro.d.ts" />
+
+export {}

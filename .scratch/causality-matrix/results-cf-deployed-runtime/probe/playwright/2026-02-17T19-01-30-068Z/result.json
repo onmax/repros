@@ -1,0 +1,49 @@
+{
+  "ok": false,
+  "baseURL": "https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev",
+  "email": "t+1771354890074@example.com",
+  "ts": "2026-02-17T19-01-30-068Z",
+  "error": {
+    "message": "page.waitForURL: Timeout 30000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n  navigated to \"https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/signup\"\n  navigated to \"https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/signup\"\n  navigated to \"https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/signup?name=Test+User&email=t%2B1771354890074%40example.com&password=Passw0rd%21Passw0rd%21Passw0rd%21\"\n  navigated to \"https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/signup?name=Test+User&email=t%2B1771354890074%40example.com&password=Passw0rd%21Passw0rd%21Passw0rd%21\"\n  navigated to \"https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/signup?name=Test+User&email=t%2B1771354890074%40example.com&password=Passw0rd%21Passw0rd%21Passw0rd%21\"\n  navigated to \"https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/signup?name=Test+User&email=t%2B1771354890074@example.com&password=Passw0rd!Passw0rd!Passw0rd!\"\n============================================================",
+    "stack": "page.waitForURL: Timeout 30000ms exceeded.\n=========================== logs ===========================\nwaiting for navigation until \"load\"\n  navigated to \"https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/signup\"\n  navigated to \"https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/signup\"\n  navigated to \"https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/signup?name=Test+User&email=t%2B1771354890074%40example.com&password=Passw0rd%21Passw0rd%21Passw0rd%21\"\n  navigated to \"https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/signup?name=Test+User&email=t%2B1771354890074%40example.com&password=Passw0rd%21Passw0rd%21Passw0rd%21\"\n  navigated to \"https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/signup?name=Test+User&email=t%2B1771354890074%40example.com&password=Passw0rd%21Passw0rd%21Passw0rd%21\"\n  navigated to \"https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/signup?name=Test+User&email=t%2B1771354890074@example.com&password=Passw0rd!Passw0rd!Passw0rd!\"\n============================================================\n    at /Users/maxi/repros/.scratch/cf-auth02-core0106/probe/probe-auth-ui.mjs:101:12\n    at step (/Users/maxi/repros/.scratch/cf-auth02-core0106/probe/probe-auth-ui.mjs:79:11)\n    at /Users/maxi/repros/.scratch/cf-auth02-core0106/probe/probe-auth-ui.mjs:99:9"
+  },
+  "events": {
+    "console": [
+      {
+        "type": "error",
+        "text": "wasm streaming compile failed: TypeError: WebAssembly compilation aborted: Network error: Response body loading was aborted"
+      },
+      {
+        "type": "error",
+        "text": "falling back to ArrayBuffer instantiation"
+      }
+    ],
+    "pageerror": [],
+    "api": [
+      {
+        "url": "https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/api/auth/get-session",
+        "status": 200,
+        "statusText": "",
+        "method": "GET"
+      },
+      {
+        "url": "https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/api/auth/get-session",
+        "status": 200,
+        "statusText": "",
+        "method": "GET"
+      },
+      {
+        "url": "https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/api/auth/get-session",
+        "status": 200,
+        "statusText": "",
+        "method": "GET"
+      },
+      {
+        "url": "https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/api/auth/get-session",
+        "status": 200,
+        "statusText": "",
+        "method": "GET"
+      }
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "nuxt-ui-tree-key-collision",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev --port 3020",
+    "build": "nuxt build"
+  },
+  "dependencies": {
+    "@nuxt/ui": "file:/Users/maxi/repros/nuxt-ui-tree-key-fix/nuxt-ui-4.1.0.tgz",
+    "nuxt": "^4.3.1"
+  }
+}

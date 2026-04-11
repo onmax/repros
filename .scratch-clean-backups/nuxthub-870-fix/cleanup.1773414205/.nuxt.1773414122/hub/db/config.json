@@ -1,0 +1,32 @@
+{
+  "dir": "/Users/maxi/repros/nuxthub-870-fix/.data",
+  "hosting": "cloudflare_module",
+  "blob": {
+    "driver": "cloudflare-r2",
+    "binding": "BLOB",
+    "bucketName": "test-bucket"
+  },
+  "cache": {
+    "binding": "CACHE",
+    "driver": "cloudflare-kv-binding",
+    "namespaceId": "test-cache-id"
+  },
+  "db": {
+    "migrationsDirs": [
+      "/Users/maxi/repros/nuxthub-870-fix/server/db/migrations"
+    ],
+    "queriesPaths": [],
+    "applyMigrationsDuringBuild": false,
+    "applyMigrationsDuringDev": true,
+    "dialect": "sqlite",
+    "driver": "d1",
+    "connection": {
+      "databaseId": "test-db-id"
+    }
+  },
+  "kv": {
+    "binding": "KV",
+    "driver": "cloudflare-kv-binding",
+    "namespaceId": "test-kv-id"
+  }
+}

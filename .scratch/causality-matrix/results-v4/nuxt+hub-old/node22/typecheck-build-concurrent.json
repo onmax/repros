@@ -1,0 +1,31 @@
+{
+  "case": "nuxt+hub-old",
+  "nodeVersion": "22.22.0",
+  "nodeLabel": "node22",
+  "scenario": "typecheck-build-concurrent",
+  "command": "fnm exec --using 22.22.0 bash -lc 'pnpm -s run prepare >/dev/null 2>&1 || true; pnpm -s run typecheck & pid1=$!; pnpm -s run build & pid2=$!; wait $pid1; ec1=$?; wait $pid2; ec2=$?; echo \"__EXIT_TYPECHECK__=$ec1\"; echo \"__EXIT_BUILD__=$ec2\"; test $ec1 -eq 0 -a $ec2 -eq 0'",
+  "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-old",
+  "exitCode": 1,
+  "timedOut": false,
+  "routeRulesFailure": false,
+  "routeRulesFiles": [],
+  "nuxthubPhysicalWrites": {
+    "blob": true,
+    "kv": true,
+    "db": true
+  },
+  "nuxthubPhysicalWritesDelta": {
+    "blob": true,
+    "kv": true,
+    "db": true
+  },
+  "notes": [
+    "[nuxt:hub]  ERROR  Please run npx nypm i drizzle-orm drizzle-kit to properly setup Drizzle ORM with NuxtHub.",
+    " ERROR  Build failed with 1 error:",
+    "Error: Cannot find module 'typescript'",
+    "    at aggregateBindingErrorsIntoJsError (node_modules/.pnpm/rolldown@1.0.0-beta.57/node_modules/rolldown/dist/shared/bindingify-input-options-B8B4dvr-.mjs:61:18)",
+    " ERROR  Build failed with 1 error:",
+    "Error: Cannot find module 'typescript'",
+    "    at aggregateBindingErrorsIntoJsError (node_modules/.pnpm/rolldown@1.0.0-beta.57/node_modules/rolldown/dist/shared/bindingify-input-options-B8B4dvr-.mjs:61:18)"
+  ]
+}

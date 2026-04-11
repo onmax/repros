@@ -1,0 +1,15 @@
+name = "nuxt-saas-auth02-core0106-20260217-195201"
+main = ".output/server/index.mjs"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+account_id = "ba6e044dfdaaffec3cac45e9feccd237"
+
+[site]
+bucket = ".output/public"
+
+# Filled after `wrangler d1 create ...`
+[[d1_databases]]
+binding = "DB"
+# NOTE: Account is at the D1 per-account limit (10). Reusing an existing DB.
+database_name = "nuxt-saas-auth-pr-preview-db"
+database_id = "39cb2734-446a-4f32-996a-9f66a0910f62"

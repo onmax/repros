@@ -1,0 +1,17 @@
+name = "nuxt-saas-test"
+main = ".output/server/index.mjs"
+compatibility_date = "2024-07-11"
+compatibility_flags = ["nodejs_compat", "no_nodejs_compat_v2"]
+account_id = "ba6e044dfdaaffec3cac45e9feccd237"
+
+[site]
+bucket = ".output/public"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "nuxt-saas-auth-pr-preview-db"
+database_id = "39cb2734-446a-4f32-996a-9f66a0910f62"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "810179ab371243729b0fc892ade69b17"

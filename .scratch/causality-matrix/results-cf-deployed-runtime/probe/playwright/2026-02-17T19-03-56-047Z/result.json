@@ -1,0 +1,52 @@
+{
+  "ok": true,
+  "baseURL": "https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev",
+  "email": "t+1771355036051@example.com",
+  "ts": "2026-02-17T19-03-56-047Z",
+  "events": {
+    "console": [
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 500 ()"
+      },
+      {
+        "type": "error",
+        "text": "Failed to load resource: the server responded with a status of 404 ()"
+      }
+    ],
+    "pageerror": [],
+    "api": [
+      {
+        "url": "https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/api/auth/get-session",
+        "status": 200,
+        "statusText": "",
+        "method": "GET"
+      },
+      {
+        "url": "https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/api/auth/get-session",
+        "status": 200,
+        "statusText": "",
+        "method": "GET"
+      },
+      {
+        "url": "https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/api/auth/sign-up/email",
+        "status": 500,
+        "statusText": "",
+        "method": "POST",
+        "body": ""
+      },
+      {
+        "url": "https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/api/auth/get-session",
+        "status": 200,
+        "statusText": "",
+        "method": "GET"
+      },
+      {
+        "url": "https://nuxt-saas-auth02-core0106-20260217-195201.maximogarciamtnez.workers.dev/api/auth/get-session",
+        "status": 200,
+        "statusText": "",
+        "method": "GET"
+      }
+    ]
+  }
+}

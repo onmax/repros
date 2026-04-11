@@ -1,0 +1,16 @@
+diff --git a/dist/runtime/app/composables/useUserSession.js b/dist/runtime/app/composables/useUserSession.js
+index 29037205ae99a0c2948de990e2fd8e910cef62ad..51a7777e2eaf5ae9ebc76e89506bda53d81ed1be 100644
+--- a/dist/runtime/app/composables/useUserSession.js
++++ b/dist/runtime/app/composables/useUserSession.js
+@@ -356,8 +356,10 @@ export function useUserSession() {
+     }
+     const authConfig = runtimeConfig.public.auth;
+     const logoutRedirect = authConfig?.redirects?.logout;
+-    if (logoutRedirect)
++    if (logoutRedirect) {
++      await nextTick();
+       await navigateTo(logoutRedirect);
++    }
+   }
+   return {
+     client,

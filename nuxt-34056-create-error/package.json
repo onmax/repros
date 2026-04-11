@@ -1,0 +1,17 @@
+{
+  "name": "nuxt-34056-create-error",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare": "nuxt prepare",
+    "lint": "eslint throw.ts"
+  },
+  "dependencies": {
+    "nuxt": "4.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.0",
+    "typescript-eslint": "^8.46.2"
+  },
+  "packageManager": "pnpm@10.17.1"
+}

@@ -1,0 +1,16 @@
+{
+  "name": "nuxt-app-manifest-min",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.2",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "prepare": "nuxt prepare",
+    "trace:dev": "REPRO_TRACE=1 node ./tools/repro-cold.mjs --runs 1",
+    "repro:cold": "REPRO_TRACE=1 node ./tools/repro-cold.mjs"
+  },
+  "dependencies": {
+    "nuxt": "4.3.0"
+  }
+}

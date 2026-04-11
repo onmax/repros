@@ -1,0 +1,28 @@
+{
+  "case": "nuxt+hub-old",
+  "nodeVersion": "22.22.0",
+  "nodeLabel": "node22",
+  "scenario": "dev",
+  "command": "fnm exec --using 22.22.0 bash -lc 'pnpm -s run dev & pid=$!; sleep 35; pkill -TERM -P $pid 2>/dev/null || true; kill -TERM $pid 2>/dev/null || true; sleep 2; pkill -KILL -P $pid 2>/dev/null || true; kill -KILL $pid 2>/dev/null || true; wait $pid || true'",
+  "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-old",
+  "exitCode": 0,
+  "timedOut": false,
+  "routeRulesFailure": false,
+  "routeRulesFiles": [],
+  "nuxthubPhysicalWrites": {
+    "blob": true,
+    "kv": true,
+    "db": true
+  },
+  "nuxthubPhysicalWritesDelta": {
+    "blob": true,
+    "kv": true,
+    "db": true
+  },
+  "notes": [
+    "[nuxt:hub]  ERROR  Please run npx nypm i drizzle-orm drizzle-kit to properly setup Drizzle ORM with NuxtHub.",
+    "[nuxt:hub]  ERROR  Please run npx nypm i @libsql/client to use SQLite as database.",
+    " ERROR  [unhandledRejection] EMFILE: too many open files, watch",
+    " ERROR  [unhandledRejection] EMFILE: too many open files, watch"
+  ]
+}

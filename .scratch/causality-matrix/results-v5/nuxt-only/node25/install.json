@@ -1,0 +1,18 @@
+{
+  "case": "nuxt-only",
+  "nodeVersion": "25.6.1",
+  "nodeLabel": "node25",
+  "scenario": "install",
+  "command": "pnpm i",
+  "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-only",
+  "exitCode": 0,
+  "timedOut": false,
+  "routeRulesFailure": false,
+  "routeRulesFiles": [],
+  "nuxthubPhysicalWrites": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "notes": []
+}

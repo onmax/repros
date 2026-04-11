@@ -1,0 +1,23 @@
+{
+  "case": "nuxt+hub-old",
+  "nodeVersion": "25.6.1",
+  "nodeLabel": "node25",
+  "scenario": "typecheck",
+  "command": "fnm exec --using 25.6.1 pnpm -s run typecheck",
+  "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-old",
+  "exitCode": 1,
+  "timedOut": false,
+  "routeRulesFailure": false,
+  "routeRulesFiles": [],
+  "nuxthubPhysicalWrites": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "nuxthubPhysicalWritesDelta": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "notes": []
+}

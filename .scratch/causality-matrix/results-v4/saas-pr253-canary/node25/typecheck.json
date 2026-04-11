@@ -1,0 +1,23 @@
+{
+  "case": "saas-pr253-canary",
+  "nodeVersion": "25.6.1",
+  "nodeLabel": "node25",
+  "scenario": "typecheck",
+  "command": "fnm exec --using 25.6.1 bash -lc 'pnpm -s run prepare && pnpm -s run typecheck'",
+  "cwd": "/Users/maxi/nuxt/saas",
+  "exitCode": 1,
+  "timedOut": false,
+  "routeRulesFailure": false,
+  "routeRulesFiles": [],
+  "nuxthubPhysicalWrites": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "nuxthubPhysicalWritesDelta": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "notes": []
+}

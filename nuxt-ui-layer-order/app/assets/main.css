@@ -1,0 +1,11 @@
+@import 'tailwindcss';
+@import '@nuxt/ui';
+
+/* Custom class in @layer components — should beat @layer base */
+@layer components {
+  .custom-input {
+    border-radius: 0.5rem;
+    border: 2px solid green;
+    padding: 0.5rem;
+  }
+}

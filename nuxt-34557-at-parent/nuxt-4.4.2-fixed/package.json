@@ -1,0 +1,18 @@
+{
+  "name": "nuxt-34557-442-fixed",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@oxc-minify/binding-wasm32-wasi": "0.118.0",
+    "@oxc-parser/binding-wasm32-wasi": "0.118.0",
+    "@oxc-transform/binding-wasm32-wasi": "0.118.0",
+    "nuxt": "4.4.2"
+  }
+}

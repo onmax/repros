@@ -1,0 +1,20 @@
+{
+  "name": "nuxt-better-auth-164",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.15.1",
+  "scripts": {
+    "prepare": "nuxi prepare",
+    "typecheck": "vue-tsc --noEmit",
+    "dev": "nuxi dev"
+  },
+  "dependencies": {
+    "@onmax/nuxt-better-auth": "0.0.2-alpha.25",
+    "better-auth": "^1.5.0-beta.3",
+    "nuxt": "^4.2.2"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3",
+    "vue-tsc": "^3.1.7"
+  }
+}

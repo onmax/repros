@@ -1,0 +1,23 @@
+{
+  "case": "nuxt+hub-old",
+  "nodeVersion": "25.6.1",
+  "nodeLabel": "node25",
+  "scenario": "dev",
+  "command": "bash -lc 'tmp=$(mktemp); setsid pnpm -s run dev >\"$tmp\" 2>&1 & pgid=$!; sleep 35; kill -TERM -$pgid 2>/dev/null || true; sleep 2; kill -KILL -$pgid 2>/dev/null || true; wait $pgid 2>/dev/null || true; cat \"$tmp\"; rm -f \"$tmp\"'",
+  "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-old",
+  "exitCode": 0,
+  "timedOut": false,
+  "routeRulesFailure": false,
+  "routeRulesFiles": [],
+  "nuxthubPhysicalWrites": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "nuxthubPhysicalWritesDelta": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "notes": []
+}

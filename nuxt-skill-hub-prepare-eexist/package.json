@@ -1,0 +1,14 @@
+{
+  "name": "strata",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.32.1",
+  "scripts": {
+    "prepare:nuxt": "nuxt prepare"
+  },
+  "dependencies": {
+    "@nuxt/ui": "4.5.1",
+    "nuxt": "npm:nuxt-nightly@5.0.0-29569729.37112d05",
+    "nuxt-skill-hub": "0.0.1-beta.1"
+  }
+}

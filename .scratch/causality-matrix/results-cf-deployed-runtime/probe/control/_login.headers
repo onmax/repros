@@ -1,0 +1,12 @@
+### GET /login
+HTTP/2 200 
+date: Tue, 17 Feb 2026 18:59:47 GMT
+content-type: text/html;charset=utf-8
+content-length: 24942
+x-powered-by: Nuxt
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=%2BEyuBfgah71W8Z0qpTuEsiMgyzkHctKx%2Frl7MgtqF2P74ViPuKalafRHA669PjJ6qkMPZs8VInjYAFJdbWi2nP3tc1b9QU4txd6xcG2ZYOWcE%2B7qcKiW4HzcP29r6OZl5l9sd3vt6hxUo4Ymsf%2BD15SF2ZyT0TxyYqAjtZs7oZwwroL1EssN367qtWzqyHd%2FqtW5"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: 9cf786149a0656f6-ARN
+alt-svc: h3=":443"; ma=86400
+

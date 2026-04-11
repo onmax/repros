@@ -1,0 +1,14 @@
+### GET /
+HTTP/2 200 
+date: Tue, 17 Feb 2026 18:59:45 GMT
+content-type: text/html; charset=utf-8
+content-length: 173351
+cf-cache-status: MISS
+accept-ranges: bytes
+etag: "index.a10c442a7b.html"
+report-to: {"group":"cf-nel","max_age":604800,"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?s=TWxdt5rnkrG4RPzU%2FFDfy3ps8sXeNNsBcssqtxD4UqziWm0sh4iDvJFEcpbRe7mg%2BKZG7LZ%2Bm6sIwkAi9t9fqcELCqDUR01CErrWhWhxCfEwS4KsUgDx06hb%2FjwdYtJpuon%2F61l%2Bjp9HTcV3rxswC%2FYKZX7QDMtHZ335if%2FnLx9HZF%2Bjy7i3rXnheN%2FIQHHuQw%3D%3D"}]}
+nel: {"report_to":"cf-nel","success_fraction":0.0,"max_age":604800}
+server: cloudflare
+cf-ray: 9cf7860fbfc60a41-ARN
+alt-svc: h3=":443"; ma=86400
+

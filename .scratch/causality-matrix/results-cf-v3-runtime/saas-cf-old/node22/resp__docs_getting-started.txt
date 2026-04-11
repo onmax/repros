@@ -1,0 +1,7 @@
+{
+  "error": true,
+  "url": "http://127.0.0.1:8890/docs/getting-started",
+  "statusCode": 404,
+  "statusMessage": "Page not found",
+  "message": "Server Error"
+}

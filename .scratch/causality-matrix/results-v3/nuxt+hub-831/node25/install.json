@@ -1,0 +1,18 @@
+{
+  "case": "nuxt+hub-831",
+  "nodeVersion": "25.6.1",
+  "nodeLabel": "node25",
+  "scenario": "install",
+  "command": "fnm exec --using 25.6.1 pnpm i",
+  "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-831",
+  "exitCode": 1,
+  "timedOut": false,
+  "routeRulesFailure": false,
+  "routeRulesFiles": [],
+  "nuxthubPhysicalWrites": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "notes": []
+}

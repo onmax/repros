@@ -1,0 +1,17 @@
+{
+  "name": "nuxthub-853",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxi dev .playground",
+    "build": "nuxi build .playground"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.17.0",
+    "@nuxthub/core": "0.10.6",
+    "drizzle-kit": "^0.31.4",
+    "drizzle-orm": "^0.45.1",
+    "nuxt": "4.3.1",
+    "typescript": "^5.9.3"
+  }
+}

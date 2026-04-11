@@ -1,0 +1,27 @@
+{
+  "case": "nuxt+hub-831",
+  "nodeVersion": "22.22.0",
+  "nodeLabel": "node22",
+  "scenario": "typecheck",
+  "command": "fnm exec --using 22.22.0 bash -lc 'pnpm -s run prepare && pnpm -s run typecheck'",
+  "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-hub-831",
+  "exitCode": 1,
+  "timedOut": false,
+  "routeRulesFailure": false,
+  "routeRulesFiles": [],
+  "nuxthubPhysicalWrites": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "nuxthubPhysicalWritesDelta": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "notes": [
+    " ERROR  Build failed with 1 error:",
+    "Error: Cannot find module 'typescript'",
+    "    at aggregateBindingErrorsIntoJsError (node_modules/.pnpm/rolldown@1.0.0-beta.57/node_modules/rolldown/dist/shared/bindingify-input-options-B8B4dvr-.mjs:61:18)"
+  ]
+}

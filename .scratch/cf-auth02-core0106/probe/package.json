@@ -1,0 +1,8 @@
+{
+  "name": "cf-auth02-core0106-probe",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "playwright": "^1.51.0"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "case": "nuxt-only",
+  "nodeVersion": "22.22.0",
+  "nodeLabel": "node22",
+  "scenario": "dev",
+  "command": "fnm exec --using 22.22.0 bash -lc 'pnpm -s run dev & pid=$!; sleep 35; pkill -TERM -P $pid 2>/dev/null || true; kill -TERM $pid 2>/dev/null || true; sleep 2; pkill -KILL -P $pid 2>/dev/null || true; kill -KILL $pid 2>/dev/null || true; wait $pid || true'",
+  "cwd": "/Users/maxi/repros/.scratch/causality-matrix/cases/nuxt-only",
+  "exitCode": 0,
+  "timedOut": false,
+  "routeRulesFailure": false,
+  "routeRulesFiles": [],
+  "nuxthubPhysicalWrites": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "nuxthubPhysicalWritesDelta": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "notes": [
+    " ERROR  [unhandledRejection] EMFILE: too many open files, watch"
+  ]
+}

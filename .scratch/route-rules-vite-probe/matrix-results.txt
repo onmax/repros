@@ -1,0 +1,104 @@
+== vite@6.4.1 ==
+-- variant=object
+vite v6.4.1 building for production...
+transforming...
+✓ 2 modules transformed.
+✗ Build failed in 23ms
+error during build:
+[vite]: Rollup failed to resolve import "#build/route-rules.mjs" from "/Users/maxi/repros/.scratch/route-rules-vite-probe/src/main.js".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+`build.rollupOptions.external`
+    at viteLog (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/vite@6.4.1_lightningcss@1.31.1/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:46374:15)
+    at onRollupLog (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/vite@6.4.1_lightningcss@1.31.1/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:46424:5)
+    at onLog (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/vite@6.4.1_lightningcss@1.31.1/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:46072:7)
+    at file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/node-entry.js:20958:32
+    at Object.logger [as onLog] (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/node-entry.js:22945:9)
+    at ModuleLoader.handleInvalidResolvedId (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/node-entry.js:21689:26)
+    at file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/node-entry.js:21647:26
+    at async Promise.all (index 0)
+result=fail
+-- variant=function
+vite v6.4.1 building for production...
+transforming...
+✓ 4 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                0.33 kB │ gzip: 0.24 kB
+dist/assets/index-B011cWi1.js  0.81 kB │ gzip: 0.45 kB
+✓ built in 31ms
+result=pass
+
+== vite@7.2.0 ==
+-- variant=object
+vite v7.2.0 building client environment for production...
+transforming...
+✓ 2 modules transformed.
+✗ Build failed in 18ms
+error during build:
+[vite]: Rollup failed to resolve import "#build/route-rules.mjs" from "/Users/maxi/repros/.scratch/route-rules-vite-probe/src/main.js".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+`build.rollupOptions.external`
+    at viteLog (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/vite@7.2.0_lightningcss@1.31.1/node_modules/vite/dist/node/chunks/config.js:34247:57)
+    at onRollupLog (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/vite@7.2.0_lightningcss@1.31.1/node_modules/vite/dist/node/chunks/config.js:34277:7)
+    at onLog (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/vite@7.2.0_lightningcss@1.31.1/node_modules/vite/dist/node/chunks/config.js:34079:4)
+    at file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/node-entry.js:20958:32
+    at Object.logger [as onLog] (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/node-entry.js:22945:9)
+    at ModuleLoader.handleInvalidResolvedId (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/node-entry.js:21689:26)
+    at file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/rollup@4.57.1/node_modules/rollup/dist/es/shared/node-entry.js:21647:26
+    at async Promise.all (index 0)
+result=fail
+-- variant=function
+vite v7.2.0 building client environment for production...
+transforming...
+✓ 4 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                0.33 kB │ gzip: 0.24 kB
+dist/assets/index-B011cWi1.js  0.81 kB │ gzip: 0.45 kB
+✓ built in 33ms
+result=pass
+
+== vite@8.0.0-beta.13 ==
+-- variant=object
+vite v8.0.0-beta.13 building client environment for production...
+[2Ktransforming...✓ 4 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                0.33 kB │ gzip: 0.23 kB
+dist/assets/index-CqP2ugaC.js  0.81 kB │ gzip: 0.45 kB
+
+✗ Build failed in 23ms
+error during build:
+Build failed with 1 error:
+
+Error: [vite]: Rolldown failed to resolve import "#build/route-rules.mjs" from "/Users/maxi/repros/.scratch/route-rules-vite-probe/src/main.js".
+This is most likely unintended because it can break your application at runtime.
+If you do want to externalize this module explicitly add it to
+`build.rollupOptions.external`
+    at viteLog (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/vite@8.0.0-beta.13/node_modules/vite/dist/node/chunks/fetchableEnvironments.js:34204:57)
+    at onRollupLog (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/vite@8.0.0-beta.13/node_modules/vite/dist/node/chunks/fetchableEnvironments.js:34236:7)
+    at onLog (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/vite@8.0.0-beta.13/node_modules/vite/dist/node/chunks/fetchableEnvironments.js:34003:4)
+    at file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/rolldown@1.0.0-rc.3/node_modules/rolldown/dist/shared/rolldown-build-CGNuOAoF.mjs:49:26
+    at logger (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/rolldown@1.0.0-rc.3/node_modules/rolldown/dist/shared/rolldown-build-CGNuOAoF.mjs:40:3)
+    at onLog (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/rolldown@1.0.0-rc.3/node_modules/rolldown/dist/shared/bindingify-input-options-CorDub0q.mjs:2049:32)
+    at aggregateBindingErrorsIntoJsError (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/rolldown@1.0.0-rc.3/node_modules/rolldown/dist/shared/bindingify-input-options-CorDub0q.mjs:628:18)
+    at unwrapBindingResult (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/rolldown@1.0.0-rc.3/node_modules/rolldown/dist/shared/bindingify-input-options-CorDub0q.mjs:598:128)
+    at #build (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/rolldown@1.0.0-rc.3/node_modules/rolldown/dist/shared/rolldown-build-CGNuOAoF.mjs:3345:34)
+    at async buildEnvironment (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/vite@8.0.0-beta.13/node_modules/vite/dist/node/chunks/fetchableEnvironments.js:34111:64)
+    at async Object.build (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/vite@8.0.0-beta.13/node_modules/vite/dist/node/chunks/fetchableEnvironments.js:34533:19)
+    at async Object.buildApp (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/vite@8.0.0-beta.13/node_modules/vite/dist/node/chunks/fetchableEnvironments.js:34530:153)
+    at async CAC.<anonymous> (file:///Users/maxi/repros/.scratch/route-rules-vite-probe/node_modules/.pnpm/vite@8.0.0-beta.13/node_modules/vite/dist/node/cli.js:641:3)
+result=fail
+-- variant=function
+vite v8.0.0-beta.13 building client environment for production...
+[2Ktransforming...✓ 5 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                0.33 kB │ gzip: 0.23 kB
+dist/assets/index-SaSOpNPX.js  0.80 kB │ gzip: 0.44 kB
+
+✓ built in 14ms
+result=pass
+

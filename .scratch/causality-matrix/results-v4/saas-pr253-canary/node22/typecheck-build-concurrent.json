@@ -1,0 +1,26 @@
+{
+  "case": "saas-pr253-canary",
+  "nodeVersion": "22.22.0",
+  "nodeLabel": "node22",
+  "scenario": "typecheck-build-concurrent",
+  "command": "fnm exec --using 22.22.0 bash -lc 'pnpm -s run prepare >/dev/null 2>&1 || true; pnpm -s run typecheck & pid1=$!; pnpm -s run build & pid2=$!; wait $pid1; ec1=$?; wait $pid2; ec2=$?; echo \"__EXIT_TYPECHECK__=$ec1\"; echo \"__EXIT_BUILD__=$ec2\"; test $ec1 -eq 0 -a $ec2 -eq 0'",
+  "cwd": "/Users/maxi/nuxt/saas",
+  "exitCode": 1,
+  "timedOut": false,
+  "routeRulesFailure": false,
+  "routeRulesFiles": [],
+  "nuxthubPhysicalWrites": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "nuxthubPhysicalWritesDelta": {
+    "blob": false,
+    "kv": false,
+    "db": false
+  },
+  "notes": [
+    " ERROR  ENOENT: no such file or directory, unlink '/Users/maxi/nuxt/saas/.data/db/migrations/sqlite/0000_bumpy_gabe_jones.sql'",
+    " ERROR  The module '/Users/maxi/nuxt/saas/node_modules/.pnpm/better-sqlite3@12.6.2/node_modules/better-sqlite3/build/Release/better_sqlite3.node'"
+  ]
+}
