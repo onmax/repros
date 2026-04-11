@@ -1,0 +1,34 @@
+{
+  "name": "nuxt-better-auth-294-fix",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@10.32.1",
+  "scripts": {
+    "build": "nuxt build",
+    "db:generate": "nuxt db generate",
+    "db:migrate": "nuxt db migrate",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck",
+    "verify": "pnpm typecheck && pnpm build"
+  },
+  "dependencies": {
+    "@nuxthub/core": "0.10.7",
+    "@onmax/nuxt-better-auth": "file:/tmp/onmax-nuxt-better-auth-0.0.2-alpha.31-e2e-1775910948-cleanup.tgz",
+    "better-auth": "^1.5.6",
+    "drizzle-orm": "^0.45.1",
+    "nuxt": "^4.4.2",
+    "postgres": "^3.4.8",
+    "vue": "^3.5.30",
+    "vue-router": "^5.0.4"
+  },
+  "devDependencies": {
+    "@vue/language-core": "^3.2.6",
+    "drizzle-kit": "^0.31.10",
+    "nitro-cloudflare-dev": "^0.2.2",
+    "vue-tsc": "^3.2.6",
+    "wrangler": "^4.77.0"
+  }
+}

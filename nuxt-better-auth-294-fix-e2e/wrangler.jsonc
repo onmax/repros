@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "nuxt-better-auth-295-e2e",
+  "account_id": "ba6e044dfdaaffec3cac45e9feccd237",
+  "main": ".output/server/index.mjs",
+  "compatibility_date": "2026-04-11",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "no_nodejs_compat_v2"
+  ],
+  "workers_dev": true,
+  "assets": {
+    "directory": "./.output/public"
+  },
+  "hyperdrive": [
+    {
+      "binding": "POSTGRES",
+      "id": "d6f371eaccb74efa8d6fb8d29261bb4e"
+    }
+  ]
+}
