@@ -1,0 +1,21 @@
+{
+  "name": "app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@nuxthub/core": "0.10.7",
+    "drizzle-orm": "^0.45.2",
+    "generated-db-module": "workspace:*",
+    "nuxt": "4.4.2",
+    "postgres": "^3.4.7"
+  },
+  "devDependencies": {
+    "nitro-cloudflare-dev": "^0.2.2",
+    "wrangler": "^4.81.1"
+  }
+}

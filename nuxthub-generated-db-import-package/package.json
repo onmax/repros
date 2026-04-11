@@ -1,0 +1,9 @@
+{
+  "name": "nuxthub-generated-db-import-package",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --dir app dev",
+    "build": "pnpm --dir app build",
+    "postinstall": "pnpm --dir app postinstall"
+  }
+}
