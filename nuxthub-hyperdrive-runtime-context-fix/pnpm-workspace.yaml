@@ -1,5 +1,0 @@
-packages:
-  - app
-  - packages/*
-patchedDependencies:
-  '@nuxthub/core@0.10.7': patches/@nuxthub__core@0.10.7.patch

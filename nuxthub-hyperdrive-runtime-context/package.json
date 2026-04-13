@@ -2,8 +2,20 @@
   "name": "nuxthub-hyperdrive-runtime-context",
   "private": true,
   "packageManager": "pnpm@10.32.1",
+  "type": "module",
   "scripts": {
-    "build": "pnpm --dir app build",
-    "dev": "pnpm --dir app dev"
+    "build": "nuxt build",
+    "dev": "nuxt dev"
+  },
+  "dependencies": {
+    "@nuxthub/core": "https://pkg.pr.new/@nuxthub/core@c1eb6d8",
+    "config-loader": "file:./packages/config-loader",
+    "drizzle-orm": "^0.45.2",
+    "nuxt": "4.4.2",
+    "postgres": "^3.4.8"
+  },
+  "devDependencies": {
+    "nitro-cloudflare-dev": "^0.2.2",
+    "wrangler": "^4.81.1"
   }
 }
