@@ -1,0 +1,14 @@
+{
+  "name": "nuxthub-hyperdrive-runtime-context-fix",
+  "private": true,
+  "packageManager": "pnpm@10.32.1",
+  "scripts": {
+    "build": "pnpm --dir app build",
+    "dev": "pnpm --dir app dev"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@nuxthub/core@0.10.7": "patches/@nuxthub__core@0.10.7.patch"
+    }
+  }
+}

@@ -1,0 +1,51 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index cac5822cc3a5fe6098e4ea4fe9caf294f840bd6d..0342f352daf1fb8dd2c9999e49e0abbb8bd2a034 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -590,7 +590,6 @@ export { db, schema }
+     const bindingName = driver === "postgres-js" ? "POSTGRES" : "MYSQL";
+     drizzleOrmContent = driver === "postgres-js" ? `import { drizzle } from 'drizzle-orm/postgres-js'
+ import postgres from 'postgres'
+-import { useEvent } from 'nitropack/runtime/context'
+ import * as schema from './db/schema.mjs'
+ 
+ function resolveHyperdrive() {
+@@ -599,6 +598,18 @@ function resolveHyperdrive() {
+   return hyperdrive
+ }
+ 
++function tryUseNitroEvent() {
++  const namespace = globalThis.__unctx__
++  if (!namespace || typeof namespace.get !== 'function')
++    return
++
++  const context = namespace.get('nitro-app')
++  if (!context || typeof context.tryUse !== 'function')
++    return
++
++  return context.tryUse()?.event
++}
++
+ function createDb(hyperdrive) {
+   const client = postgres(hyperdrive.connectionString, ${hyperdrivePostgresOpts})
+   return drizzle({ client, schema${casingOption} })
+@@ -606,14 +617,11 @@ function createDb(hyperdrive) {
+ 
+ function getDb() {
+   const hyperdrive = resolveHyperdrive()
+-
+-  try {
+-    const event = useEvent()
+-    if (event?.context) {
+-      event.context.__nuxthubHyperdrivePostgresDb ??= createDb(hyperdrive)
+-      return event.context.__nuxthubHyperdrivePostgresDb
+-    }
+-  } catch {}
++  const event = tryUseNitroEvent()
++  if (event?.context) {
++    event.context.__nuxthubHyperdrivePostgresDb ??= createDb(hyperdrive)
++    return event.context.__nuxthubHyperdrivePostgresDb
++  }
+ 
+   return createDb(hyperdrive)
+ }
