@@ -6,19 +6,11 @@ export default defineNuxtModule({
     name: 'config-loader',
   },
   async setup(_, nuxt) {
-    const globalRuntime = globalThis as typeof globalThis & {
-      __env__?: Record<string, unknown>
+    ;(globalThis as typeof globalThis & {
       POSTGRES?: { connectionString: string }
-    }
-    const hyperdrive = {
+    }).POSTGRES = {
       connectionString: process.env.DATABASE_URL || 'postgresql://user:password@127.0.0.1:5432/database',
     }
-
-    globalRuntime.__env__ = {
-      ...(globalRuntime.__env__ || {}),
-      POSTGRES: hyperdrive,
-    }
-    globalRuntime.POSTGRES = hyperdrive
 
     const jiti = createJiti(import.meta.url, {
       interopDefault: true,
