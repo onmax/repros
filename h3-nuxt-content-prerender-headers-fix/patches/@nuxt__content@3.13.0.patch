@@ -1,0 +1,205 @@
+diff --git a/dist/features/llms/runtime/server/content-llms.plugin.js b/dist/features/llms/runtime/server/content-llms.plugin.js
+index c95a0f9f779aca6360dd7930095342724fc818d0..c569493289d5d4253452e411ec102cc6995a734f 100644
+--- a/dist/features/llms/runtime/server/content-llms.plugin.js
++++ b/dist/features/llms/runtime/server/content-llms.plugin.js
+@@ -1,6 +1,6 @@
+-import { appendHeader } from "h3";
+ import { withBase } from "ufo";
+ import { createDocumentGenerator, prepareContentSections } from "./utils.js";
++import { appendEventHeader } from "../../../../runtime/internal/h3-compat.js";
+ import { defineNitroPlugin, queryCollection } from "#imports";
+ export default defineNitroPlugin((nitroApp) => {
+   const prerenderPaths = /* @__PURE__ */ new Set();
+@@ -59,7 +59,7 @@ export default defineNitroPlugin((nitroApp) => {
+   if (["nitro-prerender", "nitro-dev"].includes(import.meta.preset)) {
+     nitroApp.hooks.hook("beforeResponse", (event) => {
+       if (event.path === "/") {
+-        appendHeader(event, "x-nitro-prerender", Array.from(prerenderPaths));
++        appendEventHeader(event, "x-nitro-prerender", Array.from(prerenderPaths));
+       }
+     });
+   }
+diff --git a/dist/features/llms/runtime/server/routes/raw/[...slug].md.get.js b/dist/features/llms/runtime/server/routes/raw/[...slug].md.get.js
+index 166e3c48a1bb74a49b7ced2091b31711a1c39106..49530680ef93104f4a469014559d4f01c2bb43fa 100644
+--- a/dist/features/llms/runtime/server/routes/raw/[...slug].md.get.js
++++ b/dist/features/llms/runtime/server/routes/raw/[...slug].md.get.js
+@@ -1,13 +1,14 @@
+ import { withLeadingSlash } from "ufo";
+ import { stringify } from "minimark/stringify";
+ import { queryCollection } from "@nuxt/content/server";
+-import { getRouterParams, eventHandler, createError, setHeader } from "h3";
++import { eventHandler, createError } from "h3";
++import { getEventRouterParams, setEventHeader } from "../../../../../../runtime/internal/h3-compat.js";
+ import { useRuntimeConfig } from "#imports";
+ import collections from "#content/manifest";
+ export default eventHandler(async (event) => {
+   const config = useRuntimeConfig(event);
+   const llmsConfig = config.llms;
+-  const slug = getRouterParams(event)["slug.md"];
++  const slug = getEventRouterParams(event)["slug.md"];
+   if (!slug?.endsWith(".md") || llmsConfig?.contentRawMarkdown === false) {
+     throw createError({ statusCode: 404, statusMessage: "Page not found", fatal: true });
+   }
+@@ -39,6 +40,6 @@ export default eventHandler(async (event) => {
+       page.body.value.push(["ul", {}, ...linkItems]);
+     }
+   }
+-  setHeader(event, "Content-Type", "text/markdown; charset=utf-8");
++  setEventHeader(event, "Content-Type", "text/markdown; charset=utf-8");
+   return stringify({ ...page.body, type: "minimark" }, { format: "markdown/html" });
+ });
+diff --git a/dist/runtime/api/query.post.js b/dist/runtime/api/query.post.js
+index 0626602c6596314729966e1cb7406a91b270fa23..c89e2ab4e66ede37709c6995b547a189f4682422 100644
+--- a/dist/runtime/api/query.post.js
++++ b/dist/runtime/api/query.post.js
+@@ -1,10 +1,11 @@
+-import { eventHandler, getRouterParam, readBody } from "h3";
++import { eventHandler } from "h3";
+ import loadDatabaseAdapter, { checkAndImportDatabaseIntegrity } from "../internal/database.server.js";
+ import { assertSafeQuery } from "../internal/security.js";
++import { getEventRouterParam, readEventBody } from "../internal/h3-compat.js";
+ import { useRuntimeConfig } from "#imports";
+ export default eventHandler(async (event) => {
+-  const { sql } = await readBody(event);
+-  const collection = getRouterParam(event, "collection") || event.path?.split("/")?.[2] || "";
++  const { sql } = await readEventBody(event);
++  const collection = getEventRouterParam(event, "collection") || event.path?.split("/")?.[2] || "";
+   assertSafeQuery(sql, collection);
+   const conf = useRuntimeConfig().content;
+   if (conf.integrityCheck) {
+diff --git a/dist/runtime/internal/api.js b/dist/runtime/internal/api.js
+index 1567999a8a4ef0bf0ec10418bfd3b1d1064af24b..a9f64bff4f43f5ffe804c9adc515fbee3d028cd7 100644
+--- a/dist/runtime/internal/api.js
++++ b/dist/runtime/internal/api.js
+@@ -1,7 +1,7 @@
+-import { getRequestHeaders } from "h3";
+ import { checksums } from "#content/manifest";
++import { getEventRequestHeaders } from "./h3-compat.js";
+ async function fetchContent(event, collection, path, options) {
+-  const headers = event ? getRequestHeaders(event) : {};
++  const headers = event ? getEventRequestHeaders(event) : {};
+   headers["accept-encoding"] = void 0;
+   const url = `/__nuxt_content/${collection}/${path}`;
+   const fetchOptions = {
+diff --git a/dist/runtime/internal/h3-compat.js b/dist/runtime/internal/h3-compat.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..094dc1903ee0114a1eb382cad89772638cd53df8
+--- /dev/null
++++ b/dist/runtime/internal/h3-compat.js
+@@ -0,0 +1,64 @@
++function normalizeHeaderValue(value) {
++  if (Array.isArray(value)) {
++    return value.join(", ");
++  }
++  return value === void 0 ? void 0 : String(value);
++}
++export function getEventRequestHeaders(event) {
++  const headers = event?.req?.headers || event?.node?.req?.headers || {};
++  if (typeof headers.entries === "function") {
++    return Object.fromEntries(headers.entries());
++  }
++  return Object.fromEntries(
++    Object.entries(headers).flatMap(([name, value]) => {
++      const normalized = normalizeHeaderValue(value);
++      return normalized === void 0 ? [] : [[name, normalized]];
++    })
++  );
++}
++export function getEventRouterParam(event, name) {
++  return event?.context?.params?.[name];
++}
++export function getEventRouterParams(event) {
++  return event?.context?.params || {};
++}
++export function setEventHeader(event, name, value) {
++  if (event?.res?.headers && typeof event.res.headers.set === "function") {
++    event.res.headers.set(name, String(value));
++    return;
++  }
++  if (event?.node?.res && typeof event.node.res.setHeader === "function") {
++    event.node.res.setHeader(name, value);
++  }
++}
++export function appendEventHeader(event, name, value) {
++  if (event?.res?.headers && typeof event.res.headers.append === "function") {
++    event.res.headers.append(name, String(value));
++    return;
++  }
++  if (event?.node?.res && typeof event.node.res.getHeader === "function") {
++    const current = event.node.res.getHeader(name);
++    if (current === void 0) {
++      event.node.res.setHeader(name, value);
++    } else if (Array.isArray(current)) {
++      event.node.res.setHeader(name, [...current, String(value)]);
++    } else {
++      event.node.res.setHeader(name, [String(current), String(value)]);
++    }
++  }
++}
++export async function readEventBody(event) {
++  if (event?.req && typeof event.req.json === "function") {
++    return await event.req.json();
++  }
++  const req = event?.node?.req;
++  if (!req) {
++    return {};
++  }
++  let text = "";
++  if (typeof req.body === "string") {
++    text = req.body;
++  } else if (req.body instanceof Uint8Array) {
++    text = Buffer.from(req.body).toString("utf8");
++  } else if (req.body && typeof req.body === "object") {
++    return req.body;
++  } else if (typeof req.on === "function") {
++    text = await new Promise((resolve, reject) => {
++      const chunks = [];
++      req.on("data", (chunk) => {
++        chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : Buffer.from(chunk));
++      });
++      req.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
++      req.on("error", reject);
++    });
++  } else if (typeof req[Symbol.asyncIterator] === "function") {
++    const chunks = [];
++    for await (const chunk of req) {
++      chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : Buffer.from(chunk));
++    }
++    text = Buffer.concat(chunks).toString("utf8");
++  }
++  return text ? JSON.parse(text) : {};
++}
+diff --git a/dist/runtime/presets/cloudflare/database-handler.js b/dist/runtime/presets/cloudflare/database-handler.js
+index cdaa3585a45b191b8723efa70cff00cf48801277..1b5fef3caf481d9049393a4de9197e0ba6bfe7bd 100644
+--- a/dist/runtime/presets/cloudflare/database-handler.js
++++ b/dist/runtime/presets/cloudflare/database-handler.js
+@@ -1,8 +1,9 @@
+-import { eventHandler, getRouterParam, setHeader } from "h3";
++import { eventHandler } from "h3";
+ import { useStorage } from "nitropack/runtime";
++import { getEventRouterParam, setEventHeader } from "../../internal/h3-compat.js";
+ export default eventHandler(async (event) => {
+-  const collection = getRouterParam(event, "collection") || event.path?.split("/")?.[2] || "";
+-  setHeader(event, "Content-Type", "text/plain");
++  const collection = getEventRouterParam(event, "collection") || event.path?.split("/")?.[2] || "";
++  setEventHeader(event, "Content-Type", "text/plain");
+   const ASSETS = event?.context?.cloudflare?.env.ASSETS || process.env.ASSETS;
+   if (ASSETS) {
+     const config = event?.context?.nitro?.runtimeConfig;
+diff --git a/dist/runtime/presets/node/database-handler.js b/dist/runtime/presets/node/database-handler.js
+index 205deafecea0f37ea6e3f3e9ece72dd46176f829..e0a8f0742f9653598054f178da01cc62f6ac467e 100644
+--- a/dist/runtime/presets/node/database-handler.js
++++ b/dist/runtime/presets/node/database-handler.js
+@@ -1,8 +1,9 @@
+-import { eventHandler, getRouterParam, setHeader } from "h3";
++import { eventHandler } from "h3";
+ import { useStorage } from "nitropack/runtime";
++import { getEventRouterParam, setEventHeader } from "../../internal/h3-compat.js";
+ export default eventHandler(async (event) => {
+-  const collection = getRouterParam(event, "collection") || event.path?.split("/")?.[2] || "";
+-  setHeader(event, "Content-Type", "text/plain");
++  const collection = getEventRouterParam(event, "collection") || event.path?.split("/")?.[2] || "";
++  setEventHeader(event, "Content-Type", "text/plain");
+   const data = await useStorage().getItem(`build:content:database.compressed.mjs`) || "";
+   if (data) {
+     const lineStart = `export const ${collection} = "`;

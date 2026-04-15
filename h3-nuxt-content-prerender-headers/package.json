@@ -1,0 +1,16 @@
+{
+  "name": "h3-nuxt-content-prerender-headers",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "repro:headers": "node repro-headers.mjs"
+  },
+  "dependencies": {
+    "@nuxt/content": "3.13.0",
+    "better-sqlite3": "12.9.0",
+    "nuxt": "4.4.2"
+  }
+}
