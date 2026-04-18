@@ -1,0 +1,46 @@
+import { defineServerAuth } from '@onmax/nuxt-better-auth/config'
+
+function sharedTypePlugin() {
+  return {
+    id: 'shared-type-plugin',
+    schema: {
+      session: {
+        fields: {
+          workspaceId: {
+            type: 'string',
+            required: false,
+            input: false,
+          },
+        },
+      },
+      user: {
+        fields: {
+          role: {
+            type: 'string',
+            required: false,
+            input: false,
+          },
+        },
+      },
+    },
+  } as const
+}
+
+export default defineServerAuth({
+  emailAndPassword: { enabled: true },
+  plugins: [sharedTypePlugin()],
+  socialProviders: {
+    github: {
+      clientId: 'test-client-id',
+      clientSecret: 'test-client-secret',
+    },
+  },
+  user: {
+    additionalFields: {
+      internalCode: {
+        type: 'string',
+        required: false,
+      },
+    },
+  },
+})

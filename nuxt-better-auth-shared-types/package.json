@@ -1,0 +1,18 @@
+{
+  "name": "nuxt-better-auth-shared-types",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.15.1",
+  "scripts": {
+    "typecheck": "nuxt prepare && vue-tsc --noEmit --pretty false -p .nuxt/tsconfig.shared.json"
+  },
+  "dependencies": {
+    "@onmax/nuxt-better-auth": "https://pkg.pr.new/nuxt-modules/better-auth/@onmax/nuxt-better-auth@a862611",
+    "better-auth": "1.5.5",
+    "nuxt": "4.4.2"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "vue-tsc": "3.2.6"
+  }
+}
