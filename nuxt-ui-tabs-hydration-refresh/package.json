@@ -1,0 +1,15 @@
+{
+  "name": "nuxt-ui-tabs-hydration-refresh",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.6.1",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "prepare": "nuxt prepare"
+  },
+  "dependencies": {
+    "@nuxt/ui": "https://codeload.github.com/onmax/ui/tar.gz/30bbb26106c71014ce417a2256fd35dab3f46a56",
+    "nuxt": "^4.4.0"
+  }
+}
