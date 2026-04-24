@@ -9,7 +9,7 @@
     "prepare": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxt/ui": "https://codeload.github.com/onmax/ui/tar.gz/30bbb26106c71014ce417a2256fd35dab3f46a56",
+    "@nuxt/ui": "https://pkg.pr.new/@nuxt/ui@969c2cad994c0fff0feed2506e4979c88ee96c2e",
     "nuxt": "^4.4.0"
   }
 }
