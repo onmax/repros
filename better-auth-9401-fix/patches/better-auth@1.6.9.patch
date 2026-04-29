@@ -1,0 +1,36 @@
+diff --git a/dist/plugins/admin/client.d.mts b/dist/plugins/admin/client.d.mts
+index 737828b1e3ee5c2260bc861cbc3dcc4086ab81ed..db089c56ea8583f61d69bc8f057f3a6d432eb722 100644
+--- a/dist/plugins/admin/client.d.mts
++++ b/dist/plugins/admin/client.d.mts
+@@ -44,8 +44,13 @@ declare const adminClient: <O extends AdminClientOptions>(options?: O | undefine
+   };
+   pathMethods: {
+     "/admin/list-users": "GET";
++    "/admin/impersonate-user": "POST";
+     "/admin/stop-impersonating": "POST";
+   };
++  atomListeners: {
++    matcher: (path: string) => boolean;
++    signal: "$sessionSignal";
++  }[];
+   $ERROR_CODES: {
+     USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL: _better_auth_core_utils_error_codes0.RawError<"USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL">;
+     FAILED_TO_CREATE_USER: _better_auth_core_utils_error_codes0.RawError<"FAILED_TO_CREATE_USER">;
+diff --git a/dist/plugins/admin/client.mjs b/dist/plugins/admin/client.mjs
+index 380008167467d99cc2e2b6814e16ce7511c14828..4b7870224427d9f6e0b975883f5491450e8e56cf 100644
+--- a/dist/plugins/admin/client.mjs
++++ b/dist/plugins/admin/client.mjs
+@@ -25,8 +25,13 @@ const adminClient = (options) => {
+ 		} } }),
+ 		pathMethods: {
+ 			"/admin/list-users": "GET",
++			"/admin/impersonate-user": "POST",
+ 			"/admin/stop-impersonating": "POST"
+ 		},
++		atomListeners: [{
++			matcher: (path) => path === "/admin/impersonate-user" || path === "/admin/stop-impersonating",
++			signal: "$sessionSignal"
++		}],
+ 		$ERROR_CODES: ADMIN_ERROR_CODES
+ 	};
+ };
