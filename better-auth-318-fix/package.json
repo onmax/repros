@@ -1,0 +1,29 @@
+{
+  "name": "better-auth-318-fix",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.15.1",
+  "pnpm": {
+    "patchedDependencies": {
+      "better-auth@1.5.5": "patches/better-auth@1.5.5.patch"
+    }
+  },
+  "scripts": {
+    "dev": "nuxt dev --port 3002",
+    "build": "nuxt build",
+    "prepare": "nuxt prepare"
+  },
+  "dependencies": {
+    "@onmax/nuxt-better-auth": "0.0.2-alpha.31",
+    "@nuxt/ui": "^4.5.0",
+    "@nuxthub/core": "^0.10.7",
+    "better-auth": "1.5.5",
+    "nuxt": "^4.3.1"
+  },
+  "devDependencies": {
+    "@libsql/client": "^0.17.0",
+    "drizzle-orm": "^0.45.1",
+    "drizzle-kit": "^0.31.9",
+    "typescript": "^5.9.3"
+  }
+}

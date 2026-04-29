@@ -1,0 +1,20 @@
+diff --git a/dist/plugins/admin/client.mjs b/dist/plugins/admin/client.mjs
+index d3f1fb7dcf708839fc5ea6a49f2ae9a11fe8bdbe..057215e3cf1921ea9362b9757d9c5aaf2d767198 100644
+--- a/dist/plugins/admin/client.mjs
++++ b/dist/plugins/admin/client.mjs
+@@ -25,8 +25,15 @@ const adminClient = (options) => {
+ 		} } }),
+ 		pathMethods: {
+ 			"/admin/list-users": "GET",
++			"/admin/impersonate-user": "POST",
+ 			"/admin/stop-impersonating": "POST"
+ 		},
++		atomListeners: [{
++			matcher(path) {
++				return path === "/admin/impersonate-user" || path === "/admin/stop-impersonating";
++			},
++			signal: "$sessionSignal"
++		}],
+ 		$ERROR_CODES: ADMIN_ERROR_CODES
+ 	};
+ };
