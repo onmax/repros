@@ -1,6 +1,6 @@
 # ai-sdk-vertex-function-id
 
-Issue: not filed yet
+Issue: https://github.com/vercel/ai/issues/15664
 
 ## Problem
 
