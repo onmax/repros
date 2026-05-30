@@ -18,7 +18,7 @@ The runtime config import should either work or show Nitro's intended stub warni
 
 ## Fix
 
-The patch removes the `std-env` import from Nitro's published `_runtime_warn.mjs` fallback and uses a dependency-free test guard.
+The patch removes the `std-env` and `consola` imports from Nitro's published `_runtime_warn.mjs` fallback and uses a dependency-free test guard plus `console.warn`.
 
 The patch is registered in `pnpm-workspace.yaml` because pnpm v11 no longer reads `pnpm.patchedDependencies` from `package.json`.
 
