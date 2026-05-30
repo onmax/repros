@@ -1,0 +1,19 @@
+{
+  "name": "formula-100-better-auth-secret-repro",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build"
+  },
+  "dependencies": {
+    "@libsql/client": "0.17.2",
+    "@nuxthub/core": "0.10.7",
+    "@onmax/nuxt-better-auth": "file:/Users/maxi/proyects/formula-100/node_modules/.pnpm/@onmax+nuxt-better-auth@https+++pkg.pr.new+nuxt-modules+better-auth+@onmax+nuxt-better-_60dca92582e69a21583f282da53e2952/node_modules/@onmax/nuxt-better-auth",
+    "better-auth": "1.5.0-beta.13",
+    "drizzle-kit": "0.31.10",
+    "drizzle-orm": "0.45.2",
+    "nuxt": "4.4.2"
+  }
+}

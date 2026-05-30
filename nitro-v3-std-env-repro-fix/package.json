@@ -1,0 +1,12 @@
+{
+  "name": "nitro-v3-std-env-repro-fix",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "repro": "node ./repro.mjs",
+    "version": "node -e \"console.log(require('nitro/package.json').version)\""
+  },
+  "dependencies": {
+    "nitro": "3.0.260522-beta"
+  }
+}

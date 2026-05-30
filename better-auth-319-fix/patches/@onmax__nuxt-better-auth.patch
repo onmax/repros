@@ -1,0 +1,77 @@
+diff --git a/dist/runtime/app/composables/useUserSession.js b/dist/runtime/app/composables/useUserSession.js
+index eccf77fd084a9db63ca43d87ee270fa5a4b0cd67..e520f5d10827e309b53fa2f377965092ec9f2bf3 100644
+--- a/dist/runtime/app/composables/useUserSession.js
++++ b/dist/runtime/app/composables/useUserSession.js
+@@ -7,6 +7,14 @@ import { isRecord } from "../internal/utils.js";
+ import { wrapAuthMethod } from "../internal/wrap-auth-method.js";
+ let _sessionSignalListenerBound = false;
+ let _signOutPromise = null;
++const SSR_SAFE_ACTION_METADATA_KEYS = /* @__PURE__ */ new Set([
++  "then",
++  "__v_isRef",
++  "__v_isReadonly",
++  "__v_isShallow",
++  "__v_raw",
++  "__v_skip"
++]);
+ let _client = null;
+ function getClient(baseURL) {
+   if (!_client)
+@@ -19,6 +27,31 @@ function getRuntimeFlags() {
+     return globalFlags;
+   return { client: Boolean(import.meta.client), server: Boolean(import.meta.server) };
+ }
++function createServerOnlyActionMethod(path) {
++  const method = async () => {
++    throw new Error(`${path}() can only be called on client-side`);
++  };
++  return new Proxy(method, {
++    get(target, prop, receiver) {
++      if (typeof prop === "symbol")
++        return void 0;
++      if (SSR_SAFE_ACTION_METADATA_KEYS.has(prop))
++        return void 0;
++      return Reflect.get(target, prop, receiver);
++    }
++  });
++}
++function createServerOnlyActionNamespace(path) {
++  return new Proxy({}, {
++    get(_target, prop) {
++      if (typeof prop === "symbol")
++        return void 0;
++      if (SSR_SAFE_ACTION_METADATA_KEYS.has(prop))
++        return void 0;
++      return createServerOnlyActionMethod(`${path}.${prop}`);
++    }
++  });
++}
+ function ensureSessionSignalListener(client, onSignal) {
+   if (_sessionSignalListenerBound)
+     return;
+@@ -193,11 +226,7 @@ export function useUserSession() {
+         { shouldSkipSessionSync, transformData }
+       );
+     }
+-  }) : new Proxy({}, {
+-    get: (_, prop) => {
+-      throw new Error(`signIn.${String(prop)}() can only be called on client-side`);
+-    }
+-  });
++  }) : createServerOnlyActionNamespace("signIn");
+   const signUp = client?.signUp ? new Proxy(client.signUp, {
+     get(target, prop) {
+       const targetRecord = target;
+@@ -206,11 +235,7 @@ export function useUserSession() {
+         return method;
+       return wrapAuthMethod((...args) => targetRecord[prop](...args), wrapDeps);
+     }
+-  }) : new Proxy({}, {
+-    get: (_, prop) => {
+-      throw new Error(`signUp.${String(prop)}() can only be called on client-side`);
+-    }
+-  });
++  }) : createServerOnlyActionNamespace("signUp");
+   if (runtimeFlags.client && client && shouldSkipInitialClientSessionFetch.value) {
+     ensureSessionSignalListener(client, () => fetchSession({ force: true }));
+   }

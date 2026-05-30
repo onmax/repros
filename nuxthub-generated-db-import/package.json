@@ -1,8 +1,8 @@
 {
-  "name": "nuxt-better-auth-295-bootstrap-bug",
+  "name": "nuxthub-generated-db-import",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@10.32.1",
   "scripts": {
     "dev": "nuxt dev",
     "build": "nuxt build",
@@ -10,16 +10,11 @@
   },
   "dependencies": {
     "@nuxthub/core": "0.10.7",
-    "@onmax/nuxt-better-auth": "file:/tmp/better-auth-head-pack/onmax-nuxt-better-auth-0.0.2-alpha.31.tgz",
-    "better-auth": "^1.5.6",
     "drizzle-orm": "^0.45.1",
     "nuxt": "4.4.2",
-    "postgres": "^3.4.8",
-    "vue": "^3.5.30",
-    "vue-router": "^5.0.4"
+    "postgres": "^3.4.8"
   },
   "devDependencies": {
-    "drizzle-kit": "^0.31.4",
     "nitro-cloudflare-dev": "^0.2.2",
     "wrangler": "^4.81.1"
   }

@@ -1,0 +1,21 @@
+{
+  "name": "docus-590-typecheck-repro",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.2",
+  "scripts": {
+    "prepare": "nuxi prepare",
+    "typecheck": "nuxi typecheck",
+    "typecheck:raw": "nuxi prepare && vue-tsc --noEmit"
+  },
+  "dependencies": {
+    "@nuxt/content": "^3.13.0",
+    "better-sqlite3": "^12.9.0",
+    "docus": "5.9.0",
+    "nuxt": "^4.4.2"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.2",
+    "vue-tsc": "^3.2.6"
+  }
+}

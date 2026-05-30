@@ -6,11 +6,7 @@ export default defineNuxtModule({
     name: 'config-loader',
   },
   async setup(_, nuxt) {
-    ;(globalThis as typeof globalThis & {
-      POSTGRES?: { connectionString: string }
-    }).POSTGRES = {
-      connectionString: process.env.DATABASE_URL || 'postgresql://user:password@127.0.0.1:5432/database',
-    }
+    ;(globalThis as typeof globalThis & { POSTGRES?: { connectionString: string } }).POSTGRES = { connectionString: process.env.DATABASE_URL || 'postgresql://user:password@127.0.0.1:5432/database' }
 
     const jiti = createJiti(import.meta.url, {
       interopDefault: true,
