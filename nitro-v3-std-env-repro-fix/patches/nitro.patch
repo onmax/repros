@@ -6,7 +6,7 @@ index eb9a1452af48eed559258fdb41a1e37bab5275a5..147eafee1723d981c2262dff7809fe66
  import consola from "consola";
 -import { isTest } from "std-env";
 +const env = globalThis.process?.env;
-+const isTest = env?.NODE_ENV === "test" || env?.VITEST === "true";
++const isTest = env?.NODE_ENV === "test" || !!env?.TEST;
  if (!isTest) {
  	consola.warn("Nitro runtime imports detected without a builder or Nitro plugin. A stub implementation will be used.");
  }
