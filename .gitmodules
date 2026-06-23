@@ -1,0 +1,68 @@
+[submodule "drizzle-error-797"]
+	path = drizzle-error-797
+	url = https://github.com/mateusznarowski/drizzle-error
+	update = none
+[submodule "modrinth-code"]
+	path = modrinth-code
+	url = https://github.com/modrinth/code.git
+	update = none
+[submodule "modrinth-code-clean"]
+	path = modrinth-code-clean
+	url = https://github.com/modrinth/code.git
+	update = none
+[submodule "nuxt-31575-user-repro"]
+	path = nuxt-31575-user-repro
+	url = https://github.com/stephenjason89/minimal-reproduction-nuxt-devtools.git
+	update = none
+[submodule "nuxt-4.4.2-vitest-magicstring"]
+	path = nuxt-4.4.2-vitest-magicstring
+	url = https://github.com/onmax/nuxt-4.4.2-vitest-magicstring.git
+	update = none
+[submodule "nuxt-better-auth-82"]
+	path = nuxt-better-auth-82
+	url = https://github.com/onmax/nuxt-better-auth-82.git
+	update = none
+[submodule "nuxt-better-auth-82-fix"]
+	path = nuxt-better-auth-82-fix
+	url = https://github.com/onmax/nuxt-better-auth-82-fix.git
+	update = none
+[submodule "nuxt-doctor-showcase"]
+	path = nuxt-doctor-showcase
+	url = https://github.com/onmax/nuxt-doctor-showcase
+	update = none
+[submodule "nuxt-open-fetch-pr"]
+	path = nuxt-open-fetch-pr
+	url = https://github.com/Norbiros/nuxt-open-fetch.git
+	update = none
+[submodule "nuxt-open-fetch-upstream"]
+	path = nuxt-open-fetch-upstream
+	url = https://github.com/Norbiros/nuxt-open-fetch.git
+	update = none
+[submodule "nuxt-ui-tree-key-fix"]
+	path = nuxt-ui-tree-key-fix
+	url = https://github.com/onmax/ui.git
+	update = none
+[submodule "nuxthub-839"]
+	path = nuxthub-839
+	url = https://github.com/onmax/nuxthub-839.git
+	update = none
+[submodule "nuxthub-839-fix"]
+	path = nuxthub-839-fix
+	url = https://github.com/onmax/nuxthub-839.git
+	update = none
+[submodule "nuxthub-drizzle-demo"]
+	path = nuxthub-drizzle-demo
+	url = https://github.com/onmax/nuxthub-drizzle-demo.git
+	update = none
+[submodule "nuxthub-pr823-lock-repro"]
+	path = nuxthub-pr823-lock-repro
+	url = https://github.com/nuxt-hub/core
+	update = none
+[submodule "nuxthub-prisma-demo"]
+	path = nuxthub-prisma-demo
+	url = https://github.com/onmax/nuxthub-prisma-demo.git
+	update = none
+[submodule "onmax-repros"]
+	path = onmax-repros
+	url = https://github.com/onmax/repros.git
+	update = none
