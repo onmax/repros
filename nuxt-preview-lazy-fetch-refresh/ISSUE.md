@@ -38,9 +38,21 @@ At that point Nuxt preview mode's route refresh causes the still-registered pare
 
 This is painful in preview/content-review flows because leaving a page can trigger background POST requests from UI that is no longer visible. Those requests can be expensive, can duplicate server work, and are hard to trace because the visible route no longer appears to own the request.
 
-I expected navigating to the child route not to trigger a POST owned by the hidden parent route.
+This seems to be an interaction of intended primitives rather than one obviously broken primitive:
+
+- `useLazyFetch` still follows `useFetch` semantics; `lazy` controls navigation blocking, not refresh participation.
+- Preview mode refreshes async data after navigation.
+- `refreshNuxtData()` refreshes registered async data, not only visibly active route data.
+- The parent route is hidden but still mounted, so its async data is still registered.
+
+The surprising part is the combined DX: navigating away from the visible parent route can still trigger a parent-owned POST in the background.
 
 ## Additional context
+
+Similar open issues:
+
+- https://github.com/nuxt/nuxt/issues/26165 is the closest related report. It covers `refreshNuxtData()` not refetching data once `useAsyncData`/`useFetch` is out of scope. This repro hits the inverse edge: the parent fetch is still mounted/registered, so preview navigation refreshes it even after the parent route is no longer visible.
+- https://github.com/nuxt/nuxt/issues/15423 is a related navigation/refetch DX discussion for `useFetch`/`useLazyFetch`.
 
 Relevant history from the Nuxt repo:
 
