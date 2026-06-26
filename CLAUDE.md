@@ -46,6 +46,17 @@ Document the verification method in README.
 
 **Note**: If the target repo has existing tests, try to reproduce the bug with a test first. This helps maintainers and ensures the fix is properly validated.
 
+### Nuxt Data-Fetching DX Repros
+
+- Keep names generic unless the upstream issue requires exact app terms. Prefer `report`, `criteria`, `item`, `record`, and `/api/report`; avoid company, product, customer, token, and private domain language.
+- Separate the Nuxt knobs in the README and fixture:
+  - `lazy` only controls whether navigation waits.
+  - `immediate: false` controls initial execution.
+  - `watch: false` controls reactive option/key execution.
+  - Preview mode and `refreshNuxtData()` are separate global refresh behavior. Use existing `usePreviewMode` callbacks or `refreshNuxtData(keys)`, and when testing a Nuxt patch, name any proposed opt-out explicitly, for example `refresh: false`.
+- For parent/child route refresh repros, keep the parent fetch owner mounted (`v-show` plus child `<NuxtPage>`) and document that this is testing registered async data, not unmounted data.
+- For custom ports, use `pnpm exec nuxt dev --host 127.0.0.1 --port <port>`; do not pass `pnpm dev -- --port`, because Nuxt can treat `--port` as the root directory in these repros.
+
 ### 4. Create Fix Folder
 
 1. Copy bug folder to `-fix` version (use `-fix` not `-fix` to avoid StackBlitz cache issues)
