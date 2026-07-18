@@ -1,0 +1,18 @@
+{
+  "name": "nuxt-23003-fix",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev": "nuxt dev",
+    "verify": "node scripts/verify.mjs"
+  },
+  "devDependencies": {
+    "nuxt": "4.3.1"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "nuxt@4.3.1": "patches/nuxt@4.3.1.patch"
+    }
+  }
+}
