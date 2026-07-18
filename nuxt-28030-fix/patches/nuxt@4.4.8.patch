@@ -1,0 +1,13 @@
+diff --git a/dist/app/composables/asyncData.d.ts b/dist/app/composables/asyncData.d.ts
+index f852c875d0ca52559a83327324e2d1970ad0f4cc..915bf56a95c2b34e83c98803ddce5ef3f5ad22ad 100644
+--- a/dist/app/composables/asyncData.d.ts
++++ b/dist/app/composables/asyncData.d.ts
+@@ -6,7 +6,7 @@ export type _Transform<Input = any, Output = any> = (input: Input) => Output | P
+ export type AsyncDataHandler<ResT> = (nuxtApp: NuxtApp, options: {
+     signal: AbortSignal;
+ }) => Promise<ResT>;
+-export type PickFrom<T, K extends Array<string>> = T extends Array<any> ? T : T extends Record<string, any> ? keyof T extends K[number] ? T : K[number] extends never ? T : Pick<T, K[number]> : T;
++export type PickFrom<T, K extends Array<string>> = KeysOf<T> extends K ? T : T extends Array<any> ? T : T extends Record<string, any> ? Pick<T, K[number]> : T;
+ export type KeysOf<T> = Array<T extends T ? keyof T extends string ? keyof T : never : never>;
+ export type KeyOfRes<Transform extends _Transform> = KeysOf<ReturnType<Transform>>;
+ export type { MultiWatchSources };
