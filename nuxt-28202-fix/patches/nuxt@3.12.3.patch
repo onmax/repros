@@ -1,0 +1,55 @@
+diff --git a/dist/core/runtime/nitro/error.js b/dist/core/runtime/nitro/error.js
+index 2fd3fa89d63c70768073107dd79e2540f211c519..3fd46f9c9440fba63d363ed86675c5f7cb0dc97b 100644
+--- a/dist/core/runtime/nitro/error.js
++++ b/dist/core/runtime/nitro/error.js
+@@ -32,12 +32,14 @@ export default (async function errorhandler(error, event) {
+     setResponseHeader(event, "Content-Type", "application/json");
+     return send(event, JSON.stringify(errorObject));
+   }
++  const errorCause = import.meta.dev ? serializeErrorCause(error.cause) : void 0;
+   const reqHeaders = getRequestHeaders(event);
+   const isRenderingError = event.path.startsWith("/__nuxt_error") || !!reqHeaders["x-nuxt-error"];
+   const res = isRenderingError ? null : await useNitroApp().localFetch(
+     withQuery(joinURL(useRuntimeConfig(event).app.baseURL, "/__nuxt_error"), errorObject),
+     {
+       headers: { ...reqHeaders, "x-nuxt-error": "true" },
++      context: errorCause === void 0 ? void 0 : { nuxt: { errorCause } },
+       redirect: "manual"
+     }
+   ).catch(() => null);
+@@ -62,3 +64,21 @@ export default (async function errorhandler(error, event) {
+   setResponseStatus(event, res.status && res.status !== 200 ? res.status : void 0, res.statusText);
+   return send(event, html);
+ });
++function serializeErrorCause(cause, depth = 0, seen = /* @__PURE__ */ new WeakSet()) {
++  if (depth >= 10 || cause instanceof Error && seen.has(cause)) {
++    return;
++  }
++  if (cause instanceof Error) {
++    seen.add(cause);
++    const nestedCause = serializeErrorCause(cause.cause, depth + 1, seen);
++    return {
++      name: cause.name,
++      message: cause.message,
++      ...cause.stack && { stack: cause.stack },
++      ...nestedCause !== void 0 && { cause: nestedCause }
++    };
++  }
++  if (cause === null || typeof cause === "string" || typeof cause === "number" || typeof cause === "boolean") {
++    return cause;
++  }
++}
+diff --git a/dist/core/runtime/nitro/renderer.js b/dist/core/runtime/nitro/renderer.js
+index 03c55e1b39bd66978ad4bfb18d8ffdbf53403420..f96aa8af003ac792248390a7f0832e773d8b105a 100644
+--- a/dist/core/runtime/nitro/renderer.js
++++ b/dist/core/runtime/nitro/renderer.js
+@@ -139,6 +139,9 @@ export default defineRenderHandler(async (event) => {
+   if (ssrError && ssrError.statusCode) {
+     ssrError.statusCode = Number.parseInt(ssrError.statusCode);
+   }
++  if (import.meta.dev && ssrError && event.node.req.__unenv__?.nuxt?.errorCause !== void 0) {
++    ssrError.cause = event.node.req.__unenv__.nuxt.errorCause;
++  }
+   if (ssrError && !("__unenv__" in event.node.req)) {
+     throw createError({
+       statusCode: 404,
