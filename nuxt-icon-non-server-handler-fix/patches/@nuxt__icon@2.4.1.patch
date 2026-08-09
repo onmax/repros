@@ -1,0 +1,21 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 4cdd7a6b2029e65e14587ca0c6f44c1c95472b33..4f8a5b31ac77cb51bdb112e4d218903d08fb32fd 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -526,10 +526,12 @@ const module$1 = defineNuxtModule({
+       global: true,
+       filePath: await resolver.resolvePath("./runtime/components/index")
+     });
+-    addServerHandler({
+-      route: `${options.localApiEndpoint || "/api/_nuxt_icon"}/:collection`,
+-      handler: resolver.resolve("./runtime/server/api")
+-    });
++    if (options.provider === "server") {
++      addServerHandler({
++        route: `${options.localApiEndpoint || "/api/_nuxt_icon"}/:collection`,
++        handler: resolver.resolve("./runtime/server/api")
++      });
++    }
+     await setupCustomCollectionsWatcher(options, nuxt, ctx);
+     const runtimeOptions = Object.fromEntries(
+       Object.entries(options).filter(([key]) => key in schema)
