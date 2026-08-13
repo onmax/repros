@@ -1,0 +1,13 @@
+diff --git a/dist/ods/reader.mjs b/dist/ods/reader.mjs
+index c29697a398859aa9eae20f57a8563feddf5de053..902fb31f2ad9cfb4847fc2c83d16390f926e6917 100644
+--- a/dist/ods/reader.mjs
++++ b/dist/ods/reader.mjs
+@@ -482,7 +482,7 @@ function parseContentXml(xml, options) {
+ 				}
+ 			}
+ 			
+-			while (cellEntries.length > 0 && cellEntries[cellEntries.length - 1].value === null && cellEntries[cellEntries.length - 1].colSpan === 1 && cellEntries[cellEntries.length - 1].rowSpan === 1 && !cellEntries[cellEntries.length - 1].styleName && !cellEntries[cellEntries.length - 1].formula && !cellEntries[cellEntries.length - 1].hyperlink) {
++			while (cellEntries.length > 0 && cellEntries[cellEntries.length - 1].value === null && cellEntries[cellEntries.length - 1].colSpan === 1 && cellEntries[cellEntries.length - 1].rowSpan === 1 && !(readStyles && cellEntries[cellEntries.length - 1].styleName && styleDefs.has(cellEntries[cellEntries.length - 1].styleName)) && !cellEntries[cellEntries.length - 1].formula && !cellEntries[cellEntries.length - 1].hyperlink) {
+ 				cellEntries.pop();
+ 			}
+ 			

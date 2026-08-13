@@ -1,0 +1,13 @@
+{
+  "name": "hucre-464",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "test": "node repro.mjs",
+    "build": "node repro.mjs"
+  },
+  "dependencies": {
+    "hucre": "1.0.0"
+  }
+}
