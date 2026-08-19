@@ -10,7 +10,7 @@ This minimal production server sets only `BETTER_AUTH_SECRETS` and calls `server
 
 ## Fix
 
-The pnpm patch removes the module's duplicate singular-secret checks and lets Better Auth validate either its singular or versioned secret configuration.
+The pnpm patch removes the singular-secret requirement so Better Auth can resolve its versioned secret configuration. The module still rejects singular secrets shorter than 32 characters.
 
 ## Verify
 
