@@ -1,5 +1,0 @@
-packages:
-  - .
-
-patchedDependencies:
-  '@onmax/nuxt-better-auth@0.1.2': patches/@onmax__nuxt-better-auth@0.1.2.patch

@@ -10,7 +10,7 @@ This minimal production server sets only `BETTER_AUTH_SECRETS` and calls `server
 
 ## Fix
 
-The pnpm patch keeps the module's fail-fast production check, but treats `BETTER_AUTH_SECRETS` as a valid source before Better Auth parses it. The module still rejects missing configurations and singular secrets shorter than 32 characters.
+The pnpm patch matches the PR implementation: it keeps the module's fail-fast production check, accepts runtime singular and versioned Better Auth environment variables, and checks missing secrets before resolving the site URL. The module still rejects missing configurations and singular secrets shorter than 32 characters.
 
 ## Verify
 
@@ -21,8 +21,8 @@ pnpm verify
 
 ## Expected
 
-`/api/check` returns HTTP 200 and `pnpm verify` passes because the versioned secrets provide an active encryption key.
+`pnpm verify` passes: versioned and runtime-only singular secrets return HTTP 200, while short and missing singular secrets return the module's expected HTTP 500 guidance.
 
 ## Actual (with patch)
 
-`/api/check` returns HTTP 200 and `pnpm verify` passes.
+All four production runtime cases pass.
