@@ -1,7 +1,13 @@
 diff --git a/dist/runtime/server/utils/auth.js b/dist/runtime/server/utils/auth.js
-index e8c08f6f7b2231bcad7bad0517c44872c734942a..a3875b4481e43e03d466a750e61c187b8504c565 100644
+index e8c08f6f7b2231bcad7bad0517c44872c734942a..92e955bef16bc22c6793a6fa774cbbc773ea081e 100644
 --- a/dist/runtime/server/utils/auth.js
 +++ b/dist/runtime/server/utils/auth.js
+@@ -1,4 +1,4 @@
+-import { betterAuth } from "better-auth";
++import { betterAuth, env } from "better-auth";
+ import { withoutProtocol } from "ufo";
+ import { createDatabase, db } from "#auth/database";
+ import { createSecondaryStorage } from "#auth/secondary-storage";
 @@ -195,8 +195,6 @@ function withDevTrustedOrigins(trustedOrigins) {
  export function serverAuth(event) {
    const runtimeConfig = useRuntimeConfig();
@@ -11,3 +17,15 @@ index e8c08f6f7b2231bcad7bad0517c44872c734942a..a3875b4481e43e03d466a750e61c187b
    if (betterAuthSecret && betterAuthSecret.length < 32)
      throw new Error("[nuxt-better-auth] NUXT_BETTER_AUTH_SECRET must be at least 32 characters for security");
    const siteUrl = getBaseURL(event);
+@@ -206,8 +204,10 @@ export function serverAuth(event) {
+   const requestContext = event ? getRequestAuthContext(event) : void 0;
+   if (requestContext?.[requestAuthKey])
+     return requestContext[requestAuthKey];
+-  const database = createDatabase(event);
+   const userConfig = createServerAuth({ runtimeConfig, db, requestOrigin });
++  if (!import.meta.dev && !betterAuthSecret && userConfig.secrets === void 0 && !env.BETTER_AUTH_SECRETS)
++    throw new Error("[nuxt-better-auth] An auth secret is required in production. Set NUXT_BETTER_AUTH_SECRET, BETTER_AUTH_SECRET, BETTER_AUTH_SECRETS, or defineServerAuth({ secrets }).");
++  const database = createDatabase(event);
+   const trustedOrigins = withDevTrustedOrigins(userConfig.trustedOrigins);
+   const hubSecondaryStorage = runtimeConfig.auth?.hubSecondaryStorage;
+   const customSecondaryStorage = resolveCustomSecondaryStorageRequirement(hubSecondaryStorage, userConfig.secondaryStorage != null, Boolean(import.meta.dev));
