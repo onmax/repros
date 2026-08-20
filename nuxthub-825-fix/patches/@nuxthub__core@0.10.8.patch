@@ -1,0 +1,133 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index a1aa9162a974596a5f27207b1c3c2ae1d8caef7e..54fe16b4c8f9472e8450a52c0b4d0c2e92eb1013 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -199,7 +199,8 @@ async function resolveDatabaseConfig(nuxt, hub) {
+     migrationsDirs: getLayerDirectories(nuxt).map((layer) => join(layer.server, "db/migrations")),
+     queriesPaths: [],
+     applyMigrationsDuringBuild: true,
+-    applyMigrationsDuringDev: true
++    applyMigrationsDuringDev: true,
++    useRelationsV2: false
+   });
+   switch (config.dialect) {
+     case "sqlite": {
+@@ -284,7 +285,7 @@ async function resolveDatabaseConfig(nuxt, hub) {
+ async function setupDatabase(nuxt, hub, deps) {
+   hub.db = await resolveDatabaseConfig(nuxt, hub);
+   if (!hub.db) return;
+-  const { dialect, driver, connection, migrationsDirs, queriesPaths } = hub.db;
++  const { dialect, driver, connection, migrationsDirs, queriesPaths, useRelationsV2 } = hub.db;
+   logWhenReady(nuxt, `\`hub:db\` using \`${dialect}\` database with \`${driver}\` driver`, "info");
+   if (driver === "d1" && connection?.databaseId) {
+     addWranglerBinding(nuxt, "d1_databases", { binding: "DB", database_id: connection.databaseId });
+@@ -333,9 +334,42 @@ async function setupDatabase(nuxt, hub, deps) {
+       }
+     });
+   }
++  if (useRelationsV2) await generateRelations(nuxt);
+   await setupDatabaseClient(nuxt, hub);
+   await setupDatabaseConfig(nuxt, hub);
+ }
++async function generateRelations(nuxt) {
++  const physicalDbDir = join(nuxt.options.rootDir, "node_modules", "@nuxthub", "db");
++  await mkdir(physicalDbDir, { recursive: true });
++  await writeFile(join(physicalDbDir, "relations.d.mts"), `
++import type { ExtractTablesFromSchema, ExtractTablesWithRelationsParts, IncludeEveryTable } from 'drizzle-orm'
++import * as schema from './schema.mjs'
++
++type SchemaType = typeof schema
++export type Tables = ExtractTablesFromSchema<SchemaType>
++type RelationsKeys = keyof SchemaType extends infer Key ? Key extends keyof SchemaType ? SchemaType[Key] extends ExtractTablesWithRelationsParts<any, any> ? Key : never : never : never
++type FlatRelations = { [Key in keyof SchemaType[RelationsKeys]]: keyof SchemaType extends infer T ? T extends keyof SchemaType ? Key extends keyof SchemaType[T] ? SchemaType[T][Key] : never : never : never }
++export type Relations = ExtractTablesWithRelationsParts<IncludeEveryTable<Tables>, Tables> & FlatRelations
++
++export const relations: Relations
++  `);
++  await writeFile(join(physicalDbDir, "relations.mjs"), `
++import { extractTablesFromSchema, defineRelationsPart } from 'drizzle-orm'
++import * as schema from './schema.mjs'
++
++const tables = extractTablesFromSchema(schema)
++const tablesKeys = new Set(Object.keys(tables))
++const isRelation = (obj) => typeof obj === 'object' && 'table' in obj && 'relations' in obj
++export const relations = Object.keys(schema)
++  .filter(key => !(key in tables))
++  .map(key => schema[key])
++  .filter(entry => Object.entries(entry).every(([key, val]) => tablesKeys.has(key) && isRelation(val)))
++  .reduce((acc, entry) => {
++    for (const [tbl, rels] of Object.entries(entry)) acc[tbl] = { ...acc[tbl], ...rels }
++    return acc
++  }, defineRelationsPart(schema))
++  `);
++}
+ async function generateDatabaseSchema(nuxt, hub) {
+   if (!hub.db) return;
+   const dialect = hub.db.dialect;
+@@ -419,7 +453,7 @@ async function generateDatabaseSchema(nuxt, hub) {
+   nuxt.options.alias["hub:db:schema"] = "@nuxthub/db/schema";
+ }
+ async function setupDatabaseClient(nuxt, hub) {
+-  const { dialect, driver, connection, mode, casing, replicas } = hub.db;
++  const { dialect, driver, connection, mode, casing, replicas, useRelationsV2 } = hub.db;
+   const postgresOpts = (() => {
+     if (driver !== "postgres-js" || !connection) return "{ onnotice: () => {} }";
+     const { url: _, ...rest } = connection;
+@@ -439,13 +473,16 @@ async function setupDatabaseClient(nuxt, hub) {
+     filename: "hub/db.d.ts",
+     getContents: () => databaseTypes
+   }, { nitro: true, nuxt: true });
+-  const modeOption = dialect === "mysql" ? `, mode: '${mode || "default"}'` : "";
++  const modeOption = dialect === "mysql" && !useRelationsV2 ? `, mode: '${mode || "default"}'` : "";
++  const relationsImport = !useRelationsV2 ? "" : `\nimport { relations } from './db/relations.mjs'`;
++  const relationsOption = !useRelationsV2 ? "" : ", relations";
++  const relationExport = !useRelationsV2 ? "" : ", relations";
+   const casingOption = casing ? `, casing: '${casing}'` : "";
+-  let drizzleOrmContent = `import { drizzle } from 'drizzle-orm/${driver}'
++  let drizzleOrmContent = `import { drizzle } from 'drizzle-orm/${driver}'${relationsImport}
+ import * as schema from './db/schema.mjs'
+ 
+-const db = drizzle({ connection: ${JSON.stringify(connection)}, schema${modeOption}${casingOption} })
+-export { db, schema }
++const db = drizzle({ connection: ${JSON.stringify(connection)}, schema${modeOption}${casingOption}${relationsOption} })
++export { db, schema${relationExport} }
+ `;
+   if (driver === "pglite" && nuxt.options.dev) {
+     drizzleOrmContent = `import { drizzle } from 'drizzle-orm/pglite'
+@@ -694,21 +731,23 @@ ${hasReplicas ? `    const primary = drizzle({ connection: { uri }, schema${mode
+   await mkdir(physicalDbDir, { recursive: true });
+   await writeFile(
+     join(physicalDbDir, "db.mjs"),
+-    drizzleOrmContent.replace(/from '\.\/db\/schema\.mjs'/g, "from './schema.mjs'")
++    drizzleOrmContent.replace(/from '\.\/db\/schema\.mjs'/g, "from './schema.mjs'").replace(/from '\.\/db\/relations\.mjs'/g, "from './relations.mjs'")
+   );
++  const relationsTypesImports = !useRelationsV2 ? "" : `import { relations } from './relations.mjs'`;
+   const physicalDbTypes = `import type { DrizzleConfig } from 'drizzle-orm'
+ import { drizzle as drizzleCore } from 'drizzle-orm/${driverForTypes}'
+ import * as schema from './schema.mjs'
++${relationsTypesImports}
+ 
+ /**
+  * The database schema object
+  * Defined in server/db/schema.ts and server/db/schema/*.ts
+  */
+-export { schema }
++export { schema${relationExport} }
+ /**
+  * The ${driver} database client.
+  */
+-export const db: ReturnType<typeof drizzleCore<typeof schema>>
++export const db: ReturnType<typeof drizzleCore<${useRelationsV2 ? "typeof schema, typeof relations" : "typeof schema"}>>
+ `;
+   await writeFile(
+     join(physicalDbDir, "db.d.ts"),
+@@ -724,7 +763,8 @@ export const db: ReturnType<typeof drizzleCore<typeof schema>>
+     types: "./db.d.ts",
+     exports: {
+       ".": { types: "./db.d.ts", default: "./db.mjs" },
+-      "./schema": { types: "./schema.d.mts", default: "./schema.mjs" }
++      "./schema": { types: "./schema.d.mts", default: "./schema.mjs" },
++      "./relations": { types: "./relations.d.mts", default: "./relations.mjs" }
+     }
+   };
+   try {
