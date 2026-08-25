@@ -1,0 +1,27 @@
+{
+  "name": "nuxt-open-fetch-145-fix",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.13.1",
+  "scripts": {
+    "build": "nuxt build",
+    "verify": "pnpm build && node scripts/verify.mjs"
+  },
+  "dependencies": {
+    "nitro": "3.0.260610-beta",
+    "nuxt": "npm:nuxt-nightly@5.0.0-29793004.2f401585",
+    "nuxt-open-fetch": "file:./nuxt-open-fetch-0.13.10.tgz"
+  },
+  "pnpm": {
+    "packageExtensions": {
+      "nuxt-open-fetch@0.13.10": {
+        "dependencies": {
+          "ofetch": "^1.5.1"
+        }
+      }
+    },
+    "patchedDependencies": {
+      "nuxt-open-fetch@0.13.10": "patches/nuxt-open-fetch@0.13.10.patch"
+    }
+  }
+}
