@@ -24,4 +24,4 @@ The production server returns HTTP 200 with `{ "ok": true }` after the patch is 
 
 ## Fix
 
-The pnpm patch imports `ofetch` as the fallback only when `globalThis.$fetch` is missing. `packageExtensions` models the corresponding runtime dependency during installation because pnpm applies package patches after dependency resolution.
+The pnpm patch imports `ofetch` as the fallback only when `globalThis.$fetch` is missing. The workspace's `packageExtensions` entry models the corresponding runtime dependency during installation because pnpm applies package patches after dependency resolution.
