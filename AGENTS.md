@@ -4,7 +4,7 @@ This repository stores durable bug reproductions. Each top-level fixture should 
 
 ## Reproduction work
 
-Use [`$reproducing-bugs`](https://github.com/onmax/skills/tree/main/skills/reproducing-bugs) for every new or revised repro. The skill owns minimization, verification, before-and-after fixtures, StackBlitz setup, deployment, and the README handoff.
+Use [`$repro`](https://github.com/onmax/skills/tree/main/skills/repro) for every new or revised repro. The skill owns minimization, verification, before-and-after fixtures, StackBlitz setup, deployment, and the README handoff.
 
 Put new fixtures in this repository unless the user names another location. Use `<library>-<issue>` for the failing state and `<library>-<issue>-fix` for a requested fixed control. Keep the same verification command in both directories.
 
