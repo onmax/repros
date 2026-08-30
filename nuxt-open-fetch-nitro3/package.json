@@ -1,0 +1,27 @@
+{
+  "name": "nuxt-open-fetch-nitro3-repro",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.21.0",
+  "scripts": {
+    "build": "nuxt build",
+    "prepare": "nuxt prepare",
+    "start": "node .output/server/index.mjs",
+    "verify": "node scripts/verify.mjs"
+  },
+  "dependencies": {
+    "h3": "2.0.1-rc.29",
+    "nitro": "3.0.260610-beta",
+    "nuxt-open-fetch": "file:./nuxt-open-fetch-0.13.10-unpatched.tgz",
+    "ofetch": "1.5.1"
+  },
+  "devDependencies": {
+    "@nuxt/kit": "npm:@nuxt/kit-nightly@5.0.0-29793004.2f401585",
+    "nuxt": "npm:nuxt-nightly@5.0.0-29793004.2f401585"
+  },
+  "pnpm": {
+    "overrides": {
+      "nitro>h3": "2.0.1-rc.29"
+    }
+  }
+}
