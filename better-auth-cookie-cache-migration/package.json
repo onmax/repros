@@ -1,0 +1,15 @@
+{
+  "name": "better-auth-cookie-cache-migration-repro",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "repro": "node repro.mjs"
+  },
+  "dependencies": {
+    "better-auth": "1.7.2"
+  }
+}
