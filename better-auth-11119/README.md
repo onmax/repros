@@ -2,6 +2,8 @@
 
 This fixture reproduces a session failure after an application disables Better Auth's cookie cache.
 
+Source issue: https://github.com/better-auth/better-auth/issues/11119
+
 The first Better Auth 1.7.2 configuration creates a database session and issues a JWE `session_data` cache cookie. The fixture asserts the cookie's five-part JWE shape, then constructs a second Better Auth 1.7.2 instance over the same database with `session.cookieCache.enabled: false`. It sends the cookies from the first response to `GET /api/auth/get-session`.
 
 Using the same release on both sides isolates the configuration migration. An application does not need to upgrade Better Auth to trigger the failure.
