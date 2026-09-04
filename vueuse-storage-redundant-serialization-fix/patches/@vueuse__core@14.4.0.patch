@@ -1,0 +1,14 @@
+diff --git a/dist/index.js b/dist/index.js
+index 772a5e9fa5e551c7f8a81a0f7750ee6fc6cea02d..92fc0ffc4b250745ff59c205bb07bfd94090a6e4 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -2001,8 +2001,7 @@ function useStorage(key, defaults, storage, options = {}) {
+ 		if (event && event.key !== keyComputed.value) return;
+ 		pauseWatch();
+ 		try {
+-			const serializedData = serializer.write(data.value);
+-			if (event === void 0 || (event === null || event === void 0 ? void 0 : event.newValue) !== serializedData) data.value = read(event);
++			if (event === void 0 || (event === null || event === void 0 ? void 0 : event.newValue) !== serializer.write(data.value)) data.value = read(event);
+ 		} catch (e) {
+ 			onError(e);
+ 		} finally {
