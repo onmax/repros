@@ -1,0 +1,4 @@
+allowBuilds:
+  esbuild: true
+patchedDependencies:
+  '@nuxt/icon@2.5.1': patches/@nuxt__icon@2.5.1.patch

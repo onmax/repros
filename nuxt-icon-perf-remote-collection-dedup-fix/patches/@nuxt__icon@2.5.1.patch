@@ -1,0 +1,22 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 0aab57746aeefa76b7c9911cf9c90ac4424a6f20..e06f3382244e109f6750ba97f6acbc7818cf5c5d 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -295,9 +295,14 @@ function registerServerBundle(ctx) {
+         "  return async () => {",
+         "    if (_cache)",
+         "      return _cache",
+-        "    const res = await fetch(fetchEndpoint).then(r => r.json())",
+-        "    _cache = res",
+-        "    return res",
++        "    _cache = fetch(fetchEndpoint).then(r => r.json()).then((data) => {",
++        "      _cache = data",
++        "      return data",
++        "    }).catch((error) => {",
++        "      _cache = undefined",
++        "      throw error",
++        "    })",
++        "    return _cache",
+         "  }",
+         "}",
+         "",

@@ -1,0 +1,10 @@
+{
+  "name": "nuxt-icon-perf-remote-collection-dedup",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.15.1",
+  "engines": { "node": "24.19.0" },
+  "repro": { "mode": "baseline", "expectedColdOriginRequests": 20 },
+  "scripts": { "verify": "node verify.mjs" },
+  "dependencies": { "@nuxt/icon": "2.5.1", "nuxt": "4.5.2" }
+}
