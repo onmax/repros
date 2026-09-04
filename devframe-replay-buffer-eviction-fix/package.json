@@ -1,0 +1,23 @@
+{
+  "name": "repro-devframe-replay-buffer-eviction",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": "24.19.0"
+  },
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "devframe": "0.9.12"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "devframe@0.9.12": "patches/devframe@0.9.12.patch"
+    }
+  },
+  "repro": {
+    "expectFixed": true
+  }
+}

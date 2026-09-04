@@ -1,0 +1,16 @@
+diff --git a/dist/utils/streaming-channel.mjs b/dist/utils/streaming-channel.mjs
+index dfb022b42267d27e4f6a27ef1b9814be558ec8b4..263cbad9d7e7d8a9ff750999cac322973734fff4 100644
+--- a/dist/utils/streaming-channel.mjs
++++ b/dist/utils/streaming-channel.mjs
+@@ -26,7 +26,10 @@ function createStreamSink(options = {}) {
+ 				seq: lastSeq,
+ 				chunk
+ 			});
+-			if (buffer.length > replayWindow) buffer.splice(0, buffer.length - replayWindow);
++			if (buffer.length > replayWindow) {
++				if (buffer.length - replayWindow === 1) buffer.shift();
++				else buffer.splice(0, buffer.length - replayWindow);
++			}
+ 		}
+ 		events.emit("chunk", lastSeq, chunk);
+ 	}
