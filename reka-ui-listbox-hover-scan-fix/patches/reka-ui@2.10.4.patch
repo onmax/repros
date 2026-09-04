@@ -1,0 +1,46 @@
+diff --git a/dist/Collection/Collection.js b/dist/Collection/Collection.js
+index 77a723fac379b3666b5a0b3b4a2869d5f61f5fc3..2cc080e9f185395b3bee273e05d3dc8e5226fa69 100644
+--- a/dist/Collection/Collection.js
++++ b/dist/Collection/Collection.js
+@@ -17,6 +17,11 @@ function useCollection(options = {}) {
+ 		};
+ 		provide(injectionKey, context);
+ 	} else context = inject(injectionKey);
++	const getItem = (element, includeDisabledItem = false) => {
++		if (!context.collectionRef.value) return;
++		const item = context.itemMap.value.get(element);
++		return item && (includeDisabledItem || item.ref.dataset.disabled !== "") ? item : void 0;
++	};
+ 	const getItems = (includeDisabledItem = false) => {
+ 		const collectionNode = context.collectionRef.value;
+ 		if (!collectionNode) return [];
+@@ -68,6 +73,7 @@ function useCollection(options = {}) {
+ 	const itemMapSize = computed(() => context.itemMap.value.size);
+ 	return {
+ 		getItems,
++		getItem,
+ 		reactiveItems,
+ 		itemMapSize,
+ 		CollectionSlot,
+diff --git a/dist/Listbox/ListboxRoot.js b/dist/Listbox/ListboxRoot.js
+index 149cd383fc3e5ee0041c46ae46bdb0184c2f3161..719189527a5a25a64554fd06b9e7d4b5a9755df7 100644
+--- a/dist/Listbox/ListboxRoot.js
++++ b/dist/Listbox/ListboxRoot.js
+@@ -85,7 +85,7 @@ var ListboxRoot_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ de
+ 		const props = __props;
+ 		const emits = __emit;
+ 		const { multiple, highlightOnHover, orientation, disabled, selectionBehavior, dir: propDir } = toRefs(props);
+-		const { getItems } = useCollection({ isProvider: true });
++		const { getItems, getItem } = useCollection({ isProvider: true });
+ 		const { handleTypeaheadSearch } = useTypeahead();
+ 		const { primitiveElement, currentElement } = usePrimitiveElement();
+ 		const kbd = useKbd();
+@@ -144,7 +144,7 @@ var ListboxRoot_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ de
+ 				if (element?.isConnected) element.scrollIntoView({ block: "nearest" });
+ 			} : void 0);
+ 			else if (scrollIntoView) highlightedElement.value.scrollIntoView({ block: "nearest" });
+-			const highlightedItem = getItems().find((i) => i.ref === el);
++			const highlightedItem = getItem(el);
+ 			emits("highlight", highlightedItem);
+ 		}
+ 		function highlightItem(value) {
