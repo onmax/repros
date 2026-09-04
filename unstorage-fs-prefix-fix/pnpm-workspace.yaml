@@ -1,0 +1,3 @@
+patchedDependencies:
+  unstorage@1.17.5: patches/unstorage@1.17.5.patch
+  unstorage@2.0.0-alpha.10: patches/unstorage@2.0.0-alpha.10.patch

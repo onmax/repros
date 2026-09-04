@@ -1,0 +1,65 @@
+diff --git a/dist/_chunks/node-fs.mjs b/dist/_chunks/node-fs.mjs
+index 6606bd688a6bb9240cb60c65b305a59a18d4391b..8289f4c297323bcc7b53815603dde2ef3d74ef7b 100644
+--- a/dist/_chunks/node-fs.mjs
++++ b/dist/_chunks/node-fs.mjs
+@@ -1,3 +1,4 @@
++import { normalizeKey } from "../index.mjs";
+ import { existsSync, promises } from "node:fs";
+ import { basename, dirname, join, resolve } from "node:path";
+ import { randomUUID } from "node:crypto";
+@@ -45,15 +46,23 @@ async function ensuredir(dir) {
+ 	await ensuredir(dirname(dir)).catch(ignoreExists);
+ 	await promises.mkdir(dir).catch(ignoreExists);
+ }
+-async function readdirRecursive(dir, ignore, maxDepth) {
++async function readdirRecursive(dir, ignore, maxDepth, keyBase, parentKey = "") {
+ 	if (ignore && ignore(dir)) return [];
+ 	const entries = await readdir(dir);
+ 	const files = [];
+ 	await Promise.all(entries.map(async (entry) => {
+ 		const entryPath = resolve(dir, entry.name);
+ 		if (entry.isDirectory()) {
++        let directoryKey = "";
++        if (keyBase) {
++          directoryKey = parentKey + "/" + entry.name;
++          const normalized = normalizeKey(directoryKey);
++          if (normalized && !keyBase.startsWith(normalized + ":") && !normalized.startsWith(keyBase)) {
++            return;
++          }
++        }
+ 			if (maxDepth === void 0 || maxDepth > 0) {
+-				const dirFiles = await readdirRecursive(entryPath, ignore, maxDepth === void 0 ? void 0 : maxDepth - 1);
++				const dirFiles = await readdirRecursive(entryPath, ignore, maxDepth === void 0 ? void 0 : maxDepth - 1, keyBase, directoryKey);
+ 				files.push(...dirFiles.map((f) => entry.name + "/" + f));
+ 			}
+ 		} else if (!(ignore && ignore(entryPath)) && !TMP_FILE_RE.test(entry.name)) files.push(entry.name);
+diff --git a/dist/drivers/fs-lite.mjs b/dist/drivers/fs-lite.mjs
+index 04b5e86b0798448f217d4a4bc967bbf387291179..6957322db8de66cfca3d056dd4b9e03f5a1d9a54 100644
+--- a/dist/drivers/fs-lite.mjs
++++ b/dist/drivers/fs-lite.mjs
+@@ -49,8 +49,8 @@ const driver = (opts = {}) => {
+ 			if (opts.readOnly) return;
+ 			return unlink(r(key));
+ 		},
+-		getKeys(_base, topts) {
+-			return readdirRecursive(r("."), opts.ignore, topts?.maxDepth);
++		getKeys(keyBase, topts) {
++			return readdirRecursive(r("."), opts.ignore, topts?.maxDepth, keyBase);
+ 		},
+ 		async clear() {
+ 			if (opts.readOnly || opts.noClear) return;
+diff --git a/dist/drivers/fs.mjs b/dist/drivers/fs.mjs
+index 33fe6351a438332df2f11e66fa94840e80f09618..3b9fe7f100fec9fe1f850ed01caa1a3bc6aec1f1 100644
+--- a/dist/drivers/fs.mjs
++++ b/dist/drivers/fs.mjs
+@@ -66,8 +66,8 @@ const driver = (userOptions = {}) => {
+ 			if (userOptions.readOnly) return;
+ 			return unlink(r(key));
+ 		},
+-		getKeys(_base, topts) {
+-			return readdirRecursive(r("."), ignore, topts?.maxDepth);
++		getKeys(keyBase, topts) {
++			return readdirRecursive(r("."), ignore, topts?.maxDepth, keyBase);
+ 		},
+ 		async clear() {
+ 			if (userOptions.readOnly || userOptions.noClear) return;

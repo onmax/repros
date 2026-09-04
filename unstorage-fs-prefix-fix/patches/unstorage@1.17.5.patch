@@ -1,0 +1,140 @@
+diff --git a/drivers/fs-lite.cjs b/drivers/fs-lite.cjs
+index 71e86f618a643aba62d83585171a99cb554b6df4..292fe463891c52e9db2e85559e6dc4c1bce1b4d1 100644
+--- a/drivers/fs-lite.cjs
++++ b/drivers/fs-lite.cjs
+@@ -71,8 +71,8 @@ module.exports = (0, _utils.defineDriver)((opts = {}) => {
+       }
+       return (0, _nodeFs2.unlink)(r(key));
+     },
+-    getKeys(_base, topts) {
+-      return (0, _nodeFs2.readdirRecursive)(r("."), opts.ignore, topts?.maxDepth);
++    getKeys(keyBase, topts) {
++      return (0, _nodeFs2.readdirRecursive)(r("."), opts.ignore, topts?.maxDepth, keyBase);
+     },
+     async clear() {
+       if (opts.readOnly || opts.noClear) {
+diff --git a/drivers/fs-lite.mjs b/drivers/fs-lite.mjs
+index ba9caf97b23045fec221d7e3f1789ef74fdf56ed..07715202a1cb6125ad1963097be99c19b340b38a 100644
+--- a/drivers/fs-lite.mjs
++++ b/drivers/fs-lite.mjs
+@@ -62,8 +62,8 @@ export default defineDriver((opts = {}) => {
+       }
+       return unlink(r(key));
+     },
+-    getKeys(_base, topts) {
+-      return readdirRecursive(r("."), opts.ignore, topts?.maxDepth);
++    getKeys(keyBase, topts) {
++      return readdirRecursive(r("."), opts.ignore, topts?.maxDepth, keyBase);
+     },
+     async clear() {
+       if (opts.readOnly || opts.noClear) {
+diff --git a/drivers/fs.cjs b/drivers/fs.cjs
+index 987d44cb61b925e40dd92e4e157bfa0049989a8c..06dd75efa532ed59acba0d2988706e4d4bd6bac7 100644
+--- a/drivers/fs.cjs
++++ b/drivers/fs.cjs
+@@ -81,8 +81,8 @@ module.exports = (0, _utils.defineDriver)((userOptions = {}) => {
+       }
+       return (0, _nodeFs2.unlink)(r(key));
+     },
+-    getKeys(_base, topts) {
+-      return (0, _nodeFs2.readdirRecursive)(r("."), ignore, topts?.maxDepth);
++    getKeys(keyBase, topts) {
++      return (0, _nodeFs2.readdirRecursive)(r("."), ignore, topts?.maxDepth, keyBase);
+     },
+     async clear() {
+       if (userOptions.readOnly || userOptions.noClear) {
+diff --git a/drivers/fs.mjs b/drivers/fs.mjs
+index ba360276129f8308aec47cb05254925bb487d624..e1da48726520787da7e9a5a138baec638a17cd79 100644
+--- a/drivers/fs.mjs
++++ b/drivers/fs.mjs
+@@ -73,8 +73,8 @@ export default defineDriver((userOptions = {}) => {
+       }
+       return unlink(r(key));
+     },
+-    getKeys(_base, topts) {
+-      return readdirRecursive(r("."), ignore, topts?.maxDepth);
++    getKeys(keyBase, topts) {
++      return readdirRecursive(r("."), ignore, topts?.maxDepth, keyBase);
+     },
+     async clear() {
+       if (userOptions.readOnly || userOptions.noClear) {
+diff --git a/drivers/utils/node-fs.cjs b/drivers/utils/node-fs.cjs
+index 5165ef8fee9ddb6474ce07950d2ec86c5d59ca7e..c96540586867116d7095552f8a0d0562661ead9e 100644
+--- a/drivers/utils/node-fs.cjs
++++ b/drivers/utils/node-fs.cjs
+@@ -11,6 +11,7 @@ exports.rmRecursive = rmRecursive;
+ exports.stat = stat;
+ exports.unlink = unlink;
+ exports.writeFile = writeFile;
++var _storage = require("../../dist/index.cjs");
+ var _nodeFs = require("node:fs");
+ var _nodePath = require("node:path");
+ function ignoreNotfound(err) {
+@@ -44,7 +45,7 @@ async function ensuredir(dir) {
+   await ensuredir((0, _nodePath.dirname)(dir)).catch(ignoreExists);
+   await _nodeFs.promises.mkdir(dir).catch(ignoreExists);
+ }
+-async function readdirRecursive(dir, ignore, maxDepth) {
++async function readdirRecursive(dir, ignore, maxDepth, keyBase, parentKey = "") {
+   if (ignore && ignore(dir)) {
+     return [];
+   }
+@@ -53,8 +54,16 @@ async function readdirRecursive(dir, ignore, maxDepth) {
+   await Promise.all(entries.map(async entry => {
+     const entryPath = (0, _nodePath.resolve)(dir, entry.name);
+     if (entry.isDirectory()) {
++      let directoryKey = "";
++      if (keyBase) {
++        directoryKey = parentKey + "/" + entry.name;
++        const normalized = _storage.normalizeKey(directoryKey);
++        if (normalized && !keyBase.startsWith(normalized + ":") && !normalized.startsWith(keyBase)) {
++          return;
++        }
++      }
+       if (maxDepth === void 0 || maxDepth > 0) {
+-        const dirFiles = await readdirRecursive(entryPath, ignore, maxDepth === void 0 ? void 0 : maxDepth - 1);
++        const dirFiles = await readdirRecursive(entryPath, ignore, maxDepth === void 0 ? void 0 : maxDepth - 1, keyBase, directoryKey);
+         files.push(...dirFiles.map(f => entry.name + "/" + f));
+       }
+     } else {
+diff --git a/drivers/utils/node-fs.mjs b/drivers/utils/node-fs.mjs
+index 2cbdc3559996eeb29eecedb6cc6a7bbeee9b9794..a48a23686d7cc8ac0729f0375108821f89b6edf2 100644
+--- a/drivers/utils/node-fs.mjs
++++ b/drivers/utils/node-fs.mjs
+@@ -1,3 +1,4 @@
++import { normalizeKey } from "../../dist/index.mjs";
+ import { existsSync, promises as fsPromises } from "node:fs";
+ import { resolve, dirname } from "node:path";
+ function ignoreNotfound(err) {
+@@ -29,7 +30,7 @@ export async function ensuredir(dir) {
+   await ensuredir(dirname(dir)).catch(ignoreExists);
+   await fsPromises.mkdir(dir).catch(ignoreExists);
+ }
+-export async function readdirRecursive(dir, ignore, maxDepth) {
++export async function readdirRecursive(dir, ignore, maxDepth, keyBase, parentKey = "") {
+   if (ignore && ignore(dir)) {
+     return [];
+   }
+@@ -39,11 +40,21 @@ export async function readdirRecursive(dir, ignore, maxDepth) {
+     entries.map(async (entry) => {
+       const entryPath = resolve(dir, entry.name);
+       if (entry.isDirectory()) {
++        let directoryKey = "";
++        if (keyBase) {
++          directoryKey = parentKey + "/" + entry.name;
++          const normalized = normalizeKey(directoryKey);
++          if (normalized && !keyBase.startsWith(normalized + ":") && !normalized.startsWith(keyBase)) {
++            return;
++          }
++        }
+         if (maxDepth === void 0 || maxDepth > 0) {
+           const dirFiles = await readdirRecursive(
+             entryPath,
+             ignore,
+-            maxDepth === void 0 ? void 0 : maxDepth - 1
++            maxDepth === void 0 ? void 0 : maxDepth - 1,
++            keyBase,
++            directoryKey
+           );
+           files.push(...dirFiles.map((f) => entry.name + "/" + f));
+         }
