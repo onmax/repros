@@ -1,0 +1,122 @@
+[
+  {
+    "semanticSha256": "61aebc4847a989704a560e747cad77633aba1b5cc4d2e06f2e91f9d13214a6af",
+    "mode": "rich",
+    "chunks": 82,
+    "before": {
+      "calls": 83,
+      "characters": 139400
+    },
+    "after": {
+      "calls": 0,
+      "characters": 0
+    },
+    "requests": 83,
+    "outcome": "success"
+  },
+  {
+    "semanticSha256": "4e1cf2531100e36db46f1c78aabbe0a1208e79469c144ee03337132ff91c6b29",
+    "mode": "markdown",
+    "chunks": 82,
+    "before": {
+      "calls": 84,
+      "characters": 142680
+    },
+    "after": {
+      "calls": 1,
+      "characters": 3280
+    },
+    "requests": 84,
+    "outcome": "success"
+  },
+  {
+    "semanticSha256": "485d52ffb4a4f5b46fb24918584f18d111bb6afb6c9ee5b46bacc743f02753db",
+    "mode": "plain",
+    "chunks": 82,
+    "before": {
+      "calls": 86,
+      "characters": 146000
+    },
+    "after": {
+      "calls": 85,
+      "characters": 145960
+    },
+    "requests": 85,
+    "outcome": "success"
+  },
+  {
+    "semanticSha256": "78ed530d4113b743d5cc2b9a34122f44c9431c659ac8897980853722cff21531",
+    "mode": "draftFailure",
+    "chunks": 82,
+    "before": {
+      "calls": 1,
+      "characters": 40
+    },
+    "after": {
+      "calls": 0,
+      "characters": 0
+    },
+    "requests": 2,
+    "outcome": "success"
+  },
+  {
+    "semanticSha256": "97e32d2803aaa55dd64bdc8532616917c9bbd19c3d30239ed353d6972fa0d1f7",
+    "mode": "finalFailure",
+    "chunks": 82,
+    "before": {
+      "calls": 84,
+      "characters": 142680
+    },
+    "after": {
+      "calls": 1,
+      "characters": 3280
+    },
+    "requests": 84,
+    "outcome": "Unauthorized"
+  },
+  {
+    "semanticSha256": "4a7c7d850e8c4f254e3efd9643ae998f3dfbd9bd17a1b6f4943dac71284360b3",
+    "mode": "rich",
+    "chunks": 0,
+    "before": {
+      "calls": 0,
+      "characters": 0
+    },
+    "after": {
+      "calls": 0,
+      "characters": 0
+    },
+    "requests": 0,
+    "outcome": "Telegram streaming requires text content"
+  },
+  {
+    "semanticSha256": "50e35a9c3015c92fed0c955c366d3c2cf24c7b098f4d4b35a0646c669db92432",
+    "mode": "rich",
+    "chunks": 2,
+    "before": {
+      "calls": 1,
+      "characters": 5
+    },
+    "after": {
+      "calls": 0,
+      "characters": 0
+    },
+    "requests": 1,
+    "outcome": "source stream failed"
+  },
+  {
+    "semanticSha256": "e737f3a7fa27de93f3ac0e8467cb990c8cdd157e330ca063313249bf099fcb8a",
+    "mode": "rich",
+    "chunks": 4,
+    "before": {
+      "calls": 4,
+      "characters": 48
+    },
+    "after": {
+      "calls": 0,
+      "characters": 0
+    },
+    "requests": 4,
+    "outcome": "success"
+  }
+]

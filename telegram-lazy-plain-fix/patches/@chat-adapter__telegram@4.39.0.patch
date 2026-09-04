@@ -1,0 +1,19 @@
+diff --git a/dist/index.js b/dist/index.js
+index d2ed8e4495099e36c457174cb239f002d2a1ca70..8fe86768bb92b2ecf4e255646ba140c155928e3b 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -2208,11 +2208,13 @@ var TelegramAdapter = class {
+       if (!draftStreamingEnabled) {
+         return;
+       }
+-      let draftText = renderPlainText(accumulated);
++      let draftText;
+       if (streamUsesRich) {
+         draftText = truncateRichMarkdown(renderer.render());
+       } else if (streamUsesMarkdown) {
+         draftText = renderMarkdownText(renderer.render());
++      } else {
++        draftText = renderPlainText(accumulated);
+       }
+       await sendDraft(draftText, streamUsesMarkdown);
+     };

@@ -1,0 +1,20 @@
+{
+  "name": "telegram-lazy-plain-repro-fix",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "@chat-adapter/shared": "4.39.0",
+    "@chat-adapter/telegram": "4.39.0",
+    "chat": "4.39.0"
+  },
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "repro": {
+    "expectFixed": true
+  }
+}
