@@ -1,0 +1,13 @@
+diff --git a/dist/runtime/internal/navigation.js b/dist/runtime/internal/navigation.js
+index 5abed794ec4b90fc69b4e21f4d880ee767baf637..bd508e54782632f15e334d728dff6e0ba986efe4 100644
+--- a/dist/runtime/internal/navigation.js
++++ b/dist/runtime/internal/navigation.js
+@@ -59,7 +59,7 @@ export async function generateNavigationTree(queryBuilder, extraFields = []) {
+       }
+     }
+     if (parts.length === 1) {
+-      const existed2 = nav2.find((item) => item.path === navItem.path && item.page === false);
++      const existed2 = isIndex && nav2.find((item) => item.path === navItem.path && item.page === false);
+       if (isIndex && existed2) {
+         Object.assign(existed2, {
+           page: void 0,
