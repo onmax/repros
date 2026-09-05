@@ -1,0 +1,110 @@
+diff --git a/dist/async/MarkdownAsync.svelte b/dist/async/MarkdownAsync.svelte
+index 090dcdd57c012ade3ddbd08febde825d34d335e4..e26c6417f17af264bb2c9e884153050874a02eae 100644
+--- a/dist/async/MarkdownAsync.svelte
++++ b/dist/async/MarkdownAsync.svelte
+@@ -29,8 +29,8 @@ and wrap this component in a `<svelte:boundary>` for pending/error states.
+ -->
+ <script lang="ts">
+   import type { MarkdownDocument as MarkdownDocumentType, ComarkPlugin, ComponentManifest } from 'comark'
+-  import { parseMarkdown } from 'comark'
+   import { isMarkdownDocument } from 'comark/utils'
++  import { createComponentParser } from '../internal/parse.js'
+   import MarkdownDocument from '../components/MarkdownDocument.svelte'
+   import ResolveAsync from './ResolveAsync.svelte'
+ 
+@@ -59,13 +59,19 @@ and wrap this component in a `<svelte:boundary>` for pending/error states.
+   } = $props()
+ 
+   let content = $derived(typeof value === 'string' ? value.trim() : '')
++  // Compare config values before creating a parser when parent props are spread.
++  let parserOptions = $derived(options)
++  let parserPlugins = $derived(plugins)
++  let parserUnwrap = $derived(unwrap)
++  let parse = $derived(createComponentParser({
++    ...parserOptions,
++    ...(parserUnwrap ? { unwrap: parserUnwrap } : {}),
++    plugins: [...parserPlugins],
++  }))
+   let parsed = $derived(
+     isMarkdownDocument(value)
+       ? value
+-      : // `parse` directly mutates `plugins` which creates an infinite effect loop
+-        // so we copy it before passing it in so it gets a regular JS array and we get to still
+-        // track dependencies from an external perspective
+-        await parseMarkdown(content, { ...options, ...(unwrap ? { unwrap } : {}), plugins: [...plugins] }),
++      : await parse(content, { streaming }),
+   )
+ </script>
+ 
+diff --git a/dist/components/Markdown.svelte b/dist/components/Markdown.svelte
+index fdcffadf15b09cd3115c6d3d66d514e4305a4703..ecab723b8abad2255985633f7c10804e02fd7fe9 100644
+--- a/dist/components/Markdown.svelte
++++ b/dist/components/Markdown.svelte
+@@ -25,8 +25,8 @@ This is an alert component
+ -->
+ <script lang="ts">
+   import type { MarkdownDocument as MarkdownDocumentType, ComarkPlugin, ComponentManifest } from 'comark'
+-  import { parseMarkdown } from 'comark'
+   import { isMarkdownDocument } from 'comark/utils'
++  import { createComponentParser } from '../internal/parse.js'
+   import MarkdownDocument from './MarkdownDocument.svelte'
+ 
+   let {
+@@ -56,21 +56,27 @@ This is an alert component
+   let parsed: MarkdownDocumentType | null = $state(null)
+ 
+   let content = $derived(typeof value === 'string' ? value.trim() : '')
++  // Compare config values before creating a parser when parent props are spread.
++  let parserOptions = $derived(options)
++  let parserPlugins = $derived(plugins)
++  let parserUnwrap = $derived(unwrap)
++  let parse = $derived(createComponentParser({
++    ...parserOptions,
++    ...(parserUnwrap ? { unwrap: parserUnwrap } : {}),
++    plugins: [...parserPlugins],
++  }))
+ 
+-  let requestVersion = 0
+-  let appliedVersion = 0
++  let isDocument = $derived(isMarkdownDocument(value))
+   $effect(() => {
+-    if (isMarkdownDocument(value)) return
+-    const currentVersion = ++requestVersion
+-    // `parse` directly mutates `plugins` which creates an infinite effect loop
+-    // so we copy it before passing it in so it gets a regular JS array and we get to still
+-    // track dependencies from an external perspective
+-    parseMarkdown(content, { ...options, ...(unwrap ? { unwrap } : {}), plugins: [...plugins] }).then((result) => {
+-      if (currentVersion > appliedVersion) {
+-        appliedVersion = currentVersion
+-        parsed = result
+-      }
++    if (isDocument) return
++    const parseMarkdown = parse
++    let active = true
++    $effect(() => {
++      parseMarkdown(content, { streaming }).then((result) => {
++        if (active) parsed = result
++      })
+     })
++    return () => { active = false }
+   })
+ </script>
+ 
+diff --git a/dist/internal/parse.js b/dist/internal/parse.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..7979ab8de491cdb54d7903e81ae5963d436d5574
+--- /dev/null
++++ b/dist/internal/parse.js
+@@ -0,0 +1,12 @@
++import { createMarkdownParser } from 'comark';
++// Serialize access to the parser's stream state without hiding plugin errors.
++export function createComponentParser(options) {
++    const parse = createMarkdownParser(options);
++    let pending = Promise.resolve();
++    return (...args) => {
++        const run = () => parse(...args);
++        const result = pending.then(run, run);
++        pending = result;
++        return result;
++    };
++}

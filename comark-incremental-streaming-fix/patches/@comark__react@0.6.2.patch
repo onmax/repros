@@ -1,0 +1,47 @@
+diff --git a/dist/components/MarkdownClient.js b/dist/components/MarkdownClient.js
+index 92688d071dd977c02520adf736723deda4cf76ba..a58f4b0db45fa183f367a050ea5371ce15f990e2 100644
+--- a/dist/components/MarkdownClient.js
++++ b/dist/components/MarkdownClient.js
+@@ -1,25 +1,33 @@
+ 'use client';
+ import { jsx as _jsx } from "react/jsx-runtime";
+ import { use, useDeferredValue, useMemo, Suspense } from 'react';
+-import { parseMarkdown } from 'comark';
++import { createMarkdownParser } from 'comark';
+ import { isMarkdownDocument } from 'comark/utils';
+ import { MarkdownLive } from "./MarkdownLive.js";
+ function MarkdownContent({ parsePromise, components: customComponents = {}, componentsManifest, streaming = false, caret = false, data, className, }) {
+     const parsed = use(parsePromise);
+     return (_jsx(MarkdownLive, { value: parsed, components: customComponents, componentsManifest: componentsManifest, streaming: streaming, className: className, caret: caret, data: data }));
+ }
+-export function MarkdownClient({ children, value, options = {}, plugins = [], ...rest }) {
++export function MarkdownClient({ children, value, options, plugins, unwrap = false, streaming = false, ...rest }) {
+     const content = isMarkdownDocument(value)
+         ? value
+         : children
+             ? String(children)
+             : (value ?? '');
+-    // Re-creates the promise only when content changes.
+-    // Note: options/plugins should be stable references (defined outside render or memoized).
+-    // Pre-parsed documents resolve immediately without calling parseMarkdown().
+-    const parsePromise = useMemo(() => (isMarkdownDocument(content) ? Promise.resolve(content) : parseMarkdown(content, { ...options, plugins })), [content]);
+-    // Keep showing the previous parsed result while a new parse is pending —
+-    // prevents blank flashes during rapid streaming updates.
++    const parse = useMemo(() => {
++        let parser;
++        let pending = Promise.resolve();
++        return (source, streaming) => {
++            const run = () => {
++                parser ??= createMarkdownParser({ ...options, ...(unwrap ? { unwrap } : {}), plugins });
++                return parser(source, { streaming });
++            };
++            const result = pending.then(run, run);
++            pending = result;
++            return result;
++        };
++    }, [options, plugins, unwrap]);
++    const parsePromise = useMemo(() => (isMarkdownDocument(content) ? Promise.resolve(content) : parse(content, streaming)), [content, parse, streaming]);
+     const deferredPromise = useDeferredValue(parsePromise);
+-    return (_jsx(Suspense, { fallback: null, children: _jsx(MarkdownContent, { parsePromise: deferredPromise, ...rest }) }));
++    return (_jsx(Suspense, { fallback: null, children: _jsx(MarkdownContent, { parsePromise: deferredPromise, ...rest, streaming: streaming }) }));
+ }

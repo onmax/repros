@@ -1,0 +1,33 @@
+{
+  "name": "comark-incremental-streaming-repro",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.2",
+  "engines": {
+    "node": "24.x"
+  },
+  "scripts": {
+    "verify": "playwright install chromium && vitest run"
+  },
+  "dependencies": {
+    "comark": "0.6.2",
+    "@comark/react": "0.6.2",
+    "@comark/svelte": "0.6.2",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "svelte": "5.56.4"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "6.2.1",
+    "@vitest/browser-playwright": "4.1.10",
+    "vitest": "4.1.10",
+    "vite": "7.3.1",
+    "playwright": "1.58.2",
+    "vitest-browser-svelte": "2.1.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  }
+}

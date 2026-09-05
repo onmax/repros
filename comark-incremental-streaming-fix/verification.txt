@@ -1,0 +1,41 @@
+Verified 2026-09-05 on Linux x64, Node 24.19.0, pnpm 10.28.2.
+Fresh dependency installation from committed lockfile.
+
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +103
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 103, reused 103, downloaded 0, added 103, done
+
+dependencies:
++ @comark/react 0.6.2
++ @comark/svelte 0.6.2
++ comark 0.6.2
++ react 19.2.7
++ react-dom 19.2.7
++ svelte 5.56.4
+
+devDependencies:
++ @sveltejs/vite-plugin-svelte 6.2.1
++ @vitest/browser-playwright 4.1.10
++ playwright 1.58.2
++ vite 7.3.1
++ vitest 4.1.10
++ vitest-browser-svelte 2.1.0
+
+Done in 1.2s using pnpm v10.28.2
+
+
+> comark-incremental-streaming-repro@ verify <checkout>/comark-incremental-streaming-fix
+> playwright install chromium && vitest run
+
+10:12:35 AM [vite-plugin-svelte] no Svelte config found at <checkout>/comark-incremental-streaming-fix - using default configuration.
+
+ RUN  v4.1.10 <checkout>/comark-incremental-streaming-fix
+
+10:12:35 AM [vite-plugin-svelte] no Svelte config found at <checkout>/comark-incremental-streaming-fix - using default configuration.
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  10:12:35
+   Duration  4.65s (transform 0ms, setup 0ms, import 523ms, tests 622ms, environment 0ms)

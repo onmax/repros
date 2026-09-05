@@ -1,0 +1,107 @@
+Verified 2026-09-05 on Linux x64, Node 24.19.0, pnpm 10.28.2.
+Fresh dependency installation from committed lockfile.
+
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +103
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 103, reused 103, downloaded 0, added 103, done
+
+dependencies:
++ @comark/react 0.6.2
++ @comark/svelte 0.6.2
++ comark 0.6.2
++ react 19.2.7
++ react-dom 19.2.7
++ svelte 5.56.4
+
+devDependencies:
++ @sveltejs/vite-plugin-svelte 6.2.1
++ @vitest/browser-playwright 4.1.10
++ playwright 1.58.2
++ vite 7.3.1
++ vitest 4.1.10
++ vitest-browser-svelte 2.1.0
+
+Done in 1.2s using pnpm v10.28.2
+
+
+> comark-incremental-streaming-repro@ verify <checkout>/comark-incremental-streaming
+> playwright install chromium && vitest run
+
+10:12:35 AM [vite-plugin-svelte] no Svelte config found at <checkout>/comark-incremental-streaming - using default configuration.
+
+ RUN  v4.1.10 <checkout>/comark-incremental-streaming
+
+10:12:35 AM [vite-plugin-svelte] no Svelte config found at <checkout>/comark-incremental-streaming - using default configuration.
+Port 63315 is in use, trying another one...
+stdout | streaming.test.ts:19:3 > React MarkdownClient skips completed blocks on append
+{"component":"React MarkdownClient","expectedAppendInput":"\nThird grows","actualAppendInput":"First\n\nSecond\n\nThird grows"}
+stdout | streaming.test.ts:19:3 > Svelte Markdown skips completed blocks on append
+{"component":"Svelte Markdown","expectedAppendInput":"\nThird grows","actualAppendInput":"First\n\nSecond\n\nThird grows"}
+stdout | streaming.test.ts:19:3 > Svelte Markdown skips completed blocks on append
+Svelte Markdown: full source parsed on completion
+stdout | streaming.test.ts:19:3 > Svelte MarkdownAsync skips completed blocks on append
+{"component":"Svelte MarkdownAsync","expectedAppendInput":"\nThird grows","actualAppendInput":"First\n\nSecond\n\nThird grows"}
+stdout | streaming.test.ts:19:3 > Svelte MarkdownAsync skips completed blocks on append
+Svelte MarkdownAsync: full source parsed on completion
+ ❯ |chromium| streaming.test.ts (3 tests | 3 failed) 1570ms
+   × React MarkdownClient skips completed blocks on append 1430ms
+   × Svelte Markdown skips completed blocks on append 75ms
+   × Svelte MarkdownAsync skips completed blocks on append 63ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  |chromium| streaming.test.ts:19:3 > React MarkdownClient skips completed blocks on append
+ FAIL  |chromium| streaming.test.ts:19:3 > Svelte Markdown skips completed blocks on append
+ FAIL  |chromium| streaming.test.ts:19:3 > Svelte MarkdownAsync skips completed blocks on append
+AssertionError: expected 'First\n\nSecond\n\nThird grows' to be '\nThird grows' // Object.is equality
+
+- Expected
++ Received
+
++ First
++
++ Second
+
+  Third grows
+
+ ❯ streaming.test.ts:54:31
+     52|       const appendInput = inputs[1]
+     53|       console.log(JSON.stringify({ component: name, expectedAppendInpu…
+     54|       expect.soft(appendInput).toBe('\nThird grows')
+       |                               ^
+     55|       await update(appended, false)
+     56|       await expect.poll(() => inputs.length).toBe(3)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  |chromium| streaming.test.ts:19:3 > React MarkdownClient skips completed blocks on append
+AssertionError: expected 2 to be 3 // Object.is equality
+
+- Expected
++ Received
+
+- 3
++ 2
+
+ ❯ streaming.test.ts:56:45
+     54|       expect.soft(appendInput).toBe('\nThird grows')
+     55|       await update(appended, false)
+     56|       await expect.poll(() => inputs.length).toBe(3)
+       |                                             ^
+     57|       expect(inputs[2]).toBe(appended)
+     58|       console.log(`${name}: full source parsed on completion`)
+
+Caused by: Error: Matcher did not succeed in time.
+ ❯ streaming.test.ts:56:6
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed (3)
+   Start at  10:12:35
+   Duration  5.49s (transform 0ms, setup 0ms, import 534ms, tests 1.57s, environment 0ms)
+
+ ELIFECYCLE  Command failed with exit code 1.
