@@ -1,0 +1,23 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 1ef9c1437928b792369a168489dbf4ac6842e334..0323bffd5981b30890baf10e4842986d43781944 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -1,4 +1,5 @@
+ import { readFile, writeFile, mkdir, copyFile, stat } from 'node:fs/promises';
++import { pathToFileURL } from 'node:url';
+ import { logger, createResolver, addServerPlugin, getLayerDirectories, updateTemplates, addTemplate, addTypeTemplate, addServerHandler, addServerImports, addImportsDir, defineNuxtModule } from '@nuxt/kit';
+ import { join, resolve as resolve$1, relative } from 'pathe';
+ import { defu } from 'defu';
+@@ -888,7 +889,11 @@ async function launchDrizzleStudio(nuxt, hub) {
+   port = await getPort({ port: 4983 });
+   try {
+     const { dialect, driver, connection } = dbConfig;
+-    const { schema } = await import(nuxt.options.alias["hub:db"]);
++    const dbEntry = resolve$1(nuxt.options.rootDir, 'node_modules', '@nuxthub', 'db', 'db.mjs');
++    if (!existsSync(dbEntry)) {
++      throw new Error(`Cannot find @nuxthub/db at ${dbEntry}. Run \`nuxt prepare\` to generate it.`);
++    }
++    const { schema } = await import(pathToFileURL(dbEntry).href);
+     if (dialect === "postgresql") {
+       if (driver === "pglite") {
+         log$1.info(`Launching Drizzle Studio with PGlite...`);
