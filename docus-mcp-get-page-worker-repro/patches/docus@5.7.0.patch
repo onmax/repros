@@ -1,0 +1,13 @@
+diff --git a/server/mcp/tools/get-page.ts b/server/mcp/tools/get-page.ts
+index dadf3cb..6993182 100644
+--- a/server/mcp/tools/get-page.ts
++++ b/server/mcp/tools/get-page.ts
+@@ -24,7 +24,7 @@ WORKFLOW: This tool returns the complete page content including title, descripti
+   handler: async ({ path }) => {
+     const event = useEvent()
+     const config = useRuntimeConfig(event).public
+-    const siteUrl = import.meta.dev ? 'http://localhost:3000' : inferSiteURL()
++    const siteUrl = getRequestURL(event).origin || inferSiteURL()
+ 
+     const availableLocales = getAvailableLocales(config)
+     const collectionName = config.i18n?.locales
