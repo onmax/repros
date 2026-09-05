@@ -1,0 +1,17 @@
+{
+  "name": "nuxthub-711",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev"
+  },
+  "dependencies": {
+    "@nuxthub/core": "^0.10.4",
+    "nuxt": "^3.15.4",
+    "nuxt-auth-utils": "^0.5.26"
+  },
+  "devDependencies": {
+    "wrangler": "^4.59.2"
+  }
+}

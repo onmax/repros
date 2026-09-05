@@ -1,0 +1,13 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index cb0df587e07404f133284b5f8d94c2a9ac46e000..c33a78968539e92187c790d714c4f61bfd83347e 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -80,7 +80,7 @@ const log$4 = logger.withTag("nuxt:hub");
+ const cloudflareHooks = createHooks();
+ function setupCloudflare(nuxt, hub) {
+   nuxt.options.nitro.cloudflare ||= {};
+-  nuxt.options.nitro.cloudflare.nodeCompat = false;
++  nuxt.options.nitro.cloudflare.nodeCompat = true;
+   nuxt.options.nitro.cloudflare.deployConfig = true;
+   nuxt.options.nitro.prerender ||= {};
+   nuxt.options.nitro.prerender.autoSubfolderIndex ||= false;
