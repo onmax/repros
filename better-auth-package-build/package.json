@@ -1,0 +1,25 @@
+{
+  "name": "better-auth-package-build",
+  "private": true,
+  "type": "module",
+  "version": "0.0.0",
+  "packageManager": "pnpm@11.22.0",
+  "engines": {
+    "node": "24.19.0"
+  },
+  "exports": {
+    ".": "./dist/module.mjs"
+  },
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "devDependencies": {
+    "@nuxt/module-builder": "1.0.3",
+    "@nuxt/kit": "4.5.2",
+    "@nuxt/cli": "3.37.0",
+    "typescript": "5.9.3"
+  },
+  "repro": {
+    "expectedFixed": false
+  }
+}
