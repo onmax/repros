@@ -1,0 +1,41 @@
+{
+  "disclosure": "AI-authored; not reviewed by a human.",
+  "sourceHead": "656a5ce1a8cb6af0b37dd577bf4e1522e03e3c11",
+  "install": "Fresh restored fixture with no node_modules; corepack pnpm install --offline --frozen-lockfile, exit 0",
+  "verification": "RUN_LABEL=current-source-update-clean corepack pnpm verify, exit 0",
+  "node": "24.19.0",
+  "pnpm": "11.22.0",
+  "orderingPatchSha256": "978fdeab331e48406c69bcd18f7aaa93bf94682ed83f64d7b552624e32ff9994",
+  "fixPatchSha256": null,
+  "sourcePatchSha256": "8929a7daa985c1c6c26f126a88a90720a611f817a1a7714a0e4786f3c2bcbd97",
+  "parsedFilesCount": 0,
+  "cachedFilesCount": 300,
+  "index": {
+    "elapsedMs": 39.53804400000081,
+    "rows": 301,
+    "copiedProperties": 45150
+  },
+  "output": {
+    "infoRows": [
+      {
+        "id": "checksum_content",
+        "ready": 1,
+        "structureVersion": "bgIYhpjRuV8zbHJE_CfelwKpJ_Td6YuGJwixiek8lmI",
+        "version": "v3.5.0--GH9-ACAArbPbhthxvcWjp3gIaDGcZP54g7lZAyvJ2ek",
+        "__hash__": "C2S6Nfj3cOQdEvwzfmvASt2vXeLDZDDdrY8_FgX0exA"
+      }
+    ],
+    "versionRow": {
+      "id": "__DATABASE_VERSION__",
+      "value": "v3.5.0",
+      "checksum": "v3.5.0"
+    },
+    "cacheChecksumsVerified": true,
+    "originalCacheLossReproduced": false,
+    "contentRows": 300,
+    "cacheRows": 300,
+    "contentSha256": "e8802467f9fe86959222dbe4b23db94cdf2893addf90ae5f3a49991695fef3cb",
+    "parsedCacheSha256": "cf1c38205fefc381a1b41c4426087982b4080abffa973a9a00859f91ef4fe5bf"
+  },
+  "note": "Acceptance run only under heavy shared load; original repeated comparison remains historical evidence."
+}

@@ -1,0 +1,10 @@
+{
+  "disclosure": "Written by an AI agent for onmax. Not reviewed by a human.",
+  "upstreamBase": "656a5ce1a8cb6af0b37dd577bf4e1522e03e3c11",
+  "localSourceCommit": "1fdd0712943a404e3c39cad7b3ff2f6f6e229f08",
+  "localSourceWorktree": "/home/maxi/nuxt/content-perf-worktrees/index",
+  "builtModuleSha256": "a6b4ee49ffd5053398e51944dfd1aa00b7bd956057b295504ecacb4f701e25cc",
+  "sourcePatchSha256": "8df1ce62b2992ce77eb24ab291ac558d49d1adb755ec1d9e7df309598d472f45",
+  "orderingPrerequisite": null,
+  "publication": "Local only; no upstream submission."
+}

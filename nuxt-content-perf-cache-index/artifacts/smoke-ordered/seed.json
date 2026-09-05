@@ -1,0 +1,532 @@
+{
+  "disclosure": "Written by an AI agent for onmax. Not reviewed by a human.",
+  "phase": "verification",
+  "sql": [
+    {
+      "type": "cache-INSERT",
+      "phase": "startup",
+      "inTransaction": false,
+      "elapsedMs": 7.517073999999411
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0000.md",
+      "elapsedMs": 19.09469800000079
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0000.md",
+      "elapsedMs": 4.321399000000383
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0001.md",
+      "elapsedMs": 0.052620000000388245
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0001.md",
+      "elapsedMs": 7.237818999999945
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0002.md",
+      "elapsedMs": 0.05106599999999162
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0002.md",
+      "elapsedMs": 36.74087399999917
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0003.md",
+      "elapsedMs": 0.2848969999995461
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0003.md",
+      "elapsedMs": 10.564440999998624
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0004.md",
+      "elapsedMs": 0.05822000000080152
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0004.md",
+      "elapsedMs": 26.09161199999835
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0005.md",
+      "elapsedMs": 0.07349799999974493
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0005.md",
+      "elapsedMs": 19.039072999999917
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0006.md",
+      "elapsedMs": 0.05240899999989779
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0006.md",
+      "elapsedMs": 9.071917999999641
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0007.md",
+      "elapsedMs": 0.05652599999848462
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0007.md",
+      "elapsedMs": 10.323638000001665
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0008.md",
+      "elapsedMs": 0.07186600000022736
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0008.md",
+      "elapsedMs": 19.174227999999857
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0009.md",
+      "elapsedMs": 0.048862999999983
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0009.md",
+      "elapsedMs": 55.952643000000535
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0010.md",
+      "elapsedMs": 0.08838699999978417
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0010.md",
+      "elapsedMs": 26.558732999999847
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0011.md",
+      "elapsedMs": 0.05204800000137766
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0011.md",
+      "elapsedMs": 3.268995000000359
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0012.md",
+      "elapsedMs": 0.05798999999933585
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0012.md",
+      "elapsedMs": 7.737990999999965
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0013.md",
+      "elapsedMs": 0.08270599999923434
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0013.md",
+      "elapsedMs": 14.570186000000831
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0014.md",
+      "elapsedMs": 0.07097499999872525
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0014.md",
+      "elapsedMs": 8.830963000000338
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0015.md",
+      "elapsedMs": 0.052268999999796506
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0015.md",
+      "elapsedMs": 10.20846100000017
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0016.md",
+      "elapsedMs": 0.053621999999450054
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0016.md",
+      "elapsedMs": 22.020285000000513
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0017.md",
+      "elapsedMs": 0.07620200000019395
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0017.md",
+      "elapsedMs": 16.737412000000404
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0018.md",
+      "elapsedMs": 0.050826999999117106
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0018.md",
+      "elapsedMs": 15.710536000000502
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0019.md",
+      "elapsedMs": 0.06530399999974179
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0019.md",
+      "elapsedMs": 18.622788000000583
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0020.md",
+      "elapsedMs": 0.05706800000007206
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0020.md",
+      "elapsedMs": 22.76348599999983
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0021.md",
+      "elapsedMs": 0.08070200000111072
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0021.md",
+      "elapsedMs": 3.7770329999984824
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0022.md",
+      "elapsedMs": 0.44985799999994924
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0022.md",
+      "elapsedMs": 5.760825000001205
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0023.md",
+      "elapsedMs": 0.06922000000122353
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0023.md",
+      "elapsedMs": 7.069440999999642
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0024.md",
+      "elapsedMs": 0.08334600000125647
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0024.md",
+      "elapsedMs": 24.87533799999983
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0025.md",
+      "elapsedMs": 0.8442220000015368
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0025.md",
+      "elapsedMs": 24.90507500000058
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0026.md",
+      "elapsedMs": 0.06897899999967194
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0026.md",
+      "elapsedMs": 55.23273499999959
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0027.md",
+      "elapsedMs": 0.05858999999873049
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0027.md",
+      "elapsedMs": 8.394970999999714
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0028.md",
+      "elapsedMs": 0.053410999998959596
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0028.md",
+      "elapsedMs": 3.780518999999913
+    },
+    {
+      "type": "cache-DELETE",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0029.md",
+      "elapsedMs": 0.376920999999129
+    },
+    {
+      "type": "cache-INSERT",
+      "phase": "process",
+      "inTransaction": false,
+      "key": "content/report-0029.md",
+      "elapsedMs": 7.436352999999144
+    },
+    {
+      "type": "BEGIN",
+      "phase": "process",
+      "inTransaction": false,
+      "elapsedMs": 0.004608999999618391
+    },
+    {
+      "type": "COMMIT",
+      "phase": "process",
+      "inTransaction": true,
+      "elapsedMs": 8.967559999999139
+    }
+  ],
+  "expectedChecksums": {
+    "content/report-0000.md": "38f2a6a59a1f37ef6716d96a5a60e03c",
+    "content/report-0001.md": "dc99ba4bef22831de53eb83d6f5a97c1",
+    "content/report-0002.md": "7478aec9ca547e77cb09edcbf91b6b2b",
+    "content/report-0003.md": "2798aab6a701f79b7ded20a8f5aa8046",
+    "content/report-0004.md": "b4df6800ce5212511b39a010a724e773",
+    "content/report-0005.md": "89be743d922bf2cd9a06a2e7ac3894cc",
+    "content/report-0006.md": "8feb38670ee4b8328df507e63468ccad",
+    "content/report-0007.md": "c57c39a60b4b4bd5da0fc6b4218eda33",
+    "content/report-0008.md": "527b20b0519b7c0ed3f58e388943ec52",
+    "content/report-0009.md": "71224da0b2d8dddb0df883241e419cba",
+    "content/report-0010.md": "1c401f0e3e91af5aade4e8528dd02866",
+    "content/report-0011.md": "5bd78490fdd35b7370c2984a5db4c8a1",
+    "content/report-0012.md": "5d6d270629a49f264405051032198cf2",
+    "content/report-0013.md": "7374bda0e10ef32195988659352fd3e7",
+    "content/report-0014.md": "16ef4458734b12bf2bc00d5f53aaeb33",
+    "content/report-0015.md": "86486dc0ac6ecef072ee552a7da91e94",
+    "content/report-0016.md": "3683e220a319b0d1e794af737874b49b",
+    "content/report-0017.md": "883bebdfe8ea573fa7d75235d0d283f5",
+    "content/report-0018.md": "59ee689dda99fb8c27e967c076be53e0",
+    "content/report-0019.md": "1d2b629fe10f33d0a6d19d82dfd9dabd",
+    "content/report-0020.md": "8fc2f38ca90e493c0c65713d7aaabc25",
+    "content/report-0021.md": "ca55d274ce9bbcaa70556e03bfa98ebc",
+    "content/report-0022.md": "fee73d48edab091a3f6148a4d7fd1a5e",
+    "content/report-0023.md": "5fa394b89d63ae5d3124b502d39f2b13",
+    "content/report-0024.md": "6826edd70f82cd47df71ebc897970414",
+    "content/report-0025.md": "84a12fb1fb27243288b044c1711d2f53",
+    "content/report-0026.md": "1bd4bc96be01b996da37b2b801cd2b00",
+    "content/report-0027.md": "34c085d5e3c86a672f99278b81076bcf",
+    "content/report-0028.md": "5ec72cf8f0e9c3b2ba0ecc984859e21c",
+    "content/report-0029.md": "9f5d98441af165f573a3d512c9b381e0"
+  },
+  "variant": {
+    "disclosure": "Written by an AI agent for onmax. Not reviewed by a human.",
+    "kind": "cache-index",
+    "fixed": false,
+    "orderingControl": true
+  },
+  "docs": 30,
+  "writerStorage": {
+    "journalMode": "delete",
+    "synchronous": 2,
+    "pageSize": 4096,
+    "name": "/home/maxi/onmax/repros/nuxt-content-perf-cache-index/.data/content/contents.sqlite"
+  },
+  "index": {
+    "elapsedMs": 0.04512499999964348,
+    "rows": 1,
+    "copiedProperties": 0
+  },
+  "parsedFilesCount": 30,
+  "cachedFilesCount": 0,
+  "filesCount": 30,
+  "contentProcessingMs": 2657.4682490000005,
+  "loadNuxtMs": 12954.790385,
+  "storage": {
+    "journalMode": "delete",
+    "synchronous": 2,
+    "pageSize": 4096,
+    "databaseList": [
+      {
+        "name": "main",
+        "file": "/home/maxi/onmax/repros/nuxt-content-perf-cache-index/.data/content/contents.sqlite"
+      }
+    ]
+  },
+  "cacheChecksumSha256": "65045cf86e0c85fddfe797b2b854531ca62ccc498c652e104d34da1f99d6c65d",
+  "output": {
+    "versionRow": {
+      "id": "__DATABASE_VERSION__",
+      "value": "v3.5.0",
+      "checksum": "v3.5.0"
+    },
+    "cacheChecksumsVerified": true,
+    "originalCacheLossReproduced": false,
+    "contentRows": 30,
+    "cacheRows": 30,
+    "contentSha256": "ff64fa5d8bbec37def36b8d686f1e3812436f74f8aad92075cd18b5145319135",
+    "parsedCacheSha256": "5b639f35d10e62b63a329363fff13fbdbf6b3b74e349e473fd4e502c2a99fbce"
+  },
+  "cacheWrites": {
+    "statements": 60,
+    "outsideTransaction": 60,
+    "insideTransaction": 0,
+    "statementMsExcludingBatchCommit": 529.4170809999978,
+    "nativeDatabaseMsIncludingCommit": 529.4170809999978
+  },
+  "processWallMs": 14983.623235000003
+}

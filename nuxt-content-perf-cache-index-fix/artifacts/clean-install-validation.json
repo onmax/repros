@@ -1,0 +1,10 @@
+{
+  "disclosure": "Written by an AI agent for onmax. Not reviewed by a human.",
+  "command": "corepack pnpm install --frozen-lockfile && corepack pnpm verify",
+  "nodeModulesRemovedBeforeCommand": true,
+  "exitCode": 0,
+  "originalModuleSha256": "33552aa15c7842130ec10f285f9942804dd2d5c1579cc73e4143dac376795df2",
+  "controlPatchSha256": "fbc0504eaaf6f2791eed8a227aebddbc4f1f1df0afbd954cab095a124ec62ae4",
+  "candidatePatchSha256": "3cd9536d6f6ec50daed239ef82fba76912d29217a6030a5f554993905a0ade35",
+  "hashesMatchBenchmark": true
+}

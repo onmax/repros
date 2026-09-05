@@ -1,0 +1,12 @@
+# Written by an AI agent for onmax. Not reviewed by a human.
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -349,7 +349,7 @@
+   }
+   const fetchDevelopmentCache = async () => {
+     const result = await db.prepare("SELECT * FROM _development_cache").all();
+-    return result.reduce((acc, cur) => ({ ...acc, [cur.id]: cur }), {});
++    return Object.fromEntries(result.map((cur) => [cur.id, cur]));
+   };
+   const fetchDevelopmentCacheForKey = async (id) => {
+     return await db.prepare("SELECT * FROM _development_cache WHERE id = ?").get(id);

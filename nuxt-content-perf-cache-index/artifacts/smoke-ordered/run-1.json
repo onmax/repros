@@ -1,0 +1,100 @@
+{
+  "disclosure": "Written by an AI agent for onmax. Not reviewed by a human.",
+  "phase": "verification",
+  "sql": [
+    {
+      "type": "BEGIN",
+      "phase": "process",
+      "inTransaction": false,
+      "elapsedMs": 0.01884500000051048
+    },
+    {
+      "type": "COMMIT",
+      "phase": "process",
+      "inTransaction": true,
+      "elapsedMs": 2.59346000000005
+    }
+  ],
+  "expectedChecksums": {
+    "content/report-0000.md": "38f2a6a59a1f37ef6716d96a5a60e03c",
+    "content/report-0001.md": "dc99ba4bef22831de53eb83d6f5a97c1",
+    "content/report-0002.md": "7478aec9ca547e77cb09edcbf91b6b2b",
+    "content/report-0003.md": "2798aab6a701f79b7ded20a8f5aa8046",
+    "content/report-0004.md": "b4df6800ce5212511b39a010a724e773",
+    "content/report-0005.md": "89be743d922bf2cd9a06a2e7ac3894cc",
+    "content/report-0006.md": "8feb38670ee4b8328df507e63468ccad",
+    "content/report-0007.md": "c57c39a60b4b4bd5da0fc6b4218eda33",
+    "content/report-0008.md": "527b20b0519b7c0ed3f58e388943ec52",
+    "content/report-0009.md": "71224da0b2d8dddb0df883241e419cba",
+    "content/report-0010.md": "1c401f0e3e91af5aade4e8528dd02866",
+    "content/report-0011.md": "5bd78490fdd35b7370c2984a5db4c8a1",
+    "content/report-0012.md": "5d6d270629a49f264405051032198cf2",
+    "content/report-0013.md": "7374bda0e10ef32195988659352fd3e7",
+    "content/report-0014.md": "16ef4458734b12bf2bc00d5f53aaeb33",
+    "content/report-0015.md": "86486dc0ac6ecef072ee552a7da91e94",
+    "content/report-0016.md": "3683e220a319b0d1e794af737874b49b",
+    "content/report-0017.md": "883bebdfe8ea573fa7d75235d0d283f5",
+    "content/report-0018.md": "59ee689dda99fb8c27e967c076be53e0",
+    "content/report-0019.md": "1d2b629fe10f33d0a6d19d82dfd9dabd",
+    "content/report-0020.md": "8fc2f38ca90e493c0c65713d7aaabc25",
+    "content/report-0021.md": "ca55d274ce9bbcaa70556e03bfa98ebc",
+    "content/report-0022.md": "fee73d48edab091a3f6148a4d7fd1a5e",
+    "content/report-0023.md": "5fa394b89d63ae5d3124b502d39f2b13",
+    "content/report-0024.md": "6826edd70f82cd47df71ebc897970414",
+    "content/report-0025.md": "84a12fb1fb27243288b044c1711d2f53",
+    "content/report-0026.md": "1bd4bc96be01b996da37b2b801cd2b00",
+    "content/report-0027.md": "34c085d5e3c86a672f99278b81076bcf",
+    "content/report-0028.md": "5ec72cf8f0e9c3b2ba0ecc984859e21c",
+    "content/report-0029.md": "9f5d98441af165f573a3d512c9b381e0"
+  },
+  "variant": {
+    "disclosure": "Written by an AI agent for onmax. Not reviewed by a human.",
+    "kind": "cache-index",
+    "fixed": false,
+    "orderingControl": true
+  },
+  "docs": 30,
+  "index": {
+    "elapsedMs": 0.11492600000019593,
+    "rows": 31,
+    "copiedProperties": 465
+  },
+  "parsedFilesCount": 0,
+  "cachedFilesCount": 30,
+  "filesCount": 30,
+  "contentProcessingMs": 604.6274659999999,
+  "loadNuxtMs": 9172.489762000001,
+  "storage": {
+    "journalMode": "delete",
+    "synchronous": 2,
+    "pageSize": 4096,
+    "databaseList": [
+      {
+        "name": "main",
+        "file": "/home/maxi/onmax/repros/nuxt-content-perf-cache-index/.data/content/contents.sqlite"
+      }
+    ]
+  },
+  "cacheChecksumSha256": "65045cf86e0c85fddfe797b2b854531ca62ccc498c652e104d34da1f99d6c65d",
+  "output": {
+    "versionRow": {
+      "id": "__DATABASE_VERSION__",
+      "value": "v3.5.0",
+      "checksum": "v3.5.0"
+    },
+    "cacheChecksumsVerified": true,
+    "originalCacheLossReproduced": false,
+    "contentRows": 30,
+    "cacheRows": 30,
+    "contentSha256": "ff64fa5d8bbec37def36b8d686f1e3812436f74f8aad92075cd18b5145319135",
+    "parsedCacheSha256": "5b639f35d10e62b63a329363fff13fbdbf6b3b74e349e473fd4e502c2a99fbce"
+  },
+  "cacheWrites": {
+    "statements": 0,
+    "outsideTransaction": 0,
+    "insideTransaction": 0,
+    "statementMsExcludingBatchCommit": 0,
+    "nativeDatabaseMsIncludingCommit": 0
+  },
+  "processWallMs": 11495.812976999998
+}

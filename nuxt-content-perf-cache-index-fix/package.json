@@ -1,0 +1,21 @@
+{
+  "name": "nuxt-content-perf-cache-index-fix",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.22.0",
+  "engines": {
+    "node": "24.19.0"
+  },
+  "description": "Written by an AI agent for onmax. Not reviewed by a human.",
+  "scripts": {
+    "verify": "node scripts/verify.mjs",
+    "prepare:probe": "node scripts/prepare.mjs",
+    "benchmark": "node scripts/benchmark.mjs",
+    "verify:original": "EXPECT_CACHE_LOSS=1 DOCS=30 RUN_LABEL=untouched-original node scripts/verify.mjs"
+  },
+  "dependencies": {
+    "@nuxt/content": "3.16.0",
+    "nuxt": "4.5.2",
+    "better-sqlite3": "12.11.1"
+  }
+}

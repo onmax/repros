@@ -1,0 +1,109 @@
+{
+  "disclosure": "Written by an AI agent for onmax. Not reviewed by a human.",
+  "phase": "verification",
+  "sql": [
+    {
+      "type": "BEGIN",
+      "phase": "process",
+      "inTransaction": false,
+      "elapsedMs": 0.00648300000011659
+    },
+    {
+      "type": "COMMIT",
+      "phase": "process",
+      "inTransaction": true,
+      "elapsedMs": 2.1808420000002116
+    }
+  ],
+  "expectedChecksums": {
+    "content/report-0000.md": "44efd959551d2abd10ad24e1914474fa",
+    "content/report-0001.md": "00c60cad97cb2235e15dd33b1762ac26",
+    "content/report-0002.md": "13289dca5ed5543795e2cfb908c7d17c",
+    "content/report-0003.md": "86087cadc91da196428ebbf7b6140edd",
+    "content/report-0004.md": "4a339ba9d28e632d12852d34a9a3cd7f",
+    "content/report-0005.md": "107b04d6ff10d27032a5baa1c9737dda",
+    "content/report-0006.md": "f3fe865d79e89ad7e9ec4abd953b07ce",
+    "content/report-0007.md": "973f64fde34daff9ef9ad26c9e06b09b",
+    "content/report-0008.md": "803bc682be7c92b73f41a49b815b9a07",
+    "content/report-0009.md": "a0bb71d74a83dabb5e9f8d96669c66b0",
+    "content/report-0010.md": "a2724253c805d4701e047a943391d365",
+    "content/report-0011.md": "69b53e1a8fedaae41cda05abbc86497b",
+    "content/report-0012.md": "459585e10975d87218a56e002c906571",
+    "content/report-0013.md": "f4ffed07b5e3a53b39d7b709589fa85c",
+    "content/report-0014.md": "121b847ae44a0b747635087f0ecd7fb2",
+    "content/report-0015.md": "55e01bf29e420494e126f4d1ca1e75f4",
+    "content/report-0016.md": "c7bb8089419e69ffc1998adb37b7aa7d",
+    "content/report-0017.md": "32bee5981d5975126bd629afe150d40f",
+    "content/report-0018.md": "a37532ed9a3cf057a9fc2f94a3542e67",
+    "content/report-0019.md": "d777ef91a5a723ebbe0ad320c5d55456",
+    "content/report-0020.md": "f7b62b36eeb897e20da9632c4dc0d3b6",
+    "content/report-0021.md": "3c9b49f8e12a60bde549c331b2c7778a",
+    "content/report-0022.md": "b77194e04bd292c70698490b438ff291",
+    "content/report-0023.md": "5fba15ee6d6c6412bd257044d5170a0c",
+    "content/report-0024.md": "a4421d76308182817307da4211ec9804",
+    "content/report-0025.md": "f13c95af44ab83b59cc224bd02c5f0c8",
+    "content/report-0026.md": "ab01fdb45c65de2833dc91c3f49f6207",
+    "content/report-0027.md": "dbfbcae6c681e2d490de9c132ec3714b",
+    "content/report-0028.md": "37ac581844790ec74410b9fed75a1932",
+    "content/report-0029.md": "4af8e464284b8d7bafd9492509284cae"
+  },
+  "variant": {
+    "disclosure": "Written by an AI agent for onmax. Not reviewed by a human.",
+    "kind": "cache-index",
+    "fixed": true,
+    "orderingControl": true
+  },
+  "docs": 30,
+  "index": {
+    "elapsedMs": 0.0858819999998559,
+    "rows": 31,
+    "copiedProperties": 0
+  },
+  "parsedFilesCount": 0,
+  "cachedFilesCount": 30,
+  "filesCount": 30,
+  "contentProcessingMs": 141.9906189999997,
+  "loadNuxtMs": 2650.552499,
+  "storage": {
+    "journalMode": "delete",
+    "synchronous": 2,
+    "pageSize": 4096,
+    "databaseList": [
+      {
+        "name": "main",
+        "file": "/home/maxi/onmax/repros/nuxt-content-perf-cache-index-fix/.data/content/contents.sqlite"
+      }
+    ]
+  },
+  "cacheChecksumSha256": "01eba1220adc74d98d82b3f4285e5cb6ee9c0e11c486813380e10e94695666b2",
+  "output": {
+    "infoRows": [
+      {
+        "id": "checksum_content",
+        "ready": 1,
+        "structureVersion": "bgIYhpjRuV8zbHJE_CfelwKpJ_Td6YuGJwixiek8lmI",
+        "version": "v3.5.0--Oyn5kCk24uSN2BJ816oUn22JFqR6h6TfaKNihOE822I",
+        "__hash__": "MIVutL70dMYDTDzt9lcUVOGGKia4eqYbBT-0A5dstEk"
+      }
+    ],
+    "versionRow": {
+      "id": "__DATABASE_VERSION__",
+      "value": "v3.5.0",
+      "checksum": "v3.5.0"
+    },
+    "cacheChecksumsVerified": true,
+    "originalCacheLossReproduced": false,
+    "contentRows": 30,
+    "cacheRows": 30,
+    "contentSha256": "ff64fa5d8bbec37def36b8d686f1e3812436f74f8aad92075cd18b5145319135",
+    "parsedCacheSha256": "5b639f35d10e62b63a329363fff13fbdbf6b3b74e349e473fd4e502c2a99fbce"
+  },
+  "cacheWrites": {
+    "statements": 0,
+    "outsideTransaction": 0,
+    "insideTransaction": 0,
+    "statementMsExcludingBatchCommit": 0,
+    "nativeDatabaseMsIncludingCommit": 0
+  },
+  "processWallMs": 3590.427227
+}

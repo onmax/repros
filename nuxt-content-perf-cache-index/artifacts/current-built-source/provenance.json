@@ -1,0 +1,14 @@
+{
+  "disclosure": "AI-authored; not reviewed by a human.",
+  "sourceHead": "656a5ce1a8cb6af0b37dd577bf4e1522e03e3c11",
+  "sourceWorktree": "/home/maxi/nuxt/content-perf-worktrees/index",
+  "application": "/tmp/content-index-source-snv0al6b/app",
+  "stagedPackage": "/tmp/content-index-source-snv0al6b/packages/node_modules/@nuxt/content",
+  "builtModuleSha256": "a6b4ee49ffd5053398e51944dfd1aa00b7bd956057b295504ecacb4f701e25cc",
+  "sourceDiff": "/home/maxi/onmax/repro-worktrees/nuxt-content-perf-cache-index/nuxt-content-perf-cache-index-fix/source-index.patch",
+  "controls": "Actual built dist; source-index fix already present so skip package fix.patch; apply shared ordering.patch; retain fixture dependency graph, verifier and worker unchanged.",
+  "baselineControl": "Same freshly built package; only emitted index expression reverted to original reduce. Not a separate baseline source build. Same app root and shared ordering prerequisite.",
+  "baselineEmittedModuleSha256": "cf18057775114a5275b81655acb49b7b1d46f20d4220083e08b6c63c8c51fd72",
+  "fixedAndBaselineExactOutputsMatch": true,
+  "fixedAndBaselineExactChecksumDigestsMatch": true
+}
