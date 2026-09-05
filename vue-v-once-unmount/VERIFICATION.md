@@ -48,3 +48,15 @@ Independent agent review found that removing a cloned second slot invocation cou
 The updated patch matches the three runtime builds from [a39e80e](https://github.com/onmax/vue-core/commit/a39e80e8e7516a884a0338a1ff2ee2ed5ce273e9). A fresh local clone of reproduction commit `3c76e3f` ran `pnpm install --frozen-lockfile && pnpm verify` in the fixed directory and exited 0, with control=1 and rerender=1, on Node 24.19.0 and pnpm 10.34.5. The original fixture is unchanged from the prior comparison.
 
 The final source suite passed 3,707 unit tests with six skipped, plus lint and type checking. An earlier rerun exceeded an unchanged reactivity performance test's 30ms threshold during concurrent builds; its isolated rerun and the final full suite both passed. The surviving-slot regression and a component-root-change/remount check also passed against the final patched package. StackBlitz execution remains unverified.
+
+## Slot cache owner correction
+
+Recorded by an AI agent on behalf of @onmax on 2026-09-05; human review is pending.
+
+The previous instance-identity guard did not handle removing the first of two cached slot instances. The surviving instance changed from `0` to `1` on rerender. Source tests proved this failure for both component and element slots before the correction.
+
+[Source commit `e17c854`](https://github.com/onmax/vue-core/commit/e17c8549710cfd8b720164c0972db45d04dc29f1) replaces the instance guard with an owner check. Each component clears only its own cache; slot receivers leave the author's shared cache intact. Both removal orders and remounts now preserve the cached value. Independent agent review also verified single-slot v-once/v-memo remounts and full owner teardown with matching mount/unmount counts.
+
+The current patch matches all three runtime builds byte for byte. A fresh local clone of reproduction commit `c1b19d6` ran `pnpm install --frozen-lockfile && pnpm verify` in the fixed directory, exited 0, and reported control=1/rerender=1 on Node 24.19.0 and pnpm 10.34.5. Six additional component/element/template slot probes against the patched package preserved cached values for both removal orders and remounts.
+
+All 78 targeted tests, lint, and type checks passed. The full unit run passed 3,709 tests and skipped six; one unchanged computed performance assertion measured 54ms against a 30ms threshold. Its isolated file rerun passed all 49 tests. Browser execution and upstream CI approval remain separate verification gaps.
