@@ -1,0 +1,31 @@
+diff --git a/dist/runtime/node/internal/async_hooks/async-local-storage.mjs b/dist/runtime/node/internal/async_hooks/async-local-storage.mjs
+index e44ce0f7285acf6d050977b8b6fce4a84d8b1250..2561c5ae9333ad3fc98c1f21281b72e5a489aff6 100644
+--- a/dist/runtime/node/internal/async_hooks/async-local-storage.mjs
++++ b/dist/runtime/node/internal/async_hooks/async-local-storage.mjs
+@@ -17,16 +17,23 @@ class _AsyncLocalStorage {
+ 		this._enterStore = store;
+ 	}
+ 	run(store, callback, ...args) {
++		const previousStore = this._currentStore;
+ 		this._currentStore = store;
+ 		const res = callback(...args);
+-		this._currentStore = undefined;
++		if (res instanceof Promise) {
++			return res.finally(() => { this._currentStore = previousStore; });
++		}
++		this._currentStore = previousStore;
+ 		return res;
+ 	}
+ 	exit(callback, ...args) {
+-		const _previousStore = this._currentStore;
++		const previousStore = this._currentStore;
+ 		this._currentStore = undefined;
+ 		const res = callback(...args);
+-		this._currentStore = _previousStore;
++		if (res instanceof Promise) {
++			return res.finally(() => { this._currentStore = previousStore; });
++		}
++		this._currentStore = previousStore;
+ 		return res;
+ 	}
+ 	static snapshot() {

@@ -1,0 +1,16 @@
+{
+  "name": "unenv-als-fixed",
+  "type": "module",
+  "scripts": {
+    "test": "node test.mjs",
+    "test:native": "node test-native.mjs"
+  },
+  "dependencies": {
+    "unenv": "^2.0.0-rc.24"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "unenv": "patches/unenv.patch"
+    }
+  }
+}

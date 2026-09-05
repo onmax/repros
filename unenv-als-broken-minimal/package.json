@@ -1,0 +1,11 @@
+{
+  "name": "unenv-als-broken-minimal",
+  "type": "module",
+  "scripts": {
+    "test": "node test.mjs",
+    "test:native": "node test-native.mjs"
+  },
+  "dependencies": {
+    "unenv": "^2.0.0-rc.24"
+  }
+}
