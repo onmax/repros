@@ -22,6 +22,7 @@ Expected output for this directory:
 Expected Nuxt behavior: reject invalid method, invalid immediate option, and nonexistent result method.
 Control without auth declaration: rejected all three calls.
 Actual with auth declaration: accepted all three calls.
+Native fatal/unhandled error properties remain available.
 Verified the reported bug.
 ```
 
@@ -29,7 +30,7 @@ Verified the reported bug.
 
 The baseline uses the published `@nuxtjs/better-auth@0.2.5` npm artifact, corresponding to the source reviewed at `90b945a`. Nuxt 4.5.2, Better Auth 1.7.1, TypeScript 5.9.3, and all transitive packages are pinned in the lockfile. This reproduces the module's actual generated declaration; it does not invent a substitute `useFetch` type.
 
-The sibling control applies a pnpm patch generated from [upstream fix commit 2868d00](https://github.com/nuxt-modules/better-auth/commit/2868d0056d9131af47586d36f3708d7b735be4e7). It changes only the published module's endpoint type template and the helper that renders typed fallback overloads. The application and verifier are identical. The package metadata tells the verifier which result to assert.
+The sibling control applies a pnpm patch generated from [upstream fix commit 5289200](https://github.com/nuxt-modules/better-auth/commit/5289200dae8e2796ae307e6adc62c2c6c7fd242a). It changes only the published module's endpoint type template and the helper that renders typed fallback overloads. The application and verifier are identical. `native-contract.ts` also requires Nuxt's `fatal` and `unhandled` error properties to remain available. The package metadata tells the verifier which result to assert.
 
 The client and server config files are the empty configs required for module preparation. The lockfile and pnpm workspace settings preserve dependency resolution and the fixed package patch. `skipLibCheck` matches a prepared Nuxt consumer; the probe still undergoes strict checking. The fixture has no API handler because the failure happens at compilation. Removing the endpoint declaration is the one-variable control that restores all three errors.
 

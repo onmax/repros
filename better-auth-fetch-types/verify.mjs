@@ -17,7 +17,7 @@ for (const dependency of ['h3', 'nitropack/types', 'ofetch'])
   assert.ok(paths[dependency]?.every(path => path.startsWith(`${resolve('node_modules')}/`)), `Nuxt resolved ${dependency} outside this fixture. Run in a directory without inherited node_modules.`)
 const base = {
   compilerOptions: { target: 'ESNext', lib: ['ESNext', 'DOM'], module: 'preserve', moduleResolution: 'bundler', strict: true, noEmit: true, skipLibCheck: true, types: [], paths },
-  files: ['../probe.ts'],
+  files: ['../probe.ts', '../native-contract.ts'],
 }
 function check(name, files) {
   writeFileSync(`.verify/${name}.json`, JSON.stringify({ ...base, files }, null, 2))
@@ -25,9 +25,11 @@ function check(name, files) {
 }
 const control = check('control', base.files)
 assert.notEqual(control.status, 0, 'Nuxt without the module declaration must reject invalid calls')
+assert.doesNotMatch(control.output, /native-contract\.ts\(/, control.output)
 for (const line of [2, 3, 4])
   assert.match(control.output, new RegExp(`probe\\.ts\\(${line},`), control.output)
 const actual = check('module', [...base.files, '../.nuxt/types/nuxt-better-auth-endpoints.d.ts'])
+assert.doesNotMatch(actual.output, /native-contract\.ts\(/, actual.output)
 const expected = JSON.parse(readFileSync('package.json', 'utf8')).repro.expected
 console.log('Expected Nuxt behavior: reject invalid method, invalid immediate option, and nonexistent result method.')
 console.log(`Control without auth declaration: rejected all three calls.`)
@@ -39,4 +41,5 @@ else {
   for (const line of [2, 3, 4])
     assert.match(actual.output, new RegExp(`probe\\.ts\\(${line},`), actual.output)
 }
+console.log('Native fatal/unhandled error properties remain available.')
 console.log(`Verified ${expected === 'accepted' ? 'the reported bug' : 'the correction'}.`)
