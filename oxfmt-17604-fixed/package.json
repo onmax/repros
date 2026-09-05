@@ -1,0 +1,12 @@
+{
+  "name": "oxfmt-17604",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "fmt": "oxfmt",
+    "verify": "node verify.mjs"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.21.0"
+  }
+}
