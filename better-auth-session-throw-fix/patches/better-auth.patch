@@ -1,0 +1,12 @@
+diff --git a/dist/runtime/app/internal/session-fetch.js b/dist/runtime/app/internal/session-fetch.js
+--- a/dist/runtime/app/internal/session-fetch.js
++++ b/dist/runtime/app/internal/session-fetch.js
+@@ -33,7 +33,7 @@
+ export async function fetchSessionClient(client, session, user, authReady, options = {}) {
+   try {
+     const headers = options.headers || useRequestHeaders(["cookie"]);
+-    const fetchOptions = headers ? { headers } : void 0;
++    const fetchOptions = { ...headers ? { headers } : {}, throw: false };
+     const query = options.force ? { disableCookieCache: true } : void 0;
+     const result = await client.getSession({ query }, fetchOptions);
+     const data = result.data;
