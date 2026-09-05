@@ -1,0 +1,15 @@
+diff --git a/dist/runtime/app/internal/session-fetch.js b/dist/runtime/app/internal/session-fetch.js
+--- a/dist/runtime/app/internal/session-fetch.js
++++ b/dist/runtime/app/internal/session-fetch.js
+@@ -14,7 +14,10 @@
+   try {
+     const headers = options.headers || useRequestHeaders(["cookie"]);
+     const requestFetch = useRequestFetch();
+-    const data = await requestFetch("/api/auth/get-session", { headers });
++    const data = await requestFetch("/api/auth/get-session", {
++      headers,
++      ...options.force ? { query: { disableCookieCache: true } } : {}
++    });
+     if (data?.session && data?.user) {
+       session.value = stripToken(data.session);
+       user.value = data.user;
