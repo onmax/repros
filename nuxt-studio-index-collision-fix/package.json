@@ -1,0 +1,21 @@
+{
+  "name": "nuxt-studio-index-collision-fix",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "prepare": "nuxt prepare",
+    "diagnose": "node scripts/diagnose-collision.mjs",
+    "verify": "pnpm diagnose"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "nuxt-studio@1.5.1": "patches/nuxt-studio@1.5.1.patch"
+    }
+  },
+  "dependencies": {
+    "@nuxt/content": "3.12.0",
+    "nuxt": "4.4.2",
+    "nuxt-studio": "1.5.1"
+  }
+}
