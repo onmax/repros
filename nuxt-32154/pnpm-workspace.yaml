@@ -1,2 +1,0 @@
-patchedDependencies:
-  nuxt@3.17.3: patches/nuxt@3.17.3.patch
