@@ -8,6 +8,13 @@ Reduced from the teardown failure behind [nuxt/nuxt#32154](https://github.com/nu
 
 ## Run
 
+Source branch: `repro/vue-v-once-unmount`. The repository's `main` branch contains no fixtures.
+
+```sh
+git clone --depth 1 --branch repro/vue-v-once-unmount https://github.com/onmax/repros.git
+cd repros/vue-v-once-unmount
+```
+
 Use Node 24.19.0 and pnpm 11.25.0. From this directory:
 
 ```sh
