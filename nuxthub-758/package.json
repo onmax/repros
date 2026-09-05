@@ -1,0 +1,1 @@
+{"name":"nuxthub-758","private":true,"type":"module","scripts":{"prepare":"nuxt prepare"},"dependencies":{"nuxt":"^3.17.5","@nuxthub/core":"https://pkg.pr.new/@nuxthub/core@cd53e00","drizzle-orm":"^0.44.2"},"devDependencies":{"drizzle-kit":"^0.30.5"}}
