@@ -1,0 +1,4 @@
+[submodule "drizzle-error-797"]
+	path = drizzle-error-797
+	url = https://github.com/mateusznarowski/drizzle-error
+	update = none
