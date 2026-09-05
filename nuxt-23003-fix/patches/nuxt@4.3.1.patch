@@ -1,0 +1,66 @@
+diff --git a/dist/app/composables/router.js b/dist/app/composables/router.js
+index 1da60ac75cce11daa100973da247b4440eaca054..efe274e8d98c085d4dae58d5655abba7e7353c47 100644
+--- a/dist/app/composables/router.js
++++ b/dist/app/composables/router.js
+@@ -174,7 +174,12 @@ export const setPageLayout = (layout, props) => {
+     console.warn("[warn] [nuxt] `setPageLayout` should not be called to change the layout during hydration as this will cause hydration errors.");
+   }
+   const inMiddleware = isProcessingMiddleware();
+-  if (inMiddleware || import.meta.server || nuxtApp.isHydrating) {
++  const middlewareRoute = import.meta.server && inMiddleware && nuxtApp._middlewareTo;
++  if (middlewareRoute) {
++    middlewareRoute.meta.layout = layout;
++    middlewareRoute.meta.layoutProps = props;
++  }
++  if (!middlewareRoute && (inMiddleware || import.meta.server || nuxtApp.isHydrating)) {
+     const unsubscribe = useRouter().beforeResolve((to) => {
+       to.meta.layout = layout;
+       to.meta.layoutProps = props;
+diff --git a/dist/app/plugins/router.js b/dist/app/plugins/router.js
+index e18c63418ed1a5dd7f5b044e4b81d21bc15d3a7c..24b8fd6555bd12f5b8a01187c209af35ba17f7ea 100644
+--- a/dist/app/plugins/router.js
++++ b/dist/app/plugins/router.js
+@@ -180,7 +180,17 @@ export default defineNuxtPlugin({
+             if (import.meta.dev) {
+               nuxtApp._processingMiddleware = middleware._path || true;
+             }
+-            const result = await nuxtApp.runWithContext(() => middleware(to, from));
++            if (import.meta.server) {
++              nuxtApp._middlewareTo = to;
++            }
++            let result;
++            try {
++              result = await nuxtApp.runWithContext(() => middleware(to, from));
++            } finally {
++              if (import.meta.server) {
++                delete nuxtApp._middlewareTo;
++              }
++            }
+             if (import.meta.server) {
+               if (result === false || result instanceof Error) {
+                 const error = result || createError({
+diff --git a/dist/pages/runtime/plugins/router.js b/dist/pages/runtime/plugins/router.js
+index 63ef0a325c881944b1538a256a26c20936c7e79d..d770f5c3ea8d94c32784e7062ff8d87eb7ae3829 100644
+--- a/dist/pages/runtime/plugins/router.js
++++ b/dist/pages/runtime/plugins/router.js
+@@ -160,6 +160,9 @@ const plugin = defineNuxtPlugin({
+             }
+             throw new Error(`Unknown route middleware: '${entry}'.`);
+           }
++          if (import.meta.server) {
++            nuxtApp._middlewareTo = to;
++          }
+           try {
+             if (import.meta.dev) {
+               nuxtApp._processingMiddleware = middleware._path || (typeof entry === "string" ? entry : true);
+@@ -193,6 +196,10 @@ const plugin = defineNuxtPlugin({
+               await nuxtApp.runWithContext(() => showError(error2));
+             }
+             return error2;
++          } finally {
++            if (import.meta.server) {
++              delete nuxtApp._middlewareTo;
++            }
+           }
+         }
+       }
