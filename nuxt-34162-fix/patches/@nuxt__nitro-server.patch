@@ -1,0 +1,13 @@
+diff --git a/dist/runtime/handlers/renderer.mjs b/dist/runtime/handlers/renderer.mjs
+index 80bcf868670680c5fea3a3d1a436256522de3317..fc5709d1bd0265f2b1dfe4484c449c19fcc76a06 100644
+--- a/dist/runtime/handlers/renderer.mjs
++++ b/dist/runtime/handlers/renderer.mjs
+@@ -135,7 +135,7 @@ export default defineRenderHandler(async (event) => {
+ 	}
+ 	if (_PAYLOAD_EXTRACTION && import.meta.prerender) {
+ 		// Hint nitro to prerender payload for this route
+-		appendResponseHeader(event, "x-nitro-prerender", joinURL(ssrContext.url.replace(/\?.*$/, ""), PAYLOAD_FILENAME));
++		appendResponseHeader(event, "x-nitro-prerender", encodeURI(joinURL(ssrContext.url.replace(/\?.*$/, ""), PAYLOAD_FILENAME)));
+ 		// Use same ssr context to generate payload for this route
+ 		await payloadCache.setItem(ssrContext.url === "/" ? "/" : ssrContext.url.replace(/\/$/, ""), renderPayloadResponse(ssrContext));
+ 	}
