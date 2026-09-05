@@ -1,0 +1,13 @@
+name = "nimiq-core-3278-fixed"
+main = "src/worker.ts"
+compatibility_date = "2024-12-25"
+compatibility_flags = [ "nodejs_compat" ]
+account_id = "ba6e044dfdaaffec3cac45e9feccd237"
+
+[[rules]]
+type = "ESModule"
+globs = [ "**/*.js" ]
+
+[[rules]]
+type = "CompiledWasm"
+globs = [ "**/*.wasm" ]
