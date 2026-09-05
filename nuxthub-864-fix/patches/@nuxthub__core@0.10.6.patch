@@ -1,0 +1,124 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 1ef9c1437928b792369a168489dbf4ac6842e334..52e48cdcf20411354600d30c4a40be7c9373e06e 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -783,23 +783,78 @@ export const kv = createStorage({
+ 
+ const log$2 = logger.withTag("nuxt:hub");
+ const supportedDrivers = ["fs", "s3", "vercel-blob", "cloudflare-r2"];
++function resolveS3BlobConfig(blobConfig = {}) {
++  return {
++    driver: "s3",
++    accessKeyId: blobConfig.accessKeyId || process.env.S3_ACCESS_KEY_ID || "",
++    secretAccessKey: blobConfig.secretAccessKey || process.env.S3_SECRET_ACCESS_KEY || "",
++    bucket: blobConfig.bucket || process.env.S3_BUCKET || "",
++    region: blobConfig.region || process.env.S3_REGION || "auto",
++    endpoint: blobConfig.endpoint || process.env.S3_ENDPOINT
++  };
++}
++function isConfiguredS3BlobConfig(blobConfig) {
++  return Boolean(blobConfig.accessKeyId && blobConfig.secretAccessKey && (blobConfig.bucket || blobConfig.endpoint));
++}
++function shouldResolveBlobAtRuntime(nuxt, hub, blobInput, blobConfig) {
++  return !nuxt.options.dev && !hub.hosting.includes("cloudflare") && blobInput === true && blobConfig.driver === "fs";
++}
++function generateRuntimeBlobContent(blobConfig) {
++  return `import { createBlobStorage } from "@nuxthub/core/blob";
++
++export { ensureBlob } from "@nuxthub/core/blob";
++
++function resolveBlobConfig() {
++  if (process.env.S3_ACCESS_KEY_ID && process.env.S3_SECRET_ACCESS_KEY && (process.env.S3_BUCKET || process.env.S3_ENDPOINT)) {
++    return {
++      driver: "s3",
++      accessKeyId: process.env.S3_ACCESS_KEY_ID,
++      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
++      bucket: process.env.S3_BUCKET || "",
++      region: process.env.S3_REGION || "auto",
++      endpoint: process.env.S3_ENDPOINT
++    }
++  }
++
++  if (process.env.BLOB_READ_WRITE_TOKEN) {
++    return {
++      driver: "vercel-blob",
++      access: "public"
++    }
++  }
++
++  return ${JSON.stringify(blobConfig)}
++}
++
++const blobConfig = resolveBlobConfig()
++
++const { createDriver } = await (async () => {
++  if (blobConfig.driver === "s3") {
++    return import("@nuxthub/core/blob/drivers/s3")
++  }
++
++  if (blobConfig.driver === "vercel-blob") {
++    return import("@nuxthub/core/blob/drivers/vercel-blob")
++  }
++
++  return import("@nuxthub/core/blob/drivers/fs")
++})()
++
++const { driver, ...driverOptions } = blobConfig
++export const blob = createBlobStorage(createDriver(driverOptions));
++`;
++}
+ function resolveBlobConfig(hub, deps) {
+   if (!hub.blob) return false;
+   if (typeof hub.blob === "object" && "driver" in hub.blob) {
+     return hub.blob;
+   }
+-  if (process.env.S3_ACCESS_KEY_ID && process.env.S3_SECRET_ACCESS_KEY && (process.env.S3_BUCKET || process.env.S3_ENDPOINT)) {
++  const s3Config = resolveS3BlobConfig();
++  if (isConfiguredS3BlobConfig(s3Config)) {
+     if (!deps["aws4fetch"]) {
+       log$2.error("Please run `npx nypm i aws4fetch` to use S3");
+     }
+-    return defu(hub.blob, {
+-      driver: "s3",
+-      accessKeyId: process.env.S3_ACCESS_KEY_ID,
+-      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+-      bucket: process.env.S3_BUCKET || "",
+-      region: process.env.S3_REGION || "auto",
+-      endpoint: process.env.S3_ENDPOINT
+-    });
++    return s3Config;
+   }
+   if (hub.hosting.includes("vercel") || process.env.BLOB_READ_WRITE_TOKEN) {
+     if (!deps["@vercel/blob"]) {
+@@ -822,9 +877,11 @@ function resolveBlobConfig(hub, deps) {
+   });
+ }
+ async function setupBlob(nuxt, hub, deps) {
++  const blobInput = hub.blob;
+   hub.blob = resolveBlobConfig(hub, deps);
+   if (!hub.blob) return;
+   const blobConfig = hub.blob;
++  const runtimeBlobResolution = shouldResolveBlobAtRuntime(nuxt, hub, blobInput, blobConfig);
+   if (blobConfig.driver === "cloudflare-r2" && blobConfig.bucketName) {
+     addWranglerBinding(nuxt, "r2_buckets", { binding: blobConfig.binding || "BLOB", bucket_name: blobConfig.bucketName });
+   }
+@@ -834,7 +891,7 @@ async function setupBlob(nuxt, hub, deps) {
+     log$2.error(`Unsupported blob driver: ${driver}. Supported drivers: ${supportedDrivers.join(", ")}`);
+     return;
+   }
+-  const blobContent = `import { createBlobStorage } from "@nuxthub/core/blob";
++  const blobContent = runtimeBlobResolution ? generateRuntimeBlobContent(blobConfig) : `import { createBlobStorage } from "@nuxthub/core/blob";
+ import { createDriver } from "@nuxthub/core/blob/drivers/${driver}";
+ 
+ export { ensureBlob } from "@nuxthub/core/blob";
+@@ -873,6 +930,10 @@ export const blob = createBlobStorage(createDriver(${JSON.stringify(driverOption
+     nuxt.options.runtimeConfig.public.hub.blobProvider = "vercel-blob";
+     logWhenReady(nuxt, "Files stored in Vercel Blob are public. Manually configure a different storage driver if storing sensitive files.", "warn");
+   }
++  if (runtimeBlobResolution) {
++    logWhenReady(nuxt, "`hub:blob` using runtime driver resolution");
++    return;
++  }
+   logWhenReady(nuxt, `\`hub:blob\` using \`${blobConfig.driver}\` driver`);
+ }
+ 
