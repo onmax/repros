@@ -1,0 +1,13 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 134fd3c5a270edbe7974e64713e0f91b0c6a773b..cbbd2234939bfa8a765e80e7e989a8f5b9c8d9b9 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -220,7 +220,7 @@ async function resolveDatabaseConfig(nuxt, hub) {
+         }
+         break;
+       }
+-      if (hub.hosting.includes("cloudflare") && !nuxt.options.dev) {
++      if (hub.hosting.includes("cloudflare") && !nuxt.options.dev && !nuxt.options._prepare) {
+         config.driver = "d1";
+         break;
+       }
