@@ -1,24 +1,22 @@
 # Agent instructions
 
-This repository stores durable bug reproductions. Each reproduction branch should let a maintainer observe one reported failure and compare it with a patched control without access to the original application.
+This repository stores durable bug reproductions. Each branch owns one reported failure and its controls.
 
-## Reproduction work
+## Repository workflow
 
-Use [`$repro`](https://github.com/onmax/skills/tree/main/skills/repro) for every new or revised repro. The skill owns minimization, verification, before-and-after fixtures, StackBlitz setup, deployment, and the README handoff.
+Keep `main` limited to this file and a short README explaining the branches without links. Never merge reproduction branches into `main`.
 
-Treat the commit that adds this policy as the final direct change to `main`. After that commit, start each task from updated `main` on its own `repro/<library>-<issue-or-slug>` branch. A branch owns one reproduction only. Existing fixtures and their URLs on `main` are historical and stay unchanged unless the user requests a named migration.
+Use `$repro` from `onmax/skills` for new or revised reproductions. It owns minimization, verification, controls, StackBlitz setup, deployment, and fixture documentation.
 
-Put the failing fixture in `<library>-<issue-or-slug>` and its fixed control in `<library>-<issue-or-slug>-fix` on the same branch. Build the fixed control with a [`pnpm patch`](https://pnpm.io/cli/patch) against the same pinned dependency version. Keep application code and the verification command identical where the bug permits it, so the patch is the tested variable.
+Start a new reproduction from updated `origin/main` on `repro/<library>-<issue-or-slug>`. Revise an existing reproduction on its existing branch. Use a separate worktree when other work has local changes.
 
-Commit only the branch's failing fixture, fixed fixture, patch file, and task-specific documentation. Keep generated output and unrelated main fixtures out of the diff. Push the reproduction branch only when requested. Create GitHub issues or pull requests only when the user explicitly requests them.
+Put the failing fixture in `<library>-<issue-or-slug>/` and a requested fixed control in `<library>-<issue-or-slug>-fix/` on the same branch. Preserve published directory names. Use the same verification command for both states.
 
-Each fixture README must name the affected package and version, link to the upstream project, give a clean install and verification command, and state the expected and observed result. New fixture links must use the reproduction branch rather than `main`. Leave historical `main` links unchanged.
+Commit only the branch's fixtures and supporting files. Keep installed dependencies, build output, local state, tool caches, and dependency backups out of Git. Add ignore rules on each reproduction branch, and inspect tracked paths before publishing. Preserve inputs needed to trigger the bug.
 
-Before handoff, install from a clean dependency state. Prove that the failing fixture exposes the bug and that the fixed fixture passes the same check. Record stable output or measurements in the README, then inspect the branch diff against `main` to confirm it contains one task.
+Use reproduction-branch URLs in fixture documentation and upstream PR bodies. Clone instructions must select that branch. After an authorized push, verify the remote branch and linked paths before updating upstream links. Honor publishing and upstream-edit authorization already given in the task.
 
 Source checkouts for maintained Nuxt libraries usually live under `~/nuxt`. Read the target repository's instructions before copying code or creating patches.
-
-Other top-level directories may contain historical or unfinished work from another session. Treat them as read-only context.
 
 ## Nuxt data-fetching fixtures
 

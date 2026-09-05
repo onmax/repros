@@ -1,2 +1,0 @@
-patchedDependencies:
-  '@nuxt/vite-builder': patches/@nuxt__vite-builder.patch
