@@ -1,0 +1,14 @@
+diff --git a/dist/app/composables/component.js b/dist/app/composables/component.js
+index e578302e104e7f722cf0296484cc705da5d8ae0f..527922c0c855b654120e2854944a641f826f11f0 100644
+--- a/dist/app/composables/component.js
++++ b/dist/app/composables/component.js
+@@ -32,8 +32,7 @@ async function runLegacyAsyncData(res, fn) {
+       _res[key2] = computed({
+         get: () => data.value?.[key2],
+         set(v) {
+-          data.value ||= {};
+-          data.value[key2] = v;
++          data.value = data.value ? { ...data.value, [key2]: v } : { [key2]: v };
+         }
+       });
+     }
