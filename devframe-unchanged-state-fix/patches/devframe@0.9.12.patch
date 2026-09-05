@@ -1,0 +1,19 @@
+diff --git a/dist/shared-state-CaxB1q0h.mjs b/dist/shared-state-CaxB1q0h.mjs
+index 89243532755fd208c12161c47cef69c0e909988b..d727868193c66448048d801bcc0508c84cedaefc 100644
+--- a/dist/shared-state-CaxB1q0h.mjs
++++ b/dist/shared-state-CaxB1q0h.mjs
+@@ -932,10 +932,13 @@ function createSharedState(options) {
+ 			rememberSyncId(syncIds, syncId);
+ 			if (enablePatches$1) {
+ 				const [nextState, patches] = produceWithPatches(state, fn);
++				if (nextState === state) return;
+ 				state = nextState;
+ 				events.emit("updated", state, patches, syncId);
+ 			} else {
+-				state = produce(state, fn);
++				const nextState = produce(state, fn);
++				if (nextState === state) return;
++				state = nextState;
+ 				events.emit("updated", state, void 0, syncId);
+ 			}
+ 		},
