@@ -1,0 +1,19 @@
+{
+  "name": "docus-1299-fix",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "docus": "github:onmax/docus#dist/typecheck-consumer-app-bug",
+    "nuxt": "4.3.1"
+  },
+  "packageManager": "pnpm@10.19.0",
+  "pnpm": {
+    "patchedDependencies": {
+      "docus@5.6.1": "patches/docus@5.6.1.patch"
+    }
+  }
+}

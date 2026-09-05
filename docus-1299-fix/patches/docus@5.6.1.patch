@@ -1,0 +1,66 @@
+diff --git a/app/composables/useLogoAssets.ts b/app/composables/useLogoAssets.ts
+index 79c6aca..3521024 100644
+--- a/app/composables/useLogoAssets.ts
++++ b/app/composables/useLogoAssets.ts
+@@ -65,7 +65,7 @@ function triggerLinkDownload(url: string, filename: string) {
+ 
+ export const useLogoAssets = () => {
+   const appConfig = useAppConfig()
+-  const colorMode = useColorMode()
++  const colorMode = useColorMode() as { value: string, forced?: boolean }
+   const toast = useToast()
+   const { t } = useDocusI18n()
+ 
+diff --git a/modules/assistant/runtime/components/AssistantPreStream.vue b/modules/assistant/runtime/components/AssistantPreStream.vue
+index 1ccc24d..4c87be9 100644
+--- a/modules/assistant/runtime/components/AssistantPreStream.vue
++++ b/modules/assistant/runtime/components/AssistantPreStream.vue
+@@ -3,7 +3,7 @@ import { ShikiCachedRenderer } from 'shiki-stream/vue'
+ import { useColorMode } from '#imports'
+ import { useHighlighter } from '../composables/useHighlighter'
+ 
+-const colorMode = useColorMode()
++const colorMode = useColorMode() as { value: string, forced?: boolean }
+ const highlighter = await useHighlighter()
+ const props = defineProps<{
+   code: string
+diff --git a/modules/assistant/runtime/composables/useAssistant.ts b/modules/assistant/runtime/composables/useAssistant.ts
+index 4d00d34..bdcf419 100644
+--- a/modules/assistant/runtime/composables/useAssistant.ts
++++ b/modules/assistant/runtime/composables/useAssistant.ts
+@@ -1,5 +1,7 @@
+ import type { UIMessage } from 'ai'
++import { useAppConfig, useRuntimeConfig, useState } from '#imports'
+ import { useMediaQuery } from '@vueuse/core'
++import { computed } from 'vue'
+ import type { FaqCategory, FaqQuestions, LocalizedFaqQuestions } from '../types'
+ 
+ function normalizeFaqQuestions(questions: FaqQuestions): FaqCategory[] {
+@@ -23,7 +25,10 @@ const PANEL_WIDTH_EXPANDED = 520
+ export function useAssistant() {
+   const config = useRuntimeConfig()
+   const appConfig = useAppConfig()
+-  const isEnabled = computed(() => config.public.assistant?.enabled ?? false)
++  const assistantRuntimeConfig = config.public.assistant as { enabled?: boolean } | undefined
++  const assistantConfig = appConfig.assistant as { faqQuestions?: FaqQuestions | LocalizedFaqQuestions } | undefined
++  const docusRuntimeConfig = appConfig.docus as { locale?: string } | undefined
++  const isEnabled = computed(() => assistantRuntimeConfig?.enabled ?? false)
+ 
+   const isOpen = useState('assistant-open', () => false)
+   const isExpanded = useState('assistant-expanded', () => false)
+@@ -35,14 +40,13 @@ export function useAssistant() {
+   const shouldPushContent = computed(() => !isMobile.value && isOpen.value)
+ 
+   const faqQuestions = computed<FaqCategory[]>(() => {
+-    const assistantConfig = appConfig.assistant
+     const faqConfig = assistantConfig?.faqQuestions
+     if (!faqConfig) return []
+ 
+     // Check if it's a localized object (has locale keys like 'en', 'fr')
+     if (!Array.isArray(faqConfig)) {
+       const localizedConfig = faqConfig as LocalizedFaqQuestions
+-      const currentLocale = appConfig.docus?.locale || 'en'
++      const currentLocale = docusRuntimeConfig?.locale || 'en'
+       const defaultLocale = config.public.i18n?.defaultLocale || 'en'
+ 
+       // Try current locale, then default locale, then first available
