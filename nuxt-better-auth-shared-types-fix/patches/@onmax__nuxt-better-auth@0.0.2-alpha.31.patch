@@ -1,0 +1,22 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 905c1941764adbeef173290d5558d2b95218cfb4..e3a50809cac20d5b4e5e5b17cb7db3d06e55c662 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -640,7 +640,7 @@ declare module '@onmax/nuxt-better-auth/config' {
+   export function defineServerAuth<const R>(config: R & ServerAuthConfig): (ctx: _AugmentedServerAuthContext) => R
+ }
+ `
+-  }, { nuxt: true, nitro: true, node: true });
++  }, { nuxt: true, nitro: true, node: true, shared: true });
+   addTypeTemplate({
+     filename: "types/nuxt-better-auth-social-providers.d.ts",
+     getContents: () => `
+@@ -656,7 +656,7 @@ declare module '#nuxt-better-auth' {
+   }
+ }
+ `
+-  }, { nuxt: true, nitro: true, node: true });
++  }, { nuxt: true, nitro: true, node: true, shared: true });
+   addTypeTemplate({
+     filename: "types/nuxt-better-auth-nitro.d.ts",
+     getContents: () => `
