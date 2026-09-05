@@ -1,0 +1,20 @@
+{
+  "name": "docus-assistant-worker-repro",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.19.0",
+  "scripts": {
+    "postinstall": "nuxi prepare",
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "preview": "nuxi preview"
+  },
+  "dependencies": {
+    "agents": "0.7.5",
+    "docus": "5.8.1",
+    "nuxt": "4.3.1"
+  },
+  "devDependencies": {
+    "wrangler": "^4.58.0"
+  }
+}
