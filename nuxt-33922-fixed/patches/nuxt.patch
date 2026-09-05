@@ -1,0 +1,13 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index a58eb0d167f4887ad8b7e363d3a5d290dec0560e..e0991cd05e49488b594ff2d18e4d167f46b5d67b 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -497,7 +497,7 @@ function getRoutePath(tokens, hasSucceedingSegment = false) {
+         return path;
+       case SegmentTokenType.static:
+       default:
+-        return path + encodePath(token.value).replace(COLON_RE, "\\:");
++        return path + token.value.replace(COLON_RE, "\\:");
+     }
+   }, "/");
+ }
