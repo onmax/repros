@@ -1,0 +1,40 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index e9303f2747c6e4bbd78c474976a46e3cf4600a3d..a1b205f543b2f4964d4b06909c8783708b5d47e7 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -22,6 +22,10 @@ function setupDevTools(nuxt) {
+   });
+ }
+ 
++function toSnakeCase(str) {
++  return str.replace(/([a-z])([A-Z])/g, "$1_$2").toLowerCase();
++}
++
+ function generateDrizzleSchema(tables, dialect, options) {
+   const typedTables = tables;
+   const imports = getImports(dialect, options);
+@@ -43,9 +47,12 @@ function getImports(dialect, options) {
+ }
+ function generateTable(tableName, table, dialect, allTables, options) {
+   const tableFunc = dialect === "sqlite" ? "sqliteTable" : dialect === "postgresql" ? "pgTable" : "mysqlTable";
+-  let dbTableName = table.modelName || tableName;
+-  if (options?.usePlural && !table.modelName) {
+-    dbTableName = `${tableName}s`;
++  const hasCustomModelName = table.modelName && table.modelName !== tableName;
++  let dbTableName = hasCustomModelName ? table.modelName : tableName;
++  if (options?.casing === "snake_case" && !hasCustomModelName)
++    dbTableName = toSnakeCase(dbTableName);
++  if (options?.usePlural && !hasCustomModelName) {
++    dbTableName = `${dbTableName}s`;
+   }
+   const fields = Object.entries(table.fields).map(([fieldName, field]) => generateField(fieldName, field, dialect, allTables, options)).join(",\n    ");
+   const idField = generateIdField(dialect, options);
+@@ -67,7 +74,7 @@ function generateIdField(dialect, options) {
+   }
+ }
+ function generateField(fieldName, field, dialect, allTables, options) {
+-  const dbFieldName = fieldName;
++  const dbFieldName = options?.casing === "snake_case" ? toSnakeCase(fieldName) : fieldName;
+   const isFkToId = options?.useUuid && field.references?.field === "id";
+   let fieldDef;
+   if (isFkToId && dialect === "postgresql")

@@ -1,0 +1,18 @@
+{
+  "name": "nuxt-better-auth-12",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "dependencies": {
+    "@nuxthub/core": "^0.10.3",
+    "@onmax/nuxt-better-auth": "0.0.2-alpha.3",
+    "better-auth": "^1.4.10",
+    "nuxt": "^3.16.3"
+  },
+  "packageManager": "pnpm@10.26.2"
+}
