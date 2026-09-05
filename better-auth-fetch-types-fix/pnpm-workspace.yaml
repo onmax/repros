@@ -1,0 +1,4 @@
+minimumReleaseAgeExclude:
+  - '@nuxtjs/better-auth@0.2.5'
+patchedDependencies:
+  '@nuxtjs/better-auth@0.2.5': patches/better-auth-fetch-types.patch

@@ -1,0 +1,2 @@
+minimumReleaseAgeExclude:
+  - '@nuxtjs/better-auth@0.2.5'
