@@ -1,9 +1,0 @@
-packages:
-  - .
-minimumReleaseAge: 0
-packageExtensions:
-  nuxt-open-fetch@0.13.10:
-    dependencies:
-      ofetch: ^1.5.1
-patchedDependencies:
-  nuxt-open-fetch@0.13.10: patches/nuxt-open-fetch@0.13.10.patch
