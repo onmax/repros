@@ -1,0 +1,18 @@
+[trace-dev] complete
+[trace-dev] cliLog: /Users/maxi/repros/nuxt-34164-min/logs/trace-dev-web-nuxt3-modrinthlike-cli-1771832937889.log
+[trace-dev] nuxtLog: /Users/maxi/repros/nuxt-34164-min/logs/trace-dev-web-nuxt3-modrinthlike-nuxt-1771832937889.log
+[trace-dev] nuxtTraceExists: true
+[trace-dev] summary.cli {
+  routeRulesResolve: 4,
+  routeRulesTemplate: 12,
+  importAnalysisMentions: 11,
+  importAnalysisErrors: 5,
+  targetError: 0
+}
+[trace-dev] summary.nuxt {
+  routeRulesResolve: 2,
+  routeRulesTemplate: 6,
+  importAnalysisMentions: 0,
+  importAnalysisErrors: 0,
+  targetError: 0
+}

@@ -1,0 +1,1 @@
+{ "name": "web", "private": true, "type": "module", "scripts": { "dev": "nuxt dev", "build": "nuxt build", "prepare": "nuxt prepare" }, "dependencies": { "nuxt": "4.3.0" } }

@@ -1,0 +1,20 @@
+{
+  "runsPerScenario": 4,
+  "appManifestOn": {
+    "scenario": "appManifestOn",
+    "runs": 4,
+    "preTransformErrors": 20,
+    "appManifestErrors": 20,
+    "routeRulesErrors": 0,
+    "importAnalysisErrors": 20
+  },
+  "appManifestOff": {
+    "scenario": "appManifestOff",
+    "runs": 4,
+    "preTransformErrors": 0,
+    "appManifestErrors": 0,
+    "routeRulesErrors": 0,
+    "importAnalysisErrors": 0
+  },
+  "shiftedToRouteRules": false
+}

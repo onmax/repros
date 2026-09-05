@@ -1,0 +1,12 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 0ada9fbecde7a506ebb8624f035aefef47524479..2f746dbaf45ab88e3f9ca1879cb2b62669476a64 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -413,6 +413,7 @@ async function bundle(nuxt) {
+ 	const cachedMatchers = {};
+ 	addTemplate({
+ 		filename: "route-rules.mjs",
++		write: true,
+ 		getContents() {
+ 			const key = hash(nuxt._nitro?.options.routeRules || {});
+ 			if (cachedMatchers[key]) return cachedMatchers[key];
