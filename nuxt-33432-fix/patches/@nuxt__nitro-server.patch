@@ -1,0 +1,15 @@
+diff --git a/dist/runtime/handlers/error.mjs b/dist/runtime/handlers/error.mjs
+index adedccf0d11d507dafdbdfdaeeac2116a995ca4d..c5e3c1c0a49955c39a5488addd1eb55dab988eac 100644
+--- a/dist/runtime/handlers/error.mjs
++++ b/dist/runtime/handlers/error.mjs
+@@ -26,8 +26,8 @@ export default (async function errorhandler(error, event, { defaultHandler }) {
+ 	// remove proto/hostname/port from URL
+ 	const url = new URL(errorObject.url);
+ 	errorObject.url = withoutBase(url.pathname, useRuntimeConfig(event).app.baseURL) + url.search + url.hash;
+-	// add default server message
+-	errorObject.message ||= "Server Error";
++	// add default server message (preserve original error.message for fatal errors)
++	errorObject.message = error.message || errorObject.message || "Server Error";
+ 	// we will be rendering this error internally so we can pass along the error.data safely
+ 	errorObject.data ||= error.data;
+ 	errorObject.statusText ||= error.statusText || error.statusMessage;
