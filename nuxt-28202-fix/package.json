@@ -1,0 +1,17 @@
+{
+  "name": "nuxt-28202-fix",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "nuxt": "3.12.3"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "nuxt@3.12.3": "patches/nuxt@3.12.3.patch"
+    }
+  }
+}
