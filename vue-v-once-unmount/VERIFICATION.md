@@ -24,3 +24,5 @@ Minimization: removed Nuxt, routing, async data, Vue Test Utils, Vitest, and slo
 Trigger check: a temporary copy of `verify.mjs` with `<Child v-once />` replaced by `<Child />` printed actual hook counts of 1 in both cases and exited 1 with `Bug no longer reproduced: expected the child unmount hook to be skipped`. The temporary file was removed.
 
 No fix is part of this reproduction. Local DOM-shim verification does not establish production-build or hosted-browser behavior.
+
+The branch and every fixture path were verified through the GitHub API after publishing. The branch-qualified StackBlitz URL was opened in a dedicated server-local Chromium session. It remained at “Importing from GitHub” through repeated checks, so dependency installation and the verifier's terminal result were not observable. No browser runtime version or successful StackBlitz execution is claimed. The browser session was closed afterward.

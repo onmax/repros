@@ -10,6 +10,8 @@ Reduced from the teardown failure behind [nuxt/nuxt#32154](https://github.com/nu
 
 Source branch: `repro/vue-v-once-unmount`. The repository's `main` branch contains no fixtures.
 
+[GitHub source](https://github.com/onmax/repros/tree/repro/vue-v-once-unmount/vue-v-once-unmount). [StackBlitz import](https://stackblitz.com/github/onmax/repros/tree/repro%2Fvue-v-once-unmount/vue-v-once-unmount?startScript=verify) is configured to run `verify` automatically, but execution could not be verified: the server-browser check remained at “Importing from GitHub.” Use the verified CLI command below.
+
 ```sh
 git clone --depth 1 --branch repro/vue-v-once-unmount https://github.com/onmax/repros.git
 cd repros/vue-v-once-unmount
