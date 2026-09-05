@@ -1,0 +1,14 @@
+{
+  "name": "nuxt-34346",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev --host 0.0.0.0 --port 3331 --strictPort",
+    "prepare": "nuxt prepare",
+    "reproduce": "bash ./reproduce.sh",
+    "verify": "bash ./verify.sh"
+  },
+  "dependencies": {
+    "nuxt": "4.3.1"
+  }
+}

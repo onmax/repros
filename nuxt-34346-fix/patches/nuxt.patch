@@ -1,0 +1,42 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 8cd3272bb2726702fe90c4e473a3de32f554cea2..de11ac22baeef452522ec05e9e5bbca740a63f6b 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -5498,10 +5498,14 @@ export default async function (${parameters}) { ${returnPrefix}`;
+ 
+ const PREFIX = "virtual:nuxt:";
+ const PREFIX_RE = /^\/?virtual:nuxt:/;
++const ROUTE_RULES_ID = "#build/route-rules.mjs";
++const ROUTE_RULES_SUFFIX = "/route-rules.mjs";
++const EMPTY_ROUTE_RULES_MATCHER = "export default function () { return {} }";
+ const RELATIVE_ID_RE = /^\.{1,2}[\\/]/;
+ const VirtualFSPlugin = (nuxt, options) => createUnplugin((_, meta) => {
+   const extensions = ["", ...nuxt.options.extensions];
+   const alias = { ...nuxt.options.alias, ...options.alias };
++  const isRouteRulesId = (id) => id === ROUTE_RULES_ID || id === nuxt.options.buildDir + ROUTE_RULES_SUFFIX;
+   const resolveWithExt = (id) => {
+     for (const suffix of ["", "." + options.mode]) {
+       for (const ext of extensions) {
+@@ -5526,6 +5530,9 @@ const VirtualFSPlugin = (nuxt, options) => createUnplugin((_, meta) => {
+     if (resolvedId) {
+       return PREFIX + encodeURIComponent(resolvedId) + search;
+     }
++    if (isRouteRulesId(id)) {
++      return PREFIX + encodeURIComponent(id) + search;
++    }
+     if (importer && RELATIVE_ID_RE.test(id)) {
+       const path = resolve(dirname(withoutPrefix(decodeURIComponent(importer))), id);
+       const resolved = resolveWithExt(path);
+@@ -5581,6 +5588,12 @@ const VirtualFSPlugin = (nuxt, options) => createUnplugin((_, meta) => {
+       },
+       handler(id) {
+         const key = withoutQuery(withoutPrefix(decodeURIComponent(id)));
++        if (isRouteRulesId(key) && !nuxt.vfs[key]) {
++          return {
++            code: EMPTY_ROUTE_RULES_MATCHER,
++            map: null
++          };
++        }
+         return {
+           code: nuxt.vfs[key] || "",
+           map: null
