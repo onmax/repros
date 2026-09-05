@@ -1,0 +1,12 @@
+{
+  "disclosure": "Written by an AI agent for onmax. Not reviewed by a human.",
+  "sourceCommit": "ce1884c69ead198c27eae897f38d6321b6d9f396",
+  "baseCommit": "656a5ce1a8cb6af0b37dd577bf4e1522e03e3c11",
+  "sourceModuleSha256": "6342b3ff03b2e6f437466b1646ed7f0624940e2eed11a33e841c30850b094fdd",
+  "patchedPackageModuleSha256": "101acaa83d36c120345fbbe20affbf4381006db909ffa38dc53291dfb7731f7e",
+  "method": "TypeScript printer normalizes formatting/comments; complete changed functions compare byte-identically.",
+  "functions": {
+    "getLocalDatabase": "b9743e612cb4205126d7fb9c18f7c9a05239dd6a901a0b07e79d248adf08a6b4",
+    "processCollectionItems": "449c0d4207ba3c5207761020ce7f2d3b1468fee67caec558f70476aa9913c0ff"
+  }
+}

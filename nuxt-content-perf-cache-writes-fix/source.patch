@@ -1,0 +1,287 @@
+# Written by an AI agent for onmax. Not reviewed by a human. Local source patch.
+diff --git a/src/module.ts b/src/module.ts
+index 08d06eb..8f3908c 100644
+--- a/src/module.ts
++++ b/src/module.ts
+@@ -34,7 +34,7 @@ import type { Manifest } from './types/manifest'
+ import { setupPreview, setupPreviewWithAPI, shouldEnablePreview } from './utils/preview/module'
+ import { parseSourceBase } from './utils/source'
+ import { databaseVersion, getLocalDatabase, refineDatabaseConfig, resolveDatabaseAdapter } from './utils/database'
+-import type { ParsedContentFile } from './types'
++import type { CacheEntry, ParsedContentFile } from './types'
+ import { initiateValidatorsContext } from './utils/dependencies'
+ 
+ // Export public utils
+@@ -356,6 +356,7 @@ async function processCollectionItems(nuxt: Nuxt, collections: ResolvedCollectio
+        */
+       const list: Array<[string, Array<string>, string]> = []
+       for await (const chunk of chunks(_keys, 25)) {
++        const cacheEntries: CacheEntry[] = []
+         await Promise.all(chunk.map(async (key) => {
+           const keyInCollection = join(collection.name, source?.prefix || '', key)
+           const fullPath = join(cwd, fixed, key)
+@@ -379,7 +380,13 @@ async function processCollectionItems(nuxt: Nuxt, collections: ResolvedCollectio
+                 collectionType: collection.type,
+               })
+               if (parsedContent) {
+-                db.insertDevelopmentCache(keyInCollection, JSON.stringify(parsedContent), checksum)
++                const value = JSON.stringify(parsedContent)
++                if (db.supportsTransactions) {
++                  cacheEntries.push({ id: keyInCollection, value, checksum })
++                }
++                else {
++                  db.insertDevelopmentCache(keyInCollection, value, checksum)
++                }
+               }
+             }
+ 
+@@ -395,6 +402,7 @@ async function processCollectionItems(nuxt: Nuxt, collections: ResolvedCollectio
+             logger.warn(`"${keyInCollection}" is ignored because parsing is failed. Error: ${e instanceof Error ? e.message : 'Unknown error'}`)
+           }
+         }))
++        await db.insertDevelopmentCacheBatch(cacheEntries)
+       }
+ 
+       // Sort by file name to ensure consistent order
+diff --git a/src/types/database.ts b/src/types/database.ts
+index 7e827f2..e7af44b 100644
+--- a/src/types/database.ts
++++ b/src/types/database.ts
+@@ -18,6 +18,7 @@ export interface LocalDevelopmentDatabase {
+   fetchDevelopmentCache(): Promise<Record<string, CacheEntry>>
+   fetchDevelopmentCacheForKey(key: string): Promise<CacheEntry | undefined>
+   insertDevelopmentCache(id: string, checksum: string, parsedContent: string): void
++  insertDevelopmentCacheBatch(entries: CacheEntry[]): Promise<void>
+   deleteDevelopmentCache(id: string): void
+   dropContentTables(): void
+   exec(sql: string): void
+diff --git a/src/utils/database.ts b/src/utils/database.ts
+index 1a5bb0d..85ee603 100644
+--- a/src/utils/database.ts
++++ b/src/utils/database.ts
+@@ -138,6 +138,35 @@ export async function getLocalDatabase(database: SqliteDatabaseConfig | D1Databa
+     await db.prepare(`DELETE FROM _development_cache WHERE id = ?`).run(id)
+   }
+ 
++  const supportsTransactions = database.type !== 'd1'
++  const insertDevelopmentCacheBatch = async (entries: CacheEntry[]) => {
++    if (!entries.length) {
++      return
++    }
++    if (supportsTransactions) {
++      await db.exec('BEGIN TRANSACTION')
++    }
++    try {
++      for (const { id, value, checksum } of entries) {
++        await insertDevelopmentCache(id, value, checksum)
++      }
++      if (supportsTransactions) {
++        await db.exec('COMMIT')
++      }
++    }
++    catch (error) {
++      if (supportsTransactions) {
++        try {
++          await db.exec('ROLLBACK')
++        }
++        catch {
++          // Preserve the original write or commit error.
++        }
++      }
++      throw error
++    }
++  }
++
+   const dropContentTables = async () => {
+     const tables = await db.prepare('SELECT name FROM sqlite_master WHERE type = ? AND name LIKE ?')
+       .all('table', '_content_%') as { name: string }[]
+@@ -157,9 +186,10 @@ export async function getLocalDatabase(database: SqliteDatabaseConfig | D1Databa
+     fetchDevelopmentCache,
+     fetchDevelopmentCacheForKey,
+     insertDevelopmentCache,
++    insertDevelopmentCacheBatch,
+     deleteDevelopmentCache,
+     dropContentTables,
+-    supportsTransactions: database.type !== 'd1', // D1 uses batch() instead
++    supportsTransactions, // D1 uses batch() instead
+   }
+ }
+ 
+diff --git a/test/unit/developmentCacheBatch.test.ts b/test/unit/developmentCacheBatch.test.ts
+new file mode 100644
+index 0000000..176c61b
+--- /dev/null
++++ b/test/unit/developmentCacheBatch.test.ts
+@@ -0,0 +1,172 @@
++// Written by an AI agent for onmax. Not reviewed by a human.
++// @vitest-environment node
++import { mkdtemp, rm } from 'node:fs/promises'
++import { tmpdir } from 'node:os'
++import { join } from 'node:path'
++import { afterEach, describe, expect, test, vi } from 'vitest'
++import type { Connector } from 'db0'
++import betterSqlite3 from 'db0/connectors/better-sqlite3'
++import nodeSqlite from 'db0/connectors/node-sqlite'
++import sqlite3 from 'db0/connectors/sqlite3'
++import { getLocalDatabase } from '../../src/utils/database'
++import type { CacheEntry } from '../../src/types'
++
++const cleanup: Array<() => Promise<void>> = []
++afterEach(async () => {
++  vi.restoreAllMocks()
++  for (const close of cleanup.splice(0)) {
++    await close()
++  }
++})
++
++async function open(create: (options: { path: string }) => Connector, d1 = false) {
++  const directory = await mkdtemp(join(tmpdir(), 'content-cache-batch-'))
++  const filename = join(directory, 'cache.sqlite')
++  const connector = create({ path: filename })
++  const db = await getLocalDatabase(d1
++    ? { type: 'd1', bindingName: directory }
++    : { type: 'sqlite', filename }, { connector })
++  cleanup.push(async () => {
++    db.close()
++    await connector.dispose?.()
++    await rm(directory, { recursive: true, force: true })
++  })
++  return { db, connector }
++}
++
++const previous: CacheEntry = { id: 'content/page.md', value: '{"old":true}', checksum: 'old' }
++const large: CacheEntry = {
++  id: previous.id,
++  value: JSON.stringify({ text: 'Unicode 雪😀, quotes \'" and slash \\'.repeat(6000) }),
++  checksum: 'large',
++}
++const another: CacheEntry = { id: 'content/another.md', value: '{"new":true}', checksum: 'new' }
++
++describe.each([
++  ['better-sqlite3', betterSqlite3],
++  ['node:sqlite', nodeSqlite],
++  ['sqlite3', sqlite3],
++] as const)('development cache batches: %s', (_name, create) => {
++  test('replaces complete large values and commits the batch together', async () => {
++    const { db, connector } = await open(create)
++    await db.insertDevelopmentCache(previous.id, previous.value, previous.checksum)
++    const exec = vi.spyOn(connector, 'exec')
++
++    await db.insertDevelopmentCacheBatch([large, another])
++
++    expect(await db.fetchDevelopmentCacheForKey(large.id)).toMatchObject(large)
++    expect(await db.fetchDevelopmentCacheForKey(another.id)).toMatchObject(another)
++    const statements = exec.mock.calls.map(([sql]) => sql)
++    expect(statements[0]).toBe('BEGIN TRANSACTION')
++    expect(statements.at(-1)).toBe('COMMIT')
++    expect(statements.filter(sql => sql.startsWith('UPDATE _development_cache')).length).toBeGreaterThan(1)
++  })
++
++  test('restores existing rows and removes new rows when a large value fails midway', async () => {
++    const { db, connector } = await open(create)
++    await db.insertDevelopmentCache(previous.id, previous.value, previous.checksum)
++    const original = connector.exec.bind(connector)
++    const failure = new Error('cache continuation failed')
++    let updates = 0
++    vi.spyOn(connector, 'exec').mockImplementation(async (sql) => {
++      if (sql.startsWith('UPDATE _development_cache') && ++updates === 2) {
++        throw failure
++      }
++      return await original(sql)
++    })
++
++    await expect(db.insertDevelopmentCacheBatch([another, large])).rejects.toBe(failure)
++
++    expect(await db.fetchDevelopmentCacheForKey(previous.id)).toMatchObject(previous)
++    expect(await db.fetchDevelopmentCacheForKey(another.id)).toBeFalsy()
++  })
++
++  test('does not open an empty transaction', async () => {
++    const { db, connector } = await open(create)
++    const exec = vi.spyOn(connector, 'exec')
++    await db.insertDevelopmentCacheBatch([])
++    expect(exec).not.toHaveBeenCalled()
++  })
++})
++
++test('a failed BEGIN preserves the caller transaction', async () => {
++  const { db, connector } = await open(nodeSqlite)
++  await connector.exec('BEGIN TRANSACTION')
++  await db.insertDevelopmentCache(previous.id, previous.value, previous.checksum)
++  const exec = vi.spyOn(connector, 'exec')
++
++  await expect(db.insertDevelopmentCacheBatch([another])).rejects.toThrow()
++
++  expect(exec.mock.calls.map(([sql]) => sql)).toEqual(['BEGIN TRANSACTION'])
++  expect(await db.fetchDevelopmentCacheForKey(previous.id)).toMatchObject(previous)
++  await connector.exec('COMMIT')
++  expect(await db.fetchDevelopmentCacheForKey(previous.id)).toMatchObject(previous)
++})
++
++test('unbatched control retains partial changes after the same cache write failure', async () => {
++  const { db, connector } = await open(betterSqlite3)
++  await db.insertDevelopmentCache(previous.id, previous.value, previous.checksum)
++  const original = connector.exec.bind(connector)
++  const failure = new Error('cache continuation failed')
++  let updates = 0
++  vi.spyOn(connector, 'exec').mockImplementation(async (sql) => {
++    if (sql.startsWith('UPDATE _development_cache') && ++updates === 2) {
++      throw failure
++    }
++    return await original(sql)
++  })
++
++  await db.insertDevelopmentCache(another.id, another.value, another.checksum)
++  await expect(db.insertDevelopmentCache(large.id, large.value, large.checksum)).rejects.toBe(failure)
++
++  expect(await db.fetchDevelopmentCacheForKey(another.id)).toMatchObject(another)
++  const partial = await db.fetchDevelopmentCacheForKey(previous.id)
++  expect(partial?.value).not.toBe(previous.value)
++  expect(partial?.value).not.toBe(large.value)
++})
++
++test('awaits an asynchronous COMMIT failure and preserves it when rollback also fails', async () => {
++  const { db, connector } = await open(nodeSqlite)
++  const original = connector.exec.bind(connector)
++  const failure = new Error('commit failed')
++  const statements: string[] = []
++  vi.spyOn(connector, 'exec').mockImplementation(async (sql) => {
++    await new Promise(resolve => setImmediate(resolve))
++    statements.push(sql)
++    if (sql === 'COMMIT') {
++      throw failure
++    }
++    await original(sql)
++    if (sql === 'ROLLBACK') {
++      throw new Error('rollback reporting failed')
++    }
++  })
++
++  await expect(db.insertDevelopmentCacheBatch([another])).rejects.toBe(failure)
++
++  expect(statements.at(-1)).toBe('ROLLBACK')
++  expect(await db.fetchDevelopmentCacheForKey(another.id)).toBeFalsy()
++})
++
++test('D1 capability uses awaited writes without transaction SQL', async () => {
++  // Real SQLite storage with a delayed connector is a control for the D1
++  // capability branch, not a substitute for a hosted D1 integration test.
++  const { db, connector } = await open(betterSqlite3, true)
++  const original = connector.exec.bind(connector)
++  const statements: string[] = []
++  vi.spyOn(connector, 'exec').mockImplementation(async (sql) => {
++    await new Promise(resolve => setImmediate(resolve))
++    statements.push(sql)
++    if (/^(?:BEGIN|COMMIT|ROLLBACK)/.test(sql)) {
++      throw new Error('D1 does not support SQL transactions')
++    }
++    return await original(sql)
++  })
++
++  expect(db.supportsTransactions).toBe(false)
++  await db.insertDevelopmentCacheBatch([another, large])
++
++  expect(await db.fetchDevelopmentCacheForKey(another.id)).toMatchObject(another)
++  expect(await db.fetchDevelopmentCacheForKey(large.id)).toMatchObject(large)
++  expect(statements.length).toBeGreaterThan(2)
++})

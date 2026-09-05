@@ -1,0 +1,248 @@
+{
+  "disclosure": "Written by an AI agent for onmax. Not reviewed by a human.",
+  "claim": "Bounded candidate versus experimental one-flush control; this is not the unpatched package comparison.",
+  "docs": 300,
+  "extraParagraphsPerDocument": 100,
+  "samples": [
+    {
+      "round": 1,
+      "scope": "chunk",
+      "queue": {
+        "peakRecords": 25,
+        "peakUtf8Bytes": 277925,
+        "totalUtf8Bytes": 3334440
+      },
+      "memory": {
+        "peakRssKiB": 543392,
+        "rss": 554303488,
+        "heapTotal": 355323904,
+        "heapUsed": 250444768,
+        "external": 39068226,
+        "arrayBuffers": 1411454
+      },
+      "loadNuxtMs": 74999.564683,
+      "output": {
+        "infoRows": [
+          {
+            "id": "checksum_content",
+            "ready": 1,
+            "structureVersion": "bgIYhpjRuV8zbHJE_CfelwKpJ_Td6YuGJwixiek8lmI",
+            "version": "v3.5.0--CwM1RPYHcGtRaEuKMsPPjNSO5d90JgtiewYraFmhJZM",
+            "__hash__": "JhlQykK66CXqs3uRk3FdYVXyY_1Kmx1rvxkxHDVAn6M"
+          }
+        ],
+        "versionRow": {
+          "id": "__DATABASE_VERSION__",
+          "value": "v3.5.0",
+          "checksum": "v3.5.0"
+        },
+        "cacheChecksumsVerified": true,
+        "originalCacheLossReproduced": false,
+        "contentRows": 300,
+        "cacheRows": 300,
+        "contentSha256": "ff30b01fa8b1568eb7b166b0e2a545fc544db8f1f4a61b2c73e3629c795d6d28",
+        "parsedCacheSha256": "540245c436478b5793bf82e9ff843e4f631c20b492269cd094c79dfb61938713"
+      }
+    },
+    {
+      "round": 1,
+      "scope": "all",
+      "queue": {
+        "peakRecords": 300,
+        "peakUtf8Bytes": 3334440,
+        "totalUtf8Bytes": 3334440
+      },
+      "memory": {
+        "peakRssKiB": 551568,
+        "rss": 564805632,
+        "heapTotal": 335663104,
+        "heapUsed": 248933136,
+        "external": 39238754,
+        "arrayBuffers": 1581982
+      },
+      "loadNuxtMs": 55067.577020000004,
+      "output": {
+        "infoRows": [
+          {
+            "id": "checksum_content",
+            "ready": 1,
+            "structureVersion": "bgIYhpjRuV8zbHJE_CfelwKpJ_Td6YuGJwixiek8lmI",
+            "version": "v3.5.0--CwM1RPYHcGtRaEuKMsPPjNSO5d90JgtiewYraFmhJZM",
+            "__hash__": "JhlQykK66CXqs3uRk3FdYVXyY_1Kmx1rvxkxHDVAn6M"
+          }
+        ],
+        "versionRow": {
+          "id": "__DATABASE_VERSION__",
+          "value": "v3.5.0",
+          "checksum": "v3.5.0"
+        },
+        "cacheChecksumsVerified": true,
+        "originalCacheLossReproduced": false,
+        "contentRows": 300,
+        "cacheRows": 300,
+        "contentSha256": "ff30b01fa8b1568eb7b166b0e2a545fc544db8f1f4a61b2c73e3629c795d6d28",
+        "parsedCacheSha256": "540245c436478b5793bf82e9ff843e4f631c20b492269cd094c79dfb61938713"
+      }
+    },
+    {
+      "round": 2,
+      "scope": "all",
+      "queue": {
+        "peakRecords": 300,
+        "peakUtf8Bytes": 3334440,
+        "totalUtf8Bytes": 3334440
+      },
+      "memory": {
+        "peakRssKiB": 545564,
+        "rss": 553345024,
+        "heapTotal": 358731776,
+        "heapUsed": 231407928,
+        "external": 38671210,
+        "arrayBuffers": 1014438
+      },
+      "loadNuxtMs": 65048.054199000006,
+      "output": {
+        "infoRows": [
+          {
+            "id": "checksum_content",
+            "ready": 1,
+            "structureVersion": "bgIYhpjRuV8zbHJE_CfelwKpJ_Td6YuGJwixiek8lmI",
+            "version": "v3.5.0--CwM1RPYHcGtRaEuKMsPPjNSO5d90JgtiewYraFmhJZM",
+            "__hash__": "JhlQykK66CXqs3uRk3FdYVXyY_1Kmx1rvxkxHDVAn6M"
+          }
+        ],
+        "versionRow": {
+          "id": "__DATABASE_VERSION__",
+          "value": "v3.5.0",
+          "checksum": "v3.5.0"
+        },
+        "cacheChecksumsVerified": true,
+        "originalCacheLossReproduced": false,
+        "contentRows": 300,
+        "cacheRows": 300,
+        "contentSha256": "ff30b01fa8b1568eb7b166b0e2a545fc544db8f1f4a61b2c73e3629c795d6d28",
+        "parsedCacheSha256": "540245c436478b5793bf82e9ff843e4f631c20b492269cd094c79dfb61938713"
+      }
+    },
+    {
+      "round": 2,
+      "scope": "chunk",
+      "queue": {
+        "peakRecords": 25,
+        "peakUtf8Bytes": 277925,
+        "totalUtf8Bytes": 3334440
+      },
+      "memory": {
+        "peakRssKiB": 542036,
+        "rss": 547446784,
+        "heapTotal": 354013184,
+        "heapUsed": 266870376,
+        "external": 39038226,
+        "arrayBuffers": 1381454
+      },
+      "loadNuxtMs": 61286.290463,
+      "output": {
+        "infoRows": [
+          {
+            "id": "checksum_content",
+            "ready": 1,
+            "structureVersion": "bgIYhpjRuV8zbHJE_CfelwKpJ_Td6YuGJwixiek8lmI",
+            "version": "v3.5.0--CwM1RPYHcGtRaEuKMsPPjNSO5d90JgtiewYraFmhJZM",
+            "__hash__": "JhlQykK66CXqs3uRk3FdYVXyY_1Kmx1rvxkxHDVAn6M"
+          }
+        ],
+        "versionRow": {
+          "id": "__DATABASE_VERSION__",
+          "value": "v3.5.0",
+          "checksum": "v3.5.0"
+        },
+        "cacheChecksumsVerified": true,
+        "originalCacheLossReproduced": false,
+        "contentRows": 300,
+        "cacheRows": 300,
+        "contentSha256": "ff30b01fa8b1568eb7b166b0e2a545fc544db8f1f4a61b2c73e3629c795d6d28",
+        "parsedCacheSha256": "540245c436478b5793bf82e9ff843e4f631c20b492269cd094c79dfb61938713"
+      }
+    },
+    {
+      "round": 3,
+      "scope": "chunk",
+      "queue": {
+        "peakRecords": 25,
+        "peakUtf8Bytes": 277925,
+        "totalUtf8Bytes": 3334440
+      },
+      "memory": {
+        "peakRssKiB": 567956,
+        "rss": 579059712,
+        "heapTotal": 336973824,
+        "heapUsed": 232614576,
+        "external": 39027866,
+        "arrayBuffers": 1371094
+      },
+      "loadNuxtMs": 61074.417643,
+      "output": {
+        "infoRows": [
+          {
+            "id": "checksum_content",
+            "ready": 1,
+            "structureVersion": "bgIYhpjRuV8zbHJE_CfelwKpJ_Td6YuGJwixiek8lmI",
+            "version": "v3.5.0--CwM1RPYHcGtRaEuKMsPPjNSO5d90JgtiewYraFmhJZM",
+            "__hash__": "JhlQykK66CXqs3uRk3FdYVXyY_1Kmx1rvxkxHDVAn6M"
+          }
+        ],
+        "versionRow": {
+          "id": "__DATABASE_VERSION__",
+          "value": "v3.5.0",
+          "checksum": "v3.5.0"
+        },
+        "cacheChecksumsVerified": true,
+        "originalCacheLossReproduced": false,
+        "contentRows": 300,
+        "cacheRows": 300,
+        "contentSha256": "ff30b01fa8b1568eb7b166b0e2a545fc544db8f1f4a61b2c73e3629c795d6d28",
+        "parsedCacheSha256": "540245c436478b5793bf82e9ff843e4f631c20b492269cd094c79dfb61938713"
+      }
+    },
+    {
+      "round": 3,
+      "scope": "all",
+      "queue": {
+        "peakRecords": 300,
+        "peakUtf8Bytes": 3334440,
+        "totalUtf8Bytes": 3334440
+      },
+      "memory": {
+        "peakRssKiB": 605540,
+        "rss": 618119168,
+        "heapTotal": 325701632,
+        "heapUsed": 197127944,
+        "external": 39005938,
+        "arrayBuffers": 1349166
+      },
+      "loadNuxtMs": 38929.073159,
+      "output": {
+        "infoRows": [
+          {
+            "id": "checksum_content",
+            "ready": 1,
+            "structureVersion": "bgIYhpjRuV8zbHJE_CfelwKpJ_Td6YuGJwixiek8lmI",
+            "version": "v3.5.0--CwM1RPYHcGtRaEuKMsPPjNSO5d90JgtiewYraFmhJZM",
+            "__hash__": "JhlQykK66CXqs3uRk3FdYVXyY_1Kmx1rvxkxHDVAn6M"
+          }
+        ],
+        "versionRow": {
+          "id": "__DATABASE_VERSION__",
+          "value": "v3.5.0",
+          "checksum": "v3.5.0"
+        },
+        "cacheChecksumsVerified": true,
+        "originalCacheLossReproduced": false,
+        "contentRows": 300,
+        "cacheRows": 300,
+        "contentSha256": "ff30b01fa8b1568eb7b166b0e2a545fc544db8f1f4a61b2c73e3629c795d6d28",
+        "parsedCacheSha256": "540245c436478b5793bf82e9ff843e4f631c20b492269cd094c79dfb61938713"
+      }
+    }
+  ]
+}

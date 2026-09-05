@@ -1,0 +1,77 @@
+# Written by an AI agent for onmax. Not reviewed by a human. Batching-only change after ordering.patch.
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -364,6 +364,31 @@
+   const deleteDevelopmentCache = async (id) => {
+     await db.prepare(`DELETE FROM _development_cache WHERE id = ?`).run(id);
+   };
++  const supportsTransactions = database.type !== "d1";
++  const insertDevelopmentCacheBatch = async (entries) => {
++    if (!entries.length) {
++      return;
++    }
++    if (supportsTransactions) {
++      await db.exec("BEGIN TRANSACTION");
++    }
++    try {
++      for (const { id, value, checksum } of entries) {
++        await insertDevelopmentCache(id, value, checksum);
++      }
++      if (supportsTransactions) {
++        await db.exec("COMMIT");
++      }
++    } catch (error) {
++      if (supportsTransactions) {
++        try {
++          await db.exec("ROLLBACK");
++        } catch {
++        }
++      }
++      throw error;
++    }
++  };
+   const dropContentTables = async () => {
+     const tables = await db.prepare("SELECT name FROM sqlite_master WHERE type = ? AND name LIKE ?").all("table", "_content_%");
+     for (const { name } of tables) {
+@@ -381,9 +406,10 @@
+     fetchDevelopmentCache,
+     fetchDevelopmentCacheForKey,
+     insertDevelopmentCache,
++    insertDevelopmentCacheBatch,
+     deleteDevelopmentCache,
+     dropContentTables,
+-    supportsTransactions: database.type !== "d1"
++    supportsTransactions
+     // D1 uses batch() instead
+   };
+ }
+@@ -3381,6 +3407,7 @@
+       filesCount += _keys.length;
+       const list = [];
+       for await (const chunk of chunks(_keys, 25)) {
++        const cacheEntries = [];
+         await Promise.all(chunk.map(async (key) => {
+           const keyInCollection = join(collection.name, source?.prefix || "", key);
+           const fullPath = join(cwd, fixed, key);
+@@ -3401,7 +3428,12 @@
+                 collectionType: collection.type
+               });
+               if (parsedContent) {
+-                db.insertDevelopmentCache(keyInCollection, JSON.stringify(parsedContent), checksum);
++                const value = JSON.stringify(parsedContent);
++                if (db.supportsTransactions) {
++                  cacheEntries.push({ id: keyInCollection, value, checksum });
++                } else {
++                  db.insertDevelopmentCache(keyInCollection, value, checksum);
++                }
+               }
+             }
+             if (parsedContent?.__metadata?.components) {
+@@ -3413,6 +3445,7 @@
+             logger.warn(`"${keyInCollection}" is ignored because parsing is failed. Error: ${e instanceof Error ? e.message : "Unknown error"}`);
+           }
+         }));
++        await db.insertDevelopmentCacheBatch(cacheEntries);
+       }
+       list.sort((a, b) => String(a[0]).localeCompare(String(b[0])));
+       collectionQueries.push(...list.flatMap(([, sql, hash2]) => sql.map((q) => `${q} -- ${hash2}`)));

@@ -1,0 +1,10 @@
+# AI-authored; not reviewed by a human.
+**/node_modules/
+**/.nuxt/
+**/.data/
+**/.instrumented-content/
+**/.output/
+**/.cache/
+**/.pnpm-store/
+**/_node_modules_backup*/
+**/content/

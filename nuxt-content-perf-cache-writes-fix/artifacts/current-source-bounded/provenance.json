@@ -1,0 +1,9 @@
+{
+  "disclosure": "Written by an AI agent for onmax. Not reviewed by a human.",
+  "command": "CONTENT_SOURCE_DIST=/home/maxi/nuxt/content-perf-worktrees/writes/dist RUN_LABEL=current-source-bounded corepack pnpm verify",
+  "exitCode": 0,
+  "sourceCommit": "ce1884c69ead198c27eae897f38d6321b6d9f396",
+  "sourceModuleSha256": "6342b3ff03b2e6f437466b1646ed7f0624940e2eed11a33e841c30850b094fdd",
+  "outputMatchesFinalPublishedPackageControl": true,
+  "rollbackEvidence": "rollback.json"
+}

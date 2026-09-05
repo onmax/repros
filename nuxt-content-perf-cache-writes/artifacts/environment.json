@@ -1,0 +1,17 @@
+{
+  "disclosure": "Written by an AI agent for onmax. Not reviewed by a human.",
+  "sourceCommit": "656a5ce1a8cb6af0b37dd577bf4e1522e03e3c11",
+  "contentVersion": "3.16.0",
+  "db0Version": "0.4.1",
+  "nuxtVersion": "4.5.2",
+  "betterSqlite3Version": "12.11.1",
+  "nodeVersion": "24.19.0",
+  "pnpmVersion": "11.22.0",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+  "filesystem": "TARGET SOURCE    FSTYPE OPTIONS\n/      /dev/sda1 ext4   rw,relatime,errors=remount-ro,commit=30\n",
+  "originalModuleSha256": "33552aa15c7842130ec10f285f9942804dd2d5c1579cc73e4143dac376795df2",
+  "controlPatchSha256": "fbc0504eaaf6f2791eed8a227aebddbc4f1f1df0afbd954cab095a124ec62ae4",
+  "candidatePatchSha256": null,
+  "contentNpmTarball": "https://registry.npmjs.org/@nuxt/content/-/content-3.16.0.tgz",
+  "storageNote": "Default SQLite connection settings; measured pragmas are captured in worker JSON. Other unrelated workspace builds were observed outside the benchmark lock; no claim of machine isolation."
+}

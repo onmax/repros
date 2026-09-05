@@ -1,0 +1,4 @@
+# Written by an AI agent for onmax. Not reviewed by a human.
+allowBuilds:
+  better-sqlite3: true
+  esbuild: true

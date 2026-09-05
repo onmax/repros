@@ -1,0 +1,19 @@
+{
+  "disclosure": "Written by an AI agent for onmax. Not reviewed by a human.",
+  "command": "corepack pnpm install --frozen-lockfile && RUN_LABEL=final-bounded-package corepack pnpm verify",
+  "exitCode": 0,
+  "nodeModulesRemovedBeforeThisFinalRun": false,
+  "note": "Earlier clean frozen install passed before verifier instrumentation updates; this final run verifies current scripts and package patches.",
+  "packageJsonSha256": "ce83b62dca649246866f809aeda6d23bdfa1059a2bd22a216aa5e09697d10fc4",
+  "lockfileSha256": "202086effde82274f96398717aaa2825dc3185bd5e9f701fcfc58c6290182b21",
+  "orderingPatchSha256": "4d3f6a9ddab3b2d26ebe205f289229e5a08cf7d5e2d905a235e504003d5dcced",
+  "candidatePatchSha256": null,
+  "scriptSha256": {
+    "benchmark.mjs": "3cdba5600e69f85aded107fdba4c1336eac16e0ace38e43bcebb7a8a3ab49a26",
+    "memory.mjs": "d22c8506bbf9fd00cd5311b7e301af04c7f6cb7baa6bb7ae8232dea210d4b8e1",
+    "prepare.mjs": "dee9b1a0086d88532889be7ce25433f20f65c5578c0856cd8e6388f1b170751c",
+    "verify.mjs": "36c571443861d360563ab73297f5b6e716cfbbb76d32bbf406fab8fffc0ae501",
+    "worker.mjs": "69834a9ffcd9d19cd263401558076da98bf4a16d672f1454a08f1dccc95c7197"
+  },
+  "evidence": "final-bounded-package/summary.json"
+}
