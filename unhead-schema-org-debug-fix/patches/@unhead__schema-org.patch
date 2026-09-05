@@ -1,0 +1,12 @@
+diff --git a/dist/vue.mjs b/dist/vue.mjs
+index 6ea5743adea65d5fddaa1ed34ddd82da6a1f26b4..b073126f17abfbaa9e94a47e90952249456b9909 100644
+--- a/dist/vue.mjs
++++ b/dist/vue.mjs
+@@ -14,7 +14,6 @@ const schemaOrgAutoImports = [
+   }
+ ];
+ const schemaOrgComponents = [
+-  "SchemaOrgDebug",
+   "SchemaOrgArticle",
+   "SchemaOrgBreadcrumb",
+   "SchemaOrgComment",

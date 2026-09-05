@@ -1,0 +1,13 @@
+{
+  "name": "unhead-schema-org-debug",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build"
+  },
+  "devDependencies": {
+    "@nuxtjs/seo": "^3.3.0",
+    "nuxt": "^3.16.2"
+  }
+}

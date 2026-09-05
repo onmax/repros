@@ -1,0 +1,18 @@
+{
+  "name": "unhead-schema-org-debug-fix",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build"
+  },
+  "devDependencies": {
+    "@nuxtjs/seo": "^3.3.0",
+    "nuxt": "^3.16.2"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@unhead/schema-org@2.1.2": "patches/@unhead__schema-org.patch"
+    }
+  }
+}
