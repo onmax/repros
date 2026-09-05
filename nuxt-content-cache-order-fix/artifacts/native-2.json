@@ -1,0 +1,20 @@
+{
+  "disclosure": "AI-authored; not reviewed by a human.",
+  "provenance": {
+    "disclosure": "AI-authored; not reviewed by a human.",
+    "node": "v24.19.0",
+    "contentVersion": "3.16.0",
+    "fixed": true,
+    "originalModuleSha256": "33552aa15c7842130ec10f285f9942804dd2d5c1579cc73e4143dac376795df2",
+    "patchSha256": "1d3301688fcac0335116e89e8ab9f4ac3eaf2458abce23dd7c000eff853b1ec1",
+    "instrumentedModuleSha256": "77e89461acf45c284ccab9e1ed9d59bcdd6ba953f452770cff86dc14bf137c7b"
+  },
+  "connector": "native",
+  "parsedFilesCount": 0,
+  "cachedFilesCount": 30,
+  "filesCount": 30,
+  "contentRows": 30,
+  "cacheRows": 30,
+  "contentSha256": "10fcbf3de9680cbd5a75eb55b6681005a7986a0293f64a69f2f3d48fc9dab99b",
+  "cacheSha256": "bc1bdc7c0be968cf25ad3bef90b556e5c29c838e26dd58c5ae225dac6945e309"
+}

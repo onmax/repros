@@ -1,0 +1,20 @@
+# Written by an AI agent for onmax. Not reviewed by a human. Ordering repair for the db0 0.4 asynchronous connector.
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -355,14 +355,14 @@
+     return await db.prepare("SELECT * FROM _development_cache WHERE id = ?").get(id);
+   };
+   const insertDevelopmentCache = async (id, value, checksum) => {
+-    deleteDevelopmentCache(id);
++    await deleteDevelopmentCache(id);
+     const insert = generateCollectionInsert(cacheCollection, { id, value, checksum });
+     for (const query of insert.queries) {
+       await db.exec(query);
+     }
+   };
+   const deleteDevelopmentCache = async (id) => {
+-    db.prepare(`DELETE FROM _development_cache WHERE id = ?`).run(id);
++    await db.prepare(`DELETE FROM _development_cache WHERE id = ?`).run(id);
+   };
+   const dropContentTables = async () => {
+     const tables = await db.prepare("SELECT name FROM sqlite_master WHERE type = ? AND name LIKE ?").all("table", "_content_%");

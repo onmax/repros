@@ -1,0 +1,17 @@
+{
+  "disclosure": "AI-authored; not reviewed by a human.",
+  "installCommand": "corepack pnpm install --frozen-lockfile",
+  "verificationCommand": "corepack pnpm verify",
+  "nodeModulesInitiallyAbsent": true,
+  "installExitCode": 0,
+  "verificationExitCode": 0,
+  "node": "v24.19.0",
+  "pnpm": "11.22.0",
+  "allEightContentOutputsMatch": true,
+  "contentSha256": "10fcbf3de9680cbd5a75eb55b6681005a7986a0293f64a69f2f3d48fc9dab99b",
+  "scriptsSha256": {
+    "verify.mjs": "12d96e777df26cf32ea0835ca91b8a6008f3584a55a59d0b3cedf19888979ea2",
+    "worker.mjs": "b9a991c88a602056f2bd49c3061672d120c7ee18c8d732b60a7711034dd64605",
+    "prepare.mjs": "a0f776e1caf317339daefb0e4406d6eb1538a16ec09cfc81bee8f28f32e36ce7"
+  }
+}
