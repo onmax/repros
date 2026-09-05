@@ -1,0 +1,14 @@
+{
+  "name": "nuxt-better-auth-38-repro",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "start": "node .output/server/index.mjs"
+  },
+  "dependencies": {
+    "@onmax/nuxt-better-auth": "alpha",
+    "nuxt": "^3.16.1"
+  }
+}
