@@ -1,0 +1,2 @@
+Expected config rejection because Nuxt registers /api/auth. Actual: accepted; /api/auth/ok = 404, /custom/auth/ok = 200.
+Control: external client custom basePath remains accepted.

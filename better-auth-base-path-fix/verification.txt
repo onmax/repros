@@ -1,0 +1,2 @@
+Expected unsupported server basePath to be rejected. Actual: rejected with migration guidance.
+Control: external client custom basePath remains accepted.
