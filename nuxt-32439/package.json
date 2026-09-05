@@ -1,6 +1,0 @@
-{
-  "private": true,
-  "scripts": {
-    "prepare": "pnpm --dir apps/web prepare"
-  }
-}

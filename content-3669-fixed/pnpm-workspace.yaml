@@ -1,2 +1,0 @@
-patchedDependencies:
-  '@nuxt/content': patches/@nuxt__content.patch
