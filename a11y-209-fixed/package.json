@@ -1,0 +1,14 @@
+{
+  "name": "a11y-209-fixed",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate"
+  },
+  "dependencies": {
+    "nuxt": "^3.16.1",
+    "@nuxt/a11y": "https://pkg.pr.new/nuxt/a11y/@nuxt/a11y@210"
+  }
+}
