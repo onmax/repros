@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   '@nuxt/content@3.16.0':
-    hash: 03febedf2f631f8c794b22a6dcfd1852f098de6aaca7e52725ec80997140d78e
+    hash: 45ffdd12dfdef6bad4e5e76cff08c32eeccad6b0fae36c84d1de3882ee18f2bb
     path: patches/@nuxt__content@3.16.0.patch
 
 importers:
@@ -15,7 +15,7 @@ importers:
     dependencies:
       '@nuxt/content':
         specifier: 3.16.0
-        version: 3.16.0(patch_hash=03febedf2f631f8c794b22a6dcfd1852f098de6aaca7e52725ec80997140d78e)(@oxc-project/types@0.139.0)(magic-string@0.30.21)(oxc-parser@0.139.0)
+        version: 3.16.0(patch_hash=45ffdd12dfdef6bad4e5e76cff08c32eeccad6b0fae36c84d1de3882ee18f2bb)(@oxc-project/types@0.139.0)(magic-string@0.30.21)(oxc-parser@0.139.0)
 
 packages:
 
@@ -1436,7 +1436,7 @@ snapshots:
       '@tybys/wasm-util': 0.10.3
     optional: true
 
-  '@nuxt/content@3.16.0(patch_hash=03febedf2f631f8c794b22a6dcfd1852f098de6aaca7e52725ec80997140d78e)(@oxc-project/types@0.139.0)(magic-string@0.30.21)(oxc-parser@0.139.0)':
+  '@nuxt/content@3.16.0(patch_hash=45ffdd12dfdef6bad4e5e76cff08c32eeccad6b0fae36c84d1de3882ee18f2bb)(@oxc-project/types@0.139.0)(magic-string@0.30.21)(oxc-parser@0.139.0)':
     dependencies:
       '@nuxt/kit': 4.5.2(magic-string@0.30.21)(oxc-parser@0.139.0)(unplugin@3.3.0)
       '@nuxtjs/mdc': 0.23.1(magic-string@0.30.21)(oxc-parser@0.139.0)(unplugin@3.3.0)

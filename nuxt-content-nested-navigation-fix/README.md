@@ -1,8 +1,8 @@
 # Nested navigation scans
 
-`@nuxt/content@3.16.0`: 5,000 pages under `/guide` require **12,502,499 comparisons before, 4,999 after**. The control indexes placeholders instead of scanning earlier siblings. Output order stays the same in the fixture.
+`@nuxt/content@3.16.0`: 5,000 pages under `/guide` trigger **12,502,499 `find` predicate calls before, 4,999 after**. The control checks newly appended children and skips lookup while no placeholders exist.
 
-Experimental. Duplicate-placeholder and metadata cases need broader coverage. Related work: [#3845](https://github.com/nuxt/content/pull/3845) and [#3592](https://github.com/nuxt/content/pull/3592). Uses the package's tree generator with a query stub; SQL and page-load performance are outside this check.
+Upstream: [#3845](https://github.com/nuxt/content/pull/3845). Arrays that have held placeholders keep the original search. The fixture calls the package's tree generator with a query stub; SQL and page-load performance are outside this check.
 
 [Before](https://github.com/onmax/repros/tree/repro/nuxt-content-nested-navigation/nuxt-content-nested-navigation) · [After](https://github.com/onmax/repros/tree/repro/nuxt-content-nested-navigation/nuxt-content-nested-navigation-fix)
 
