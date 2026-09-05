@@ -1,0 +1,19 @@
+{
+  "name": "nuxthub-762",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.26.2",
+  "dependencies": {
+    "@nuxthub/core": "^0.10.4",
+    "@vercel/blob": "^2.0.0",
+    "nuxt": "^4.2.2"
+  }
+}

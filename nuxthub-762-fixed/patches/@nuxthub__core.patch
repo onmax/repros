@@ -1,0 +1,14 @@
+diff --git a/dist/blob/lib/drivers/vercel-blob.mjs b/dist/blob/lib/drivers/vercel-blob.mjs
+index 3f6bac64f1bbed32aa85e10346ec867ff6a77df4..fb89e59143dda35b1ed40bca15b178239b3679c5 100644
+--- a/dist/blob/lib/drivers/vercel-blob.mjs
++++ b/dist/blob/lib/drivers/vercel-blob.mjs
+@@ -166,6 +166,9 @@ export function createDriver(options = {}) {
+      */
+     async handleMultipartUpload(event, mpuOptions) {
+       const body = await readBody(event);
++      if (!body || typeof body.type !== "string") {
++        throw createError({ statusCode: 400, message: "Invalid multipart upload request body" });
++      }
+       const json = await handleUpload({
+         body,
+         request: event.node.req,
