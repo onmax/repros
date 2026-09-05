@@ -1,0 +1,41 @@
+diff --git a/dist/runtime/server/utils/auth.js b/dist/runtime/server/utils/auth.js
+index e8c08f6f7b2231bcad7bad0517c44872c734942a..121395ffd058055886d740ab0a56d18d06326e3f 100644
+--- a/dist/runtime/server/utils/auth.js
++++ b/dist/runtime/server/utils/auth.js
+@@ -1,4 +1,4 @@
+-import { betterAuth } from "better-auth";
++import { betterAuth, env } from "better-auth";
+ import { withoutProtocol } from "ufo";
+ import { createDatabase, db } from "#auth/database";
+ import { createSecondaryStorage } from "#auth/secondary-storage";
+@@ -194,20 +194,24 @@ function withDevTrustedOrigins(trustedOrigins) {
+ }
+ export function serverAuth(event) {
+   const runtimeConfig = useRuntimeConfig();
+-  const betterAuthSecret = runtimeConfig.betterAuthSecret || "";
+-  if (!import.meta.dev && !betterAuthSecret)
+-    throw new Error("[nuxt-better-auth] NUXT_BETTER_AUTH_SECRET is required in production. Set NUXT_BETTER_AUTH_SECRET or BETTER_AUTH_SECRET environment variable.");
++  const betterAuthSecret = runtimeConfig.betterAuthSecret || env.BETTER_AUTH_SECRET || "";
+   if (betterAuthSecret && betterAuthSecret.length < 32)
+-    throw new Error("[nuxt-better-auth] NUXT_BETTER_AUTH_SECRET must be at least 32 characters for security");
+-  const siteUrl = getBaseURL(event);
++    throw new Error("[nuxt-better-auth] Singular auth secret must be at least 32 characters for security");
+   const requestOrigin = resolveEventOrigin(event);
++  let userConfig;
++  if (!import.meta.dev && !betterAuthSecret && !env.BETTER_AUTH_SECRETS) {
++    userConfig = createServerAuth({ runtimeConfig, db, requestOrigin });
++    if (userConfig.secrets === void 0)
++      throw new Error("[nuxt-better-auth] An auth secret is required in production. Set NUXT_BETTER_AUTH_SECRET, BETTER_AUTH_SECRET, BETTER_AUTH_SECRETS, or defineServerAuth({ secrets }).");
++  }
++  const siteUrl = getBaseURL(event);
+   const hasExplicitSiteUrl = runtimeConfig.public.siteUrl && typeof runtimeConfig.public.siteUrl === "string";
+   const cacheKey = hasExplicitSiteUrl ? "__explicit__" : siteUrl;
+   const requestContext = event ? getRequestAuthContext(event) : void 0;
+   if (requestContext?.[requestAuthKey])
+     return requestContext[requestAuthKey];
++  userConfig ??= createServerAuth({ runtimeConfig, db, requestOrigin });
+   const database = createDatabase(event);
+-  const userConfig = createServerAuth({ runtimeConfig, db, requestOrigin });
+   const trustedOrigins = withDevTrustedOrigins(userConfig.trustedOrigins);
+   const hubSecondaryStorage = runtimeConfig.auth?.hubSecondaryStorage;
+   const customSecondaryStorage = resolveCustomSecondaryStorageRequirement(hubSecondaryStorage, userConfig.secondaryStorage != null, Boolean(import.meta.dev));
