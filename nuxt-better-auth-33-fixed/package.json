@@ -1,0 +1,17 @@
+{
+  "name": "nuxt-better-auth-33",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build"
+  },
+  "dependencies": {
+    "@nuxthub/core": "^0.10.4",
+    "@onmax/nuxt-better-auth": "0.0.2-alpha.3",
+    "better-auth": "^1.4.10",
+    "drizzle-kit": "^0.31.8",
+    "drizzle-orm": "^0.45.1",
+    "nuxt": "^4.2.2"
+  }
+}
