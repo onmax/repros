@@ -1,0 +1,39 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index a3cf44990903ae32bf2e63fd462aabf96e31a6a9..9c850b823da620e4eb4f63a72607acfcf9ebb07f 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -212,7 +212,7 @@ async function generateDatabaseSchema(nuxt, hub) {
+   nuxt.options.alias["hub:db:schema"] = join(nuxt.options.buildDir, "hub/db/schema.mjs");
+ }
+ async function setupDatabaseClient(nuxt, hub) {
+-  const { driver, connection } = hub.db;
++  const { dialect, driver, connection, mode } = hub.db;
+   const driverForTypes = driver === "d1-http" ? "sqlite-proxy" : driver;
+   const databaseTypes = `import type { DrizzleConfig } from 'drizzle-orm'
+ import { drizzle as drizzleCore } from 'drizzle-orm/${driverForTypes}'
+@@ -236,7 +236,7 @@ declare module 'hub:db' {
+   let drizzleOrmContent = `import { drizzle } from 'drizzle-orm/${driver}'
+ import * as schema from './db/schema.mjs'
+ 
+-const db = drizzle({ connection: ${JSON.stringify(connection)}, schema })
++const db = drizzle({ connection: ${JSON.stringify(connection)}, schema${dialect === "mysql" ? `, mode: '${mode || "default"}'` : ""} })
+ export { db, schema }
+ `;
+   if (driver === "pglite" && nuxt.options.dev) {
+@@ -350,6 +350,7 @@ export { db, schema }
+   }
+   if (["postgres-js", "mysql2"].includes(driver) && hub.hosting.includes("cloudflare")) {
+     const bindingName = driver === "postgres-js" ? "POSTGRES" : "MYSQL";
++    const modeOption = dialect === "mysql" ? `, mode: '${mode || "default"}'` : "";
+     drizzleOrmContent = `import { drizzle } from 'drizzle-orm/${driver}'
+ import * as schema from './db/schema.mjs'
+ 
+@@ -358,7 +359,7 @@ function getDb() {
+   if (!_db) {
+     const hyperdrive = process.env.${bindingName} || globalThis.__env__?.${bindingName} || globalThis.${bindingName}
+     if (!hyperdrive) throw new Error('${bindingName} binding not found')
+-    _db = drizzle({ connection: hyperdrive.connectionString, schema })
++    _db = drizzle({ connection: hyperdrive.connectionString, schema${modeOption} })
+   }
+   return _db
+ }
