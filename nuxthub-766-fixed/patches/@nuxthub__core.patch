@@ -1,0 +1,24 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index cb0df587e07404f133284b5f8d94c2a9ac46e000..378353cecae417f919e13acb37d5948161dfd3d1 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -41,6 +41,9 @@ function resolveCacheConfig(hub) {
+   if (!hub.cache) return false;
+   const userConfig = typeof hub.cache === "object" ? hub.cache : {};
+   if (userConfig.driver) {
++    if (userConfig.driver === "cloudflare-kv-binding") {
++      return defu(userConfig, { binding: "CACHE" });
++    }
+     return userConfig;
+   }
+   if (hub.hosting.includes("cloudflare")) {
+@@ -537,6 +540,9 @@ export default defineConfig({
+ function resolveKVConfig(hub) {
+   if (!hub.kv) return false;
+   if (typeof hub.kv === "object" && "driver" in hub.kv) {
++    if (hub.kv.driver === "cloudflare-kv-binding") {
++      return defu(hub.kv, { binding: "KV" });
++    }
+     return hub.kv;
+   }
+   if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
