@@ -1,0 +1,27 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index d1caf09183e32b9a4c60d223be3d6f6f4e00579f..d9081e78d7ee0f7c0330410ce77d265937a03c76 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -316,7 +316,7 @@ export type { AuthMeta, AuthMode, AuthRouteRules, UserMatch, RequireSessionOptio
+     addTypeTemplate({
+       filename: "types/nuxt-better-auth-infer.d.ts",
+       getContents: () => `
+-import type { InferUser, InferSession } from 'better-auth'
++import type { InferUser, InferSession, InferPluginTypes } from 'better-auth'
+ import type { RuntimeConfig } from 'nuxt/schema'
+ import type configFn from '${serverConfigPath}'
+ 
+@@ -324,11 +324,12 @@ type _Config = ReturnType<typeof configFn>
+ 
+ declare module '#nuxt-better-auth' {
+   interface AuthUser extends InferUser<_Config> {}
+-  interface AuthSession { session: InferSession<_Config>['session'], user: InferUser<_Config> }
++  interface AuthSession extends InferSession<_Config> {}
+   interface ServerAuthContext {
+     runtimeConfig: RuntimeConfig
+     ${hasHubDb ? `db: typeof import('hub:db')['db']` : ""}
+   }
++  type PluginTypes = InferPluginTypes<_Config>
+ }
+ 
+ // Augment the config module to use the extended ServerAuthContext
