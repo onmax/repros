@@ -1,0 +1,1 @@
+Expected immutable fields rejected. Actual: id, email, emailVerified and createdAt rejected; name/image accepted.
