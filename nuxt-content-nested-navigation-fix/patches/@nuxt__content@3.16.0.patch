@@ -1,0 +1,41 @@
+diff --git a/dist/runtime/internal/navigation.js b/dist/runtime/internal/navigation.js
+index 5abed794ec4b90fc69b4e21f4d880ee767baf637..3827a193198e84f43fd57bcbcf1d1ab6e83ad036 100644
+--- a/dist/runtime/internal/navigation.js
++++ b/dist/runtime/internal/navigation.js
+@@ -30,6 +30,27 @@ export async function generateNavigationTree(queryBuilder, extraFields = []) {
+     ...pick(["title", ...extraFields])(content),
+     ...isObject(content?.navigation) ? content.navigation : {}
+   });
++  const placeholderIndexes = new WeakMap();
++  const findPlaceholder = (nodes, path) => {
++    let index = placeholderIndexes.get(nodes);
++    if (!index) {
++      index = { length: 0, paths: new Map() };
++      placeholderIndexes.set(nodes, index);
++    }
++    for (let i = index.length; i < nodes.length; i++) {
++      const node = nodes[i];
++      const existing = index.paths.get(node.path);
++      if (node.page === false && (!existing || existing.page !== false)) index.paths.set(node.path, node);
++    }
++    index.length = nodes.length;
++    let item = index.paths.get(path);
++    if (item && item.page !== false) {
++      item = nodes.find(node => node.path === path && node.page === false);
++      if (item) index.paths.set(path, item);
++      else index.paths.delete(path);
++    }
++    return item;
++  };
+   const nav = contents.reduce((nav2, content) => {
+     const parts = content.path.substring(1).split("/");
+     const idParts = content.stem.split("/");
+@@ -94,7 +115,7 @@ export async function generateNavigationTree(queryBuilder, extraFields = []) {
+       }
+       return parent.children;
+     }, nav2);
+-    const existed = siblings.find((item) => item.path === navItem.path && item.page === false);
++    const existed = findPlaceholder(siblings, navItem.path);
+     if (existed) {
+       Object.assign(existed, {
+         ...navItem,
