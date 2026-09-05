@@ -1,0 +1,15 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index cb0df587e07404f133284b5f8d94c2a9ac46e000..d294c0615616b504e11fd7d26fd9ef0b373769bc 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -775,7 +775,9 @@ const module$1 = defineNuxtModule({
+   },
+   defaults: {},
+   async setup(options, nuxt) {
+-    if (nuxt.options.nitro.static || nuxt.options._generate) {
++    const preset = (process.env.NITRO_PRESET || nuxt.options.nitro.preset || "").toString().toLowerCase();
++    const isStaticPreset = preset === "static" || preset.endsWith("-static");
++    if (nuxt.options.nitro.static || nuxt.options._generate || isStaticPreset) {
+       log.error("NuxtHub is not compatible with `nuxt generate` as it needs a server to run.");
+       log.info("To pre-render all pages: `https://hub.nuxt.com/docs/recipes/pre-rendering#pre-render-all-pages`");
+       return process.exit(1);
