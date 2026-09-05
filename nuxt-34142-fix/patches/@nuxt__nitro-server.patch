@@ -1,0 +1,42 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 0ada9fbecde7a506ebb8624f035aefef47524479..d49937c64fcb8601814c83aa405bb624c15dca21 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -228,26 +228,20 @@ async function bundle(nuxt) {
+ 			name: "nuxt",
+ 			version: nuxtVersion || version
+ 		},
+-		imports: nuxt.options.experimental.nitroAutoImports === false ? false : {
++		imports: nuxt.options.experimental.nitroAutoImports === false ? {
++			imports: [
++				{ as: "__buildAssetsURL", name: "buildAssetsURL", from: resolve(distDir, "runtime/utils/paths") },
++				{ as: "__publicAssetsURL", name: "publicAssetsURL", from: resolve(distDir, "runtime/utils/paths") },
++				{ as: "defineAppConfig", name: "defineAppConfig", from: resolve(distDir, "runtime/utils/config"), priority: -1 }
++			],
++			exclude: [...excludePattern, /[\\/]\.git[\\/]/]
++		} : {
+ 			autoImport: nuxt.options.imports.autoImport,
+ 			dirs: [...sharedDirs],
+ 			imports: [
+-				{
+-					as: "__buildAssetsURL",
+-					name: "buildAssetsURL",
+-					from: resolve(distDir, "runtime/utils/paths")
+-				},
+-				{
+-					as: "__publicAssetsURL",
+-					name: "publicAssetsURL",
+-					from: resolve(distDir, "runtime/utils/paths")
+-				},
+-				{
+-					as: "defineAppConfig",
+-					name: "defineAppConfig",
+-					from: resolve(distDir, "runtime/utils/config"),
+-					priority: -1
+-				}
++				{ as: "__buildAssetsURL", name: "buildAssetsURL", from: resolve(distDir, "runtime/utils/paths") },
++				{ as: "__publicAssetsURL", name: "publicAssetsURL", from: resolve(distDir, "runtime/utils/paths") },
++				{ as: "defineAppConfig", name: "defineAppConfig", from: resolve(distDir, "runtime/utils/config"), priority: -1 }
+ 			],
+ 			presets: [{
+ 				from: "h3",
