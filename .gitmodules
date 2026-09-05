@@ -1,0 +1,4 @@
+[submodule "nuxt-31575-user-repro"]
+	path = nuxt-31575-user-repro
+	url = https://github.com/stephenjason89/minimal-reproduction-nuxt-devtools.git
+	update = none

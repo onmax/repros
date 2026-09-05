@@ -1,0 +1,21 @@
+{
+  "name": "nuxt-31575-fix",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "nuxt": "^3.21.0",
+    "vue": "latest"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@nuxt/schema": "patches/@nuxt__schema.patch"
+    }
+  }
+}
