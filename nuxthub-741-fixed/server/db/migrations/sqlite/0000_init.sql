@@ -1,5 +1,0 @@
-CREATE TABLE notes (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  content TEXT NOT NULL,
-  created_at INTEGER NOT NULL
-);
