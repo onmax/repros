@@ -1,2 +1,0 @@
-patchedDependencies:
-  nuxt-safe-runtime-config: patches/nuxt-safe-runtime-config.patch
