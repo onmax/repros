@@ -17,3 +17,5 @@ git sparse-checkout set nuxt-content-nested-navigation nuxt-content-nested-navig
 ```
 
 `verify` checks the stated result. Add `--expect-fixed` to make the baseline fail and the control pass.
+
+[Elapsed-time benchmark](../BENCHMARK.md) compares the exact PR base and head.
