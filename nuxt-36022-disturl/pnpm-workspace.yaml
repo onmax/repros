@@ -1,9 +1,0 @@
-allowBuilds:
-  esbuild: true
-  sharp: true
-minimumReleaseAgeExclude:
-  - '@nuxt/kit-nightly@5.0.0-29769956.67f87d15'
-  - '@nuxt/nitro-server-nightly@5.0.0-29769956.67f87d15'
-  - '@nuxt/schema-nightly@5.0.0-29769956.67f87d15'
-  - '@nuxt/vite-builder-nightly@5.0.0-29769956.67f87d15'
-  - nuxt-nightly@5.0.0-29769956.67f87d15
