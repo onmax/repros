@@ -1,0 +1,13 @@
+diff --git a/dist/pages/runtime/plugins/router.js b/dist/pages/runtime/plugins/router.js
+index 24b5da48d1f710b5fc1f4b00834c4365b590d9c2..a35ff4ddb93c31dd0289fc10ead823554719d55d 100644
+--- a/dist/pages/runtime/plugins/router.js
++++ b/dist/pages/runtime/plugins/router.js
+@@ -202,7 +202,7 @@ const plugin = defineNuxtPlugin({
+       await nuxtApp.callHook("page:loading:end");
+     });
+     router.afterEach((to) => {
+-      if (to.matched.length === 0) {
++      if (to.matched.length === 0 && !error.value) {
+         return nuxtApp.runWithContext(() => showError(createError({
+           status: 404,
+           fatal: false,
