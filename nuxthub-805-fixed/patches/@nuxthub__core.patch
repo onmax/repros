@@ -1,0 +1,28 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 134fd3c5a270edbe7974e64713e0f91b0c6a773b..fb31110029d89cb9d2ba9e25cc265341a254d30d 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -857,7 +857,22 @@ async function launchDrizzleStudio(nuxt, hub) {
+     } else if (dialect === "sqlite") {
+       const { startStudioSQLiteServer } = await import('drizzle-kit/api');
+       log$1.info(`Launching Drizzle Studio with SQLite (${driver})...`);
+-      const studioConnection = driver === "d1-http" ? { driver: "d1-http", ...connection } : connection;
++      let studioConnection;
++      if (driver === "d1-http") {
++        studioConnection = { driver: "d1-http", ...connection };
++      } else if (driver === "d1") {
++        const d1Files = await glob(".wrangler/state/v3/d1/miniflare-D1DatabaseObject/*.sqlite", {
++          cwd: nuxt.options.rootDir,
++          absolute: true
++        });
++        if (!d1Files.length) {
++          log$1.warn("D1 database file not found. Run the dev server first to create it.");
++          return;
++        }
++        studioConnection = { url: `file:${d1Files[0]}` };
++      } else {
++        studioConnection = connection;
++      }
+       await startStudioSQLiteServer(schema, studioConnection, { port });
+     } else {
+       throw new Error(`Unsupported database dialect: ${dialect}`);
