@@ -1,0 +1,7 @@
+{
+  "name": "nuxthub-813",
+  "type": "module",
+  "private": true,
+  "scripts": { "build": "nuxt build", "dev": "nuxt dev", "postinstall": "nuxt prepare" },
+  "dependencies": { "@nuxthub/core": "0.10.6", "drizzle-orm": "^0.45.1", "nuxt": "^4.3.0", "typescript": "^5.9.3" }
+}
