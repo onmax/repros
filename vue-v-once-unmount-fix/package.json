@@ -1,5 +1,5 @@
 {
-  "name": "vue-v-once-unmount-repro",
+  "name": "vue-v-once-unmount-fix",
   "private": true,
   "type": "module",
   "description": "Agent-authored reproduction; not human-reviewed",
@@ -8,10 +8,15 @@
     "node": "24.19.0"
   },
   "scripts": {
-    "verify": "node verify.mjs"
+    "verify": "node verify.mjs --fixed"
   },
   "dependencies": {
     "happy-dom": "20.12.0",
     "vue": "3.5.42"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@vue/runtime-core@3.5.42": "patches/@vue__runtime-core@3.5.42.patch"
+    }
   }
 }

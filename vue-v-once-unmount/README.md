@@ -17,7 +17,7 @@ git clone --depth 1 --branch repro/vue-v-once-unmount https://github.com/onmax/r
 cd repros/vue-v-once-unmount
 ```
 
-Use Node 24.19.0 and pnpm 11.25.0. From this directory:
+Use Node 24.19.0 and pnpm 10.34.5. From this directory:
 
 ```sh
 pnpm install --frozen-lockfile && pnpm verify
@@ -35,7 +35,7 @@ Exit code 0 means the reported bug was reproduced and the control passed. A nonz
 
 ## Scope
 
-Vue 3.5.42 and happy-dom 20.12.0 are pinned, with transitive dependencies locked. `NODE_ENV` is set to `development` before Vue loads. Verified on Linux with Node 24.19.0 and pnpm 11.25.0; no hosted runtime or production build is claimed.
+Vue 3.5.42 and happy-dom 20.12.0 are pinned, with transitive dependencies locked. `NODE_ENV` is set to `development` before Vue loads. Verified on Linux with Node 24.19.0 and pnpm 10.34.5; no hosted runtime or production build is claimed.
 
 - The `v-once` child is the component whose teardown is skipped.
 - The rendered counter causes one parent rerender; `nextTick` completes it before unmounting. The control changes only whether this rerender happens.
@@ -44,4 +44,4 @@ Vue 3.5.42 and happy-dom 20.12.0 are pinned, with transitive dependencies locked
 
 The fixture requires neither slots, async data, routing, a test runner, nor a dependency patch. Removing `v-once` restores the unmount hook and makes the bug verifier reject the claim.
 
-This is a failing-behavior reproduction only. No fixed control or upstream fix is included.
+The sibling [fixed control](../vue-v-once-unmount-fix/) applies a committed runtime patch. Both directories contain the same `verify.mjs`; the fixed control invokes its `--fixed` assertion mode. Running `node verify.mjs --fixed` here fails with `0 !== 1`, while it passes in the fixed directory.

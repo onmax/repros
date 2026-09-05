@@ -1,0 +1,108 @@
+diff --git a/dist/runtime-core.cjs.js b/dist/runtime-core.cjs.js
+index 08899205dfe52109b460e9b8fc9847eb5b3241f7..b5698dc623e5f8bc9eebaead574799a810038752 100644
+--- a/dist/runtime-core.cjs.js
++++ b/dist/runtime-core.cjs.js
+@@ -5513,6 +5513,12 @@ function baseCreateRenderer(options, createHydrationFns) {
+       optimized = false;
+       n2.dynamicChildren = null;
+     }
++    if (n2.dynamicChildren && n1 && n1.dynamicChildren && n1.dynamicChildren.hasOnce) {
++      if (n2.dynamicChildren === shared.EMPTY_ARR) {
++        n2.dynamicChildren = [];
++      }
++      n2.dynamicChildren.hasOnce = true;
++    }
+     const { type, ref, shapeFlag } = n2;
+     switch (type) {
+       case Text:
+@@ -6720,7 +6726,7 @@ function baseCreateRenderer(options, createHydrationFns) {
+       reactivity.resetTracking();
+     }
+     if (cacheIndex != null) {
+-      parentComponent.renderCache[cacheIndex] = void 0;
++      (vnode.ctx || parentComponent).renderCache[cacheIndex] = void 0;
+     }
+     if (shapeFlag & 256) {
+       parentComponent.ctx.deactivate(vnode);
+@@ -7913,7 +7919,8 @@ function cloneVNode(vnode, extraProps, mergeRef = false, cloneTransition = false
+     el: vnode.el,
+     anchor: vnode.anchor,
+     ctx: vnode.ctx,
+-    ce: vnode.ce
++    ce: vnode.ce,
++    cacheIndex: vnode.cacheIndex
+   };
+   if (transition && cloneTransition) {
+     setTransitionHooks(
+diff --git a/dist/runtime-core.cjs.prod.js b/dist/runtime-core.cjs.prod.js
+index 8b2db9c0e26d3d18bf71bbf0922b61c555018708..a805a9b505d94a3518344178aa09e8ad8e617efa 100644
+--- a/dist/runtime-core.cjs.prod.js
++++ b/dist/runtime-core.cjs.prod.js
+@@ -4138,6 +4138,12 @@ function baseCreateRenderer(options, createHydrationFns) {
+       optimized = false;
+       n2.dynamicChildren = null;
+     }
++    if (n2.dynamicChildren && n1 && n1.dynamicChildren && n1.dynamicChildren.hasOnce) {
++      if (n2.dynamicChildren === shared.EMPTY_ARR) {
++        n2.dynamicChildren = [];
++      }
++      n2.dynamicChildren.hasOnce = true;
++    }
+     const { type, ref, shapeFlag } = n2;
+     switch (type) {
+       case Text:
+@@ -5228,7 +5234,7 @@ function baseCreateRenderer(options, createHydrationFns) {
+       reactivity.resetTracking();
+     }
+     if (cacheIndex != null) {
+-      parentComponent.renderCache[cacheIndex] = void 0;
++      (vnode.ctx || parentComponent).renderCache[cacheIndex] = void 0;
+     }
+     if (shapeFlag & 256) {
+       parentComponent.ctx.deactivate(vnode);
+@@ -6330,7 +6336,8 @@ function cloneVNode(vnode, extraProps, mergeRef = false, cloneTransition = false
+     el: vnode.el,
+     anchor: vnode.anchor,
+     ctx: vnode.ctx,
+-    ce: vnode.ce
++    ce: vnode.ce,
++    cacheIndex: vnode.cacheIndex
+   };
+   if (transition && cloneTransition) {
+     setTransitionHooks(
+diff --git a/dist/runtime-core.esm-bundler.js b/dist/runtime-core.esm-bundler.js
+index f0905f8afe50421feed03b208b19afb26e4bbb73..ca6bd7c521ea457722805c957f7c6616a2d73cf7 100644
+--- a/dist/runtime-core.esm-bundler.js
++++ b/dist/runtime-core.esm-bundler.js
+@@ -5563,6 +5563,12 @@ function baseCreateRenderer(options, createHydrationFns) {
+       optimized = false;
+       n2.dynamicChildren = null;
+     }
++    if (n2.dynamicChildren && n1 && n1.dynamicChildren && n1.dynamicChildren.hasOnce) {
++      if (n2.dynamicChildren === EMPTY_ARR) {
++        n2.dynamicChildren = [];
++      }
++      n2.dynamicChildren.hasOnce = true;
++    }
+     const { type, ref, shapeFlag } = n2;
+     switch (type) {
+       case Text:
+@@ -6781,7 +6787,7 @@ function baseCreateRenderer(options, createHydrationFns) {
+       resetTracking();
+     }
+     if (cacheIndex != null) {
+-      parentComponent.renderCache[cacheIndex] = void 0;
++      (vnode.ctx || parentComponent).renderCache[cacheIndex] = void 0;
+     }
+     if (shapeFlag & 256) {
+       parentComponent.ctx.deactivate(vnode);
+@@ -7974,7 +7980,8 @@ function cloneVNode(vnode, extraProps, mergeRef = false, cloneTransition = false
+     el: vnode.el,
+     anchor: vnode.anchor,
+     ctx: vnode.ctx,
+-    ce: vnode.ce
++    ce: vnode.ce,
++    cacheIndex: vnode.cacheIndex
+   };
+   if (transition && cloneTransition) {
+     setTransitionHooks(
