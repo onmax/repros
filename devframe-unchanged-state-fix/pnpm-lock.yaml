@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   devframe@0.9.12:
-    hash: a78c61edae39de3803c5ed365a6db2c34df4173f4487bce3fa6fcdb349fe5f25
+    hash: da461ff0a28adee7fe8a4ebe0668192724a01347ba1e29a9358730eda7b81e0d
     path: patches/devframe@0.9.12.patch
 
 importers:
@@ -15,7 +15,7 @@ importers:
     dependencies:
       devframe:
         specifier: 0.9.12
-        version: 0.9.12(patch_hash=a78c61edae39de3803c5ed365a6db2c34df4173f4487bce3fa6fcdb349fe5f25)(srvx@1.0.3)
+        version: 0.9.12(patch_hash=da461ff0a28adee7fe8a4ebe0668192724a01347ba1e29a9358730eda7b81e0d)(srvx@1.0.3)
 
 packages:
 
@@ -109,7 +109,7 @@ snapshots:
     optionalDependencies:
       srvx: 1.0.3
 
-  devframe@0.9.12(patch_hash=a78c61edae39de3803c5ed365a6db2c34df4173f4487bce3fa6fcdb349fe5f25)(srvx@1.0.3):
+  devframe@0.9.12(patch_hash=da461ff0a28adee7fe8a4ebe0668192724a01347ba1e29a9358730eda7b81e0d)(srvx@1.0.3):
     dependencies:
       '@modelcontextprotocol/server': 2.0.0
       '@standard-schema/spec': 1.1.0

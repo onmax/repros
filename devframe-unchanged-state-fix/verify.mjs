@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import { readFile } from 'node:fs/promises'
+import { createHostContext } from 'devframe/node'
 import { createSharedState } from 'devframe/utils/shared-state'
 
 const { fixed } = JSON.parse(await readFile(new URL('./expectation.json', import.meta.url)))
@@ -34,3 +35,18 @@ for (const enablePatches of [false, true]) {
   assert.ok(state.syncIds.size <= 1000)
 }
 console.log('Both patch modes preserve changed writes, duplicate suppression, errors, replacements, and bounded sync IDs.')
+
+const { rpc } = await createHostContext({
+  cwd: process.cwd(), mode: 'dev',
+  host: { mountStatic() {}, resolveOrigin() { return 'http://localhost' }, getStorageDir() { return process.cwd() } },
+})
+const broadcasts = []
+rpc.broadcast = async options => { broadcasts.push(options.args) }
+await rpc.invokeLocal('devframe:rpc:server-state:set', 'counter', { count: 1 }, 'first')
+assert.deepEqual(broadcasts, [['counter', { count: 1 }, 'first']])
+await rpc.invokeLocal('devframe:rpc:server-state:set', 'counter', { count: 2 }, 'first')
+assert.equal(broadcasts.length, 1)
+assert.deepEqual((await rpc.sharedState.get('counter')).value(), { count: 1 })
+await rpc.invokeLocal('devframe:rpc:server-state:set', 'counter', { count: 2 }, 'second')
+assert.deepEqual(broadcasts[1], ['counter', { count: 2 }, 'second'])
+console.log('First RPC snapshot broadcasts; replay is ignored; later replacement broadcasts.')

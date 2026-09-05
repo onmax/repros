@@ -1,3 +1,16 @@
+diff --git a/dist/context-DwGevWqT.mjs b/dist/context-DwGevWqT.mjs
+index 33bee14eecfcc42d48ea974976a09b2425c1e591..175c8f11de2fa4de67af0121e2f13d564a75006d 100644
+--- a/dist/context-DwGevWqT.mjs
++++ b/dist/context-DwGevWqT.mjs
+@@ -143,7 +143,7 @@ function createRpcSharedStateServerHost(rpc) {
+ 		name: "devframe:rpc:server-state:set",
+ 		type: "query",
+ 		handler: async (key, value, syncId) => {
+-			(await host.get(key, { initialValue: value })).mutate(() => value, syncId);
++			(await host.get(key, { initialValue: value })).patch([{ op: "replace", path: [], value }], syncId);
+ 		}
+ 	});
+ 	rpc.register({
 diff --git a/dist/shared-state-CaxB1q0h.mjs b/dist/shared-state-CaxB1q0h.mjs
 index 89243532755fd208c12161c47cef69c0e909988b..d727868193c66448048d801bcc0508c84cedaefc 100644
 --- a/dist/shared-state-CaxB1q0h.mjs
