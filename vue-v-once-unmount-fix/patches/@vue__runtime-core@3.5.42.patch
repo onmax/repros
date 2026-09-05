@@ -1,5 +1,5 @@
 diff --git a/dist/runtime-core.cjs.js b/dist/runtime-core.cjs.js
-index 08899205dfe52109b460e9b8fc9847eb5b3241f7..b5698dc623e5f8bc9eebaead574799a810038752 100644
+index 08899205dfe52109b460e9b8fc9847eb5b3241f7..b71938419a6479e152acab42af9cac80c7aa3057 100644
 --- a/dist/runtime-core.cjs.js
 +++ b/dist/runtime-core.cjs.js
 @@ -5513,6 +5513,12 @@ function baseCreateRenderer(options, createHydrationFns) {
@@ -15,16 +15,20 @@ index 08899205dfe52109b460e9b8fc9847eb5b3241f7..b5698dc623e5f8bc9eebaead574799a8
      const { type, ref, shapeFlag } = n2;
      switch (type) {
        case Text:
-@@ -6720,7 +6726,7 @@ function baseCreateRenderer(options, createHydrationFns) {
+@@ -6720,7 +6726,11 @@ function baseCreateRenderer(options, createHydrationFns) {
        reactivity.resetTracking();
      }
      if (cacheIndex != null) {
 -      parentComponent.renderCache[cacheIndex] = void 0;
-+      (vnode.ctx || parentComponent).renderCache[cacheIndex] = void 0;
++      const cache = (vnode.ctx || parentComponent).renderCache;
++      const cached = cache[cacheIndex];
++      if (cached && (cached.component ? cached.component === vnode.component : cached.el === vnode.el)) {
++        cache[cacheIndex] = void 0;
++      }
      }
      if (shapeFlag & 256) {
        parentComponent.ctx.deactivate(vnode);
-@@ -7913,7 +7919,8 @@ function cloneVNode(vnode, extraProps, mergeRef = false, cloneTransition = false
+@@ -7913,7 +7923,8 @@ function cloneVNode(vnode, extraProps, mergeRef = false, cloneTransition = false
      el: vnode.el,
      anchor: vnode.anchor,
      ctx: vnode.ctx,
@@ -35,7 +39,7 @@ index 08899205dfe52109b460e9b8fc9847eb5b3241f7..b5698dc623e5f8bc9eebaead574799a8
    if (transition && cloneTransition) {
      setTransitionHooks(
 diff --git a/dist/runtime-core.cjs.prod.js b/dist/runtime-core.cjs.prod.js
-index 8b2db9c0e26d3d18bf71bbf0922b61c555018708..a805a9b505d94a3518344178aa09e8ad8e617efa 100644
+index 8b2db9c0e26d3d18bf71bbf0922b61c555018708..6ac02db5610257702b77e1ee3ada8cbbac3fa54d 100644
 --- a/dist/runtime-core.cjs.prod.js
 +++ b/dist/runtime-core.cjs.prod.js
 @@ -4138,6 +4138,12 @@ function baseCreateRenderer(options, createHydrationFns) {
@@ -51,16 +55,20 @@ index 8b2db9c0e26d3d18bf71bbf0922b61c555018708..a805a9b505d94a3518344178aa09e8ad
      const { type, ref, shapeFlag } = n2;
      switch (type) {
        case Text:
-@@ -5228,7 +5234,7 @@ function baseCreateRenderer(options, createHydrationFns) {
+@@ -5228,7 +5234,11 @@ function baseCreateRenderer(options, createHydrationFns) {
        reactivity.resetTracking();
      }
      if (cacheIndex != null) {
 -      parentComponent.renderCache[cacheIndex] = void 0;
-+      (vnode.ctx || parentComponent).renderCache[cacheIndex] = void 0;
++      const cache = (vnode.ctx || parentComponent).renderCache;
++      const cached = cache[cacheIndex];
++      if (cached && (cached.component ? cached.component === vnode.component : cached.el === vnode.el)) {
++        cache[cacheIndex] = void 0;
++      }
      }
      if (shapeFlag & 256) {
        parentComponent.ctx.deactivate(vnode);
-@@ -6330,7 +6336,8 @@ function cloneVNode(vnode, extraProps, mergeRef = false, cloneTransition = false
+@@ -6330,7 +6340,8 @@ function cloneVNode(vnode, extraProps, mergeRef = false, cloneTransition = false
      el: vnode.el,
      anchor: vnode.anchor,
      ctx: vnode.ctx,
@@ -71,7 +79,7 @@ index 8b2db9c0e26d3d18bf71bbf0922b61c555018708..a805a9b505d94a3518344178aa09e8ad
    if (transition && cloneTransition) {
      setTransitionHooks(
 diff --git a/dist/runtime-core.esm-bundler.js b/dist/runtime-core.esm-bundler.js
-index f0905f8afe50421feed03b208b19afb26e4bbb73..ca6bd7c521ea457722805c957f7c6616a2d73cf7 100644
+index f0905f8afe50421feed03b208b19afb26e4bbb73..5acaac3264ce0984e6d03b81e6a49dbc781a1683 100644
 --- a/dist/runtime-core.esm-bundler.js
 +++ b/dist/runtime-core.esm-bundler.js
 @@ -5563,6 +5563,12 @@ function baseCreateRenderer(options, createHydrationFns) {
@@ -87,16 +95,20 @@ index f0905f8afe50421feed03b208b19afb26e4bbb73..ca6bd7c521ea457722805c957f7c6616
      const { type, ref, shapeFlag } = n2;
      switch (type) {
        case Text:
-@@ -6781,7 +6787,7 @@ function baseCreateRenderer(options, createHydrationFns) {
+@@ -6781,7 +6787,11 @@ function baseCreateRenderer(options, createHydrationFns) {
        resetTracking();
      }
      if (cacheIndex != null) {
 -      parentComponent.renderCache[cacheIndex] = void 0;
-+      (vnode.ctx || parentComponent).renderCache[cacheIndex] = void 0;
++      const cache = (vnode.ctx || parentComponent).renderCache;
++      const cached = cache[cacheIndex];
++      if (cached && (cached.component ? cached.component === vnode.component : cached.el === vnode.el)) {
++        cache[cacheIndex] = void 0;
++      }
      }
      if (shapeFlag & 256) {
        parentComponent.ctx.deactivate(vnode);
-@@ -7974,7 +7980,8 @@ function cloneVNode(vnode, extraProps, mergeRef = false, cloneTransition = false
+@@ -7974,7 +7984,8 @@ function cloneVNode(vnode, extraProps, mergeRef = false, cloneTransition = false
      el: vnode.el,
      anchor: vnode.anchor,
      ctx: vnode.ctx,
