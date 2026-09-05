@@ -1,0 +1,24 @@
+{
+  "name": "hub-821",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "prepare": "nuxt prepare"
+  },
+  "pnpm": {
+    "overrides": {
+      "rolldown": "^1.0.0-rc.1",
+      "vite": "^8.0.0-beta.10"
+    }
+  },
+  "dependencies": {
+    "@nuxthub/core": "0.10.6",
+    "drizzle-orm": "^0.41.0",
+    "nuxt": "^3.15.4"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}
