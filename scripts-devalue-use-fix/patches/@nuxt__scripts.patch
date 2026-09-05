@@ -1,0 +1,13 @@
+diff --git a/dist/runtime/utils.js b/dist/runtime/utils.js
+index 04f90a2c69184cf0ca78d2bb91b447a43c5950b5..308c6d94756bdc38442d20d131367a0f9078793d 100644
+--- a/dist/runtime/utils.js
++++ b/dist/runtime/utils.js
+@@ -36,7 +36,7 @@ export function useRegistryScript(registryKey, optionsFn, _userOptions) {
+     };
+   }
+   const scriptInput = defu(finalScriptInput, userOptions.scriptInput, { key: registryKey });
+-  const scriptOptions = Object.assign(userOptions?.scriptOptions || {}, options.scriptOptions || {});
++  const scriptOptions = { ...userOptions?.scriptOptions, ...options.scriptOptions };
+   if (import.meta.dev) {
+     const error = new Error("Stack trace for component location");
+     const stack = error.stack?.split("\n");
