@@ -1,6 +1,0 @@
-onlyBuiltDependencies:
-  - workerd
-  - esbuild
-
-patchedDependencies:
-  '@nuxthub/core': patches/@nuxthub__core.patch
