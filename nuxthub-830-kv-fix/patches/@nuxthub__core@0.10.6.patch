@@ -1,0 +1,61 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 1ef9c1437928b792369a168489dbf4ac6842e334..506b3812fb9d19149de119e60cb8f339b96c0b22 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -745,16 +745,13 @@ export const kv = createStorage({
+   driver: driver(${JSON.stringify(driverOptions)}),
+ });
+ `;
+-  const physicalKvDir = join(nuxt.options.rootDir, "node_modules", "@nuxthub", "kv");
+-  await mkdir(physicalKvDir, { recursive: true });
+-  await writeFile(
+-    join(physicalKvDir, "kv.mjs"),
+-    kvContent
+-  );
+-  await copyFile(
+-    resolve("kv/runtime/kv.d.ts"),
+-    join(physicalKvDir, "kv.d.ts")
+-  );
++  const kvShimTemplate = addTemplate({
++    filename: "hub/kv.mjs",
++    write: true,
++    getContents: () => kvContent
++  });
++  nuxt.options.alias["@nuxthub/kv"] = kvShimTemplate.dst;
++  nuxt.options.alias["hub:kv"] = kvShimTemplate.dst;
+   const packageJson = {
+     name: "@nuxthub/kv",
+     version: "0.0.0",
+@@ -766,18 +763,26 @@ export const kv = createStorage({
+       }
+     }
+   };
+-  await writeFile(
+-    join(physicalKvDir, "package.json"),
+-    JSON.stringify(packageJson, null, 2)
+-  );
+-  nuxt.options.alias["hub:kv"] = "@nuxthub/kv";
+   addServerImports({ name: "kv", from: "@nuxthub/kv", meta: { description: `The Key-Value storage instance.` } });
+   addTypeTemplate({
+     filename: "hub/kv.d.ts",
+-    getContents: () => `declare module 'hub:kv' {
++    getContents: () => `import type { Storage } from 'unstorage'
++
++declare module '@nuxthub/kv' {
++  export const kv: Storage
++}
++
++declare module 'hub:kv' {
+   export * from '@nuxthub/kv'
+ }`
+   }, { nitro: true, nuxt: true });
++  nuxt.hook("nitro:build:before", async () => {
++    const physicalKvDir = join(nuxt.options.rootDir, "node_modules", "@nuxthub", "kv");
++    await mkdir(physicalKvDir, { recursive: true });
++    await writeFile(join(physicalKvDir, "kv.mjs"), kvContent);
++    await copyFile(resolve("kv/runtime/kv.d.ts"), join(physicalKvDir, "kv.d.ts"));
++    await writeFile(join(physicalKvDir, "package.json"), JSON.stringify(packageJson, null, 2));
++  });
+   logWhenReady(nuxt, `\`hub:kv\` using \`${driver}\` driver`);
+ }
+ 

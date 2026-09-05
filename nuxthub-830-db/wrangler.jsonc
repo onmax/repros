@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "repro-nuxthub-db-race",
+  "account_id": "ba6e044dfdaaffec3cac45e9feccd237",
+  "compatibility_date": "2026-02-10",
+  "compatibility_flags": ["nodejs_compat"],
+
+  "main": ".output/server/index.mjs",
+  "assets": {
+    "directory": ".output/public"
+  }
+}
