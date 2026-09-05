@@ -1,0 +1,14 @@
+diff --git a/dist/runtime/app/composables/useUserSession.js b/dist/runtime/app/composables/useUserSession.js
+--- a/dist/runtime/app/composables/useUserSession.js
++++ b/dist/runtime/app/composables/useUserSession.js
+@@ -152,7 +152,9 @@
+       return;
+     }
+     _signOutPromise = (async () => {
+-      await rawClient.signOut();
++      const result = await rawClient.signOut();
++      if (isRecord(result) && result.error)
++        throw new Error(normalizeAuthActionError(result.error).message);
+       clearSession();
+       if (options?.onSuccess) {
+         await options.onSuccess();
