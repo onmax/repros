@@ -38,3 +38,13 @@ Both copies of `verify.mjs` are identical. Running its correct-behavior mode, `n
 The patch's CJS development, CJS production, and ESM bundler files were compared byte for byte with the final source builds from [onmax/vue-core@cd3fe1b](https://github.com/onmax/vue-core/commit/cd3fe1b8f09d954ab9e32fd4f2c071b2e2ce8633). The standalone verifier exercises only CJS development.
 
 Both published StackBlitz links were opened again in dedicated server-local browser sessions. They remained at “Importing from GitHub”; terminal execution is unverified. The CLI checks above provide the before/after evidence.
+
+## Review correction
+
+Recorded by an AI agent on behalf of @onmax on 2026-09-05; human review is pending.
+
+Independent agent review found that removing a cloned second slot invocation could clear a cache entry still used by the first mounted invocation. The corrected patch clears an entry only when component identity, or DOM identity for non-components, matches the instance being removed.
+
+The updated patch matches the three runtime builds from [a39e80e](https://github.com/onmax/vue-core/commit/a39e80e8e7516a884a0338a1ff2ee2ed5ce273e9). A fresh local clone of reproduction commit `3c76e3f` ran `pnpm install --frozen-lockfile && pnpm verify` in the fixed directory and exited 0, with control=1 and rerender=1, on Node 24.19.0 and pnpm 10.34.5. The original fixture is unchanged from the prior comparison.
+
+The final source suite passed 3,707 unit tests with six skipped, plus lint and type checking. An earlier rerun exceeded an unchanged reactivity performance test's 30ms threshold during concurrent builds; its isolated rerun and the final full suite both passed. The surviving-slot regression and a component-root-change/remount check also passed against the final patched package. StackBlitz execution remains unverified.
