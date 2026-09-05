@@ -1,0 +1,13 @@
+{
+  "name": "repro-better-auth-client-session-type",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.22.0",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "typescript": "5.9.3",
+    "vue": "3.5.41"
+  }
+}

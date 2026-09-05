@@ -1,0 +1,1 @@
+Expected client token access to be rejected. Actual: TypeScript accepts token as string while stripToken removes it.

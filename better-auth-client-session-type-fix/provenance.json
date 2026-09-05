@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/nuxt-modules/better-auth",
+  "base": "90b945ad2366d6ade92b99ce0885f2831c8ef8d0",
+  "sourceFiles": [
+    "src/runtime/types/augment.ts",
+    "src/runtime/app/internal/session-fetch.ts"
+  ],
+  "fixed": true,
+  "runtime": "Node.js 24.19.0",
+  "fixedCommit": "3f1756e7df60f0e215b957021320ac8aa1403a36"
+}
