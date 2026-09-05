@@ -1,0 +1,19 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index cb0df587e07404f133284b5f8d94c2a9ac46e000..82e28f770e37982fc1aecdf1d34b09692a5f6d53 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -337,11 +337,9 @@ async function generateDatabaseSchema(nuxt, hub) {
+     getContents: () => `${schemaPaths.map((path) => `export * from '${path}'`).join("\n")}`,
+     write: true
+   });
+-  if (!nuxt.options._prepare) {
+-    nuxt.hooks.hookOnce("app:templatesGenerated", async () => {
+-      await buildDatabaseSchema(nuxt.options.buildDir, { relativeDir: nuxt.options.rootDir });
+-    });
+-  }
++  nuxt.hooks.hookOnce("app:templatesGenerated", async () => {
++    await buildDatabaseSchema(nuxt.options.buildDir, { relativeDir: nuxt.options.rootDir });
++  });
+   nuxt.options.alias ||= {};
+   nuxt.options.alias["hub:db:schema"] = join(nuxt.options.buildDir, "hub/db/schema.mjs");
+   addTypeTemplate({
