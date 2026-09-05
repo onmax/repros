@@ -1,0 +1,21 @@
+{
+  "name": "ai-sdk-vertex-function-id-fix",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@10.33.4",
+  "scripts": {
+    "repro": "node repro.mjs",
+    "repro:inspect": "node repro.mjs --print-request-shape",
+    "repro:strip": "node repro.mjs --strip-function-ids"
+  },
+  "dependencies": {
+    "@ai-sdk/google-vertex": "4.0.139",
+    "ai": "6.0.191",
+    "zod": "4.4.3"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@ai-sdk/google@3.0.80": "patches/@ai-sdk__google@3.0.80.patch"
+    }
+  }
+}
