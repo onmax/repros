@@ -1,0 +1,21 @@
+diff --git a/dist/app/composables/cookie.js b/dist/app/composables/cookie.js
+index d94d8bc5f487f29f1427b80904db9085b15dda1b..8d4bb39f0379f9036a863b276342a77222a6ad64 100644
+--- a/dist/app/composables/cookie.js
++++ b/dist/app/composables/cookie.js
+@@ -10,7 +10,15 @@ import { cookieStore } from "#build/nuxt.config.mjs";
+ const CookieDefaults = {
+   path: "/",
+   watch: true,
+-  decode: (val) => destr(decodeURIComponent(val)),
++  decode: (val) => {
++    const decoded = decodeURIComponent(val);
++    const parsed = destr(decoded);
++    // If destr returned unsafe number (Infinity or precision loss), keep original string
++    if (typeof parsed === "number" && (!Number.isFinite(parsed) || String(parsed) !== decoded)) {
++      return decoded;
++    }
++    return parsed;
++  },
+   encode: (val) => encodeURIComponent(typeof val === "string" ? val : JSON.stringify(val))
+ };
+ const store = import.meta.client && cookieStore ? globalThis.cookieStore : void 0;
