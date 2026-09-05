@@ -6,7 +6,7 @@ settings:
 
 patchedDependencies:
   '@vue/runtime-core@3.5.42':
-    hash: 4a72a5f5b1aabcc2f6502691efccfb372700519ad6e8b6ffbba4269ebe90a26b
+    hash: 293c3a9b49f21007d34563b7ed84f611431d6b5042aa474ac691e4097d465a40
     path: patches/@vue__runtime-core@3.5.42.patch
 
 importers:
@@ -203,7 +203,7 @@ snapshots:
     dependencies:
       '@vue/shared': 3.5.42
 
-  '@vue/runtime-core@3.5.42(patch_hash=4a72a5f5b1aabcc2f6502691efccfb372700519ad6e8b6ffbba4269ebe90a26b)':
+  '@vue/runtime-core@3.5.42(patch_hash=293c3a9b49f21007d34563b7ed84f611431d6b5042aa474ac691e4097d465a40)':
     dependencies:
       '@vue/reactivity': 3.5.42
       '@vue/shared': 3.5.42
@@ -211,7 +211,7 @@ snapshots:
   '@vue/runtime-dom@3.5.42':
     dependencies:
       '@vue/reactivity': 3.5.42
-      '@vue/runtime-core': 3.5.42(patch_hash=4a72a5f5b1aabcc2f6502691efccfb372700519ad6e8b6ffbba4269ebe90a26b)
+      '@vue/runtime-core': 3.5.42(patch_hash=293c3a9b49f21007d34563b7ed84f611431d6b5042aa474ac691e4097d465a40)
       '@vue/shared': 3.5.42
       csstype: 3.2.3
 
