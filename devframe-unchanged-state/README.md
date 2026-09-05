@@ -2,7 +2,7 @@
 
 `devframe@0.9.12`: 1,000 same-value writes emit **1,000 notifications before, 0 after**, with Immer patches enabled or disabled. The control skips notification when the state object stays the same.
 
-Upstream: [Devframe](https://github.com/devframes/devframe). The fixture counts utility events and checks the first RPC snapshot, replay suppression, and later replacements. It does not measure network traffic.
+Upstream: [#362](https://github.com/devframes/devframe/pull/362). The fixture counts utility events and checks the first RPC snapshot, replay suppression, and later replacements. It does not measure network traffic.
 
 [Before](https://github.com/onmax/repros/tree/repro/devframe-unchanged-state/devframe-unchanged-state) · [After](https://github.com/onmax/repros/tree/repro/devframe-unchanged-state/devframe-unchanged-state-fix)
 
