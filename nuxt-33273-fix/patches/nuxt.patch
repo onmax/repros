@@ -1,0 +1,13 @@
+diff --git a/dist/app/composables/router.js b/dist/app/composables/router.js
+index ea86cac43f8c306d86b78a57611962033df9e0a1..d1cb5b49399b53ac928a7ea29bfdc84fcac02802 100644
+--- a/dist/app/composables/router.js
++++ b/dist/app/composables/router.js
+@@ -120,7 +120,7 @@ export const navigateTo = (to, options) => {
+         return response;
+       };
+       if (!isExternal && inMiddleware) {
+-        router.afterEach((final) => final.fullPath === fullPath ? redirect(false) : void 0);
++        router.afterEach((final) => encodeURL(final.fullPath) === encodeURL(fullPath) ? redirect(false) : void 0);
+         return to;
+       }
+       return redirect(!inMiddleware ? void 0 : (
