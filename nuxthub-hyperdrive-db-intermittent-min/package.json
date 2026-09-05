@@ -1,0 +1,22 @@
+{
+  "name": "nuxthub-hyperdrive-db-intermittent-min",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@10.32.1",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "postinstall": "nuxt prepare",
+    "repro": "bash ./scripts/repro.sh"
+  },
+  "dependencies": {
+    "@nuxthub/core": "0.10.7",
+    "drizzle-orm": "^0.45.1",
+    "nuxt": "4.4.2",
+    "postgres": "^3.4.8"
+  },
+  "devDependencies": {
+    "nitro-cloudflare-dev": "^0.2.2",
+    "wrangler": "^4.81.1"
+  }
+}

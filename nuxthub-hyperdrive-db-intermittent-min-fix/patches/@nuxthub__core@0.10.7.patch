@@ -1,0 +1,46 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 09058929602a69dd477019c49e2c66f3771218f9..1f3ca7662425ea045f112220401727e3cc22e667 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -420,6 +420,12 @@ async function setupDatabaseClient(nuxt, hub) {
+     const { url: _, ...rest } = connection;
+     return Object.keys(rest).length ? `{ onnotice: () => {}, ...${JSON.stringify(rest)} }` : "{ onnotice: () => {} }";
+   })();
++  const hyperdrivePostgresOpts = (() => {
++    if (driver !== "postgres-js" || !connection) return "{ onnotice: () => {}, prepare: false }";
++    const { url: _, hyperdriveId: __, ...rest } = connection;
++    const hasPrepare = Object.prototype.hasOwnProperty.call(rest, "prepare");
++    return Object.keys(rest).length ? `{ onnotice: () => {}, ...${JSON.stringify(rest)}${hasPrepare ? "" : ", prepare: false"} }` : "{ onnotice: () => {}, prepare: false }";
++  })();
+   const driverForTypes = driver === "d1-http" ? "sqlite-proxy" : driver;
+   const databaseTypes = `declare module 'hub:db' {
+   export * from '@nuxthub/db'
+@@ -582,7 +588,27 @@ export { db, schema }
+   }
+   if (["postgres-js", "mysql2"].includes(driver) && hub.hosting.includes("cloudflare") && connection?.hyperdriveId) {
+     const bindingName = driver === "postgres-js" ? "POSTGRES" : "MYSQL";
+-    drizzleOrmContent = generateLazyDbTemplate(
++    drizzleOrmContent = driver === "postgres-js" ? `import { drizzle } from 'drizzle-orm/postgres-js'
++import postgres from 'postgres'
++import * as schema from './db/schema.mjs'
++
++function getDb() {
++  const hyperdrive = process.env.${bindingName} || globalThis.__env__?.${bindingName} || globalThis.${bindingName}
++  if (!hyperdrive) throw new Error('${bindingName} binding not found')
++  const client = postgres(hyperdrive.connectionString, ${hyperdrivePostgresOpts})
++  return drizzle({ client, schema${casingOption} })
++}
++
++const db = new Proxy({}, {
++  get(_, prop) {
++    const target = getDb()
++    const value = target[prop]
++    return typeof value === 'function' ? value.bind(target) : value
++  }
++})
++
++export { db, schema }
++` : generateLazyDbTemplate(
+       `import { drizzle } from 'drizzle-orm/${driver}'`,
+       `    const hyperdrive = process.env.${bindingName} || globalThis.__env__?.${bindingName} || globalThis.${bindingName}
+     if (!hyperdrive) throw new Error('${bindingName} binding not found')

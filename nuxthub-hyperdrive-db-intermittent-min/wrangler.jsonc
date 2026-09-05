@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "nuxthub-hyperdrive-db-intermittent-min",
+  "account_id": "ba6e044dfdaaffec3cac45e9feccd237",
+  "main": ".output/server/index.mjs",
+  "compatibility_date": "2026-04-11",
+  "compatibility_flags": [
+    "nodejs_compat",
+    "no_nodejs_compat_v2"
+  ],
+  "workers_dev": true,
+  "assets": {
+    "directory": "./.output/public"
+  },
+  "hyperdrive": [
+    {
+      "binding": "POSTGRES",
+      "id": "af9759cb958841a18246448696ed2c5f"
+    }
+  ]
+}

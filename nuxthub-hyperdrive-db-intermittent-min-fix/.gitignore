@@ -1,0 +1,8 @@
+.env
+.nuxt
+.output
+.wrangler
+node_modules
+repro-output
+
+.data
