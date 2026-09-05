@@ -1,0 +1,16 @@
+{
+  "name": "devframe-terminal-scrollback",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=24.19.0 <25"
+  },
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "@devframes/hub": "0.9.12",
+    "devframe": "0.9.12"
+  }
+}

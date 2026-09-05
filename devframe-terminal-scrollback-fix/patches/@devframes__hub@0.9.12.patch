@@ -1,0 +1,14 @@
+diff --git a/dist/context-nVwOE7i1.mjs b/dist/context-nVwOE7i1.mjs
+index 117907293e87b3b1b660ac0bcbdee1d6c5e71286..a86638ceaac072c3fef95d1a9fb77ff705800d21 100644
+--- a/dist/context-nVwOE7i1.mjs
++++ b/dist/context-nVwOE7i1.mjs
+@@ -769,7 +769,8 @@ var DevframeTerminalsHost = class {
+ 				const result = await reader.read();
+ 				if (isDisposed() || result.done) break;
+ 				sessionBuffer.push(result.value);
+-				if (sessionBuffer.length > TERMINAL_BUFFER_LIMIT) sessionBuffer.splice(0, sessionBuffer.length - TERMINAL_BUFFER_LIMIT);
++				if (sessionBuffer.length === TERMINAL_BUFFER_LIMIT + 1) sessionBuffer.shift();
++				else if (sessionBuffer.length > TERMINAL_BUFFER_LIMIT) sessionBuffer.splice(0, sessionBuffer.length - TERMINAL_BUFFER_LIMIT);
+ 				sink?.write(result.value);
+ 			}
+ 			if (!isDisposed() && sink && !sink.closed) sink.close();
