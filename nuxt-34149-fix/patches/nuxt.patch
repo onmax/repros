@@ -1,0 +1,21 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 932376ed324f47ee20dd785ad569608af70f5fcb..d33092d7508cc8963df57d78038d7b10c2982515 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -1764,6 +1764,7 @@ export function handleHotUpdate(_router, _generateRoutes) {
+ );
+ 
+ const UNHEAD_LIB_RE = /node_modules[/\\](?:@unhead[/\\][^/\\]+|unhead)[/\\]/;
++const NUXT_HEAD_RE = /node_modules[/\\]nuxt[/\\]dist[/\\]head[/\\]runtime[/\\]/;
+ function toImports(specifiers) {
+   return specifiers.map((specifier) => {
+     const imported = specifier.imported;
+@@ -1779,7 +1780,7 @@ const UnheadImportsPlugin = (options) => createUnplugin(() => {
+     enforce: "post",
+     transformInclude(id) {
+       id = normalize(id);
+-      return (isJS(id) || isVue(id, { type: ["script"] })) && !id.startsWith("virtual:") && !id.startsWith(normalize(distDir)) && !UNHEAD_LIB_RE.test(id);
++      return (isJS(id) || isVue(id, { type: ["script"] })) && !id.startsWith("virtual:") && !id.startsWith(normalize(distDir)) && !UNHEAD_LIB_RE.test(id) && !NUXT_HEAD_RE.test(id);
+     },
+     transform: {
+       filter: {
