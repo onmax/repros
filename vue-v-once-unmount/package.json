@@ -1,0 +1,17 @@
+{
+  "name": "vue-v-once-unmount-repro",
+  "private": true,
+  "type": "module",
+  "description": "Agent-authored reproduction; not human-reviewed",
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": "24.19.0"
+  },
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "happy-dom": "20.12.0",
+    "vue": "3.5.42"
+  }
+}
