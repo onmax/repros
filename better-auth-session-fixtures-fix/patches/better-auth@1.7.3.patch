@@ -1,0 +1,100 @@
+diff --git a/dist/plugins/index.d.mts b/dist/plugins/index.d.mts
+index d82d778d0b9a669880d90394cef6e9849307a63a..97e4ae5c0deba3a28cdf8270aabd2a95104888c5 100644
+--- a/dist/plugins/index.d.mts
++++ b/dist/plugins/index.d.mts
+@@ -53,7 +53,7 @@ import { OpenAPIOptions, openAPI } from "./open-api/index.mjs";
+ import { PhoneNumberOptions, UserWithPhoneNumber } from "./phone-number/types.mjs";
+ import { phoneNumber } from "./phone-number/index.mjs";
+ import { SIWEPluginOptions, siwe } from "./siwe/index.mjs";
+-import { LoginResult, TestCookie, TestHelpers, TestUtilsOptions } from "./test-utils/types.mjs";
++import { LoginResult, TestAuthOptions, TestCookie, TestHelpers, TestUtilsOptions } from "./test-utils/types.mjs";
+ import { testUtils } from "./test-utils/index.mjs";
+ import { BackupCodeOptions, backupCode2fa, encodeBackupCodes, generateBackupCodes, getBackupCodes, verifyBackupCode } from "./two-factor/backup-codes/index.mjs";
+ import { OTPOptions, otp2fa } from "./two-factor/otp/index.mjs";
+diff --git a/dist/plugins/test-utils/auth-helpers.mjs b/dist/plugins/test-utils/auth-helpers.mjs
+index f40e09437084c66885db6cb8d3a1b0e1bbc28686..d1ca47cc25dba459214cafc42a2aa6c18f5a4487 100644
+--- a/dist/plugins/test-utils/auth-helpers.mjs
++++ b/dist/plugins/test-utils/auth-helpers.mjs
+@@ -1,10 +1,15 @@
+ import { createCookieHeaders, createTestCookie } from "./cookie-builder.mjs";
++import { sessionSchema } from "@better-auth/core/db";
+ //#region src/plugins/test-utils/auth-helpers.ts
++function createSession(ctx, opts) {
++	const additionalFields = Object.fromEntries(Object.entries(opts.session ?? {}).filter(([key]) => !Object.hasOwn(sessionSchema.shape, key)));
++	return ctx.internalAdapter.createSession(opts.userId, false, additionalFields, true);
++}
+ function createLogin(ctx) {
+ 	return async (opts) => {
+ 		const user = await ctx.internalAdapter.findUserById(opts.userId);
+ 		if (!user) throw new Error(`User not found: ${opts.userId}`);
+-		const session = await ctx.internalAdapter.createSession(opts.userId);
++		const session = await createSession(ctx, opts);
+ 		return {
+ 			session,
+ 			user,
+@@ -16,12 +21,12 @@ function createLogin(ctx) {
+ }
+ function createGetAuthHeaders(ctx) {
+ 	return async (opts) => {
+-		return createCookieHeaders(ctx, (await ctx.internalAdapter.createSession(opts.userId)).token);
++		return createCookieHeaders(ctx, (await createSession(ctx, opts)).token);
+ 	};
+ }
+ function createGetCookies(ctx) {
+ 	return async (opts) => {
+-		return createTestCookie(ctx, (await ctx.internalAdapter.createSession(opts.userId)).token, opts.domain);
++		return createTestCookie(ctx, (await createSession(ctx, opts)).token, opts.domain);
+ 	};
+ }
+ //#endregion
+diff --git a/dist/plugins/test-utils/index.d.mts b/dist/plugins/test-utils/index.d.mts
+index 3d32d741d79cda28fc588e6fe3fc516700e5599c..1c9c076e3f4cb0e9c47a2e7c74a24d4ec3d54653 100644
+--- a/dist/plugins/test-utils/index.d.mts
++++ b/dist/plugins/test-utils/index.d.mts
+@@ -1,4 +1,4 @@
+-import { LoginResult, TestCookie, TestHelpers, TestUtilsOptions } from "./types.mjs";
++import { LoginResult, TestAuthOptions, TestCookie, TestHelpers, TestUtilsOptions } from "./types.mjs";
+ import * as _$_better_auth_core0 from "@better-auth/core";
+ 
+ //#region src/plugins/test-utils/index.d.ts
+diff --git a/dist/plugins/test-utils/types.d.mts b/dist/plugins/test-utils/types.d.mts
+index d044347033197fefa4b341f0070e76ee9cc11cee..c255b995f4621a8e19037ffb155859e2ffb273af 100644
+--- a/dist/plugins/test-utils/types.d.mts
++++ b/dist/plugins/test-utils/types.d.mts
+@@ -21,6 +21,12 @@ interface LoginResult {
+   cookies: TestCookie[];
+   token: string;
+ }
++/** Options for creating a session with the test auth helpers. */
++interface TestAuthOptions {
++  userId: string;
++  /** Additional session fields. Standard session fields are ignored. */
++  session?: Record<string, unknown>;
++}
+ interface TestHelpers {
+   createUser(overrides?: Partial<User> & Record<string, unknown>): User;
+   createOrganization?(overrides?: Record<string, unknown>): Record<string, unknown>;
+@@ -33,18 +39,11 @@ interface TestHelpers {
+   }): Promise<Record<string, unknown>>;
+   deleteUser(userId: string): Promise<void>;
+   deleteOrganization?(orgId: string): Promise<void>;
+-  login(opts: {
+-    userId: string;
+-  }): Promise<LoginResult>;
+-  getAuthHeaders(opts: {
+-    userId: string;
+-  }): Promise<Headers>;
+-  getCookies(opts: {
+-    userId: string;
+-    domain?: string;
+-  }): Promise<TestCookie[]>;
++  login(opts: TestAuthOptions): Promise<LoginResult>;
++  getAuthHeaders(opts: TestAuthOptions): Promise<Headers>;
++  getCookies(opts: TestAuthOptions & { domain?: string }): Promise<TestCookie[]>;
+   getOTP?(identifier: string): string | undefined;
+   clearOTPs?(): void;
+ }
+ //#endregion
+-export { LoginResult, TestCookie, TestHelpers, TestUtilsOptions };
+\ No newline at end of file
++export { LoginResult, TestAuthOptions, TestCookie, TestHelpers, TestUtilsOptions };

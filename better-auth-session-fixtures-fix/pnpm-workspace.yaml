@@ -1,0 +1,2 @@
+patchedDependencies:
+  better-auth@1.7.3: patches/better-auth@1.7.3.patch
