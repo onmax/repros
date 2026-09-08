@@ -1,0 +1,20 @@
+{
+  "name": "better-auth-session-fixtures-repro",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.15.1",
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.19.0",
+      "onFail": "download"
+    }
+  },
+  "scripts": {
+    "verify": "node --disable-warning=ExperimentalWarning verify.mjs"
+  },
+  "dependencies": {
+    "better-auth": "1.7.3"
+  },
+  "devDependencies": {}
+}

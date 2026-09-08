@@ -1,0 +1,26 @@
+Clean local clone of branch repro/better-auth-session-fixtures
+Platform: Linux x86_64
+Runtime: Node 24.19.0, pnpm 11.15.1, better-auth 1.7.3
+Command: pnpm install --frozen-lockfile && pnpm verify
+
+✓ Lockfile passes supply-chain policies (verified 2m ago)
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +24
+++++++++++++++++++++++++
+Progress: resolved 24, reused 24, downloaded 0, added 23, done
+
+dependencies:
++ better-auth 1.7.3
+
+devDependencies:
++ node 24.19.0
+
+Done in 908ms using pnpm v11.15.1
+$ node --disable-warning=ExperimentalWarning verify.mjs
+ACTUAL: NOT NULL constraint failed: session.providerToken
+EXPECTED CAPABILITY: supply a per-login providerToken and receive a valid session.
+CONTROL: adding only defaultValue allows login and authenticated session lookup.
+REPRODUCED: required session fields without defaults prevent testUtils.login().
+
+Exit code: 0

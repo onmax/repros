@@ -1,0 +1,9 @@
+node_modules/
+.pnpm-store/
+.nuxt/
+.output/
+dist/
+.cache/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
