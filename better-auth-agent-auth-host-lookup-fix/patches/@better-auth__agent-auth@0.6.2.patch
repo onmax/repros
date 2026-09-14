@@ -1,0 +1,33 @@
+diff --git a/dist/index.js b/dist/index.js
+index 2b0aee610763da607022234b76cb9a21a5f3ae1d..11a15be681a88f1da9c891c0caa59f665875f6ad 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -215,13 +215,15 @@ function resolveDeviceAuthPage(opts, origin) {
+   return `${origin}${path}`;
+ }
+ async function findHostByIdOrKid(adapter, iss) {
+-  return await adapter.findOne({
+-    model: TABLE.host,
+-    where: [{ field: "id", value: iss }]
+-  }) ?? await adapter.findOne({
++  const host = await adapter.findOne({
+     model: TABLE.host,
+     where: [{ field: "kid", value: iss }]
+   });
++  if (host || /^[\w-]{43}$/.test(iss)) return host;
++  return adapter.findOne({
++    model: TABLE.host,
++    where: [{ field: "id", value: iss }]
++  });
+ }
+ async function findHostByKey(adapter, publicKey) {
+   const kid = typeof publicKey.kid === "string" ? publicKey.kid : null;
+@@ -1141,7 +1143,7 @@ function createAgentAuthBeforeHook(opts, jtiCache, jwksCache) {
+           if (!hostIdFromIss) {
+             throw agentError("UNAUTHORIZED", AGENT_AUTH_ERROR_CODES.INVALID_JWT);
+           }
+-          const host2 = await db.findHostById(hostIdFromIss) ?? await db.findHostByKid(hostIdFromIss);
++          const host2 = await db.findHostByKid(hostIdFromIss) ?? (/^[\w-]{43}$/.test(hostIdFromIss) ? null : await db.findHostById(hostIdFromIss));
+           const hostAllowed = host2 && (host2.publicKey || host2.jwksUrl) && (host2.status === "active" || host2.status === "pending" && ctx.path === "/agent/status");
+           if (!hostAllowed) {
+             throw agentError("UNAUTHORIZED", AGENT_AUTH_ERROR_CODES.AGENT_NOT_FOUND);

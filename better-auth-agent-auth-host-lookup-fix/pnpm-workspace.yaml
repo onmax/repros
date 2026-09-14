@@ -1,0 +1,2 @@
+patchedDependencies:
+  '@better-auth/agent-auth@0.6.2': patches/@better-auth__agent-auth@0.6.2.patch
