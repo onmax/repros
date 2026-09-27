@@ -12,3 +12,7 @@ Better Auth base path: expected /api/auth, actual /api/auth
 Mounted failure: 1 test passed
 GET /app/api/auth/ok: expected 200, actual 404
 Better Auth base path: expected /app/api/auth, actual /api/auth
+
+Fresh checkout of branch at b891c41, 2026-09-27 UTC:
+The same install-and-verify command passed. Root: 200 and /api/auth.
+Mounted: 404 and /api/auth.

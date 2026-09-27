@@ -17,3 +17,11 @@ pnpm install --frozen-lockfile && pnpm verify
 The `server/api/auth-base.get.ts` route exposes `(await auth.$context).baseURL`, which Better Auth uses for generated auth links and OAuth callback URLs. The empty server and client config files are required by the module. The production build is outside this fixture's claim; the source issue's repeatable dev-server failure is the boundary tested here.
 
 A fixed control using the same app and verifier is in [`../better-auth-510-app-base-url-fix`](../better-auth-510-app-base-url-fix). It applies a committed patch to the same pinned package version.
+
+From GitHub:
+
+```sh
+git clone --depth 1 --branch repro/better-auth-510-app-base-url https://github.com/onmax/repros.git
+cd repros/better-auth-510-app-base-url
+pnpm install --frozen-lockfile && pnpm verify
+```

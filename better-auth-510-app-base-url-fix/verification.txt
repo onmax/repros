@@ -9,3 +9,7 @@ Production Node-server build with the pinned package and patch:
 GET /app/api/auth/ok: 200, {"ok":true}
 GET /app/api/auth-base: http://127.0.0.1:37999/app/api/auth
 Unpatched production control: /app/api/auth/ok returned 404 and base path /api/auth.
+
+Fresh checkout of branch at b891c41, 2026-09-27 UTC:
+The same install-and-verify command passed. Root: 200 and /api/auth.
+Mounted: 200 and /app/api/auth.
