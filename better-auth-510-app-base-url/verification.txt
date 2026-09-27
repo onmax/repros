@@ -1,0 +1,14 @@
+Fresh checkout verification, 2026-09-27 UTC
+Branch: repro/better-auth-510-app-base-url
+Source commit: 0294502
+Command: pnpm install --frozen-lockfile && pnpm verify
+Node: 24.19.0
+pnpm: 11.22.0
+
+Root control: 1 test passed
+GET /api/auth/ok: expected 200, actual 200
+Better Auth base path: expected /api/auth, actual /api/auth
+
+Mounted failure: 1 test passed
+GET /app/api/auth/ok: expected 200, actual 404
+Better Auth base path: expected /app/api/auth, actual /api/auth
