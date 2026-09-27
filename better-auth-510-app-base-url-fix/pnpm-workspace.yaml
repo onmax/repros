@@ -1,0 +1,10 @@
+packages:
+  - .
+allowBuilds:
+  esbuild: true
+overrides:
+  ansi-regex: 6.3.0
+  pretty-bytes: 7.1.3
+  ws: 8.21.3
+patchedDependencies:
+  '@nuxtjs/better-auth@0.3.5': patches/@nuxtjs__better-auth@0.3.5.patch

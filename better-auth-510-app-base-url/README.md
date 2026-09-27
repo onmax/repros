@@ -15,3 +15,5 @@ pnpm install --frozen-lockfile && pnpm verify
 `verify` runs the same Nuxt app twice. At `/`, the route returns 200 and the auth base path is `/api/auth`. With only `app.baseURL` changed to `/app/`, the route returns 404 and Better Auth still uses `/api/auth`. It prints expected and actual results and exits nonzero if either observation changes. `@nuxt/test-utils` starts and stops each app. No database, credentials, browser, or deployment is needed.
 
 The `server/api/auth-base.get.ts` route exposes `(await auth.$context).baseURL`, which Better Auth uses for generated auth links and OAuth callback URLs. The empty server and client config files are required by the module. The production build is outside this fixture's claim; the source issue's repeatable dev-server failure is the boundary tested here.
+
+A fixed control using the same app and verifier is in [`../better-auth-510-app-base-url-fix`](../better-auth-510-app-base-url-fix). It applies a committed patch to the same pinned package version.

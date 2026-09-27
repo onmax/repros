@@ -1,0 +1,53 @@
+diff --git a/dist/runtime/app/composables/useAuthClient.js b/dist/runtime/app/composables/useAuthClient.js
+index 932fc578503a43531e957fd90e210341eef5a5b3..4c6ece096b913ee94e1e7c2294998e12d9b5f4c9 100644
+--- a/dist/runtime/app/composables/useAuthClient.js
++++ b/dist/runtime/app/composables/useAuthClient.js
+@@ -1,5 +1,6 @@
+ import createAppAuthClient from "#auth/client";
+ import { useRequestURL, useRuntimeConfig } from "#imports";
++import { resolveAuthBaseURL } from "../../internal/auth-base-url.js";
+ import { createVueSafeAuthProxy } from "../internal/vue-safe-auth-proxy.js";
+ let _client = null;
+ let _clientFacade = null;
+@@ -27,7 +28,8 @@ export function useRawAuthClient() {
+   const requestURL = useRequestURL();
+   const configuredSiteUrl = runtimeConfig.public.siteUrl;
+   const siteUrl = typeof configuredSiteUrl === "string" && configuredSiteUrl ? configuredSiteUrl : requestURL.origin;
+-  return getClient(siteUrl);
++  const clientOnly = runtimeConfig.public.auth?.clientOnly;
++  return getClient(clientOnly ? siteUrl : resolveAuthBaseURL(siteUrl, runtimeConfig.app?.baseURL));
+ }
+ export function useAuthClient() {
+   const rawClient = useRawAuthClient();
+diff --git a/dist/runtime/internal/auth-base-url.js b/dist/runtime/internal/auth-base-url.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..a351193a11d35d5b2a324a166aebeea6ac26a2bb
+--- /dev/null
++++ b/dist/runtime/internal/auth-base-url.js
+@@ -0,0 +1,5 @@
++import { joinURL } from "ufo";
++export function resolveAuthBaseURL(siteUrl, appBaseURL) {
++  const origin = new URL(siteUrl).origin;
++  return appBaseURL && appBaseURL !== "/" ? joinURL(origin, appBaseURL, "/api/auth") : origin;
++}
+diff --git a/dist/runtime/server/utils/auth.js b/dist/runtime/server/utils/auth.js
+index a666546aa5b767d9f27a28be046b1f5af61a309e..62574a57cc440079791901ce9395dbd1d585c51e 100644
+--- a/dist/runtime/server/utils/auth.js
++++ b/dist/runtime/server/utils/auth.js
+@@ -3,6 +3,7 @@ import { withoutProtocol } from "ufo";
+ import { createDatabase, db } from "#auth/database";
+ import createServerAuth from "#auth/server";
+ import { getRequestHost, getRequestProtocol, useRuntimeConfig } from "../internal/nitro-compat.js";
++import { resolveAuthBaseURL } from "../../internal/auth-base-url.js";
+ import { resolveCustomSecondaryStorageRequirement } from "./custom-secondary-storage.js";
+ const _authCache = /* @__PURE__ */ new Map();
+ const requestAuthKey = Symbol.for("nuxt-better-auth.requestAuth");
+@@ -254,7 +255,7 @@ export function serverAuth(event) {
+     ...rateLimit ? { rateLimit } : {},
+     ...database ? { database } : {},
+     secret: betterAuthSecret,
+-    baseURL: siteUrl,
++    baseURL: resolveAuthBaseURL(siteUrl, runtimeConfig.app?.baseURL),
+     trustedOrigins
+   };
+   const auth = betterAuth(authOptions);

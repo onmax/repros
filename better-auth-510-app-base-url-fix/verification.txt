@@ -1,0 +1,11 @@
+Local verification, 2026-09-27 UTC
+Command: pnpm install --frozen-lockfile && pnpm verify
+Node: 24.19.0; pnpm: 11.22.0
+
+Root control: GET /api/auth/ok expected 200, actual 200; base path /api/auth.
+Mounted fixed: GET /app/api/auth/ok expected 200, actual 200; base path /app/api/auth.
+
+Production Node-server build with the pinned package and patch:
+GET /app/api/auth/ok: 200, {"ok":true}
+GET /app/api/auth-base: http://127.0.0.1:37999/app/api/auth
+Unpatched production control: /app/api/auth/ok returned 404 and base path /api/auth.
