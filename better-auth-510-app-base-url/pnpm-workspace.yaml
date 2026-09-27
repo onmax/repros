@@ -1,0 +1,8 @@
+packages:
+  - .
+allowBuilds:
+  esbuild: true
+overrides:
+  ansi-regex: 6.3.0
+  pretty-bytes: 7.1.3
+  ws: 8.21.3
