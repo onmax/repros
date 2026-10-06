@@ -1,0 +1,13 @@
+diff --git a/dist/runtime/app/middleware/auth.global.js b/dist/runtime/app/middleware/auth.global.js
+index fab2d1db9184baa857cf8e89526bb4fdb82f0a82..ef1ca6dfe20c4e277356aa861240cb98a4bb3456 100644
+--- a/dist/runtime/app/middleware/auth.global.js
++++ b/dist/runtime/app/middleware/auth.global.js
+@@ -31,6 +31,8 @@ export default defineNuxtRouteMiddleware(async (to) => {
+   if (auth === void 0 || auth === false)
+     return;
+   const config = useRuntimeConfig().public.auth;
++  if (import.meta.server && config?.clientOnly)
++    return;
+   const { fetchSession, user, loggedIn } = useUserSession();
+   const mode = typeof auth === "string" ? auth : auth?.only ?? "user";
+   const redirectTo = typeof auth === "object" ? auth.redirectTo : void 0;
