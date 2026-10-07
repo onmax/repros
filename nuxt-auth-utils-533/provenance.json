@@ -1,0 +1,26 @@
+{
+  "name": "nuxt-auth-utils",
+  "version": "0.5.30",
+  "gitHead": "028ce682a7f18a70f1a64e0b6d3f0438b772b03b",
+  "dist": {
+    "shasum": "ed21971d2a16337eed8df4f30faffbfea9bf48d4",
+    "tarball": "https://registry.npmjs.org/nuxt-auth-utils/-/nuxt-auth-utils-0.5.30.tgz",
+    "fileCount": 151,
+    "integrity": "sha512-KtHMHy/OQAy/RYAmORBDvtNRs0BYbeLQOOrMv0FpBpWUYqMBA2lhumqnTACljFHGLGNpMy25Ck7cWVhVUjc6vA==",
+    "signatures": [
+      {
+        "sig": "MEUCIE6zfJ6Oo3tXqSFCIAySVuezQjL2V0yRTSUmAwo9J2uLAiEA5ZZhWF2CClrI/ACXsrmWtw+qxxTy8NTm/mAkBzfDc8Y=",
+        "keyid": "SHA256:DhQ8wR5APBvFHLF/+Tc+AYvPOdTpcIDqOhxsBHRwC7U"
+      }
+    ],
+    "unpackedSize": 334656
+  },
+  "upstreamSource": "https://github.com/atinux/nuxt-auth-utils",
+  "upstreamCommit": "028ce682a7f18a70f1a64e0b6d3f0438b772b03b",
+  "publishedHelperSha256": "8a2e9f910a3dad7b736d608d890923d7fecd08745fd67d224067eeb145d20608",
+  "fixedHelperSha256": "73fea073882481df37972cf701feb65001268349bc83629bc51cc9b64cf3bb6c",
+  "node": "20.20.0",
+  "nuxt": "4.3.1",
+  "h3": "1.15.5",
+  "pnpm": "10.29.3"
+}

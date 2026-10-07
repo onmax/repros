@@ -1,9 +1,10 @@
-# Reproductions
+# Nuxt Auth Utils session replacement reproduction
 
-Each `repro/<library>-<issue-or-slug>` branch contains one bug reproduction and any fixed control. Older branches may use different names.
+This branch owns [nuxt-auth-utils #533](https://github.com/atinux/nuxt-auth-utils/issues/533).
 
-Choose the branch for the bug, then follow the README in its fixture directory. Failing and fixed examples stay together on that branch.
+- [Failing production Nuxt application](nuxt-auth-utils-533/README.md)
+- [Fixed control using the same package version](nuxt-auth-utils-533-fix/README.md)
 
-Start new reproduction branches from `main`. Keep source, required inputs, lockfiles, and patches in Git; leave dependencies and build output out.
+With Node 20.20.0 and Corepack, run `node verify-pair.mjs` from this directory. It succeeds only when the unpatched state reproduces the stale cookie fields and the patched state passes the same verifier.
 
-`main` contains only this README and the agent instructions. Reproduction branches are never merged into it.
+Clone this branch with `git clone --single-branch --branch repro/nuxt-auth-utils-533 https://github.com/onmax/repros.git`. Reproduction branches are never merged into `main`.

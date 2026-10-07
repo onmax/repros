@@ -1,0 +1,18 @@
+diff --git a/dist/runtime/server/utils/session.js b/dist/runtime/server/utils/session.js
+--- a/dist/runtime/server/utils/session.js
++++ b/dist/runtime/server/utils/session.js
+@@ -18,7 +18,13 @@
+ export async function replaceUserSession(event, data, config) {
+   const session = await _useSession(event, config);
+   await session.clear();
+-  await session.update(data);
++  await session.update((oldData) => {
++    // h3 can restore the incoming cookie after clear(), before merging this update.
++    for (const key of Object.keys(oldData)) {
++      Reflect.deleteProperty(oldData, key);
++    }
++    return data;
++  });
+   return session.data;
+ }
+ export async function clearUserSession(event, config) {
