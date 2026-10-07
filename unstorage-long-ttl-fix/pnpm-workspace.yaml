@@ -1,0 +1,3 @@
+packages: []
+patchedDependencies:
+  unstorage@2.0.0-alpha.10: patches/unstorage@2.0.0-alpha.10.patch

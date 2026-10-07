@@ -1,0 +1,74 @@
+$ node compare.mjs
+✓ Lockfile passes supply-chain policies (verified 7m ago)
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +2
+++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: <pnpm-store>
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 2, reused 2, downloaded 0, added 1, done
+
+dependencies:
++ unstorage 2.0.0-alpha.10
+
+devDependencies:
++ node 24.21.0
+
+Done in 522ms using pnpm v11.28.3
+NATIVE {"node":"v24.21.0","platform":"linux","arch":"x64","package":"unstorage@2.0.0-alpha.10","sourceSha256":"528742313756ee147e8a7426420a97f215a165e426de6d075156c72e64d8ae56","ttlSeconds":2592000,"ttlMs":2592000000,"maxDelay":2147483647,"afterMs":30,"trials":[{"trial":1,"value":null,"raw":null},{"trial":2,"value":null,"raw":null},{"trial":3,"value":null,"raw":null}],"warnings":[{"name":"TimeoutOverflowWarning","message":"2592000000 does not fit into a 32-bit signed integer.\nTimeout duration was set to 1."},{"name":"TimeoutOverflowWarning","message":"2592000000 does not fit into a 32-bit signed integer.\nTimeout duration was set to 1."},{"name":"TimeoutOverflowWarning","message":"2592000000 does not fit into a 32-bit signed integer.\nTimeout duration was set to 1."},{"name":"TimeoutOverflowWarning","message":"2592000000 does not fit into a 32-bit signed integer.\nTimeout duration was set to 1."},{"name":"TimeoutOverflowWarning","message":"2592000000 does not fit into a 32-bit signed integer.\nTimeout duration was set to 1."},{"name":"TimeoutOverflowWarning","message":"2592000000 does not fit into a 32-bit signed integer.\nTimeout duration was set to 1."}]}
+[ELIFECYCLE] Command failed with exit code 1.
+$ node verify.mjs
+(node:2084772) TimeoutOverflowWarning: 2592000000 does not fit into a 32-bit signed integer.
+Timeout duration was set to 1.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2084772) TimeoutOverflowWarning: 2592000000 does not fit into a 32-bit signed integer.
+Timeout duration was set to 1.
+(node:2084772) TimeoutOverflowWarning: 2592000000 does not fit into a 32-bit signed integer.
+Timeout duration was set to 1.
+(node:2084772) TimeoutOverflowWarning: 2592000000 does not fit into a 32-bit signed integer.
+Timeout duration was set to 1.
+(node:2084772) TimeoutOverflowWarning: 2592000000 does not fit into a 32-bit signed integer.
+Timeout duration was set to 1.
+(node:2084772) TimeoutOverflowWarning: 2592000000 does not fit into a 32-bit signed integer.
+Timeout duration was set to 1.
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: 30-day TTL entries must remain cached after 30ms, including raw writes
+    at file://<checkout>/unstorage-long-ttl/verify.mjs:46:1 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.21.0
+EXPECTED RED: six monthly writes disappear after native timer overflow
+? Verifying lockfile against supply-chain policies (2 entries)...
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +2
+++
+✓ Lockfile passes supply-chain policies (2 entries in 73ms)
+Packages are copied from the content-addressable store to the virtual store.
+  Content-addressable store is at: <pnpm-store>
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 2, reused 2, downloaded 0, added 1, done
+
+dependencies:
++ unstorage 2.0.0-alpha.10
+
+devDependencies:
++ node 24.21.0
+
+Done in 521ms using pnpm v11.28.3
+NATIVE {"node":"v24.21.0","platform":"linux","arch":"x64","package":"unstorage@2.0.0-alpha.10","sourceSha256":"225c0f3377e3842ff24af08aaa41caf4d7970609176769181e53f1ac37eb65a4","ttlSeconds":2592000,"ttlMs":2592000000,"maxDelay":2147483647,"afterMs":30,"trials":[{"trial":1,"value":"cached response","raw":"raw response"},{"trial":2,"value":"cached response","raw":"raw response"},{"trial":3,"value":"cached response","raw":"raw response"}],"warnings":[]}
+PASS: native monthly normal/raw retention, proactive short TTL expiry, no-TTL retention
+VIRTUAL {"exactDeadline":"PASS","rawDeadline":"PASS","cancellationBeforeAndAfterRearm":"PASS","scheduled":[2147483647,444516353,2147483647,444516353,2147483647,2147483647,2147483647,2147483647,2147483647,444516353,2147483647,444516353,2147483647,444516353,2147483647,444516353],"unrefs":16}
+$ node verify.mjs
+GREEN: patched monthly writes remain; exact deadline and cancellation controls pass
+PASS: pinned native red/green comparison
