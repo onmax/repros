@@ -1,0 +1,56 @@
+diff --git a/dist/DateField/DateFieldRoot.cjs b/dist/DateField/DateFieldRoot.cjs
+index 98cdae9aaabe47d80fe35b230fbb3859f7e6f7f1..3815a57b7dea600b1b64eba8b66328a8ea575c8c 100644
+--- a/dist/DateField/DateFieldRoot.cjs
++++ b/dist/DateField/DateFieldRoot.cjs
+@@ -305,6 +305,7 @@ var DateFieldRoot_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */
+ 					required: resolvedRequired.value,
+ 					max: inputMaxValue.value,
+ 					min: inputMinValue.value,
++					step: inferredGranularity.value === "second" ? 1 : void 0,
+ 					onFocus: _cache[0] || (_cache[0] = ($event) => Array.from(segmentElements.value)?.[0]?.focus())
+ 				}, null, 8, [
+ 					"id",
+@@ -314,7 +315,8 @@ var DateFieldRoot_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */
+ 					"disabled",
+ 					"required",
+ 					"max",
+-					"min"
++					"min",
++					"step"
+ 				])]),
+ 				_: 3
+ 			}, 16, [
+diff --git a/dist/DateField/DateFieldRoot.js b/dist/DateField/DateFieldRoot.js
+index fadeb16796c281095aa627140b247a922439fb90..e3f39a341bc51ef48c1e846d55c279d9bb219cfd 100644
+--- a/dist/DateField/DateFieldRoot.js
++++ b/dist/DateField/DateFieldRoot.js
+@@ -304,6 +304,7 @@ var DateFieldRoot_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */
+ 					required: resolvedRequired.value,
+ 					max: inputMaxValue.value,
+ 					min: inputMinValue.value,
++					step: inferredGranularity.value === "second" ? 1 : void 0,
+ 					onFocus: _cache[0] || (_cache[0] = ($event) => Array.from(segmentElements.value)?.[0]?.focus())
+ 				}, null, 8, [
+ 					"id",
+@@ -313,7 +314,8 @@ var DateFieldRoot_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */
+ 					"disabled",
+ 					"required",
+ 					"max",
+-					"min"
++					"min",
++					"step"
+ 				])]),
+ 				_: 3
+ 			}, 16, [
+diff --git a/src/DateField/DateFieldRoot.vue b/src/DateField/DateFieldRoot.vue
+index 45979b5a3689b753ec6d5c8dfd7dc63a0ff9e920..55eaaf190d4853e4272cd902df6c50755dd7e080 100644
+--- a/src/DateField/DateFieldRoot.vue
++++ b/src/DateField/DateFieldRoot.vue
+@@ -392,6 +392,7 @@ defineExpose({
+       :required="resolvedRequired"
+       :max="inputMaxValue"
+       :min="inputMinValue"
++      :step="inferredGranularity === 'second' ? 1 : undefined"
+       @focus="Array.from(segmentElements)?.[0]?.focus()"
+     />
+   </Primitive>

@@ -1,0 +1,154 @@
+{
+  "exitCode": 1,
+  "node": "v24.21.0",
+  "platform": "linux/x64",
+  "pass": false,
+  "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36",
+  "results": [
+    {
+      "name": "second-offset-min",
+      "pass": false,
+      "expectedValid": true,
+      "value": "2026-11-30T23:59:59",
+      "min": "2026-10-07T15:20:06",
+      "step": null,
+      "type": "datetime-local",
+      "flags": {
+        "valid": false,
+        "stepMismatch": true,
+        "rangeUnderflow": false,
+        "rangeOverflow": false,
+        "valueMissing": false
+      },
+      "submits": 0,
+      "invalidEvents": 1
+    },
+    {
+      "name": "second-no-min",
+      "pass": true,
+      "expectedValid": true,
+      "value": "2026-11-30T23:59:59",
+      "min": "",
+      "step": null,
+      "type": "datetime-local",
+      "flags": {
+        "valid": true,
+        "stepMismatch": false,
+        "rangeUnderflow": false,
+        "rangeOverflow": false,
+        "valueMissing": false
+      },
+      "submits": 1,
+      "invalidEvents": 0
+    },
+    {
+      "name": "second-aligned-min",
+      "pass": true,
+      "expectedValid": true,
+      "value": "2026-10-07T15:20:06",
+      "min": "2026-10-07T15:20:06",
+      "step": null,
+      "type": "datetime-local",
+      "flags": {
+        "valid": true,
+        "stepMismatch": false,
+        "rangeUnderflow": false,
+        "rangeOverflow": false,
+        "valueMissing": false
+      },
+      "submits": 1,
+      "invalidEvents": 0
+    },
+    {
+      "name": "minute",
+      "pass": true,
+      "expectedValid": true,
+      "value": "2026-11-30T23:59",
+      "min": "2026-10-07T15:20",
+      "step": null,
+      "type": "datetime-local",
+      "flags": {
+        "valid": true,
+        "stepMismatch": false,
+        "rangeUnderflow": false,
+        "rangeOverflow": false,
+        "valueMissing": false
+      },
+      "submits": 1,
+      "invalidEvents": 0
+    },
+    {
+      "name": "day",
+      "pass": true,
+      "expectedValid": true,
+      "value": "2026-11-30",
+      "min": "",
+      "step": null,
+      "type": "date",
+      "flags": {
+        "valid": true,
+        "stepMismatch": false,
+        "rangeUnderflow": false,
+        "rangeOverflow": false,
+        "valueMissing": false
+      },
+      "submits": 1,
+      "invalidEvents": 0
+    },
+    {
+      "name": "below-min",
+      "pass": true,
+      "expectedValid": false,
+      "value": "2026-10-07T15:20:05",
+      "min": "2026-10-07T15:20:06",
+      "step": null,
+      "type": "datetime-local",
+      "flags": {
+        "valid": false,
+        "stepMismatch": true,
+        "rangeUnderflow": true,
+        "rangeOverflow": false,
+        "valueMissing": false
+      },
+      "submits": 0,
+      "invalidEvents": 1
+    },
+    {
+      "name": "above-max",
+      "pass": true,
+      "expectedValid": false,
+      "value": "2026-11-30T23:59:59",
+      "min": "",
+      "step": null,
+      "type": "datetime-local",
+      "flags": {
+        "valid": false,
+        "stepMismatch": false,
+        "rangeUnderflow": false,
+        "rangeOverflow": true,
+        "valueMissing": false
+      },
+      "submits": 0,
+      "invalidEvents": 1
+    },
+    {
+      "name": "required-empty",
+      "pass": true,
+      "expectedValid": false,
+      "value": "",
+      "min": "",
+      "step": null,
+      "type": "datetime-local",
+      "flags": {
+        "valid": false,
+        "stepMismatch": false,
+        "rangeUnderflow": false,
+        "rangeOverflow": false,
+        "valueMissing": true
+      },
+      "submits": 0,
+      "invalidEvents": 1
+    }
+  ],
+  "assertion": "second-offset-min: expected valid=true and submits=1, actual valid=false, stepMismatch=true, submits=0"
+}
