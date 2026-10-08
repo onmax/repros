@@ -1,0 +1,13 @@
+Fresh checkout and clean-install verification, 2026-10-08:
+https://github.com/nuxt-modules/better-auth/actions/runs/37806600758
+Job: published-repro, success
+Node 24.21.0, agent-browser 0.38.2, Chrome 155.0.8059.39
+
+pnpm install --frozen-lockfile && pnpm verify
+Expected host styles: {"heading":"32px","headingBorder":"0px","inputWidth":"180px","inputPadding":"2px","bodyMargin":"24px","themeVariable":""}
+Actual host styles: {"bodyMargin":"24px","devtoolsStyles":1,"heading":"32px","headingBorder":"0px","inputPadding":"2px","inputWidth":"180px","themeVariable":""}
+PASS: host styles are isolated
+Exit status: 0
+
+Application source and verifier match ../better-auth-567 exactly.
+Only the installed module DevTools page is patched.
