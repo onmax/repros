@@ -1,0 +1,43 @@
+diff --git a/dist/index.js b/dist/index.js
+index b0383953a27e4426ce544128a26bf3c8d8964b06..f692e89eaff66a06ae61e02d060b4794ce5f7c68 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -2826,11 +2826,19 @@ var TeamsAdapter = class {
+     return this.graphReader.fetchChannelInfo(channelId);
+   }
+   async postChannelMessage(channelId, message) {
+-    const { conversationId } = this.decodeThreadId(channelId);
++    const channelData = this.decodeThreadId(channelId);
++    const { conversationId } = channelData;
+     const baseConversationId = conversationId.replace(
+       MESSAGEID_STRIP_PATTERN2,
+       ""
+     );
++    const rootThreadId = (messageId) => messageId && baseConversationId.endsWith("@thread.tacv2")
++      ? this.encodeThreadId({
++          ...channelData,
++          conversationType: "channel",
++          conversationId: `${baseConversationId};messageid=${messageId}`
++        })
++      : channelId;
+     const files = extractFiles(message);
+     const fileAttachments = files.length > 0 ? await this.filesToAttachments(files) : [];
+     const card = extractCard(message);
+@@ -2846,7 +2854,7 @@ var TeamsAdapter = class {
+       ];
+       try {
+         const sent = await this.app.send(baseConversationId, activity2);
+-        return { id: sent.id || "", threadId: channelId, raw: activity2 };
++        return { id: sent.id || "", threadId: rootThreadId(sent.id), raw: activity2 };
+       } catch (error) {
+         this.logger.error("Teams API: postChannelMessage failed", {
+           conversationId: baseConversationId,
+@@ -2869,7 +2877,7 @@ var TeamsAdapter = class {
+       this.logger.debug("Teams API: postChannelMessage response", {
+         messageId: sent.id
+       });
+-      return { id: sent.id || "", threadId: channelId, raw: activity };
++      return { id: sent.id || "", threadId: rootThreadId(sent.id), raw: activity };
+     } catch (error) {
+       this.logger.error("Teams API: postChannelMessage failed", {
+         conversationId: baseConversationId,
