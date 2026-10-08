@@ -1,0 +1,11 @@
+Upstream source: ba45e91b4d15dbce6fbc64ab678e61441763b6b1, version 0.3.9
+Installed module: @nuxtjs/better-auth 0.3.9 from npm, lockfile-pinned
+Runtime: Node 24.21.0, Nuxt 4.6.0, Vue 3.5.43, Better Auth 1.7.7
+Browser CLI: agent-browser 0.38.2
+
+Unpatched acceptance check, 2026-10-08:
+/home/maxi/.local/bin/fleet-queue node verify.mjs --url http://127.0.0.1:3097
+Expected host styles: {"heading":"32px","headingBorder":"0px","inputWidth":"180px","inputPadding":"2px","bodyMargin":"24px","themeVariable":""}
+Actual host styles: {"bodyMargin":"0px","devtoolsStyles":1,"heading":"13px","headingBorder":"1px","inputPadding":"7px","inputWidth":"340px","themeVariable":"#fff"}
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal
+Exit status: 1
