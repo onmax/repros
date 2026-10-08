@@ -1,0 +1,22 @@
+diff --git a/dist/channels-Dn8Jq4Pb.js b/dist/channels-Dn8Jq4Pb.js
+index 630fe339aeb17dc4457e74097eefaf1d65d5430a..ba5da64c5516330c8e5caa4f4ce8c01eb2f335c1 100644
+--- a/dist/channels-Dn8Jq4Pb.js
++++ b/dist/channels-Dn8Jq4Pb.js
+@@ -3171,7 +3171,7 @@ async function messageChannelReplyEffect(context) {
+ 		}
+ 		const adapter = context.channel.adapter ? await resolveEffectOption(context.channel.adapter, context) : void 0;
+ 		if (adapter && context.run?.threadId) {
+-			const threadId = adapter.channelIdFromThreadId(context.run.threadId);
++			const threadId = context.run.threadId;
+ 			if (adapter.stream && await adapter.stream(threadId, stream) !== null) return;
+ 			let body = "";
+ 			for await (const chunk of stream) body += chunk;
+@@ -3222,7 +3222,7 @@ async function messageChannelReplyEffect(context) {
+ 	const adapter = context.channel.adapter ? await resolveEffectOption(context.channel.adapter, context) : void 0;
+ 	if (adapter && context.run?.threadId) {
+ 		try {
+-			await adapter.postMessage(adapter.channelIdFromThreadId(context.run.threadId), message);
++			await adapter.postMessage(context.run.threadId, message);
+ 		} catch (error) {
+ 			if (context.effect.intent === "chat.final-reply") clearChatFinalReplyText(context.context);
+ 			throw error;
