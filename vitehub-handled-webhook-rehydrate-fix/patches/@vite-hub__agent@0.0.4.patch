@@ -1,0 +1,13 @@
+diff --git a/dist/routes-BTkSMijK.js b/dist/routes-BTkSMijK.js
+index 1e2a8ed6ae07c827dd3ebf6c4869a91a44ff14d8..e6d3c36bc8dfd3ea72851be5fe8105f1b3cba5f9 100644
+--- a/dist/routes-BTkSMijK.js
++++ b/dist/routes-BTkSMijK.js
+@@ -1473,7 +1473,7 @@ async function executeQueuedWebhookDelivery(agent, state, activeInvocationScope,
+ 					input: resolved.input,
+ 					run: resolved.run
+ 				};
+-			}
++			} else invocation = void 0;
+ 		}
+ 		if (invocation) {
+ 			failedInvocation = invocation;

@@ -1,0 +1,16 @@
+{
+  "name": "vitehub-handled-webhook-rehydrate",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.2",
+  "engines": {
+    "node": "24.21.0"
+  },
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "@vite-hub/agent": "https://pkg.pr.new/vite-hub/vitehub/@vite-hub/agent@e59d72068fc4adc0956225f0829eb1d9907e548c",
+    "@libsql/client": "0.18.0"
+  }
+}
