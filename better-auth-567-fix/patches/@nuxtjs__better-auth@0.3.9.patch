@@ -1,0 +1,44 @@
+diff --git a/dist/runtime/app/pages/__better-auth-devtools.vue b/dist/runtime/app/pages/__better-auth-devtools.vue
+index ae8c8ed1fad85b1ed75f5fd0423c5e2b93d1bc6a..11ffbd97348dbd11447bf909123ecf37445a1add 100644
+--- a/dist/runtime/app/pages/__better-auth-devtools.vue
++++ b/dist/runtime/app/pages/__better-auth-devtools.vue
+@@ -1,7 +1,7 @@
+ <script setup>
+-import { useFetch, useRuntimeConfig } from "#imports";
++import { useFetch, useHead, useRuntimeConfig } from "#imports";
+ import { useDevtoolsClient } from "@nuxt/devtools-kit/iframe-client";
+-import { computed, ref, watch, watchEffect } from "vue";
++import { computed, ref, watch } from "vue";
+ const pageSize = 20;
+ const tabLabels = {
+   sessions: "Sessions",
+@@ -13,10 +13,7 @@ const devtoolsClient = useDevtoolsClient();
+ const runtimeConfig = useRuntimeConfig();
+ const hasDb = computed(() => runtimeConfig.public.auth?.useDatabase ?? false);
+ const isDark = computed(() => devtoolsClient.value?.host?.app?.colorMode?.value === "dark");
+-watchEffect(() => {
+-  if (import.meta.client)
+-    document.documentElement.classList.toggle("dark", isDark.value);
+-});
++useHead({ bodyAttrs: { style: "margin: 0" } });
+ const activeTab = ref(hasDb.value ? "sessions" : "config");
+ const tabs = computed(() => hasDb.value ? ["sessions", "users", "accounts", "config"] : ["config"]);
+ watch(hasDb, (enabled) => {
+@@ -125,7 +122,7 @@ async function deleteConfirmedSession() {
+ </script>
+ 
+ <template>
+-  <div class="devtools-shell">
++  <div class="devtools-shell" :class="{ dark: isDark }">
+     <header class="devtools-header">
+       <div class="brand">
+         <svg width="60" height="45" viewBox="0 0 60 45" fill="none" class="brand-mark" xmlns="http://www.w3.org/2000/svg">
+@@ -375,6 +372,6 @@ async function deleteConfirmedSession() {
+   </div>
+ </template>
+ 
+-<style>
+-:root{--ba-bg:#fff;--ba-fg:#1f1f1f;--ba-muted:#707070;--ba-border:#e5e5e5;--ba-soft:#f7f7f7;--ba-hover:#efefef;--ba-good:#047857;--ba-bad:#b91c1c}.dark{--ba-bg:#111;--ba-fg:#f4f4f5;--ba-muted:#a1a1aa;--ba-border:#2d2d2d;--ba-soft:#191919;--ba-hover:#242424;--ba-good:#34d399;--ba-bad:#f87171}*{box-sizing:border-box}body{margin:0}button,input{font:inherit}.devtools-shell{background:var(--ba-bg);color:var(--ba-fg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;font-size:13px;min-height:100vh}.devtools-header{border-bottom:1px solid var(--ba-border);gap:16px;justify-content:space-between;min-height:48px;padding:0 16px}.actions,.brand,.confirm,.devtools-header,.links,.pagination,.toolbar,.toolbar-meta{align-items:center;display:flex}.brand{font-weight:600;gap:10px}.brand-mark{height:auto;width:24px}.links a{color:var(--ba-muted);padding:8px 10px;text-decoration:none}.links a:hover{color:var(--ba-fg)}.tabs{border-bottom:1px solid var(--ba-border);display:flex;gap:4px;padding:8px 12px 0}.actions button,.confirm button,.pagination button,.tabs button,.toolbar button{background:transparent;border:1px solid var(--ba-border);color:var(--ba-fg);cursor:pointer;min-height:30px;padding:5px 10px}.tabs button{border-bottom:0}.tabs button.active,button:hover:not(:disabled){background:var(--ba-hover)}button:disabled{color:var(--ba-muted);cursor:default}button.danger{color:var(--ba-bad)}.panel{padding:16px}.section{display:grid;gap:14px}.toolbar{gap:12px;justify-content:space-between}.actions,.confirm,.pagination,.toolbar-meta{gap:8px}input{background:var(--ba-bg);border:1px solid var(--ba-border);color:var(--ba-fg);padding:7px 10px;width:min(340px,100%)}table{border:1px solid var(--ba-border);border-collapse:collapse;width:100%}td,th{border-bottom:1px solid var(--ba-border);padding:9px 10px;text-align:left;vertical-align:top}th{background:var(--ba-soft);font-weight:500}td small,th{color:var(--ba-muted)}td small{display:block;margin-top:3px}code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace}.badge{background:var(--ba-soft);border:1px solid var(--ba-border);color:var(--ba-muted);display:inline-flex;padding:2px 8px}.badge.good{color:var(--ba-good)}.badge.bad,.error{color:var(--ba-bad)}.confirm,.empty,.notice{background:var(--ba-soft);border:1px solid var(--ba-border);padding:10px 12px}.empty,.notice{color:var(--ba-muted)}.config-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}.config-grid .error,.config-grid .toolbar{grid-column:1/-1}article{background:var(--ba-soft);border:1px solid var(--ba-border)}h2{border-bottom:1px solid var(--ba-border);font-size:13px;padding:10px 12px}h2,pre{margin:0}pre{font-size:12px;line-height:1.5;overflow:auto;padding:12px}.capitalize{text-transform:capitalize}@media (max-width:720px){.devtools-header,.toolbar,.toolbar-meta{align-items:stretch;flex-direction:column}.actions,.tabs{flex-wrap:wrap}table{display:block;overflow-x:auto}}
++<style scoped>
++.devtools-shell{--ba-bg:#fff;--ba-fg:#1f1f1f;--ba-muted:#707070;--ba-border:#e5e5e5;--ba-soft:#f7f7f7;--ba-hover:#efefef;--ba-good:#047857;--ba-bad:#b91c1c}.devtools-shell.dark{--ba-bg:#111;--ba-fg:#f4f4f5;--ba-muted:#a1a1aa;--ba-border:#2d2d2d;--ba-soft:#191919;--ba-hover:#242424;--ba-good:#34d399;--ba-bad:#f87171}*{box-sizing:border-box}button,input{font:inherit}.devtools-shell{background:var(--ba-bg);color:var(--ba-fg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;font-size:13px;min-height:100vh}.devtools-header{border-bottom:1px solid var(--ba-border);gap:16px;justify-content:space-between;min-height:48px;padding:0 16px}.actions,.brand,.confirm,.devtools-header,.links,.pagination,.toolbar,.toolbar-meta{align-items:center;display:flex}.brand{font-weight:600;gap:10px}.brand-mark{height:auto;width:24px}.links a{color:var(--ba-muted);padding:8px 10px;text-decoration:none}.links a:hover{color:var(--ba-fg)}.tabs{border-bottom:1px solid var(--ba-border);display:flex;gap:4px;padding:8px 12px 0}.actions button,.confirm button,.pagination button,.tabs button,.toolbar button{background:transparent;border:1px solid var(--ba-border);color:var(--ba-fg);cursor:pointer;min-height:30px;padding:5px 10px}.tabs button{border-bottom:0}.tabs button.active,button:hover:not(:disabled){background:var(--ba-hover)}button:disabled{color:var(--ba-muted);cursor:default}button.danger{color:var(--ba-bad)}.panel{padding:16px}.section{display:grid;gap:14px}.toolbar{gap:12px;justify-content:space-between}.actions,.confirm,.pagination,.toolbar-meta{gap:8px}input{background:var(--ba-bg);border:1px solid var(--ba-border);color:var(--ba-fg);padding:7px 10px;width:min(340px,100%)}table{border:1px solid var(--ba-border);border-collapse:collapse;width:100%}td,th{border-bottom:1px solid var(--ba-border);padding:9px 10px;text-align:left;vertical-align:top}th{background:var(--ba-soft);font-weight:500}td small,th{color:var(--ba-muted)}td small{display:block;margin-top:3px}code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,monospace}.badge{background:var(--ba-soft);border:1px solid var(--ba-border);color:var(--ba-muted);display:inline-flex;padding:2px 8px}.badge.good{color:var(--ba-good)}.badge.bad,.error{color:var(--ba-bad)}.confirm,.empty,.notice{background:var(--ba-soft);border:1px solid var(--ba-border);padding:10px 12px}.empty,.notice{color:var(--ba-muted)}.config-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}.config-grid .error,.config-grid .toolbar{grid-column:1/-1}article{background:var(--ba-soft);border:1px solid var(--ba-border)}h2{border-bottom:1px solid var(--ba-border);font-size:13px;padding:10px 12px}h2,pre{margin:0}pre{font-size:12px;line-height:1.5;overflow:auto;padding:12px}.capitalize{text-transform:capitalize}@media (max-width:720px){.devtools-header,.toolbar,.toolbar-meta{align-items:stretch;flex-direction:column}.actions,.tabs{flex-wrap:wrap}table{display:block;overflow-x:auto}}
+ </style>

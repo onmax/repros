@@ -1,0 +1,5 @@
+allowBuilds:
+  esbuild: true
+  agent-browser: true
+patchedDependencies:
+  '@nuxtjs/better-auth@0.3.9': patches/@nuxtjs__better-auth@0.3.9.patch

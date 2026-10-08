@@ -51,3 +51,5 @@ The verifier also requires the DevTools stylesheet in the initial host page's st
 - Disabling the Nuxt DevTools overlay shows that the module's registered page alone is enough to cause the leak.
 
 This is a local development repro. It requires no deployment, credentials, or production data. Verification evidence is in `evidence.txt`.
+
+The sibling [fixed control](../better-auth-567-fix/README.md) keeps the application and dependency versions identical and applies only a committed pnpm patch to the module DevTools page. Run `pnpm install --frozen-lockfile && pnpm verify` there to assert the isolated host styles.
