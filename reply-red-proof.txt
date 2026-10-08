@@ -1,0 +1,40 @@
+[33m[1m[WARN] @teams/app[0m[22m [DEPRECATED] skipAuth is deprecated. Use dangerouslyAllowUnauthenticatedRequests instead.
+replies forward: expected ["1791000000001","1791000000002","1791000000003","1791000000004","1791000000005"]; actual ["1791000000001","1791000000002","1791000000003","1791000000004"]
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  [
+    '1791000000001',
+    '1791000000002',
+    '1791000000003',
+    '1791000000004',
+-   '1791000000005'
+  ]
+
+    at verifyReplies (file:///home/maxi/onmax/repros-chat-teams-history/chat-teams-history-pagination/verify-replies.mjs:34:17)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async file:///home/maxi/onmax/repros-chat-teams-history/chat-teams-history-pagination/verify-replies.mjs:46:55 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [
+    '1791000000001',
+    '1791000000002',
+    '1791000000003',
+    '1791000000004'
+  ],
+  expected: [
+    '1791000000001',
+    '1791000000002',
+    '1791000000003',
+    '1791000000004',
+    '1791000000005'
+  ],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0

@@ -1,0 +1,13 @@
+
+> chat-teams-history-pagination-fix@ verify /home/maxi/onmax/repros-chat-teams-history/chat-teams-history-pagination-fix
+> node verify.mjs fixed
+
+forward: expected [["1791000000001","1791000000002"],["1791000000003","1791000000004"],["1791000000005"]]; actual [["1791000000001","1791000000002"],["1791000000003","1791000000004"],["1791000000005"]]
+backward: expected [["1791000000004","1791000000005"],["1791000000002","1791000000003"],["1791000000001"]]; actual [["1791000000004","1791000000005"],["1791000000002","1791000000003"],["1791000000001"]]
+listThreads: expected cursor https://graph.microsoft.com/v1.0/teams/team-id/channels/19%3Achannel%40thread.tacv2/messages?$skiptoken=1; actual https://graph.microsoft.com/v1.0/teams/team-id/channels/19%3Achannel%40thread.tacv2/messages?$skiptoken=1
+PASS: chronological history and native thread continuation terminate without omissions
+replies forward: expected ["1791000000001","1791000000002","1791000000003","1791000000004","1791000000005"]; actual ["1791000000001","1791000000002","1791000000003","1791000000004","1791000000005"]
+replies backward: expected ["1791000000005","1791000000004","1791000000003","1791000000002","1791000000001"]; actual ["1791000000005","1791000000004","1791000000003","1791000000002","1791000000001"]
+replies backward boundary 2026-10-01T00:00:00Z: expected []; actual []
+replies backward boundary 2026-09-30T00:00:00Z: expected []; actual []
+PASS: parent and replies page without omissions and backward boundaries exhaust

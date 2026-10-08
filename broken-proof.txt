@@ -1,0 +1,13 @@
+
+> chat-teams-history-pagination@ verify /home/maxi/onmax/repros-chat-teams-history/chat-teams-history-pagination
+> node verify.mjs broken
+
+forward: expected [["1791000000001","1791000000002"],["1791000000003","1791000000004"],["1791000000005"]]; actual [["1791000000002","1791000000005"],[]]
+backward: expected [["1791000000004","1791000000005"],["1791000000002","1791000000003"],["1791000000001"]]; actual [["1791000000004","1791000000001"],["1791000000004","1791000000001"]]
+listThreads: expected cursor https://graph.microsoft.com/v1.0/teams/team-id/channels/19%3Achannel%40thread.tacv2/messages?$skiptoken=1; actual undefined
+CONFIRMED: channel history and thread continuations violate the SDK paging contract
+replies forward: expected ["1791000000001","1791000000002","1791000000003","1791000000004","1791000000005"]; actual ["1791000000001","1791000000002","1791000000003","1791000000004"]
+replies backward: expected ["1791000000005","1791000000004","1791000000003","1791000000002","1791000000001"]; actual ["1791000000005","1791000000003","1791000000002","1791000000001"]
+replies backward boundary 2026-10-01T00:00:00Z: expected []; actual ["1791000000004","1791000000005"]
+replies backward boundary 2026-09-30T00:00:00Z: expected []; actual ["1791000000004","1791000000005"]
+CONFIRMED: reply timestamp ties are omitted and exhausted backward boundaries restart at the latest page
