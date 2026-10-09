@@ -1,0 +1,2 @@
+patchedDependencies:
+  '@chat-adapter/teams@4.39.0': patches/@chat-adapter__teams@4.39.0.patch

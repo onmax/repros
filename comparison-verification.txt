@@ -1,0 +1,82 @@
+fleet-queue: waiting for the shared build/typecheck/test slot
+fleet-queue: 12.6 GiB available, memory stalls 0.1%; waiting for 6 GiB and <5% stalls
+fleet-queue: starting bash in fleet-job-1094975-6a143155a6.scope
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +187
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 187, reused 187, downloaded 0, added 187, done
+
+dependencies:
++ @chat-adapter/teams 4.39.0
+
+Done in 840ms using pnpm v10.33.2
+Patch: You can now edit the package at:
+
+  /home/maxi/.cache/teams-bot-author-repro-patch
+
+To commit your changes, run:
+
+  pnpm patch-commit '/home/maxi/.cache/teams-bot-author-repro-patch'
+
+Progress: resolved 0, reused 2, downloaded 0, added 0
+Packages: -1
+-
+Progress: resolved 187, reused 188, downloaded 0, added 1, done
+
+Lockfile is up to date, resolution step is skipped
+Already up to date
+
+Done in 287ms using pnpm v10.33.2
+
+> chat-teams-bot-authors-fix@ verify /home/maxi/onmax/repros-teams-bot-authors/chat-teams-bot-authors-fix
+> node verify.mjs
+
+{"sender":{"id":"other-bot","role":"bot","isBot":true,"isMe":false},"expected":{"isBot":true,"isMe":false},"actual":{"isBot":true,"isMe":false}}
+{"sender":{"id":"28:other-bot","isBot":true,"isMe":false},"expected":{"isBot":true,"isMe":false},"actual":{"isBot":true,"isMe":false}}
+{"sender":{"id":"28:test-app","isBot":true,"isMe":true},"expected":{"isBot":true,"isMe":true},"actual":{"isBot":true,"isMe":true}}
+{"sender":{"id":"test-app","isBot":true,"isMe":true},"expected":{"isBot":true,"isMe":true},"actual":{"isBot":true,"isMe":true}}
+{"sender":{"id":"29:human","role":"user","isBot":false,"isMe":false},"expected":{"isBot":false,"isMe":false},"actual":{"isBot":false,"isMe":false}}
+{"sender":{"id":"29:human","isBot":false,"isMe":false},"expected":{"isBot":false,"isMe":false},"actual":{"isBot":false,"isMe":false}}
+Lockfile is up to date, resolution step is skipped
+Already up to date
+
+Done in 444ms using pnpm v10.33.2
+
+> chat-teams-bot-authors@ verify /home/maxi/onmax/repros-teams-bot-authors/chat-teams-bot-authors
+> node verify.mjs --prove-bug
+
+{"sender":{"id":"other-bot","role":"bot","isBot":true,"isMe":false},"expected":{"isBot":true,"isMe":false},"actual":{"isBot":false,"isMe":false}}
+{"sender":{"id":"28:other-bot","isBot":true,"isMe":false},"expected":{"isBot":true,"isMe":false},"actual":{"isBot":false,"isMe":false}}
+{"sender":{"id":"28:test-app","isBot":true,"isMe":true},"expected":{"isBot":true,"isMe":true},"actual":{"isBot":false,"isMe":true}}
+{"sender":{"id":"test-app","isBot":true,"isMe":true},"expected":{"isBot":true,"isMe":true},"actual":{"isBot":false,"isMe":true}}
+{"sender":{"id":"29:human","role":"user","isBot":false,"isMe":false},"expected":{"isBot":false,"isMe":false},"actual":{"isBot":false,"isMe":false}}
+{"sender":{"id":"29:human","isBot":false,"isMe":false},"expected":{"isBot":false,"isMe":false},"actual":{"isBot":false,"isMe":false}}
+Lockfile is up to date, resolution step is skipped
+Already up to date
+
+Done in 410ms using pnpm v10.33.2
+
+> chat-teams-bot-authors@ verify /home/maxi/onmax/repros-teams-bot-authors/chat-teams-bot-authors
+> node verify.mjs --prove-bug
+
+{"sender":{"id":"other-bot","role":"bot","isBot":true,"isMe":false},"expected":{"isBot":true,"isMe":false},"actual":{"isBot":false,"isMe":false}}
+{"sender":{"id":"28:other-bot","isBot":true,"isMe":false},"expected":{"isBot":true,"isMe":false},"actual":{"isBot":false,"isMe":false}}
+{"sender":{"id":"28:test-app","isBot":true,"isMe":true},"expected":{"isBot":true,"isMe":true},"actual":{"isBot":false,"isMe":true}}
+{"sender":{"id":"test-app","isBot":true,"isMe":true},"expected":{"isBot":true,"isMe":true},"actual":{"isBot":false,"isMe":true}}
+{"sender":{"id":"29:human","role":"user","isBot":false,"isMe":false},"expected":{"isBot":false,"isMe":false},"actual":{"isBot":false,"isMe":false}}
+{"sender":{"id":"29:human","isBot":false,"isMe":false},"expected":{"isBot":false,"isMe":false},"actual":{"isBot":false,"isMe":false}}
+Lockfile is up to date, resolution step is skipped
+Already up to date
+
+Done in 293ms using pnpm v10.33.2
+
+> chat-teams-bot-authors-fix@ verify /home/maxi/onmax/repros-teams-bot-authors/chat-teams-bot-authors-fix
+> node verify.mjs
+
+{"sender":{"id":"other-bot","role":"bot","isBot":true,"isMe":false},"expected":{"isBot":true,"isMe":false},"actual":{"isBot":true,"isMe":false}}
+{"sender":{"id":"28:other-bot","isBot":true,"isMe":false},"expected":{"isBot":true,"isMe":false},"actual":{"isBot":true,"isMe":false}}
+{"sender":{"id":"28:test-app","isBot":true,"isMe":true},"expected":{"isBot":true,"isMe":true},"actual":{"isBot":true,"isMe":true}}
+{"sender":{"id":"test-app","isBot":true,"isMe":true},"expected":{"isBot":true,"isMe":true},"actual":{"isBot":true,"isMe":true}}
+{"sender":{"id":"29:human","role":"user","isBot":false,"isMe":false},"expected":{"isBot":false,"isMe":false},"actual":{"isBot":false,"isMe":false}}
+{"sender":{"id":"29:human","isBot":false,"isMe":false},"expected":{"isBot":false,"isMe":false},"actual":{"isBot":false,"isMe":false}}

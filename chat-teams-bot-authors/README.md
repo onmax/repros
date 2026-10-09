@@ -16,3 +16,5 @@ pnpm verify --prove-bug
 The bug verifier exits successfully only when exactly four bot cases report the wrong `isBot` value and both human controls pass. `pnpm verify` checks the intended behavior and fails on the unpatched package.
 
 Microsoft's [Teams proactive-message Activity example](https://github.com/MicrosoftDocs/msteams-docs/blob/main/msteams-platform/bots/how-to/conversations/send-proactive-messages.md) uses `28:` for the bot account and `29:` for a human member. The pinned Teams SDK declares account roles as `user`, `bot`, or `skill`. This fixture proves parser classification; it does not prove cross-bot Activity delivery in a live tenant.
+
+Run `bash verify-comparison.sh` from the branch root to compare the raw fixture with the patched Teams 4.39.0 control. The verifier and package version are identical; the control applies only the bot-author classification patch.
