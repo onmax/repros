@@ -1,0 +1,10 @@
+
+> chat-teams-bot-authors@ verify /home/maxi/onmax/repros-teams-bot-authors/chat-teams-bot-authors
+> node verify.mjs --prove-bug
+
+{"sender":{"id":"other-bot","role":"bot","isBot":true,"isMe":false},"expected":{"isBot":true,"isMe":false},"actual":{"isBot":false,"isMe":false}}
+{"sender":{"id":"28:other-bot","isBot":true,"isMe":false},"expected":{"isBot":true,"isMe":false},"actual":{"isBot":false,"isMe":false}}
+{"sender":{"id":"28:test-app","isBot":true,"isMe":true},"expected":{"isBot":true,"isMe":true},"actual":{"isBot":false,"isMe":true}}
+{"sender":{"id":"test-app","isBot":true,"isMe":true},"expected":{"isBot":true,"isMe":true},"actual":{"isBot":false,"isMe":true}}
+{"sender":{"id":"29:human","role":"user","isBot":false,"isMe":false},"expected":{"isBot":false,"isMe":false},"actual":{"isBot":false,"isMe":false}}
+{"sender":{"id":"29:human","isBot":false,"isMe":false},"expected":{"isBot":false,"isMe":false},"actual":{"isBot":false,"isMe":false}}
