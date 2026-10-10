@@ -1,9 +1,11 @@
-# Reproductions
+# ViteHub capability tool budget
 
-Each `repro/<library>-<issue-or-slug>` branch contains one bug reproduction and any fixed control. Older branches may use different names.
+Capability extensions can contribute generic tools. Before PR #2071, the final AI SDK tool seam did not spend the shared Invocation `maxToolCalls` counter, so a generic tool could run past the limit. The fixed control records each call before execution and rejects the second call.
 
-Choose the branch for the bug, then follow the README in its fixture directory. Failing and fixed examples stay together on that branch.
+Run:
 
-Start new reproduction branches from `main`. Keep source, required inputs, lockfiles, and patches in Git; leave dependencies and build output out.
+```sh
+node verify.mjs
+```
 
-`main` contains only this README and the agent instructions. Reproduction branches are never merged into it.
+The fixtures use Node 24 standard APIs and model the public tool execution boundary without provider credentials.
