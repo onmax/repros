@@ -1,9 +1,13 @@
-# Reproductions
+# ViteHub execution budget disposal
 
-Each `repro/<library>-<issue-or-slug>` branch contains one bug reproduction and any fixed control. Older branches may use different names.
+The Invocation execution budget owns a deadline timer. Before disposal, an Invocation can report completion while that timer keeps the host process alive. The fixed control clears the timer when the Invocation closes.
 
-Choose the branch for the bug, then follow the README in its fixture directory. Failing and fixed examples stay together on that branch.
+Pinned provenance: ViteHub PR #2070, based on execution budget PR #2054.
 
-Start new reproduction branches from `main`. Keep source, required inputs, lockfiles, and patches in Git; leave dependencies and build output out.
+Run the verifier with:
 
-`main` contains only this README and the agent instructions. Reproduction branches are never merged into it.
+```sh
+node verify.mjs
+```
+
+It expects the unfixed fixture to stay alive past the 250 ms check and the fixed control to exit immediately. The fixture uses only Node 24 standard APIs; this isolates the timer lifecycle at the runtime boundary.
