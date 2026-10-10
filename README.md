@@ -1,9 +1,17 @@
-# Reproductions
+# ViteHub provider readiness repro for issue #1308
 
-Each `repro/<library>-<issue-or-slug>` branch contains one bug reproduction and any fixed control. Older branches may use different names.
+Given a provider snapshot with an authenticated subscription and an installed runner, when the configured model is absent from the provider model catalogue, invocation must reject before capability preparation. The old contract reports the provider as ready and starts preparation; the fixed control rejects first.
 
-Choose the branch for the bug, then follow the README in its fixture directory. Failing and fixed examples stay together on that branch.
+This is a deterministic contract-level repro. It pins the observable boundary without credentials or a live provider account:
 
-Start new reproduction branches from `main`. Keep source, required inputs, lockfiles, and patches in Git; leave dependencies and build output out.
+```sh
+pnpm run verify
+```
 
-`main` contains only this README and the agent instructions. Reproduction branches are never merged into it.
+Expected output:
+
+```text
+provider readiness repro: broken control prepared=1; fixed control prepared=0 for incompatible model
+```
+
+The sibling directories contain the failing control (`vitehub-provider-readiness`) and the fixed behavior (`vitehub-provider-readiness-fix`).

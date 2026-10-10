@@ -1,0 +1,1 @@
+{"name":"vitehub-provider-readiness-repro","private":true,"type":"module","scripts":{"verify":"node verify.mjs"}}
