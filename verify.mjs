@@ -5,8 +5,8 @@ import { dirname, join } from "node:path"
 
 const root = dirname(fileURLToPath(import.meta.url))
 const cases = [
-  { directory: "vitehub-execution-budget", expected: "budget repro: second shell call bypassed the invocation limit" },
-  { directory: "vitehub-execution-budget-fix", expected: "budget repro: second shell call rejected by the invocation limit" },
+  { directory: "vitehub-execution-budget-disposal", expected: "disposal repro: 2 timers and 2 abort listeners remain" },
+  { directory: "vitehub-execution-budget-disposal-fix", expected: "disposal repro: 0 timers and 0 abort listeners remain" },
 ]
 
 for (const testCase of cases) {
