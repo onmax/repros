@@ -1,0 +1,1 @@
+{"name":"vitehub-sandbox-transfer-bounds-fix","private":true,"type":"module","scripts":{"verify":"node verify.mjs"}}
