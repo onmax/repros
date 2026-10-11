@@ -18,6 +18,7 @@ try {
     const checkout = join(repo, name)
     await run("git", ["-C", source, "worktree", "add", "--detach", checkout, revision], { maxBuffer: 4 * 1024 * 1024 })
     await run("corepack", ["pnpm", "install", "--frozen-lockfile", "--ignore-scripts"], { cwd: checkout, maxBuffer: 4 * 1024 * 1024 })
+    await run("corepack", ["pnpm", "exec", "vp", "run", "-t", "@vite-hub/runtime#build"], { cwd: checkout, maxBuffer: 8 * 1024 * 1024 })
     await writeFile(join(checkout, "packages/agent/test/repro-capability-tool-budget.test.ts"), test)
     const result = await run("corepack", ["pnpm", "--dir", "packages/agent", "exec", "vp", "test", "test/repro-capability-tool-budget.test.ts"], {
       cwd: checkout,
