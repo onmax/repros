@@ -953,12 +953,19 @@ function createUsageCapture(executionBudget?: ExecutionBudget) {
   let capturedUsage: unknown
   let metadataSource: unknown
   let modelCallbackSeen = false
+  let inputUsageReported = false
+  let outputUsageReported = false
 
-  const accountUsage = (usage: unknown) => {
+  const accountUsage = (usage: unknown, options: { input?: boolean, output?: boolean } = {}) => {
     const inputTokens = usageTokenCount(usage, "inputTokens")
     const outputTokens = usageTokenCount(usage, "outputTokens")
-    if (inputTokens !== undefined) executionBudget?.recordInputBytes(inputTokens * MODEL_TOKEN_BYTES_ESTIMATE)
-    if (outputTokens !== undefined) executionBudget?.recordOutputBytes(outputTokens * MODEL_TOKEN_BYTES_ESTIMATE)
+    if (inputTokens !== undefined && options.input !== false) {
+      executionBudget?.recordInputBytes(inputTokens * MODEL_TOKEN_BYTES_ESTIMATE)
+    }
+    if (outputTokens !== undefined && options.output !== false) {
+      executionBudget?.recordOutputBytes(outputTokens * MODEL_TOKEN_BYTES_ESTIMATE)
+    }
+    return { inputReported: inputTokens !== undefined, outputReported: outputTokens !== undefined }
   }
 
   const capture = (event: unknown) => {
@@ -975,7 +982,9 @@ function createUsageCapture(executionBudget?: ExecutionBudget) {
     async onEnd(event: unknown) {
       capture(event)
       // Some AI SDK model adapters only report usage on the final callback.
-      if (!modelCallbackSeen) accountUsage(capturedUsage)
+      accountUsage(capturedUsage, modelCallbackSeen
+        ? { input: !inputUsageReported, output: !outputUsageReported }
+        : undefined)
     },
     async onStepEnd(event: unknown) {
       capture(event)
@@ -983,7 +992,9 @@ function createUsageCapture(executionBudget?: ExecutionBudget) {
     async onLanguageModelCallEnd(event: unknown) {
       modelCallbackSeen = true
       capture(event)
-      accountUsage(capturedUsage)
+      const reported = accountUsage(capturedUsage)
+      inputUsageReported ||= reported.inputReported
+      outputUsageReported ||= reported.outputReported
     },
     get captured() {
       return captured
