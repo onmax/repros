@@ -1,11 +1,13 @@
 # ViteHub capability tool budget
 
-Capability extensions can contribute generic tools. Before PR #2071, the final AI SDK tool seam did not spend the shared Invocation `maxToolCalls` counter, so a generic tool could run past the limit. The fixed control records each call before execution and rejects the second call.
+This repro runs the real `@vite-hub/agent` tool preparation seam at two pinned ViteHub revisions. A generic Capability tool is called twice with an Invocation `maxToolCalls: 1` budget.
 
-Run:
+Before PR #2071 (`c58aee865`), generic tools run twice because the AI SDK adapter passes them through without spending the shared budget. The fixed revision (`9a0adf3a`) wraps the final tool execution seam, so the second call throws `ExecutionBudgetExceededError` and the tool body runs once.
+
+Run from a clean checkout of the `onmax/repros` branch:
 
 ```sh
 node verify.mjs
 ```
 
-The fixtures use Node 24 standard APIs and model the public tool execution boundary without provider credentials.
+The command clones ViteHub at both revisions, installs its pinned lockfile, runs the same test file against each checkout, and removes temporary worktrees. It needs GitHub network access and Node 24 with Corepack.
