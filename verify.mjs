@@ -7,7 +7,7 @@ import { promisify } from 'node:util'
 const run = promisify(execFile)
 const repo = 'https://github.com/vite-hub/vitehub.git'
 const before = '73b0d4159'
-const after = '5f6247372'
+const after = 'd90153842'
 const test = `
 import { expect, it } from "vitest"
 import { defineAgent, defineCapability, runAgentInline } from "../src/index.ts"
