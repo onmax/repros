@@ -21,9 +21,9 @@ try {
   await run('git', ['clone', '--quiet', '--filter=blob:none', '--no-checkout', repo, root])
   await run('git', ['checkout', '--quiet', before], { cwd: root })
   await run('corepack', ['pnpm', 'install', '--frozen-lockfile'], { cwd: root })
-  await writeFile(join(root, 'packages/agent/test/repro-retry-accounting.test.ts'), test)
   for (const [ref, expected] of [[before, 'before'], [after, 'fixed']]) {
     await run('git', ['checkout', '--quiet', ref], { cwd: root })
+    await writeFile(join(root, 'packages/agent/test/repro-retry-accounting.test.ts'), test)
     await run('corepack', ['pnpm', '--dir', 'packages/agent', 'exec', 'vitest', 'run', 'test/repro-retry-accounting.test.ts'], { cwd: root, env: { ...process.env, EXPECTED: expected } })
   }
   console.log('retry accounting repro: before performs the extra repair; fixed rejects before a second model call')
