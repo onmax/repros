@@ -20,6 +20,7 @@ test("bounded tool repair", async () => { const result = await runCase(); consol
 const root = await mkdtemp(join(tmpdir(), 'vitehub-retry-accounting-'))
 try {
   await run('git', ['clone', '--quiet', '--filter=blob:none', '--no-checkout', repo, root])
+  await run('git', ['checkout', '--quiet', before], { cwd: root })
   await run('corepack', ['pnpm', 'install', '--frozen-lockfile'], { cwd: root })
   await writeFile(join(root, 'packages/agent/test/repro-retry-accounting.test.ts'), test)
   for (const [ref, expected] of [[before, 'before'], [after, 'fixed']]) {
