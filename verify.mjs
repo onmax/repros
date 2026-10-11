@@ -7,7 +7,7 @@ import { promisify } from "node:util"
 
 const run = promisify(execFile)
 const oldRevision = "c58aee865"
-const fixedRevision = "9a0adf3a"
+const fixedRevision = "fd908491"
 const repo = await mkdtemp(join(tmpdir(), "vitehub-capability-budget-"))
 const source = join(repo, "source")
 const test = await readFile(join(import.meta.dirname, "vitehub-capability-tool-budget", "repro.test.ts"), "utf8")
