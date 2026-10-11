@@ -1,9 +1,19 @@
-# Reproductions
+# ViteHub AI SDK model usage budget repro
 
-Each `repro/<library>-<issue-or-slug>` branch contains one bug reproduction and any fixed control. Older branches may use different names.
+The AI SDK adapter receives provider token usage, but the source revision before
+PR #2095 did not spend the Invocation's input or output byte budget. The fixed
+source adds the documented four-byte-per-token estimate. This fixture pins the
+exact `packages/agent/src/ai-sdk.ts` source from `b4e85e5ca` and `6335b3aba` and
+runs the same unattended assertion against each source revision.
 
-Choose the branch for the bug, then follow the README in its fixture directory. Failing and fixed examples stay together on that branch.
+The minimal runner uses a provider report of three input tokens and one output
+token. It reads the pinned adapter source at the accounting seam and reports the
+budget charge. The failing source reports zero bytes; the fixed source reports
+12 input bytes and 4 output bytes. This source-level repro is deliberately
+independent of provider credentials and package installation.
 
-Start new reproduction branches from `main`. Keep source, required inputs, lockfiles, and patches in Git; leave dependencies and build output out.
+Run:
 
-`main` contains only this README and the agent instructions. Reproduction branches are never merged into it.
+```sh
+node verify.mjs
+```
