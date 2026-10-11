@@ -13,7 +13,7 @@ const source = join(repo, "source")
 const test = await readFile(join(import.meta.dirname, "vitehub-capability-tool-budget", "repro.test.ts"), "utf8")
 try {
   await run("git", ["clone", "--filter=blob:none", "https://github.com/vite-hub/vitehub.git", source], { maxBuffer: 4 * 1024 * 1024 })
-  await run("git", ["-C", source, "fetch", "--depth=1", "origin", oldRevision, fixedRevision], { maxBuffer: 4 * 1024 * 1024 })
+  await run("git", ["-C", source, "fetch", "--depth=200", "origin", "feat/execution-budget-a", "feat/capability-tool-budget"], { maxBuffer: 4 * 1024 * 1024 })
   for (const [name, revision, expected] of [["before", oldRevision, "2"], ["after", fixedRevision, "1"]]) {
     const checkout = join(repo, name)
     await run("git", ["-C", source, "worktree", "add", "--detach", checkout, revision], { maxBuffer: 4 * 1024 * 1024 })
