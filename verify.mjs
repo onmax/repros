@@ -9,7 +9,7 @@ const repo = 'https://github.com/vite-hub/vitehub.git'
 const before = 'c58aee865'
 const after = '73b0d4159'
 const test = `
-import { expect, test } from "vitest"
+import { expect, it } from "vitest"
 import { defineAgent, defineCapability, runAgentInline } from "../src/index.ts"
 const schema = { "~standard": { jsonSchema: { input: () => ({ properties: { query: { type: "string" } }, required: ["query"], type: "object" }), output: () => ({ type: "object" }) }, validate(value) { return value && typeof value === "object" && typeof value.query === "string" ? { value } : { issues: [{ message: "query must be a string" }] } }, vendor: "repro", version: 1 } }
 function fakeModel() { let calls = 0; return { get count() { return calls }, async doGenerate() { calls++; return { content: calls === 1 ? [{ input: '{"query":1}', toolCallId: "call-1", toolName: "search", type: "tool-call" }] : [{ text: "repaired", type: "text" }], finishReason: { raw: "stop", unified: "stop" }, usage: { inputTokens: { cacheRead: 0, cacheWrite: 0, noCache: 1, total: 1 }, outputTokens: { reasoning: 0, text: 1, total: 1 } }, warnings: [] } }, modelId: "repro", provider: "repro", specificationVersion: "v3", supportedUrls: {} } }
