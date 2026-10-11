@@ -4,8 +4,8 @@ An Invocation execution budget owns deadline timers. The failing fixture imports
 `packages/runtime/src/execution-budget.ts` exactly as it existed at source
 revision `c58aee865`. It creates a root budget and child, then returns without a
 cleanup call. Node keeps the process alive until the deadline timers fire. The
-fixed control imports the same file from source revision `HEAD` of the disposal
-PR and calls the public `dispose()` contract before returning, so the process
+fixed control imports the same file from source revision `b4e85e5ca` of the
+disposal PR and calls the public `dispose()` contract before returning, so the process
 exits at once.
 
 The two fixture directories differ only in that pinned source file and the one
