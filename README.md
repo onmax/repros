@@ -1,25 +1,23 @@
 # ViteHub Invocation execution budget disposal repro
 
-An Invocation execution budget owns deadline timers and abort listeners. When
-the Invocation reaches terminal cleanup, its root budget must dispose those
-resources, including resources owned by child budgets. The failing fixture
-leaves both budgets live; the fixed fixture disposes the root budget.
+An Invocation execution budget owns deadline timers. The failing fixture imports
+`packages/runtime/src/execution-budget.ts` exactly as it existed at source
+revision `c58aee865`. It creates a root budget and child, then returns without a
+cleanup call. Node keeps the process alive until the deadline timers fire. The
+fixed control imports the same file from source revision `HEAD` of the disposal
+PR and calls the public `dispose()` contract before returning, so the process
+exits at once.
 
-This is a deterministic contract-level repro for the ViteHub execution-budget
-cleanup seam. It uses only Node.js 24.15.0 or later and contains no provider
-credentials or network calls.
+The two fixture directories differ only in that pinned source file and the one
+cleanup call in `index.mjs`. They use Node's native TypeScript stripping and no
+provider credentials or network calls.
 
 Run the unattended verifier from this directory:
 
 ```sh
-pnpm run verify
+node verify.mjs
 ```
 
-Expected output:
-
-```text
-vitehub-execution-budget-disposal: disposal repro: 2 timers and 2 abort listeners remain; vitehub-execution-budget-disposal-fix: disposal repro: 0 timers and 0 abort listeners remain
-```
-
-The failing fixture is `vitehub-execution-budget-disposal/`. The sibling
-`vitehub-execution-budget-disposal-fix/` is the known-good control.
+The verifier asserts the exact returned output and process lifetime for both
+source revisions. The failing fixture must remain alive for at least 220ms;
+the fixed control must exit in under 220ms.
