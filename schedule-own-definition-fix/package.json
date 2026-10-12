@@ -1,0 +1,7 @@
+{
+  "name": "schedule-own-definition-repro-fix",
+  "private": true,
+  "type": "module",
+  "scripts": {"verify": "node verify.mjs"},
+  "dependencies": {"@vite-hub/schedule": "file:./vite-hub-schedule-0.0.4.tgz"}
+}
