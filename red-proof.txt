@@ -54,7 +54,7 @@ AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
     }
   ]
 
-    at file:///home/maxi/.t3/worktrees/repros/forges-forgejo-review-webhook-events/forges-forgejo-review-webhook-events/verify.mjs:35:10 {
+    at forges-forgejo-review-webhook-events/verify.mjs:35:10 {
   generatedMessage: true,
   code: 'ERR_ASSERTION',
   actual: [
