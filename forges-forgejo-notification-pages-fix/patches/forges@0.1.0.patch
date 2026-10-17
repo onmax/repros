@@ -1,0 +1,31 @@
+diff --git a/dist/forgejo-IIfXyK9J.mjs b/dist/forgejo-IIfXyK9J.mjs
+index a301c74aa116db3cd6d1b7d032cd58eae9170943..6df1ae95ae45414299d89a4d578f9c9c6cca70c6 100644
+--- a/dist/forgejo-IIfXyK9J.mjs
++++ b/dist/forgejo-IIfXyK9J.mjs
+@@ -1304,21 +1304,11 @@ function setupForgejo({ options, origin, fetcher: baseFetcher, baseUrl }, profil
+ 			return id;
+ 		});
+ 	}
+-	async function notificationPage(listOptions = {}) {
+-		const result = await fetcher.json(listOptions.cursor?.nextUrl ?? "/notifications", {
+-			query: listOptions.cursor?.nextUrl ? void 0 : {
+-				all: listOptions.all ?? false,
+-				since: listOptions.since?.toISOString(),
+-				limit: listOptions.perPage
+-			},
+-			signal: listOptions.signal
+-		});
+-		return {
+-			items: (result.data ?? []).map((raw) => toNotification(origin, raw)),
+-			cursor: result.cursor,
+-			notModified: result.notModified,
+-			...rateLimitPart(result.response)
+-		};
++	function notificationPage(listOptions = {}) {
++		return list("/notifications", listOptions, (raw) => toNotification(origin, raw), { query: {
++			all: listOptions.all ?? false,
++			since: listOptions.since?.toISOString()
++		} });
+ 	}
+ 	async function setStatus(ref, status, options) {
+ 		await fetcher.raw(`/notifications/threads/${encodeURIComponent(ref.id)}`, {

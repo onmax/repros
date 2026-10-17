@@ -1,0 +1,31 @@
+$ pnpm verify
+$ node verify.mjs
+requests: [ 'https://codeberg.org/api/v1/notifications?all=false' ]
+expected: [ '1', '2', '3', '4' ]
+actual:   [ '1', '2', '3' ]
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  [
+    '1',
+    '2',
+    '3',
+-   '4'
+  ]
+
+    at file://<repo>/forges-forgejo-notification-pages/verify.mjs:36:10 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [ '1', '2', '3' ],
+  expected: [ '1', '2', '3', '4' ],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0
+[ELIFECYCLE] Command failed with exit code 1.
+exit code: 1

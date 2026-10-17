@@ -1,0 +1,10 @@
+$ pnpm verify
+$ node verify.mjs
+requests: [
+  'https://codeberg.org/api/v1/notifications?all=false',
+  'https://codeberg.org/api/v1/notifications?all=false&page=2&limit=3'
+]
+expected: [ '1', '2', '3', '4' ]
+actual:   [ '1', '2', '3', '4' ]
+ok: notifications.list() read both pages
+exit code: 0
