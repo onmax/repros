@@ -1,0 +1,108 @@
+diff --git a/dist/azure-devops-C8OePPg-.mjs b/dist/azure-devops-C8OePPg-.mjs
+index 2fba25e25f503f513fb871be4d3dd778d2a1e075..331c72ce17899a603c54cefc961cbf399fc25f8a 100644
+--- a/dist/azure-devops-C8OePPg-.mjs
++++ b/dist/azure-devops-C8OePPg-.mjs
+@@ -519,11 +519,47 @@ function verifyAzureBasicAuth(delivery, secret) {
+ 	return timingSafeEqual(header, `Basic ${btoa(key)}`);
+ }
+ const PULL_KINDS = {
+-	"git.pullrequest.created": "state_change",
+-	"git.pullrequest.merged": "state_change",
+ 	"git.pullrequest.updated": "other",
+ 	"ms.vss-code.git-pullrequest-comment-event": "comment"
+ };
++/**
++* What a delivery that can change a pull request's state changed.
++* `git.pullrequest.merged` reports every merge attempt, so only one that
++* completed the pull request merged it, and abandoning a pull request
++* arrives as `git.pullrequest.updated`.
++*/
++function pullStateChange(eventType, pull) {
++	switch (eventType) {
++		case "git.pullrequest.created": return {
++			kind: "state_change",
++			action: "opened",
++			detail: {
++				type: "state_change",
++				state: "open"
++			}
++		};
++		case "git.pullrequest.merged": return pull.status === "completed" ? {
++			kind: "state_change",
++			action: "merged",
++			detail: {
++				type: "state_change",
++				state: "merged"
++			}
++		} : {
++			kind: "other",
++			action: "other"
++		};
++		case "git.pullrequest.updated": return pull.status === "abandoned" ? {
++			kind: "state_change",
++			action: "closed",
++			detail: {
++				type: "state_change",
++				state: "closed"
++			}
++		} : void 0;
++		default: return;
++	}
++}
+ function translateAzureWebhook(instance, organization, delivery) {
+ 	const event = JSON.parse(bodyText(delivery.body));
+ 	const resource = event.resource;
+@@ -550,7 +586,7 @@ function translateAzureWebhook(instance, organization, delivery) {
+ 		};
+ 		const comment = resource.comment;
+ 		const actor = toActor(instance, comment?.author ?? pull.createdBy);
+-		const kind = PULL_KINDS[event.eventType] ?? "other";
++		const change = pullStateChange(event.eventType, pull) ?? { kind: PULL_KINDS[event.eventType] ?? "other" };
+ 		const threadId = /\/threads\/(\d+)\/comments\/\d+$/.exec(comment?._links?.self?.href ?? "")?.[1];
+ 		const commentRef = comment && threadId ? {
+ 			forge: FORGE,
+@@ -560,10 +596,10 @@ function translateAzureWebhook(instance, organization, delivery) {
+ 		} : void 0;
+ 		return [{
+ 			...base,
+-			kind,
++			...change,
+ 			actor,
+ 			thread,
+-			...kind === "comment" && { detail: {
++			...change.kind === "comment" && { detail: {
+ 				type: "comment",
+ 				comment: commentRef,
+ 				body: comment?.content
+diff --git a/dist/bitbucket-BPekXags.mjs b/dist/bitbucket-BPekXags.mjs
+index 4151c1ccd16397f7cba4762b1cd17e1c5b4a557c..558dfd1ea9a64644752c0216f00f2443c39c5232 100644
+--- a/dist/bitbucket-BPekXags.mjs
++++ b/dist/bitbucket-BPekXags.mjs
+@@ -508,7 +508,16 @@ const REVIEW_STATES = {
+ 	"pullrequest:changes_request_created": "changes_requested",
+ 	"pullrequest:changes_request_removed": "dismissed"
+ };
++/** Bitbucket fulfils a pull request when it is merged and rejects it when it is declined. */
++const EVENT_STATES = {
++	"pullrequest:created": "open",
++	"pullrequest:fulfilled": "merged",
++	"pullrequest:rejected": "closed"
++};
+ const EVENT_ACTIONS = {
++	"pullrequest:created": "opened",
++	"pullrequest:fulfilled": "merged",
++	"pullrequest:rejected": "closed",
+ 	"pullrequest:comment_updated": "edited",
+ 	"pullrequest:comment_deleted": "deleted"
+ };
+@@ -654,6 +663,10 @@ function translateBitbucketWebhook(instance, delivery) {
+ 			comment,
+ 			body: payload.comment?.content?.raw
+ 		} },
++		...kind === "state_change" && { detail: {
++			type: "state_change",
++			state: EVENT_STATES[event]
++		} },
+ 		...kind === "review" && thread && { detail: participantReview(thread, (payload.approval ?? payload.changes_request)?.user ?? payload.actor, REVIEW_STATES[event] ?? "unknown", event) },
+ 		source: "webhook",
+ 		payload

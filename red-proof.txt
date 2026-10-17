@@ -1,0 +1,96 @@
+$ node verify.mjs
+advertised state_change actions: bitbucket [ 'opened', 'closed', 'merged' ] azure [ 'opened', 'closed', 'merged' ]
+bitbucket pullrequest:created              expected state_change/opened state=open   actual state_change/created state=undefined
+bitbucket pullrequest:fulfilled            expected state_change/merged state=merged actual state_change/other state=undefined
+bitbucket pullrequest:rejected             expected state_change/closed state=closed actual state_change/other state=undefined
+azure git.pullrequest.created (active)     expected state_change/opened state=open   actual state_change/created state=undefined
+azure git.pullrequest.merged (completed)   expected state_change/merged state=merged actual state_change/merged state=undefined
+azure git.pullrequest.updated (abandoned)  expected state_change/closed state=closed actual other/edited state=undefined
+azure git.pullrequest.merged (active)      expected other/other state=undefined      actual state_change/merged state=undefined
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  {
+    'azure git.pullrequest.created (active)': {
++     action: 'created',
+-     action: 'opened',
+      kind: 'state_change',
++     state: undefined
+-     state: 'open'
+    },
+    'azure git.pullrequest.merged (active)': {
++     action: 'merged',
++     kind: 'state_change',
+-     action: 'other',
+-     kind: 'other',
+      state: undefined
+    },
+    'azure git.pullrequest.merged (completed)': {
+      action: 'merged',
+      kind: 'state_change',
++     state: undefined
+-     state: 'merged'
+    },
+    'azure git.pullrequest.updated (abandoned)': {
++     action: 'edited',
++     kind: 'other',
++     state: undefined
+-     action: 'closed',
+-     kind: 'state_change',
+-     state: 'closed'
+    },
+    'bitbucket pullrequest:created': {
++     action: 'created',
+-     action: 'opened',
+      kind: 'state_change',
++     state: undefined
+-     state: 'open'
+    },
+    'bitbucket pullrequest:fulfilled': {
++     action: 'other',
+-     action: 'merged',
+      kind: 'state_change',
++     state: undefined
+-     state: 'merged'
+    },
+    'bitbucket pullrequest:rejected': {
++     action: 'other',
+-     action: 'closed',
+      kind: 'state_change',
++     state: undefined
+-     state: 'closed'
+    }
+  }
+
+    at file:///home/maxi/.t3/worktrees/repros/forges-pr-webhook-state-changes/forges-pr-webhook-state-changes/verify.mjs:69:10 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: {
+    'bitbucket pullrequest:created': { kind: 'state_change', action: 'created', state: undefined },
+    'bitbucket pullrequest:fulfilled': { kind: 'state_change', action: 'other', state: undefined },
+    'bitbucket pullrequest:rejected': { kind: 'state_change', action: 'other', state: undefined },
+    'azure git.pullrequest.created (active)': { kind: 'state_change', action: 'created', state: undefined },
+    'azure git.pullrequest.merged (completed)': { kind: 'state_change', action: 'merged', state: undefined },
+    'azure git.pullrequest.updated (abandoned)': { kind: 'other', action: 'edited', state: undefined },
+    'azure git.pullrequest.merged (active)': { kind: 'state_change', action: 'merged', state: undefined }
+  },
+  expected: {
+    'bitbucket pullrequest:created': { kind: 'state_change', action: 'opened', state: 'open' },
+    'bitbucket pullrequest:fulfilled': { kind: 'state_change', action: 'merged', state: 'merged' },
+    'bitbucket pullrequest:rejected': { kind: 'state_change', action: 'closed', state: 'closed' },
+    'azure git.pullrequest.created (active)': { kind: 'state_change', action: 'opened', state: 'open' },
+    'azure git.pullrequest.merged (completed)': { kind: 'state_change', action: 'merged', state: 'merged' },
+    'azure git.pullrequest.updated (abandoned)': { kind: 'state_change', action: 'closed', state: 'closed' },
+    'azure git.pullrequest.merged (active)': { kind: 'other', action: 'other', state: undefined }
+  },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0
+[ELIFECYCLE] Command failed with exit code 1.
+exit code: 1

@@ -1,0 +1,11 @@
+$ node verify.mjs
+advertised state_change actions: bitbucket [ 'opened', 'closed', 'merged' ] azure [ 'opened', 'closed', 'merged' ]
+bitbucket pullrequest:created              expected state_change/opened state=open   actual state_change/opened state=open
+bitbucket pullrequest:fulfilled            expected state_change/merged state=merged actual state_change/merged state=merged
+bitbucket pullrequest:rejected             expected state_change/closed state=closed actual state_change/closed state=closed
+azure git.pullrequest.created (active)     expected state_change/opened state=open   actual state_change/opened state=open
+azure git.pullrequest.merged (completed)   expected state_change/merged state=merged actual state_change/merged state=merged
+azure git.pullrequest.updated (abandoned)  expected state_change/closed state=closed actual state_change/closed state=closed
+azure git.pullrequest.merged (active)      expected other/other state=undefined      actual other/other state=undefined
+fixed: state deliveries carry the advertised actions and states
+exit code: 0
