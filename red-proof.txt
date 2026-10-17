@@ -1,0 +1,94 @@
+$ pnpm verify
+$ node verify.mjs
+expected: [
+  {
+    forge: 'forgejo',
+    event: 'pull_request_approved',
+    kind: 'review',
+    state: 'approved'
+  },
+  {
+    forge: 'gitea',
+    event: 'pull_request_rejected',
+    kind: 'review',
+    state: 'changes_requested'
+  }
+]
+actual:   [
+  {
+    forge: 'forgejo',
+    event: 'pull_request_approved',
+    kind: 'other',
+    state: undefined
+  },
+  {
+    forge: 'gitea',
+    event: 'pull_request_rejected',
+    kind: 'other',
+    state: undefined
+  }
+]
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  [
+    {
+      event: 'pull_request_approved',
+      forge: 'forgejo',
++     kind: 'other',
++     state: undefined
+-     kind: 'review',
+-     state: 'approved'
+    },
+    {
+      event: 'pull_request_rejected',
+      forge: 'gitea',
++     kind: 'other',
++     state: undefined
+-     kind: 'review',
+-     state: 'changes_requested'
+    }
+  ]
+
+    at file:///home/maxi/.t3/worktrees/repros/forges-forgejo-review-webhook-events/forges-forgejo-review-webhook-events/verify.mjs:35:10 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [
+    {
+      forge: 'forgejo',
+      event: 'pull_request_approved',
+      kind: 'other',
+      state: undefined
+    },
+    {
+      forge: 'gitea',
+      event: 'pull_request_rejected',
+      kind: 'other',
+      state: undefined
+    }
+  ],
+  expected: [
+    {
+      forge: 'forgejo',
+      event: 'pull_request_approved',
+      kind: 'review',
+      state: 'approved'
+    },
+    {
+      forge: 'gitea',
+      event: 'pull_request_rejected',
+      kind: 'review',
+      state: 'changes_requested'
+    }
+  ],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0
+[ELIFECYCLE] Command failed with exit code 1.
+exit code: 1

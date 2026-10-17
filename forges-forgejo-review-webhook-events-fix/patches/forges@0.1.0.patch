@@ -1,0 +1,54 @@
+diff --git a/dist/forgejo-IIfXyK9J.mjs b/dist/forgejo-IIfXyK9J.mjs
+index a301c74aa116db3cd6d1b7d032cd58eae9170943..c9a864c810f9ddcee4de0de8ed2eedf84e0d024f 100644
+--- a/dist/forgejo-IIfXyK9J.mjs
++++ b/dist/forgejo-IIfXyK9J.mjs
+@@ -10,11 +10,17 @@ const FORGEJO_HEADERS = {
+ 		"x-gitea-event",
+ 		"x-github-event"
+ 	],
++	eventType: [
++		"x-forgejo-event-type",
++		"x-gitea-event-type",
++		"x-github-event-type"
++	],
+ 	delivery: ["x-forgejo-delivery", "x-gitea-delivery"]
+ };
+ const GITEA_HEADERS = {
+ 	signature: ["x-gitea-signature"],
+ 	event: ["x-gitea-event", "x-github-event"],
++	eventType: ["x-gitea-event-type", "x-github-event-type"],
+ 	delivery: ["x-gitea-delivery"]
+ };
+ /** Native Forgejo and Gitea event names per normalised kind, for hook subscriptions. */
+@@ -1029,8 +1035,18 @@ function threadTime({ action, comment, pull_request: pull }, subject) {
+ 	else if (action === "closed" || action === "merged") own = pull?.merged_at ?? subject?.closed_at;
+ 	return toDate(own ?? subject?.updated_at);
+ }
+-function translateForgejoWebhook(origin, delivery, names = FORGEJO_HEADERS) {
++/** Hook types the `X-*-Event` header renames; `X-*-Event-Type` carries the hook type itself. */
++const HOOK_TYPES = {
++	pull_request_approved: "pull_request_review_approved",
++	pull_request_rejected: "pull_request_review_rejected",
++	pull_request_comment: "pull_request_review_comment"
++};
++function hookType(delivery, names) {
+ 	const event = firstHeader(delivery, names.event);
++	return firstHeader(delivery, names.eventType) ?? (event && (HOOK_TYPES[event] ?? event));
++}
++function translateForgejoWebhook(origin, delivery, names = FORGEJO_HEADERS) {
++	const event = hookType(delivery, names);
+ 	if (!event) throw new WebhookVerificationError(`Missing ${names.event[0]} header`, origin);
+ 	const deliveryId = firstHeader(delivery, names.delivery) ?? crypto.randomUUID();
+ 	const payload = JSON.parse(bodyText(delivery.body));
+diff --git a/dist/index-BTKSTBrW.d.mts b/dist/index-BTKSTBrW.d.mts
+index 79956664b9d01624a940fa0bcb4b5fabd4917ee1..93c51d2c30532fe0505412a40a32ce041fb820a0 100644
+--- a/dist/index-BTKSTBrW.d.mts
++++ b/dist/index-BTKSTBrW.d.mts
+@@ -5,6 +5,7 @@ import { c as ProviderFactoryFunction, s as ProviderDefinition } from "./define-
+ interface WebhookHeaderNames {
+   signature: readonly string[];
+   event: readonly string[];
++  eventType: readonly string[];
+   delivery: readonly string[];
+ }
+ //#endregion

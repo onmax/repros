@@ -1,0 +1,32 @@
+$ pnpm verify
+$ node verify.mjs
+expected: [
+  {
+    forge: 'forgejo',
+    event: 'pull_request_approved',
+    kind: 'review',
+    state: 'approved'
+  },
+  {
+    forge: 'gitea',
+    event: 'pull_request_rejected',
+    kind: 'review',
+    state: 'changes_requested'
+  }
+]
+actual:   [
+  {
+    forge: 'forgejo',
+    event: 'pull_request_approved',
+    kind: 'review',
+    state: 'approved'
+  },
+  {
+    forge: 'gitea',
+    event: 'pull_request_rejected',
+    kind: 'review',
+    state: 'changes_requested'
+  }
+]
+fixed: both review deliveries translate to kind review
+exit code: 0
