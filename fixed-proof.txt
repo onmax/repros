@@ -1,0 +1,14 @@
+$ pnpm verify
+$ node verify.mjs
+expected: {
+  one: { title: 'one' },
+  three: 'Error: No fixture for POST https://api.github.com/graphql',
+  override: { from: 'override' }
+}
+actual:   {
+  one: { title: 'one' },
+  three: 'Error: No fixture for POST https://api.github.com/graphql',
+  override: { from: 'override' }
+}
+fixed: each request gets the fixture for its own variables, an unmatched one throws, and the override wins
+exit code: 0

@@ -1,0 +1,54 @@
+$ pnpm verify
+$ node verify.mjs
+expected: {
+  one: { title: 'one' },
+  three: 'Error: No fixture for POST https://api.github.com/graphql',
+  override: { from: 'override' }
+}
+actual:   {
+  one: { title: 'two' },
+  three: { title: 'two' },
+  override: { from: 'fixture' }
+}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  {
+    one: {
++     title: 'two'
+-     title: 'one'
+    },
+    override: {
++     from: 'fixture'
+-     from: 'override'
+    },
++   three: {
++     title: 'two'
++   }
+-   three: 'Error: No fixture for POST https://api.github.com/graphql'
+  }
+
+    at file://forges-testing-fixture-keys/verify.mjs:42:10 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: {
+    one: { title: 'two' },
+    three: { title: 'two' },
+    override: { from: 'fixture' }
+  },
+  expected: {
+    one: { title: 'one' },
+    three: 'Error: No fixture for POST https://api.github.com/graphql',
+    override: { from: 'override' }
+  },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0
+[ELIFECYCLE] Command failed with exit code 1.
+exit code: 1

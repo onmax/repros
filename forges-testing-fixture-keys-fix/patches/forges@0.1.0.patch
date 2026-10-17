@@ -1,0 +1,44 @@
+diff --git a/dist/testing/index.mjs b/dist/testing/index.mjs
+index c25ebd604b37122103a498b988528bc7f2a87e53..c7ddb5cca4f3c7a964f9ac80ebb5ecafc6fb536e 100644
+--- a/dist/testing/index.mjs
++++ b/dist/testing/index.mjs
+@@ -1,11 +1,15 @@
+ import { a as sha256Hex, i as hmacSha256Hex, l as toBase64 } from "../crypto-BKOPCQcM.mjs";
+ //#region src/testing/index.ts
++/** A `JSON.stringify` replacer that sorts the keys of every object, so key order never changes the JSON. */
++function sortedKeys(_key, value) {
++	return value && typeof value === "object" && !Array.isArray(value) ? Object.fromEntries(Object.keys(value).sort().map((key) => [key, value[key]])) : value;
++}
+ function fixtureKey(method, url, operationName, variables) {
+ 	const parsed = new URL(url);
+ 	parsed.searchParams.sort();
+ 	const base = `${method.toUpperCase()} ${parsed.origin}${parsed.pathname}${parsed.search}`;
+ 	const operation = operationName ? `${base} ${operationName}` : base;
+-	return variables ? `${operation} ${JSON.stringify(variables, Object.keys(variables).sort())}` : operation;
++	return variables ? `${operation} ${JSON.stringify(variables, sortedKeys)}` : operation;
+ }
+ function operationOf(url, body) {
+ 	if (!body || !url.endsWith("/graphql")) return {};
+@@ -63,9 +67,10 @@ function fixtureFetch(fixtures, overrides = {}, options = {}) {
+ 			fixture
+ 		}]);
+ 	}
++	const replaced = /* @__PURE__ */ new Map();
+ 	for (const [override, response] of Object.entries(overrides)) {
+ 		const [method = "GET", url = "", operationName] = override.split(" ");
+-		responses.set(fixtureKey(method, url, operationName), [{ response }]);
++		replaced.set(fixtureKey(method, url, operationName), response);
+ 	}
+ 	const served = /* @__PURE__ */ new Map();
+ 	const take = (key) => {
+@@ -79,7 +84,9 @@ function fixtureFetch(fixtures, overrides = {}, options = {}) {
+ 	const fetch = async (input, init) => {
+ 		const call = callOf(input, init);
+ 		calls.push(call);
+-		const match = take(fixtureKey(call.method, input, call.operationName, call.variables)) ?? take(fixtureKey(call.method, input, call.operationName));
++		const key = fixtureKey(call.method, input, call.operationName);
++		const override = replaced.get(key);
++		const match = override ? { response: override } : take(fixtureKey(call.method, input, call.operationName, call.variables)) ?? take(key);
+ 		if (!match) throw new Error(`No fixture for ${call.method} ${input}${call.operationName ? ` (${call.operationName})` : ""}`);
+ 		const { response } = match;
+ 		call.fixture = match.fixture;
