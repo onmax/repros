@@ -1,0 +1,14 @@
+$ node verify.mjs
+request:  https://api.github.com/repos/acme/widgets/commits
+expected: {
+  sha: '6dcb09b5b57875f334f61aebed695e2e4193db5e',
+  name: 'Octo Cat',
+  actor: undefined
+}
+actual:   {
+  sha: '6dcb09b5b57875f334f61aebed695e2e4193db5e',
+  name: 'Octo Cat',
+  actor: undefined
+}
+fixed: commitsPage lists the commit with no actor
+exit code: 0

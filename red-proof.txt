@@ -1,0 +1,42 @@
+$ node verify.mjs
+request:  https://api.github.com/repos/acme/widgets/commits
+expected: {
+  sha: '6dcb09b5b57875f334f61aebed695e2e4193db5e',
+  name: 'Octo Cat',
+  actor: undefined
+}
+actual:   {
+  error: "TypeError: Cannot read properties of undefined (reading 'endsWith')"
+}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  {
++   error: "TypeError: Cannot read properties of undefined (reading 'endsWith')"
+-   actor: undefined,
+-   name: 'Octo Cat',
+-   sha: '6dcb09b5b57875f334f61aebed695e2e4193db5e'
+  }
+
+    at file:///home/maxi/.t3/worktrees/repros/forges-github-empty-actor/forges-github-empty-actor/verify.mjs:34:10 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: {
+    error: "TypeError: Cannot read properties of undefined (reading 'endsWith')"
+  },
+  expected: {
+    sha: '6dcb09b5b57875f334f61aebed695e2e4193db5e',
+    name: 'Octo Cat',
+    actor: undefined
+  },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0
+[ELIFECYCLE] Command failed with exit code 1.
+exit code: 1

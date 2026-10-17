@@ -1,0 +1,13 @@
+diff --git a/dist/github-DgddoBGE.mjs b/dist/github-DgddoBGE.mjs
+index aeda91ad5d2912c600340b95fea7dad17e570979..26d747208c4c177364b7214cd3b7ac8e6fef54d0 100644
+--- a/dist/github-DgddoBGE.mjs
++++ b/dist/github-DgddoBGE.mjs
+@@ -204,7 +204,7 @@ const GITHUB_WEBHOOK_EVENTS = [
+ //#region src/github/normalise.ts
+ const FORGE = "github";
+ function toActor(instance, user) {
+-	if (!user) return;
++	if (!user?.login) return;
+ 	return {
+ 		forge: FORGE,
+ 		instance,

@@ -1,0 +1,15 @@
+{
+  "name": "forges-github-empty-actor",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.11.2",
+  "engines": {
+    "node": "24.21.0"
+  },
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "forges": "https://pkg.pr.new/danielroe/forges@77eb7e2"
+  }
+}
