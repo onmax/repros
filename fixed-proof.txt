@@ -1,0 +1,17 @@
+$ node verify.mjs
+expected: {
+  createdNumber: '3',
+  issue2Title: 'Seeded #2',
+  commentIds: [ '2-1', '2-2', '2-3' ],
+  commentBodies: [ 'second', 'third, edited' ],
+  webhookIds: [ '1', '2', '3' ]
+}
+actual:   {
+  createdNumber: '3',
+  issue2Title: 'Seeded #2',
+  commentIds: [ '2-1', '2-2', '2-3' ],
+  commentBodies: [ 'second', 'third, edited' ],
+  webhookIds: [ '1', '2', '3' ]
+}
+fixed: every new thread, comment and webhook gets an id of its own
+exit code: 0

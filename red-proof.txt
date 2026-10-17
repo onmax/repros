@@ -1,0 +1,70 @@
+$ node verify.mjs
+expected: {
+  createdNumber: '3',
+  issue2Title: 'Seeded #2',
+  commentIds: [ '2-1', '2-2', '2-3' ],
+  commentBodies: [ 'second', 'third, edited' ],
+  webhookIds: [ '1', '2', '3' ]
+}
+actual:   {
+  createdNumber: '2',
+  issue2Title: 'Created',
+  commentIds: [ '2-1', '2-2', '2-2' ],
+  commentBodies: [ 'third, edited', 'third' ],
+  webhookIds: [ '1', '2', '2' ]
+}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  {
+    commentBodies: [
+-     'second',
+      'third, edited',
++     'third'
+    ],
+    commentIds: [
+      '2-1',
+      '2-2',
++     '2-2'
+-     '2-3'
+    ],
++   createdNumber: '2',
++   issue2Title: 'Created',
+-   createdNumber: '3',
+-   issue2Title: 'Seeded #2',
+    webhookIds: [
+      '1',
+      '2',
++     '2'
+-     '3'
+    ]
+  }
+
+    at file:///home/maxi/.t3/worktrees/repros/forges-fake-free-ids/forges-fake-free-ids/verify.mjs:58:10 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: {
+    createdNumber: '2',
+    issue2Title: 'Created',
+    commentIds: [ '2-1', '2-2', '2-2' ],
+    commentBodies: [ 'third, edited', 'third' ],
+    webhookIds: [ '1', '2', '2' ]
+  },
+  expected: {
+    createdNumber: '3',
+    issue2Title: 'Seeded #2',
+    commentIds: [ '2-1', '2-2', '2-3' ],
+    commentBodies: [ 'second', 'third, edited' ],
+    webhookIds: [ '1', '2', '3' ]
+  },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0
+[ELIFECYCLE] Command failed with exit code 1.
+exit code: 1
