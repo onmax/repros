@@ -10,7 +10,7 @@ node:internal/modules/run_main:107
     ^
 
 AssertionError [ERR_ASSERTION]: expected the 40,000-line patch to parse in under 250 ms, took 1102.4 ms
-    at file:///home/maxi/.t3/worktrees/repros/forges-tangled-patch-trim/forges-tangled-patch-trim/verify.mjs:72:10 {
+    at forges-tangled-patch-trim/verify.mjs:72:10 {
   generatedMessage: false,
   code: 'ERR_ASSERTION',
   actual: false,
