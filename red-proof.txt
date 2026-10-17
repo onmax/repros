@@ -22,7 +22,7 @@ AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
 -   sha: '6dcb09b5b57875f334f61aebed695e2e4193db5e'
   }
 
-    at file:///home/maxi/.t3/worktrees/repros/forges-github-empty-actor/forges-github-empty-actor/verify.mjs:34:10 {
+    at forges-github-empty-actor/verify.mjs:34:10 {
   generatedMessage: true,
   code: 'ERR_ASSERTION',
   actual: {
