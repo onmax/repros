@@ -1,0 +1,73 @@
+diff --git a/dist/github-DgddoBGE.mjs b/dist/github-DgddoBGE.mjs
+index aeda91ad5d2912c600340b95fea7dad17e570979..fe49e8409c6b9bcb37c342020f27b996e0a6d18b 100644
+--- a/dist/github-DgddoBGE.mjs
++++ b/dist/github-DgddoBGE.mjs
+@@ -1,5 +1,5 @@
+ import { s as signRs256Jwt } from "./crypto-BKOPCQcM.mjs";
+-import { A as toPullStats, B as isNamespaceRef, C as resolveToken, D as toDate, Dt as ReadOnlyError, E as teamOrg, Et as RateLimitedError, F as REACTION_CONTENTS, Ft as soleMergeMethod, It as toMergeError, M as versionAtLeast, Mt as UnsupportedOperationError, O as toFileStatus, Pt as isSecondaryRateLimit, S as requireThread, St as MergeBlockedError, Tt as NotFoundError, V as isResolvedThread, Z as reactionContent, _t as ForgeApiError, b as rateLimitPart, bt as ForgeTimeoutError, d as isFirstPage, dt as rateLimitReset, f as iteratePages, ft as sleep, gt as ForbiddenError, h as memo, i as degradesToWarning, j as toWarning, k as toPage, mt as BranchMovedError, n as checkRunState, o as forgeIterable, ot as anySignal, p as latestCommentOf, r as createListing, s as getManyConcurrently, st as createFetcher, t as actorLogin, u as hostOf, ut as rateLimitOf, v as milestoneId, vt as ForgeError, w as summariseChecks, x as requireIssueOrPull, xt as InsufficientScopeError, y as phased } from "./utils-C-bkdug1.mjs";
++import { A as toPullStats, B as isNamespaceRef, C as resolveToken, D as toDate, Dt as ReadOnlyError, E as teamOrg, Et as RateLimitedError, F as REACTION_CONTENTS, Ft as soleMergeMethod, It as toMergeError, M as versionAtLeast, Mt as UnsupportedOperationError, O as toFileStatus, Pt as isSecondaryRateLimit, S as requireThread, St as MergeBlockedError, Tt as NotFoundError, V as isResolvedThread, Z as reactionContent, _t as ForgeApiError, b as rateLimitPart, bt as ForgeTimeoutError, d as isFirstPage, dt as rateLimitReset, f as iteratePages, ft as sleep, gt as ForbiddenError, h as memo, i as degradesToWarning, j as toWarning, k as toPage, mt as BranchMovedError, n as checkRunState, o as forgeIterable, ot as anySignal, at as abortable, p as latestCommentOf, r as createListing, s as getManyConcurrently, st as createFetcher, t as actorLogin, u as hostOf, ut as rateLimitOf, v as milestoneId, vt as ForgeError, w as summariseChecks, x as requireIssueOrPull, xt as InsufficientScopeError, y as phased } from "./utils-C-bkdug1.mjs";
+ import { C as isSha, S as inDirectories, T as toFileContent, b as existingFiles, g as supportOnly, h as WRITE_VERBS, i as githubShapedWeb, m as reviewState, n as perKind, p as eventTime, r as verb, t as defineForgeProvider, v as changeBase64, w as splitMessage, x as fromBase64 } from "./define-DBXivWJM.mjs";
+ import { a as verifyHmacSignature, r as nativeEventsFor, t as eventKindsOf } from "./webhooks-DgHwxxYz.mjs";
+ import { t as toAuthorAssociation } from "./association-Cm0dUTDU.mjs";
+@@ -20,18 +20,23 @@ const REFRESH_MARGIN_MS = 6e4;
+ function createAppCredentials(auth, context) {
+ 	let jwt;
+ 	const tokens = /* @__PURE__ */ new Map();
++	const exchanges = /* @__PURE__ */ new Map();
+ 	async function appJwt() {
+ 		if (jwt && jwt.expiresAt > Date.now() + REFRESH_MARGIN_MS) return jwt.value;
+ 		const now = Math.floor(Date.now() / 1e3);
+-		const value = await signRs256Jwt(auth.privateKey, {
++		const value = signRs256Jwt(auth.privateKey, {
+ 			iss: String(auth.appId),
+ 			iat: now - 60,
+ 			exp: now + JWT_LIFETIME_SECONDS
+ 		});
+-		jwt = {
++		const entry = {
+ 			value,
+ 			expiresAt: (now + JWT_LIFETIME_SECONDS) * 1e3
+ 		};
++		jwt = entry;
++		value.catch(() => {
++			if (jwt === entry) jwt = void 0;
++		});
+ 		return value;
+ 	}
+ 	const fetcher = createFetcher({
+@@ -41,18 +46,23 @@ function createAppCredentials(auth, context) {
+ 	async function installationTokenDetails(installationId, options) {
+ 		const cached = tokens.get(installationId);
+ 		if (cached && cached.expiresAt.getTime() > Date.now() + REFRESH_MARGIN_MS) return cached;
+-		const { data } = await fetcher.json(`/app/installations/${installationId}/access_tokens`, {
+-			method: "POST",
+-			signal: options?.signal
+-		});
+-		const token = {
+-			token: data.token,
+-			expiresAt: new Date(data.expires_at),
+-			permissions: data.permissions ?? {},
+-			repositorySelection: data.repository_selection
+-		};
+-		tokens.set(installationId, token);
+-		return token;
++		let exchange = exchanges.get(installationId);
++		if (!exchange) {
++			exchange = fetcher.json(`/app/installations/${installationId}/access_tokens`, { method: "POST" }).then(({ data }) => {
++				const token = {
++					token: data.token,
++					expiresAt: new Date(data.expires_at),
++					permissions: data.permissions ?? {},
++					repositorySelection: data.repository_selection
++				};
++				tokens.set(installationId, token);
++				return token;
++			});
++			const forget = () => exchanges.delete(installationId);
++			exchange.then(forget, forget);
++			exchanges.set(installationId, exchange);
++		}
++		return abortable(exchange, options?.signal);
+ 	}
+ 	return {
+ 		appJwt,

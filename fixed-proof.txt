@@ -1,0 +1,8 @@
+$ pnpm verify
+$ node verify.mjs
+POST /app/installations/1/access_tokens
+GET /repos/acme/widgets
+GET /repos/acme/widgets
+expected: 1 installation token exchange for 2 concurrent repos.get
+actual:   1 installation token exchange
+exit code: 0

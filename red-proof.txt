@@ -1,0 +1,28 @@
+$ pnpm verify
+$ node verify.mjs
+POST /app/installations/1/access_tokens
+GET /repos/acme/widgets
+POST /app/installations/1/access_tokens
+GET /repos/acme/widgets
+expected: 1 installation token exchange for 2 concurrent repos.get
+actual:   2 installation token exchanges
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: concurrent requests should share one installation token exchange
+
+2 !== 1
+
+    at file:///home/maxi/.t3/worktrees/repros/forges-github-installation-token-inflight/forges-github-installation-token-inflight/verify.mjs:37:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 2,
+  expected: 1,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0
+[ELIFECYCLE] Command failed with exit code 1.
+exit code: 1
