@@ -44,7 +44,7 @@ AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
     ]
   }
 
-    at file:///home/maxi/.t3/worktrees/repros/forges-fake-free-ids/forges-fake-free-ids/verify.mjs:58:10 {
+    at forges-fake-free-ids/verify.mjs:58:10 {
   generatedMessage: true,
   code: 'ERR_ASSERTION',
   actual: {
