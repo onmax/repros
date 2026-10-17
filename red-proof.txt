@@ -14,7 +14,7 @@ AssertionError [ERR_ASSERTION]: concurrent requests should share one installatio
 
 2 !== 1
 
-    at file:///home/maxi/.t3/worktrees/repros/forges-github-installation-token-inflight/forges-github-installation-token-inflight/verify.mjs:37:10 {
+    at forges-github-installation-token-inflight/verify.mjs:37:10 {
   generatedMessage: false,
   code: 'ERR_ASSERTION',
   actual: 2,
