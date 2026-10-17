@@ -1,0 +1,24 @@
+$ pnpm verify
+$ node verify.mjs
+threads.files() on a pull whose patch has a run of 10,000 blank lines: 74.2 ms (runs 68.6, 74.2, 152.3)
+threads.files() on a pull whose patch has a run of 40,000 blank lines: 1102.4 ms (runs 1084.8, 1102.4, 1251.1)
+ratio for 4x the input: 14.9x
+expected: 40,000 lines under 250 ms, ratio under 8x (linear is about 4x or less)
+actual:   40,000 lines in 1102.4 ms, ratio 14.9x
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: expected the 40,000-line patch to parse in under 250 ms, took 1102.4 ms
+    at file:///home/maxi/.t3/worktrees/repros/forges-tangled-patch-trim/forges-tangled-patch-trim/verify.mjs:72:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.21.0
+[ELIFECYCLE] Command failed with exit code 1.
+exit code: 1

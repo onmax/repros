@@ -1,0 +1,13 @@
+diff --git a/dist/patch-Alk1ZZHS.mjs b/dist/patch-Alk1ZZHS.mjs
+index 711e0b0e91a0b51048a4d01a007d976706560817..ddfbc0b44d3e4276671f70da9d26bb1bf900fb7c 100644
+--- a/dist/patch-Alk1ZZHS.mjs
++++ b/dist/patch-Alk1ZZHS.mjs
+@@ -34,7 +34,7 @@ function parseDiff(diff) {
+ 		if (!header) continue;
+ 		const hunk = section.search(/^@@ /m);
+ 		const meta = hunk === -1 ? section : section.slice(0, hunk);
+-		const body = hunk === -1 ? "" : section.slice(hunk).replace(/\n-- \n[^\n]*\n*$/, "").replace(/\n+$/, "");
++		const body = hunk === -1 ? "" : section.slice(hunk).replace(/\n-- \n[^\n]*\n*$/, "").replace(/(?<!\n)\n+$/, "");
+ 		const renamed = /^rename from (.+)$/m.exec(meta);
+ 		const copied = /^copy from (.+)$/m.exec(meta);
+ 		const oldPath = renamed?.[1] ?? copied?.[1] ?? header[1];

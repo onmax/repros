@@ -1,0 +1,2 @@
+patchedDependencies:
+  forges@0.1.0: patches/forges@0.1.0.patch
