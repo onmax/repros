@@ -2,7 +2,7 @@
 
 Unpatched fixture for `forges` at commit `77eb7e2e`.
 
-Given a GitHub commit listing (`GET /repos/{owner}/{repo}/commits`) that contains a commit whose git email matches no GitHub account, GitHub sends `"author": {}` for that commit instead of null. When `contents.commitsPage()` reads that page, the expected result is the commit with its git author name and no `actor`. The actual result is that the whole page rejects with `TypeError: Cannot read properties of undefined (reading 'endsWith')`.
+Given a GitHub commit listing (`GET /repos/{owner}/{repo}/commits`) that contains a commit made with an empty git email (`git -c user.email= commit`), GitHub sends `"author": {}` and `"committer": {}` for that commit instead of null. (A commit whose email matches no account gets `null`, which forges already handles.) This was checked against the live API on 2026-10-17 with a private repository holding one such commit. When `contents.commitsPage()` reads that page, the expected result is the commit with its git author name and no `actor`. The actual result is that the whole page rejects with `TypeError: Cannot read properties of undefined (reading 'endsWith')`.
 
 `toActor` in `src/github/normalise.ts` returns early only for a null or undefined user, then calls `user.login.endsWith('[bot]')` on the empty object:
 https://github.com/danielroe/forges/blob/77eb7e2e50ef17004580b164074cd09818f1025b/src/github/normalise.ts#L94-L108

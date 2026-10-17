@@ -4,7 +4,7 @@ import { github } from 'forges/github'
 const mode = process.argv[2] === 'broken' ? 'broken' : 'fixed'
 const sha = '6dcb09b5b57875f334f61aebed695e2e4193db5e'
 
-// GET /repos/acme/widgets/commits, with one commit whose git email matches no GitHub account.
+// GET /repos/acme/widgets/commits, with one commit made with an empty git email.
 // GitHub sends `"author": {}` for such a commit instead of null.
 const page = [{ sha, commit: { author: { name: 'Octo Cat' } }, author: {} }]
 
