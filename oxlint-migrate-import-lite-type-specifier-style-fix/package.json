@@ -1,0 +1,25 @@
+{
+  "name": "repro-oxlint-migrate-import-lite-type-specifier-style-fix",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.28.5",
+  "engines": {
+    "node": "24.21.0"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.21.0",
+      "onFail": "download"
+    }
+  },
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "devDependencies": {
+    "@oxlint/migrate": "1.88.0",
+    "eslint": "10.13.0",
+    "eslint-plugin-import-lite": "0.6.0",
+    "oxlint": "1.88.0"
+  }
+}

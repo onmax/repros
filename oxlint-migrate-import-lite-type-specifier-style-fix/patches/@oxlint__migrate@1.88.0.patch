@@ -1,0 +1,52 @@
+diff --git a/dist/src-yV7UJ5KA.mjs b/dist/src-yV7UJ5KA.mjs
+index 3aa6a9767067b5e864cdcb30e4570c53b9996614..c0e9a9fe522a5acd831c53684d3582c17397103f 100644
+--- a/dist/src-yV7UJ5KA.mjs
++++ b/dist/src-yV7UJ5KA.mjs
+@@ -1777,6 +1777,31 @@ function buildUnsupportedRuleExplanations() {
+ 	return explanations;
+ }
+ //#endregion
++//#region src/rule_options.ts
++const ruleSchemaEnum = (plugin, ruleName) => {
++	const schema = plugin?.rules?.[ruleName]?.meta?.schema;
++	const values = (Array.isArray(schema) ? schema[0] : void 0)?.enum;
++	return Array.isArray(values) ? values : void 0;
++};
++const consistentTypeSpecifierStyle = (options, plugin) => {
++	const [mode, ...rest] = options;
++	const isImportLite = ruleSchemaEnum(plugin, "consistent-type-specifier-style")?.includes("top-level");
++	switch (mode) {
++		case "top-level": return ["prefer-top-level", ...rest];
++		case "inline": return ["prefer-inline", ...rest];
++		case "prefer-top-level": return isImportLite ? ["prefer-top-level-if-only-type-imports", ...rest] : options;
++		default: return options;
++	}
++};
++const ruleOptionsTransforms = { "import/consistent-type-specifier-style": consistentTypeSpecifierStyle };
++const transformRuleOptions = (canonicalRule, config, plugin) => {
++	const transform = ruleOptionsTransforms[canonicalRule];
++	if (transform === void 0 || !Array.isArray(config) || config.length < 2) return config;
++	const [severity, ...options] = config;
++	const transformed = transform(options, plugin);
++	return transformed === options ? config : [severity, ...transformed];
++};
++//#endregion
+ //#region src/plugins_rules.ts
+ const allRules = Object.values(rules_exports).flat();
+ const unsupportedRuleExplanations = buildUnsupportedRuleExplanations();
+@@ -1897,11 +1922,13 @@ const transformRuleEntry = (eslintConfig, targetConfig, baseConfig, options, ove
+ 				if (!isOffValue(normalizedConfig)) options?.reporter?.markSkipped(rule, "type-aware");
+ 				continue;
+ 			}
++			const pluginPrefix = rule.includes("/") ? rule.slice(0, rule.lastIndexOf("/")) : void 0;
++			const oxlintConfig = transformRuleOptions(canonicalRule, normalizedConfig, pluginPrefix === void 0 ? void 0 : effectivePlugins?.[pluginPrefix]);
+ 			if (options?.merge) {
+-				if (!(rule in targetConfig.rules)) targetConfig.rules[rule] = normalizedConfig;
++				if (!(rule in targetConfig.rules)) targetConfig.rules[rule] = oxlintConfig;
+ 			} else {
+ 				const existingConfig = rule in targetConfig.rules ? targetConfig.rules[rule] : baseConfig?.rules?.[rule];
+-				targetConfig.rules[rule] = mergeRuleConfig(existingConfig, normalizedConfig);
++				targetConfig.rules[rule] = mergeRuleConfig(existingConfig, oxlintConfig);
+ 			}
+ 		} else {
+ 			if (options?.jsPlugins) {

@@ -1,0 +1,3 @@
+packages: []
+patchedDependencies:
+  '@oxlint/migrate@1.88.0': patches/@oxlint__migrate@1.88.0.patch

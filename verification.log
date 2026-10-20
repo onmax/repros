@@ -1,0 +1,50 @@
+
+=== oxlint-migrate-import-lite-type-specifier-style
+eslint index.js -> exit 0
+
+@oxlint/migrate eslint.config.mjs -> exit 0
+✨ .oxlintrc.json created with 1 rules.
+
+🚀 Next:
+     npx oxlint .
+
+oxlint -c .oxlintrc.json index.js -> exit 1
+Failed to parse oxlint configuration file.
+
+  x Invalid configuration for rule `import/consistent-type-specifier-style`:
+  |   unknown variant `top-level`, expected one of `prefer-top-level`, `prefer-inline`, `prefer-top-level-if-only-type-imports`
+  |   received config: `"top-level"`
+
+.oxlintrc.json "import/consistent-type-specifier-style"
+  expected: ["error","prefer-top-level"]
+  actual:   ["error","top-level"]
+oxlint loads the migrated config
+  expected: exit 0
+  actual:   exit 1
+
+FAIL: @oxlint/migrate copied the import-lite option `top-level` verbatim and oxlint rejects it
+EXPECTED RED: `top-level` copied verbatim; oxlint rejects the config
+
+=== oxlint-migrate-import-lite-type-specifier-style-fix
+eslint index.js -> exit 0
+
+@oxlint/migrate eslint.config.mjs -> exit 0
+✨ .oxlintrc.json created with 1 rules.
+
+🚀 Next:
+     npx oxlint .
+
+oxlint -c .oxlintrc.json index.js -> exit 0
+
+
+.oxlintrc.json "import/consistent-type-specifier-style"
+  expected: ["error","prefer-top-level"]
+  actual:   ["error","prefer-top-level"]
+oxlint loads the migrated config
+  expected: exit 0
+  actual:   exit 0
+
+PASS: migrated option is valid for oxlint
+GREEN: patched migrate writes `prefer-top-level`; oxlint loads the config
+
+PASS: red/green comparison
