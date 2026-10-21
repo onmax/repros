@@ -1,0 +1,5 @@
+minimumReleaseAgeExclude:
+  - '@comark/html@0.8.1'
+  - comark@0.8.1
+patchedDependencies:
+  comark@0.8.1: patches/comark@0.8.1.patch

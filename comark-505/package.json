@@ -1,0 +1,16 @@
+{
+  "name": "comark-505",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.18.0",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "@comark/html": "0.8.1",
+    "comark": "0.8.1"
+  }
+}

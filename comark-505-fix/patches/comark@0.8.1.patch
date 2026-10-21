@@ -1,0 +1,15 @@
+diff --git a/dist/internal/parse/tree.js b/dist/internal/parse/tree.js
+index 74d1cf66fd1b3c4c17252494e5d63b6b887450c5..541b90690cb90cd1b0115654bcc4b33f2fc1ba42 100644
+--- a/dist/internal/parse/tree.js
++++ b/dist/internal/parse/tree.js
+@@ -223,9 +223,7 @@ function processBlockChildrenWithSlots(tokens, start, closeType, state) {
+ }
+ function processMdcBlock(tokens, start, state) {
+     const open = tokens[start];
+-    state.insideMarkdownContainer += 1;
+-    const { children, nextIndex } = processBlockChildrenWithSlots(tokens, start, 'mdc_block_close', state);
+-    state.insideMarkdownContainer -= 1;
++    const { children, nextIndex } = withHtmlScope(state, () => processBlockChildrenWithSlots(tokens, start, 'mdc_block_close', state));
+     const attrs = processAttributes(open.attrs);
+     let node = [open.tag || 'div', attrs, ...mergeAdjacentTextNodes(children)];
+     if (WRAPPER_TAGS.has(node[0])) {
