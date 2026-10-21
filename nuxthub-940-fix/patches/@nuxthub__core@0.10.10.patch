@@ -1,0 +1,13 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 354636b34f40a2066342aba3c774b751f7f674f5..3fb766abd0269740d5375b2d3b0291bf7fec4577 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -6,7 +6,7 @@ import { readPackageJSON, findWorkspaceDir } from 'pkg-types';
+ import { provider } from 'std-env';
+ import chokidar from 'chokidar';
+ import { glob } from 'tinyglobby';
+-import { copyDatabaseMigrationsToHubDir, copyDatabaseQueriesToHubDir, copyDatabaseAssets, applyBuildTimeMigrations, getDatabaseSchemaPathMetadata, buildDatabaseSchema } from './db/lib';
++import { copyDatabaseMigrationsToHubDir, copyDatabaseQueriesToHubDir, copyDatabaseAssets, applyBuildTimeMigrations, getDatabaseSchemaPathMetadata, buildDatabaseSchema } from './db/lib/index.mjs';
+ import { existsSync } from 'node:fs';
+ import { createHooks } from 'hookable';
+ import { resolve as resolve$2 } from 'node:path';

@@ -1,0 +1,13 @@
+{
+  "name": "nuxthub-940",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "@nuxthub/core": "0.10.10",
+    "nuxt": "4.6.1"
+  },
+  "packageManager": "pnpm@11.28.5"
+}
