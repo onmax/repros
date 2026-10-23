@@ -1,0 +1,56 @@
+diff --git a/dist/runtime/components/NuxtImg.d.vue.ts b/dist/runtime/components/NuxtImg.d.vue.ts
+index aa19225fddfd76adca01d3624663ffe1c33f0819..affbc97c8cadc840d76ff2de9971dbbd7bfe6317 100644
+--- a/dist/runtime/components/NuxtImg.d.vue.ts
++++ b/dist/runtime/components/NuxtImg.d.vue.ts
+@@ -1,7 +1,7 @@
+ import type { ImgHTMLAttributes } from 'vue';
+ import type { BaseImageProps } from '../utils/props.js';
+ import type { ProviderDefaults, ConfiguredImageProviders } from '@nuxt/image';
+-export interface ImageProps<Provider extends keyof ConfiguredImageProviders> extends BaseImageProps<Provider> {
++export interface ImageProps<Provider extends keyof ConfiguredImageProviders> extends BaseImageProps<Provider>, Omit<ImgHTMLAttributes, keyof BaseImageProps<Provider> | 'placeholder' | 'onLoad' | 'onError'> {
+     custom?: boolean;
+     placeholder?: boolean | string | number | [w: number, h: number, q?: number, b?: number];
+     placeholderClass?: string;
+diff --git a/dist/runtime/components/NuxtImg.vue.d.ts b/dist/runtime/components/NuxtImg.vue.d.ts
+index aa19225fddfd76adca01d3624663ffe1c33f0819..affbc97c8cadc840d76ff2de9971dbbd7bfe6317 100644
+--- a/dist/runtime/components/NuxtImg.vue.d.ts
++++ b/dist/runtime/components/NuxtImg.vue.d.ts
+@@ -1,7 +1,7 @@
+ import type { ImgHTMLAttributes } from 'vue';
+ import type { BaseImageProps } from '../utils/props.js';
+ import type { ProviderDefaults, ConfiguredImageProviders } from '@nuxt/image';
+-export interface ImageProps<Provider extends keyof ConfiguredImageProviders> extends BaseImageProps<Provider> {
++export interface ImageProps<Provider extends keyof ConfiguredImageProviders> extends BaseImageProps<Provider>, Omit<ImgHTMLAttributes, keyof BaseImageProps<Provider> | 'placeholder' | 'onLoad' | 'onError'> {
+     custom?: boolean;
+     placeholder?: boolean | string | number | [w: number, h: number, q?: number, b?: number];
+     placeholderClass?: string;
+diff --git a/dist/runtime/components/NuxtPicture.d.vue.ts b/dist/runtime/components/NuxtPicture.d.vue.ts
+index 4cd19fc0a302fe146975e69ba32cb2ceac236484..68cabf2868d55c872738f49093724567130228cd 100644
+--- a/dist/runtime/components/NuxtPicture.d.vue.ts
++++ b/dist/runtime/components/NuxtPicture.d.vue.ts
+@@ -1,8 +1,8 @@
+-import type { ImgHTMLAttributes } from 'vue';
++import type { HTMLAttributes, ImgHTMLAttributes } from 'vue';
+ import type { BaseImageProps } from '../utils/props.js';
+ import type { DataAttributes } from '../types.js';
+ import type { ConfiguredImageProviders, ProviderDefaults } from '@nuxt/image';
+-export interface PictureProps<Provider extends keyof ConfiguredImageProviders> extends BaseImageProps<Provider> {
++export interface PictureProps<Provider extends keyof ConfiguredImageProviders> extends BaseImageProps<Provider>, Omit<HTMLAttributes, keyof BaseImageProps<Provider> | 'placeholder' | 'onLoad' | 'onError'>, Pick<ImgHTMLAttributes, 'alt' | 'decoding' | 'loading' | 'referrerpolicy' | 'usemap'> {
+     legacyFormat?: string;
+     imgAttrs?: ImgHTMLAttributes & DataAttributes;
+ }
+diff --git a/dist/runtime/components/NuxtPicture.vue.d.ts b/dist/runtime/components/NuxtPicture.vue.d.ts
+index 4cd19fc0a302fe146975e69ba32cb2ceac236484..68cabf2868d55c872738f49093724567130228cd 100644
+--- a/dist/runtime/components/NuxtPicture.vue.d.ts
++++ b/dist/runtime/components/NuxtPicture.vue.d.ts
+@@ -1,8 +1,8 @@
+-import type { ImgHTMLAttributes } from 'vue';
++import type { HTMLAttributes, ImgHTMLAttributes } from 'vue';
+ import type { BaseImageProps } from '../utils/props.js';
+ import type { DataAttributes } from '../types.js';
+ import type { ConfiguredImageProviders, ProviderDefaults } from '@nuxt/image';
+-export interface PictureProps<Provider extends keyof ConfiguredImageProviders> extends BaseImageProps<Provider> {
++export interface PictureProps<Provider extends keyof ConfiguredImageProviders> extends BaseImageProps<Provider>, Omit<HTMLAttributes, keyof BaseImageProps<Provider> | 'placeholder' | 'onLoad' | 'onError'>, Pick<ImgHTMLAttributes, 'alt' | 'decoding' | 'loading' | 'referrerpolicy' | 'usemap'> {
+     legacyFormat?: string;
+     imgAttrs?: ImgHTMLAttributes & DataAttributes;
+ }

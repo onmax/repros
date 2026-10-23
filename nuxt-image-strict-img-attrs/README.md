@@ -1,5 +1,7 @@
 # @nuxt/image: `<NuxtImg>` rejects documented `<img>` attributes under strict template checks
 
+Upstream issue: [nuxt/image#2083](https://github.com/nuxt/image/issues/2083).
+
 The `<NuxtImg>` docs show `<NuxtImg src="/nuxt-icon.png" loading="lazy" />`. At runtime `loading` falls through to the `<img>`. With strict template checking, vue-tsc rejects it:
 
 ```
@@ -11,11 +13,17 @@ Expected: the check passes, as it does with vue-tsc defaults.
 ## Run
 
 ```sh
-git clone --branch repro/nuxt-image-strict-img-attrs https://github.com/onmax/repros.git
+git clone --depth 1 --branch repro/nuxt-image-strict-img-attrs https://github.com/onmax/repros.git
 cd repros/nuxt-image-strict-img-attrs
-pnpm install
-pnpm verify
+pnpm install && pnpm verify
+cd ../nuxt-image-strict-img-attrs-fix
+pnpm install && pnpm verify
 ```
+
+Or open it in StackBlitz:
+
+- Broken: https://stackblitz.com/github/onmax/repros/tree/repro/nuxt-image-strict-img-attrs/nuxt-image-strict-img-attrs?startScript=verify
+- Fixed: https://stackblitz.com/github/onmax/repros/tree/repro/nuxt-image-strict-img-attrs/nuxt-image-strict-img-attrs-fix?startScript=verify
 
 `pnpm verify` runs `nuxt prepare`, then vue-tsc twice on the same app:
 
@@ -23,6 +31,8 @@ pnpm verify
 - `tsconfig.strict.json`: adds `vueCompilerOptions.checkUnknownProps: true`. Fails with the error above.
 
 It exits nonzero if either result changes.
+
+`nuxt-image-strict-img-attrs-fix/` is the same app with a committed `pnpm patch` of `@nuxt/image@2.2.0`. The patch only changes the emitted `.d.ts` files: `ImageProps` and `PictureProps` gain `/* @vue-ignore */` extends of the native attribute types. The same `pnpm verify` passes both checks there.
 
 ## Environment
 
