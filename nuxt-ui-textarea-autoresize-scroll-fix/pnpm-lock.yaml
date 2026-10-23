@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
-  '@nuxt/ui@4.12.0': 1df113449f0a4e8996562714afe780d3ea0abe3aa7ab8adc14077e29e0bbf231
+  '@nuxt/ui@4.12.0': 23cff0314ff6e3ca510d6bd639084c7b9c948231e7a15c6034605c587a78a78a
 
 importers:
 
@@ -13,7 +13,7 @@ importers:
     dependencies:
       '@nuxt/ui':
         specifier: 4.12.0
-        version: 4.12.0(patch_hash=1df113449f0a4e8996562714afe780d3ea0abe3aa7ab8adc14077e29e0bbf231)(9325ee555826e6cc46b6b3e015b62eda)
+        version: 4.12.0(patch_hash=23cff0314ff6e3ca510d6bd639084c7b9c948231e7a15c6034605c587a78a78a)(9325ee555826e6cc46b6b3e015b62eda)
       tailwindcss:
         specifier: 4.3.3
         version: 4.3.3
@@ -2375,7 +2375,7 @@ snapshots:
       pkg-types: 2.4.0
       std-env: 4.3.0
 
-  '@nuxt/ui@4.12.0(patch_hash=1df113449f0a4e8996562714afe780d3ea0abe3aa7ab8adc14077e29e0bbf231)(9325ee555826e6cc46b6b3e015b62eda)':
+  '@nuxt/ui@4.12.0(patch_hash=23cff0314ff6e3ca510d6bd639084c7b9c948231e7a15c6034605c587a78a78a)(9325ee555826e6cc46b6b3e015b62eda)':
     dependencies:
       '@floating-ui/dom': 1.8.0
       '@iconify/vue': 5.0.4(vue@3.5.44(typescript@7.0.2))

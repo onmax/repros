@@ -1,8 +1,8 @@
 diff --git a/dist/runtime/components/Textarea.vue b/dist/runtime/components/Textarea.vue
-index 0189da29befd20fa3e4413c7090fb68af8c1b2d3..d44b9484954b4884851101c437d0cc0f7cd8be36 100644
+index 0189da29befd20fa3e4413c7090fb68af8c1b2d3..bfc0d6bfb63a59c76d606f30164fdf5de525397b 100644
 --- a/dist/runtime/components/Textarea.vue
 +++ b/dist/runtime/components/Textarea.vue
-@@ -114,20 +114,38 @@ function autoFocus() {
+@@ -114,20 +114,40 @@ function autoFocus() {
  }
  function autoResize() {
    if (props.autoresize && textareaRef.value) {
@@ -29,6 +29,8 @@ index 0189da29befd20fa3e4413c7090fb68af8c1b2d3..d44b9484954b4884851101c437d0cc0f
 +    measure.value = textarea.value;
 +    measure.removeAttribute("id");
 +    measure.removeAttribute("name");
++    measure.removeAttribute("required");
++    measure.removeAttribute("form");
 +    measure.setAttribute("aria-hidden", "true");
 +    measure.tabIndex = -1;
 +    Object.assign(measure.style, {
