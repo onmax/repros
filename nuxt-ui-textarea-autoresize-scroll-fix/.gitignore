@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.vite/
+*.log
+auto-imports.d.ts
+components.d.ts

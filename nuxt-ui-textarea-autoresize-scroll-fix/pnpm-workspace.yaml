@@ -1,0 +1,5 @@
+allowBuilds:
+  esbuild: false
+  vue-demi: false
+patchedDependencies:
+  '@nuxt/ui@4.12.0': patches/@nuxt__ui@4.12.0.patch
