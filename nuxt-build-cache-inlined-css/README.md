@@ -35,6 +35,7 @@ nuxt-build-cache-inlined-css-fix
 - `app/pages/index.vue` has the scoped style. It has to be in a page. A page's CSS is not part of the entry, so the server decides on each request whether to drop the page's stylesheet link because the page inlined its styles. With the same style in `app.vue` and no pages, the cache-hit HTML matches the cold build.
 - `app/app.vue` renders the page.
 - `experimental.buildCache: true` is the variable. The bug is only on a cache hit.
+- `pnpm-workspace.yaml` lets pnpm install the nightly packages. pnpm 11 refuses packages younger than a day by default, and they were less than a day old when this was written.
 
 ## Cause
 
