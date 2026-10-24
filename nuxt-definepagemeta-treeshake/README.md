@@ -13,7 +13,7 @@ For an auto-imported call that rewrite never happens. Each page chunk in `.outpu
     definePageMeta({ reproLabel: "index" });
 ```
 
-I found no upstream issue or PR for it in nuxt/nuxt on 2026-10-24. It turned up while measuring build time on a generated 12-layer Nuxt app.
+A search of nuxt/nuxt issues, PRs and discussions on 2026-10-24 found no report of it. It turned up while measuring build time on a generated 12-layer Nuxt app.
 
 ## Run
 
@@ -116,7 +116,25 @@ It keeps names in client chunks, so the check can find `definePageMeta(`. The tr
 
 ## The fix control
 
-`nuxt-definepagemeta-treeshake-fix/` changes only `nuxt.config.ts`. It lists the composables under the paths unimport writes:
+`nuxt-definepagemeta-treeshake-fix/` has the same app, config and verifier. It adds one `pnpm patch`, `patches/@nuxt__schema-nightly@5.0.0-2610221052-8c52432.patch`, which adds the paths unimport writes to the defaults in `@nuxt/schema-nightly/dist/index.mjs`:
+
+```js
+// server
+'#app/composables/pages': ['definePageMeta'],
+'#app/composables/payload': ['definePayloadReviver'],
+// client
+'#app/composables/pages': ['definePageMeta'],
+'#app/composables/payload': ['definePayloadReducer'],
+'#app/composables/ssr': ['onPrehydrate'],
+```
+
+The `'#app'` keys stay, for explicit imports from the `#app` barrel. With the patch every listed cell reads `removed`, the route table keeps each page's meta, and the verifier exits 0.
+
+The plugin's exact lookup is intended. In harlan-zw/nuxt-schema-org#175 (2026-10-08), danielroe wrote "we now require keys to match the injected import sources", so it's the defaults that are out of date. The same change against nuxt/nuxt main is on the `fix/tree-shake-app-subpaths` branch of `onmax/nuxt`. It changes `packages/schema/src/config/build.ts` and `docs/4.api/6.nuxt-config.md`. Its test in `packages/nuxt/test/tree-shake.test.ts` runs Nuxt's own presets through unimport, then the plugin with the schema defaults.
+
+## Workaround
+
+Until a fix ships, an app can add the same keys to its own config. Nuxt merges them with its defaults:
 
 ```ts
 optimization: {
@@ -129,7 +147,7 @@ optimization: {
 },
 ```
 
-Nuxt merges this with its defaults, so it equals adding the keys in `packages/schema/src/config/build.ts`. Apps can use it as a workaround today. Upstream could change the defaults, or let the plugin resolve the callee through the auto-import registry, as the TODO suggests. The verifier also checks that each page's meta stays in the route table, and it does in both fixtures.
+This config was the `-fix` control in commit `3f78c19`, and it passed the same verifier.
 
 ## Environment
 

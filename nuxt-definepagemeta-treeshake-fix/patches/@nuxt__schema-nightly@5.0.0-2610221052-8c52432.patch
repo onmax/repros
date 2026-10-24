@@ -1,0 +1,27 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index cbd05a049357b47519c4d8e9c5ea6b8e3b503a7e..7d27ed90bc5526a4ffeb192d68dad608cc77895d 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -335,7 +335,9 @@ var build_default = defineResolvers({
+ 					"onActivated",
+ 					"onDeactivated"
+ 				],
+-				"#app": ["definePayloadReviver", "definePageMeta"]
++				"#app": ["definePayloadReviver", "definePageMeta"],
++				"#app/composables/pages": ["definePageMeta"],
++				"#app/composables/payload": ["definePayloadReviver"]
+ 			}) },
+ 			client: { $resolve: async (val, get) => defu(typeof val === "object" ? val || {} : {}, await get("dev") ? {} : {
+ 				"vue": [
+@@ -347,7 +349,10 @@ var build_default = defineResolvers({
+ 					"definePayloadReducer",
+ 					"definePageMeta",
+ 					"onPrehydrate"
+-				]
++				],
++				"#app/composables/pages": ["definePageMeta"],
++				"#app/composables/payload": ["definePayloadReducer"],
++				"#app/composables/ssr": ["onPrehydrate"]
+ 			}) }
+ 		} },
+ 		asyncTransforms: {

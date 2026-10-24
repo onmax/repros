@@ -1,3 +1,5 @@
 # nuxt-nightly asks for `@nuxt/cli-nightly@latest`; keep the CLI the research lockfile used.
 overrides:
   '@nuxt/cli': npm:@nuxt/cli-nightly@4.0.1-2610152140-ad8153a
+patchedDependencies:
+  '@nuxt/schema-nightly@5.0.0-2610221052-8c52432': patches/@nuxt__schema-nightly@5.0.0-2610221052-8c52432.patch
