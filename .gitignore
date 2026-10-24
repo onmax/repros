@@ -1,0 +1,9 @@
+node_modules/
+.nuxt/
+.output/
+.data/
+.cache/
+*.log
+# written by verify.mjs: generated layers and .output snapshots
+lab/
+out/
