@@ -8,9 +8,11 @@ The bug turned up in a build comparison on the `repro/nuxt-server-auto-imports-t
 
 ## Run it
 
-From the branch root, with Node 24 and pnpm 11:
+With Node 24 and pnpm 11:
 
 ```sh
+git clone --branch repro/nuxt-keyed-functions-absolute-path https://github.com/onmax/repros.git
+cd repros
 node verify.mjs
 ```
 
