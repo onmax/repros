@@ -1,0 +1,4 @@
+minimumReleaseAgeExclude:
+  - httpxy@0.5.6
+patchedDependencies:
+  '@nuxt/nitro-server-nightly@5.0.0-2610221052-8c52432': patches/@nuxt__nitro-server-nightly@5.0.0-2610221052-8c52432.patch

@@ -1,0 +1,42 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index ae5add8cb750dc8ef44a8e9308e53af0327779b3..981800c5b043f4cc8381092bf446e9d6afc7fd30 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -1138,16 +1138,17 @@ const INCLUDE_RE = /\.[cm]?[jt]sx?$/;
+ /**
+ * Injects the server auto-imports.
+ *
+-* Registered on both the Rollup config and the `nitro` Vite environment, as either may build the
+-* server bundle depending on `experimental.nitroViteEnvironment`.
++* Registered on the Rollup config only. Nitro passes `rollupConfig.plugins` to every server build:
++* the `nitro` Vite environment, the prerender build, and the Rolldown build without
++* `experimental.nitroViteEnvironment`.
+ */
+-const ServerAutoImportsPlugin = createUnplugin(({ autoImports, sourcemap }) => {
++const ServerAutoImportsPlugin = createUnplugin(({ autoImports, sourcemap, exclude = [] }) => {
+ 	return {
+ 		name: "nuxt:server-auto-imports",
+ 		enforce: "post",
+ 		transformInclude(id) {
+ 			const path = normalize(id);
+-			return INCLUDE_RE.test(path.split("?")[0]) && !EXCLUDE_RE.some((re) => re.test(path));
++			return INCLUDE_RE.test(path.split("?")[0]) && !EXCLUDE_RE.some((re) => re.test(path)) && !exclude.some((re) => re.test(path));
+ 		},
+ 		async transform(code, id) {
+ 			const result = await autoImports.injectImports(code, id);
+@@ -2846,13 +2847,10 @@ async function bundle(nuxt) {
+ 	if (autoImports.enabled) {
+ 		const autoImportsPluginOptions = {
+ 			autoImports,
+-			sourcemap: !!nuxt.options.sourcemap.server
++			sourcemap: !!nuxt.options.sourcemap.server,
++			exclude: [new RegExp(`^${escapeRE(join(nuxt.options.buildDir, "vite/services"))}/`)]
+ 		};
+ 		nitroConfig.rollupConfig.plugins.push(ServerAutoImportsPlugin.rollup(autoImportsPluginOptions));
+-		if (nuxt.options.experimental.nitroViteEnvironment) {
+-			nuxt.options.vite.plugins ||= [];
+-			for (const plugin of [ServerAutoImportsPlugin.vite(autoImportsPluginOptions)].flat()) nuxt.options.vite.plugins.push(Object.assign(plugin, { applyToEnvironment: (env) => env.name === "nitro" }));
+-		}
+ 	}
+ 	const scannedDirs = (nitroConfig.imports.dirs ?? []).map((dir) => dir.replace(GLOB_SUFFIX_RE, ""));
+ 	nuxt.hook("builder:watch", async (event, relativePath) => {
