@@ -77,15 +77,16 @@ const normalize = (path, content) => /(^|\/)builds\/.*\.json$/.test(path)
 function compareClientOutput (dirA, dirB) {
   const [a, b] = [dirA, dirB].map(d => join(d, '.output/public'))
   const [listA, listB] = [files(a), files(b)]
-  const differences = [
-    ...listA.filter(p => !listB.includes(p)).map(p => `${p} only in A`),
-    ...listB.filter(p => !listA.includes(p)).map(p => `${p} only in B`),
-  ]
-  for (const p of listA.filter(p => listB.includes(p))) {
+  const onlyA = listA.filter(p => !listB.includes(p))
+  const onlyB = listB.filter(p => !listA.includes(p))
+  const changed = listA.filter(p => listB.includes(p)).filter((p) => {
     const [ca, cb] = [readFileSync(join(a, p)), readFileSync(join(b, p))]
-    if (!ca.equals(cb) && String(normalize(p, ca)) !== String(normalize(p, cb))) differences.push(`${p} differs`)
+    return !ca.equals(cb) && String(normalize(p, ca)) !== String(normalize(p, cb))
+  })
+  return {
+    summary: `${listA.length} files in A, ${listB.length} in B; ${onlyA.length} only in A, ${onlyB.length} only in B, ${changed.length} changed`,
+    differences: [...onlyA.map(p => `${p} only in A`), ...onlyB.map(p => `${p} only in B`), ...changed.map(p => `${p} changed`)],
   }
-  return { files: listA.length, differences }
 }
 
 function verify (fixture) {
@@ -123,9 +124,9 @@ function verify (fixture) {
 
   const client = compareClientOutput(A.dir, B.dir)
   console.log(`  actual: ${differing} of ${callsA.size} keys differ between A and B; keys ${duplicates ? 'repeat' : 'are distinct'} within each build`)
-  console.log(`  .output/public: ${client.files} files, ${client.differences.length} differ${client.differences.length ? ':' : ''}`)
+  console.log(`  .output/public: ${client.summary}`)
   for (const d of client.differences) console.log(`    ${d}`)
-  if (client.differences.length) failures.push(`${client.differences.length} files in .output/public differ`)
+  if (client.differences.length) failures.push('.output/public differs')
   console.log(failures.length ? `  FAIL: ${failures.join('; ')}` : '  PASS')
   return failures.length === 0
 }

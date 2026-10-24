@@ -34,7 +34,7 @@ nuxt-keyed-functions-absolute-path
     app/pages/record.vue #1         A $XjC26aSITx  B $53aqAF4qce  DIFFERENT
     app/pages/record.vue #2         A $hGmkxfIYQi  B $LY1LVPYEJT  DIFFERENT
   actual: 4 of 4 keys differ between A and B; keys are distinct within each build
-  .output/public: 13 files, 8 differ:
+  .output/public: 13 files in A, 13 in B; 4 only in A, 4 only in B, 0 changed
     _nuxt/DoXx2mKj.js only in A
     _nuxt/coRqXB16.js only in A
     _nuxt/l6kPjuZm.js only in A
@@ -43,7 +43,7 @@ nuxt-keyed-functions-absolute-path
     _nuxt/CXMC6fY9.js only in B
     _nuxt/DJX6aVHE.js only in B
     _nuxt/Dr_M8Ra4.js only in B
-  FAIL: 4 of 4 keys differ between A and B; 8 files in .output/public differ
+  FAIL: 4 of 4 keys differ between A and B; .output/public differs
 
 nuxt-keyed-functions-absolute-path-fix
   Nuxt 4.6.2 (with Nitro 2.13.5, Vite 8.3.5 and Vue 3.5.44)
@@ -56,11 +56,11 @@ nuxt-keyed-functions-absolute-path-fix
     app/pages/record.vue #1         A $y035APBOJm  B $y035APBOJm  same
     app/pages/record.vue #2         A $SK_kjdQRjc  B $SK_kjdQRjc  same
   actual: 0 of 4 keys differ between A and B; keys are distinct within each build
-  .output/public: 13 files, 0 differ
+  .output/public: 13 files in A, 13 in B; 0 only in A, 0 only in B, 0 changed
   PASS
 ```
 
-The eight renamed files are the three page chunks and the entry chunk, which imports the pages by file name.
+Four files get a different name in each checkout: the three page chunks, and the entry chunk, which imports the pages by file name.
 
 ## What each part is for
 
@@ -87,7 +87,7 @@ With the patch, each call gets the same key in both checkouts and the keys stay 
 
 ## Also checked
 
-- `nuxt-nightly@5.0.0-2610231503-2a81d4a`, with Nitro 3.0.260903-beta, Vite 8.3.5 and Vue 3.5.44, fails the same way. All four keys differ, and so do nine client files, `manifest.json` among them. With the same three-line patch to its `dist/index.mjs`, it passes with the same four keys as the fixed control. To rerun it, set the `nuxt` dependency to `npm:nuxt-nightly@5.0.0-2610231503-2a81d4a`. pnpm 11 refuses packages younger than a day, so on 2026-10-24 the install also needed exact `minimumReleaseAgeExclude` entries for that version of `nuxt-nightly` and its five `@nuxt/*-nightly` packages.
+- `nuxt-nightly@5.0.0-2610231503-2a81d4a`, with Nitro 3.0.260903-beta, Vite 8.3.5 and Vue 3.5.44, fails the same way. All four keys differ, the same four client files get new names, and `manifest.json` changes with them. With the same three-line patch to its `dist/index.mjs`, it passes with the same four keys as the fixed control. To rerun it, set the `nuxt` dependency to `npm:nuxt-nightly@5.0.0-2610231503-2a81d4a`. pnpm 11 refuses packages younger than a day, so on 2026-10-24 the install also needed exact `minimumReleaseAgeExclude` entries for that version of `nuxt-nightly` and its five `@nuxt/*-nightly` packages.
 - `nuxt@4.2.2` and `nuxt@4.3.0`, both with Nitro 2.13.5 and Vite 7.3.7, built from two directories. `record-injected-keys.ts` looks for the `/* nuxt-injected */` marker, which 4.2.2 doesn't emit, so a throwaway script read the keys from the client chunks and diffed `.output/public` instead. 4.2.2 gives the same four keys in both directories, and the same client output. 4.3.0 gives four different keys and seven renamed chunks per build.
 - Two clean builds of the unpatched app in one directory give the same keys and the same `.output/public`. The difference comes from the path.
 - With the patch, `.output/server` still differs between the two directories, and none of it reaches `.output/public`. Nitro names handler imports after a hash of the handler's absolute path, `_lazy_<hash>` in `chunks/nitro/nitro.mjs` on 4.6.2 and in `index.mjs` on the nightly. On the nightly, source-map columns that point into Nitro's virtual modules move with the path as well. The rest also changes between two builds in one directory: public-asset mtimes, the etags of the two timestamped `builds/` files, and the order of public assets, of the SSR styles map and of the nightly's `precomputed` map.
