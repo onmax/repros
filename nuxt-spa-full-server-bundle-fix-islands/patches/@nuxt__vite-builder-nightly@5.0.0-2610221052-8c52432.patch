@@ -1,0 +1,13 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index a65585d48696b4954f3eb68d4f3bf31da061f634..233248ee46ec2f048c5365c0bfbdcf540662294e 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -3388,7 +3388,7 @@ const bundle = async (nuxt) => {
+ 			...VueJsxPlugin(nuxt, viteConfig.vueJsx),
+ 			ClientManifestPlugin(nuxt),
+ 			ViteNodePlugin(nuxt),
+-			ServerEntryPlugin(nuxt, entry),
++			ServerEntryPlugin(nuxt, serverEntry),
+ 			DevServerPlugin(nuxt),
+ 			TemplateHMRPlugin(nuxt),
+ 			DecoratorsPlugin(nuxt),
