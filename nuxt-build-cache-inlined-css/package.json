@@ -1,0 +1,13 @@
+{
+  "name": "nuxt-build-cache-inlined-css",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build"
+  },
+  "dependencies": {
+    "nuxt": "npm:nuxt-nightly@5.0.0-2610231503-2a81d4a",
+    "vue": "^3.5.44",
+    "vue-router": "^5.4.0"
+  }
+}

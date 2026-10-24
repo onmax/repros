@@ -1,0 +1,13 @@
+{
+  "name": "nuxt-build-cache-inlined-css-fix",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build"
+  },
+  "dependencies": {
+    "nuxt": "https://pkg.pr.new/nuxt@c560a27",
+    "vue": "^3.5.44",
+    "vue-router": "^5.4.0"
+  }
+}

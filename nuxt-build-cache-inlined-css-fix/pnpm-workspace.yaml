@@ -1,0 +1,2 @@
+# nuxt from pkg.pr.new pulls its sibling @nuxt/* packages from pkg.pr.new URLs too
+blockExoticSubdeps: false
