@@ -1,0 +1,29 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index d84a71d5db953eba814a03af129cb5e34c1e5fb4..ece35264efeef567ac15a86c863e62614ffa994f 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -6809,6 +6809,7 @@ const KeyedFunctionsPlugin = (options) => createUnplugin(() => {
+ 					index: 0
+ 				};
+ 				const id = stripExtension(_id);
++				const relativeID = isAbsolute(_id) ? relative(options.rootDir, _id) : _id;
+ 				const { directImports, namespaces } = processImports(parseStaticImports(script, _id), options.alias);
+ 				const shouldConsiderExports = sources.has(id);
+ 				const localNamesToExportedName = /* @__PURE__ */ new Map();
+@@ -6945,7 +6946,7 @@ const KeyedFunctionsPlugin = (options) => createUnplugin(() => {
+ 							let i = codeIndex + parsedCall.callExpression.end - 2;
+ 							while (i >= codeIndex + parsedCall.callExpression.start && isWhitespace(code[i])) i--;
+ 							const endsWithComma = code[i] === ",";
+-							s.appendLeft(codeIndex + parsedCall.callExpression.end - 1, (parsedCall.callExpression.arguments.length && !endsWithComma ? ", " : "") + "'$" + hash(`${_id}-${++count}`).slice(0, 10) + `' ${NUXT_INJECTED_MARKER}`);
++							s.appendLeft(codeIndex + parsedCall.callExpression.end - 1, (parsedCall.callExpression.arguments.length && !endsWithComma ? ", " : "") + "'$" + hash(`${relativeID}-${++count}`).slice(0, 10) + `' ${NUXT_INJECTED_MARKER}`);
+ 						});
+ 					}
+ 				});
+@@ -6994,6 +6995,7 @@ var module_default = defineNuxtModule({
+ 				alias: nuxt.options.alias,
+ 				getAutoImports: () => unimport?.getImports() || Promise.resolve([]),
+ 				appDir: nuxt.options.appDir,
++				rootDir: nuxt.options.rootDir,
+ 				requireSource: nuxt.options.future.compatibilityVersion >= 5,
+ 				dev: nuxt.options.dev
+ 			}));

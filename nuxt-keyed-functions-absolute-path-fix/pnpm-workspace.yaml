@@ -1,0 +1,4 @@
+allowBuilds:
+  esbuild: false
+patchedDependencies:
+  nuxt@4.6.2: patches/nuxt@4.6.2.patch

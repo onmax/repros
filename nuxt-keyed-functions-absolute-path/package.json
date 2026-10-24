@@ -1,0 +1,11 @@
+{
+  "name": "nuxt-keyed-functions-absolute-path",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build"
+  },
+  "dependencies": {
+    "nuxt": "4.6.2"
+  }
+}
