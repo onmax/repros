@@ -24,7 +24,7 @@ node .output/server/index.mjs on 127.0.0.1:4517
 
 Expected: the server bundle carries Nuxt's SPA stub `entry-spa` (`export default () => {}`) and no app code, as it does with `experimental.nitroViteEnvironment: false`.
 
-The cost grows with the app. On a generated 12-layer app, measured outside this fixture, the SSR environment transformed 5,332 modules and took 12.6 s, longer than the client environment's 12.1 s, and `.output/server` held 1,446 `.mjs` files.
+The cost grows with the app. A generated 12-layer app, outside this fixture, was built once with each builder. The patch below takes its SSR environment from 5,332 modules in 12.0 s to 104 modules in 0.3 s, and its whole build from 30.6 s to 15.1 s. `.output/server` drops from 1,446 `.mjs` files (23.6 MB) to 280 (8.2 MB), with no page or component chunk left. Its 1,931 files in `.output/public` stay the same.
 
 ## Run
 
