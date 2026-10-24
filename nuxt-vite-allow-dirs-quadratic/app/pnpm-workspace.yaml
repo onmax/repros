@@ -1,0 +1,3 @@
+# Makes this directory Nuxt's `workspaceDir`, so ../layer is outside it.
+packages:
+  - .

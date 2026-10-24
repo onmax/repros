@@ -1,0 +1,13 @@
+{
+  "name": "nuxt-vite-allow-dirs-quadratic",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "nuxt": "npm:nuxt-nightly@5.0.0-2610221052-8c52432",
+    "vue": "^3.5.44",
+    "vue-router": "^5.4.0"
+  }
+}

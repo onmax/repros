@@ -1,0 +1,27 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index a65585d48696b4954f3eb68d4f3bf31da061f634..6f8e4e28d8299a847ea3628c6f324b5e523a5e29 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -3279,6 +3279,13 @@ async function warmupViteServer(environment, entries, options) {
+ }
+ //#endregion
+ //#region src/vite.ts
++function removeNestedDirs(dirs) {
++	const unique = new Set(dirs);
++	return [...unique].filter((dir) => {
++		for (let i = dir.indexOf("/"); i !== -1; i = dir.indexOf("/", i + 1)) if (unique.has(dir.slice(0, i))) return false;
++		return true;
++	});
++}
+ const bundle = async (nuxt) => {
+ 	const useAsyncEntry = nuxt.options.experimental.asyncEntry || nuxt.options.dev;
+ 	const entry = await resolvePath(resolve(nuxt.options.appDir, useAsyncEntry ? "entry.async" : "entry"));
+@@ -3299,7 +3306,7 @@ const bundle = async (nuxt) => {
+ 			dirname(nuxt.apps.default.errorComponent)
+ 		])
+ 	].filter((d) => d && existsSync(d));
+-	allowDirs = allowDirs.filter((d) => !allowDirs.some((other) => other !== d && d.startsWith(other + "/")));
++	allowDirs = removeNestedDirs(allowDirs);
+ 	const { $client, $server, ...viteConfig } = nuxt.options.vite;
+ 	const mockEmpty = resolveModulePath("mocked-exports/empty", { from: import.meta.url });
+ 	const helper = nuxt.options.nitro.imports !== false ? "" : "globalThis.";

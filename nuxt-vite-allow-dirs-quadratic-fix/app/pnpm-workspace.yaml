@@ -1,0 +1,5 @@
+# Makes this directory Nuxt's `workspaceDir`, so ../layer is outside it.
+packages:
+  - .
+patchedDependencies:
+  '@nuxt/vite-builder-nightly@5.0.0-2610221052-8c52432': patches/@nuxt__vite-builder-nightly@5.0.0-2610221052-8c52432.patch
