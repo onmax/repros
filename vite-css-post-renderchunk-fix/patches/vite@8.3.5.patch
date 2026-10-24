@@ -1,0 +1,54 @@
+diff --git a/dist/node/chunks/node.js b/dist/node/chunks/node.js
+index 797794fd975e746a691212c9fe265fca28167242..4048abaed29cb073da7c285b1634ed5cc7354260 100644
+--- a/dist/node/chunks/node.js
++++ b/dist/node/chunks/node.js
+@@ -29918,6 +29918,19 @@ const isDirectCSSRequest = (request) => CSS_LANGS_RE.test(request) && directRequ
+ const isDirectRequest = (request) => directRequestRE.test(request);
+ const cssModulesCache = /* @__PURE__ */ new WeakMap();
+ const removedPureCssFilesCache = /* @__PURE__ */ new WeakMap();
++const renderedModulesCache = /* @__PURE__ */ new WeakMap();
++function getRenderedModules(chunks) {
++	let renderedModules = renderedModulesCache.get(chunks);
++	if (!renderedModules) {
++		renderedModules = /* @__PURE__ */ new Map();
++		for (const name in chunks) {
++			const modules = chunks[name].modules;
++			for (const id in modules) if (!renderedModules.has(id)) renderedModules.set(id, modules[id]);
++		}
++		renderedModulesCache.set(chunks, renderedModules);
++	}
++	return renderedModules;
++}
+ const cssBundleNameCache = /* @__PURE__ */ new WeakMap();
+ const postcssConfigCache = /* @__PURE__ */ new WeakMap();
+ function encodePublicUrlsInCSS(config) {
+@@ -30118,19 +30131,13 @@ function cssPostPlugin(config) {
+ 		...config.command === "build" ? {
+ 			async renderChunk(code, chunk, opts, meta) {
+ 				let chunkCSS;
+-				const renderedModules = new Proxy({}, { get(_target, p) {
+-					for (const name in meta.chunks) {
+-						const module = meta.chunks[name].modules[p];
+-						if (module) return module;
+-					}
+-				} });
+ 				const isJsChunkEmpty = code === "" && !chunk.isEntry;
+ 				let isPureCssChunk = chunk.exports.length === 0;
+ 				const ids = Object.keys(chunk.modules);
+ 				for (const id of ids) if (styles.has(id)) {
+ 					if (transformOnlyRE.test(id)) continue;
+ 					const cssScopeTo = this.getModuleInfo(id)?.meta?.vite?.cssScopeTo;
+-					if (cssScopeTo && !isCssScopeToRendered(cssScopeTo, renderedModules)) continue;
++					if (cssScopeTo && !isCssScopeToRendered(cssScopeTo, getRenderedModules(meta.chunks))) continue;
+ 					if (cssModuleRE.test(id)) isPureCssChunk = false;
+ 					chunkCSS = (chunkCSS || "") + styles.get(id);
+ 				} else if (!isJsChunkEmpty) isPureCssChunk = false;
+@@ -30394,7 +30401,7 @@ function cssAnalysisPlugin(config) {
+ }
+ function isCssScopeToRendered(cssScopeTo, renderedModules) {
+ 	const [importerId, exp] = cssScopeTo;
+-	const importer = renderedModules[importerId];
++	const importer = renderedModules.get(importerId);
+ 	return importer && (exp === void 0 || importer.renderedExports.includes(exp));
+ }
+ /**

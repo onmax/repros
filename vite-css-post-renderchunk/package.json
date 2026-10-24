@@ -1,0 +1,12 @@
+{
+  "name": "vite-css-post-renderchunk",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "node bench.mjs"
+  },
+  "devDependencies": {
+    "vite": "8.3.5"
+  },
+  "packageManager": "pnpm@11.28.5"
+}

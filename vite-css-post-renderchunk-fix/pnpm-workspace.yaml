@@ -1,0 +1,2 @@
+patchedDependencies:
+  vite@8.3.5: patches/vite@8.3.5.patch
