@@ -1,0 +1,13 @@
+{
+  "name": "nuxt-build-cache-shared-dir",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build"
+  },
+  "dependencies": {
+    "nuxt": "npm:nuxt-nightly@5.0.0-2610241346-9f02a3d",
+    "vue": "^3.5.44",
+    "vue-router": "^5.4.0"
+  }
+}

@@ -1,0 +1,7 @@
+minimumReleaseAgeExclude:
+  - '@nuxt/kit-nightly@5.0.0-2610241346-9f02a3d'
+  - '@nuxt/nitro-server-nightly@5.0.0-2610241346-9f02a3d'
+  - '@nuxt/schema-nightly@5.0.0-2610241346-9f02a3d'
+  - '@nuxt/vite-builder-nightly@5.0.0-2610241346-9f02a3d'
+  - '@nuxt/vite-server-nightly@5.0.0-2610241346-9f02a3d'
+  - nuxt-nightly@5.0.0-2610241346-9f02a3d
