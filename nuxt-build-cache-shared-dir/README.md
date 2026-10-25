@@ -2,7 +2,7 @@
 
 Given `nuxt-nightly@5.0.0-2610241346-9f02a3d` (nuxt/nuxt main at `9f02a3d`, with the same `packages/nuxt/src/core/cache.ts` as main at `bf4220d6e`) with Nitro 3.0.260903-beta, Vite 8.3.5 and Vue 3.5.44, on Node 24 with `experimental.buildCache: true`: editing a file in `shared/` and building again should rebuild the client. Instead the second build logs `Restored Vue client and server builds from cache`. The client bundle still has the old value and the server bundle has the new one, so the server renders `shared-v2` and the client hydrates with `shared-v1`.
 
-No issue was filed.
+Fixed by [nuxt/nuxt#36704](https://github.com/nuxt/nuxt/pull/36704). No issue was filed.
 
 ## Run it
 
