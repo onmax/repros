@@ -1,0 +1,82 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index ffcbfeb2d453442d6ff0d174d98c1f9e19e1008e..38d3a806f52adb8112ac28d9513dd8057fb589b5 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -1008,6 +1008,11 @@ function registerClientCleanup(event, client) {
+   response.once('close', cleanup)
+ }
+ 
++// Hyperdrive clients belong to one request; any other database is shared by the whole process.
++export function isRequestScopedDatabase(event) {
++  return Boolean(resolveHyperdrive(event)?.connectionString)
++}
++
+ export function createDatabase(event) {
+   const hyperdrive = resolveHyperdrive(event)
+   if (!hyperdrive?.connectionString)
+@@ -1045,10 +1050,12 @@ import * as schema from './schema.${input.hubDialect}.mjs'
+ import { drizzleAdapter } from 'better-auth/adapters/drizzle'
+ const rawDialect = '${input.hubDialect}'
+ const dialect = rawDialect === 'postgresql' ? 'pg' : rawDialect
++export function isRequestScopedDatabase() { return false }
+ export function createDatabase() { return drizzleAdapter(db, { provider: dialect, schema, usePlural: ${input.usePlural}, camelCase: ${input.camelCase} }) }
+ export { db }`;
+   }
+-  return `export function createDatabase() { return undefined }
++  return `export function isRequestScopedDatabase() { return false }
++export function createDatabase() { return undefined }
+ export const db = undefined`;
+ }
+ function buildSchemaExportCode(hasHubDb, hubDialect, modelNames = {}) {
+@@ -1330,6 +1337,7 @@ type AvailableRouterMethod<_ReqT extends NitroFetchRequest> = 'get' | 'head' | '
+ declare module '#auth/database' {
+   import type { BetterAuthOptions } from 'better-auth'
+   export function createDatabase(event?: import('${h3TypesPath}').H3Event): BetterAuthOptions['database']
++  export function isRequestScopedDatabase(event?: import('${h3TypesPath}').H3Event): boolean
+   export const db: ${hasHubDb ? `typeof import('@nuxthub/db')['db']` : "undefined"}
+ }
+ `
+diff --git a/dist/runtime/server/utils/auth.js b/dist/runtime/server/utils/auth.js
+index 1910b996fab948a75f55fa5f94d172babe282ca1..a8b7c4c006a8647bd4a3ce8254764f3b7c8c0d14 100644
+--- a/dist/runtime/server/utils/auth.js
++++ b/dist/runtime/server/utils/auth.js
+@@ -1,5 +1,5 @@
+ import { betterAuth, env } from "better-auth";
+-import { createDatabase, db } from "#auth/database";
++import { createDatabase, db, isRequestScopedDatabase } from "#auth/database";
+ import createServerAuth from "#auth/server";
+ import { getConfiguredAuthSecret, getDerivedAuthSecret, hasExplicitAuthSecret, prepareAuthSecret } from "../internal/auth-secret.js";
+ import { getRequestHost, getRequestProtocol, useRuntimeConfig } from "../internal/nitro-compat.js";
+@@ -248,6 +248,15 @@ export function serverAuth(event) {
+   const requestContext = event ? getRequestAuthContext(event) : void 0;
+   if (requestContext?.[requestAuthKey])
+     return requestContext[requestAuthKey];
++  const requestScopedDatabase = isRequestScopedDatabase(event);
++  if (!requestScopedDatabase) {
++    const cached = _authCache.get(cacheKey);
++    if (cached) {
++      if (requestContext)
++        requestContext[requestAuthKey] = cached;
++      return cached;
++    }
++  }
+   userConfig ??= createServerAuth({ runtimeConfig, db, requestOrigin });
+   const usesDerivedSecret = derived.available && userConfig.secrets === void 0 && !hasExplicitAuthSecret(runtimeConfig);
+   const derivedSecretMissing = usesDerivedSecret && !derived.secret;
+@@ -276,15 +285,7 @@ export function serverAuth(event) {
+     console.warn('[nuxt-better-auth] rateLimit.storage: "secondary-storage" requires secondaryStorage. Falling back to process-local memory. Set rateLimit.storage to "database" or provide rateLimit.customStorage for shared limits.');
+   }
+   const rateLimit = useMemoryRateLimit ? { ...userConfig.rateLimit, storage: "memory" } : userConfig.rateLimit;
+-  const cacheable = !database && !derivedSecretMissing;
+-  if (cacheable) {
+-    const cached = _authCache.get(cacheKey);
+-    if (cached) {
+-      if (requestContext)
+-        requestContext[requestAuthKey] = cached;
+-      return cached;
+-    }
+-  }
++  const cacheable = !requestScopedDatabase && !derivedSecretMissing;
+   const authOptions = {
+     ...userConfig,
+     ...userConfig.plugins ? { plugins: [...userConfig.plugins] } : {},
