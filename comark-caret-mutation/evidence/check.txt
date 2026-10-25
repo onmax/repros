@@ -1,0 +1,140 @@
+$ node repro.mjs --check
+{
+  "node": "v24.21.0",
+  "boundary": "Public MarkdownDocument components rendered through React and Vue SSR",
+  "expected": {
+    "counts": [
+      1,
+      1,
+      1
+    ],
+    "lengths": [
+      3,
+      3,
+      3
+    ],
+    "inputChanged": false
+  },
+  "results": {
+    "react": {
+      "sharedInput": {
+        "counts": [
+          1,
+          2,
+          3
+        ],
+        "lengths": [
+          4,
+          5,
+          6
+        ],
+        "inputChanged": true
+      },
+      "noCaret": {
+        "counts": [
+          0,
+          0,
+          0
+        ],
+        "lengths": [
+          3,
+          3,
+          3
+        ],
+        "inputChanged": false
+      },
+      "freshInput": {
+        "counts": [
+          1,
+          1,
+          1
+        ],
+        "lengths": [
+          4,
+          4,
+          4
+        ],
+        "inputChanged": false
+      }
+    },
+    "vue": {
+      "sharedInput": {
+        "counts": [
+          1,
+          2,
+          3
+        ],
+        "lengths": [
+          4,
+          5,
+          6
+        ],
+        "inputChanged": true
+      },
+      "noCaret": {
+        "counts": [
+          0,
+          0,
+          0
+        ],
+        "lengths": [
+          3,
+          3,
+          3
+        ],
+        "inputChanged": false
+      },
+      "freshInput": {
+        "counts": [
+          1,
+          1,
+          1
+        ],
+        "lengths": [
+          4,
+          4,
+          4
+        ],
+        "inputChanged": false
+      }
+    }
+  }
+}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: react: repeated caret rendering must leave the shared AST unchanged
++ actual - expected
+
+  {
+    counts: [
+      1,
++     2,
++     3
+-     1,
+-     1
+    ],
++   inputChanged: true,
+-   inputChanged: false,
+    lengths: [
++     4,
++     5,
++     6
+-     3,
+-     3,
+-     3
+    ]
+  }
+
+    at file://<fixture>/repro.mjs:56:12 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: { counts: [ 1, 2, 3 ], lengths: [ 4, 5, 6 ], inputChanged: true },
+  expected: { counts: [ 1, 1, 1 ], lengths: [ 3, 3, 3 ], inputChanged: false },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0
+[ELIFECYCLE] Command failed with exit code 1.

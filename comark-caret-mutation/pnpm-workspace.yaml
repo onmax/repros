@@ -1,0 +1,4 @@
+autoInstallPeers: false
+minimumReleaseAge: 0
+overrides:
+  js-yaml: 5.4.3

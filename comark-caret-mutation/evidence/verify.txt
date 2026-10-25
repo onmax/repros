@@ -1,0 +1,123 @@
+✓ Lockfile passes supply-chain policies (verified 3m ago)
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +39
++++++++++++++++++++++++++++++++++++++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: <home>/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 39, reused 39, downloaded 0, added 39, done
+
+dependencies:
++ @comark/react 0.8.1
++ @comark/vue 0.8.1
++ @vue/server-renderer 3.5.44
++ comark 0.8.1
++ react 19.3.1
++ react-dom 19.3.1
++ vue 3.5.44
+
+Done in 984ms using pnpm v11.18.0
+$ node repro.mjs
+{
+  "node": "v24.21.0",
+  "boundary": "Public MarkdownDocument components rendered through React and Vue SSR",
+  "expected": {
+    "counts": [
+      1,
+      1,
+      1
+    ],
+    "lengths": [
+      3,
+      3,
+      3
+    ],
+    "inputChanged": false
+  },
+  "results": {
+    "react": {
+      "sharedInput": {
+        "counts": [
+          1,
+          2,
+          3
+        ],
+        "lengths": [
+          4,
+          5,
+          6
+        ],
+        "inputChanged": true
+      },
+      "noCaret": {
+        "counts": [
+          0,
+          0,
+          0
+        ],
+        "lengths": [
+          3,
+          3,
+          3
+        ],
+        "inputChanged": false
+      },
+      "freshInput": {
+        "counts": [
+          1,
+          1,
+          1
+        ],
+        "lengths": [
+          4,
+          4,
+          4
+        ],
+        "inputChanged": false
+      }
+    },
+    "vue": {
+      "sharedInput": {
+        "counts": [
+          1,
+          2,
+          3
+        ],
+        "lengths": [
+          4,
+          5,
+          6
+        ],
+        "inputChanged": true
+      },
+      "noCaret": {
+        "counts": [
+          0,
+          0,
+          0
+        ],
+        "lengths": [
+          3,
+          3,
+          3
+        ],
+        "inputChanged": false
+      },
+      "freshInput": {
+        "counts": [
+          1,
+          1,
+          1
+        ],
+        "lengths": [
+          4,
+          4,
+          4
+        ],
+        "inputChanged": false
+      }
+    }
+  }
+}
+REPRODUCED: both frameworks mutate the shared AST and accumulate carets
