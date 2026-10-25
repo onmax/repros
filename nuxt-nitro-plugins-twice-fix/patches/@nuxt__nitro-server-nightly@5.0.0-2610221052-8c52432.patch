@@ -1,0 +1,23 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index ae5add8cb750dc8ef44a8e9308e53af0327779b3..6573823335a9a9168981595f2b334d67af0eb0d0 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -2210,18 +2210,6 @@ async function setupNitroCompat(nuxt, nitroConfig, legacy, modulePresets, instal
+ 	nitroConfig.rollupConfig.plugins = toArray(nitroConfig.rollupConfig.plugins || []);
+ 	nitroConfig.rollupConfig.plugins.unshift(plugin);
+ 	nitroConfig.rollupConfig.plugins.push(fallbackPlugin);
+-	if (nuxt.options.experimental.nitroViteEnvironment) {
+-		const applyToEnvironment = (environment) => environment.name === "nitro";
+-		nuxt.options.vite.plugins ||= [];
+-		nuxt.options.vite.plugins.push({
+-			...plugin,
+-			applyToEnvironment
+-		});
+-		nuxt.options.vite.plugins.push({
+-			...fallbackPlugin,
+-			applyToEnvironment
+-		});
+-	}
+ 	return registerLateScope;
+ }
+ /** Nitro v3 requires a `route`; a v2 handler without one was a global middleware. */
