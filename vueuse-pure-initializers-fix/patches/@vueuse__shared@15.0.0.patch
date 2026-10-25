@@ -1,0 +1,15 @@
+diff --git a/dist/index.js b/dist/index.js
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -561,9 +561,9 @@
+ 	});
+ }
+ const hyphenateRE = /\B([A-Z])/g;
+-const hyphenate = cacheStringFunction((str) => str.replace(hyphenateRE, "-$1").toLowerCase());
++const hyphenate = /* #__PURE__ */ cacheStringFunction((str) => str.replace(hyphenateRE, "-$1").toLowerCase());
+ const camelizeRE = /-(\w)/g;
+-const camelize = cacheStringFunction((str) => {
++const camelize = /* #__PURE__ */ cacheStringFunction((str) => {
+ 	return str.replace(camelizeRE, (_, c) => c ? c.toUpperCase() : "");
+ });
+ //#endregion

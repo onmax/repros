@@ -1,0 +1,25 @@
+{
+  "verifiedAt": "2026-10-25T10:15:55.915306+00:00",
+  "command": "node verify.mjs --offline --clean",
+  "rootExitCode": 0,
+  "fixtureExitCode": 0,
+  "freshInstall": true,
+  "offline": true,
+  "downloadedPackages": 0,
+  "node": "24.21.0",
+  "pnpm": "11.28.6",
+  "esbuild": "0.28.2",
+  "vueuseShared": "15.0.0",
+  "vue": "3.5.44",
+  "sourceCommit": "0f170513de8d670c7a27fd713703fddaeceb8e9d",
+  "lockfileSha256": "f0454b48c55f6a497b3b18cd4ac402d9bac8cf665eafe219d1c4cebfa0208099",
+  "results": {
+    "annotations": 2,
+    "raw": 237,
+    "gzip": 192,
+    "unusedHelpersRetained": false,
+    "runtimeControls": "PASS",
+    "ignoreAnnotationsSha256": "79829fcf1147883839792a070c264cfe5359b40506a9a0c4ff5989fd0037f3cd",
+    "packageWithoutPatchSha256": "de57cc5fba7a2685ed9fd1b12a401266b8571a46add82ec2e9f68af47a6f6a47"
+  }
+}

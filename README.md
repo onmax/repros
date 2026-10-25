@@ -1,9 +1,15 @@
-# Reproductions
+# VueUse unused string-helper initializers
 
-Each `repro/<library>-<issue-or-slug>` branch contains one bug reproduction and any fixed control. Older branches may use different names.
+This branch contains the baseline in `vueuse-pure-initializers/` and a fixed control in `vueuse-pure-initializers-fix/`.
 
-Choose the branch for the bug, then follow the README in its fixture directory. Failing and fixed examples stay together on that branch.
+Use Node 24.21.0 and pnpm 11.28.6, then run from this directory:
 
-Start new reproduction branches from `main`. Keep source, required inputs, lockfiles, and patches in Git; leave dependencies and build output out.
+```sh
+git clone --depth 1 --branch repro/vueuse-pure-initializers https://github.com/onmax/repros.git vueuse-repro
+cd vueuse-repro
+node verify.mjs --clean
+```
 
-`main` contains only this README and the agent instructions. Reproduction branches are never merged into it.
+Add `--offline` to install from an existing pnpm content store. The command expects the baseline to fail the unused-helper assertion, the fixed control to pass, and both runtime controls to pass. It exits nonzero for any other outcome.
+
+See `vueuse-pure-initializers/README.md` for the pinned source, measurements and limitations.

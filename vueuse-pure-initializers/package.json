@@ -1,0 +1,17 @@
+{
+  "name": "vueuse-pure-initializers",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.28.6",
+  "engines": {
+    "node": "24.21.0"
+  },
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "devDependencies": {
+    "@vueuse/shared": "15.0.0",
+    "esbuild": "0.28.2",
+    "vue": "3.5.44"
+  }
+}
