@@ -1,0 +1,182 @@
+{
+  "baseline": {
+    "entry.js": {
+      "imports": [],
+      "exports": [
+        "renderHtmlFromDocument"
+      ],
+      "entryPoint": "entry.js",
+      "inputs": {
+        "node_modules/.pnpm/entities@8.1.0/node_modules/entities/dist/decode-codepoint.js": {
+          "bytesInOutput": 368
+        },
+        "node_modules/.pnpm/entities@8.1.0/node_modules/entities/dist/internal/decode-shared.js": {
+          "bytesInOutput": 1223
+        },
+        "node_modules/.pnpm/entities@8.1.0/node_modules/entities/dist/generated/decode-data-html.js": {
+          "bytesInOutput": 18562
+        },
+        "node_modules/.pnpm/entities@8.1.0/node_modules/entities/dist/internal/bin-trie-flags.js": {
+          "bytesInOutput": 204
+        },
+        "node_modules/.pnpm/entities@8.1.0/node_modules/entities/dist/decode.js": {
+          "bytesInOutput": 3278
+        },
+        "node_modules/.pnpm/entities@8.1.0/node_modules/entities/dist/index.js": {
+          "bytesInOutput": 223
+        },
+        "node_modules/.pnpm/js-yaml@5.4.3/node_modules/js-yaml/dist/js-yaml.mjs": {
+          "bytesInOutput": 32123
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/yaml.js": {
+          "bytesInOutput": 311
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/sanitize.js": {
+          "bytesInOutput": 1187
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/fence.js": {
+          "bytesInOutput": 235
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/attributes.js": {
+          "bytesInOutput": 2560
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/utils/index.js": {
+          "bytesInOutput": 1453
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/heading-id.js": {
+          "bytesInOutput": 741
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/code.js": {
+          "bytesInOutput": 135
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/pre.js": {
+          "bytesInOutput": 666
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/hr.js": {
+          "bytesInOutput": 76
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/heading.js": {
+          "bytesInOutput": 404
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/p.js": {
+          "bytesInOutput": 213
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/a.js": {
+          "bytesInOutput": 149
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/ul.js": {
+          "bytesInOutput": 366
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/ol.js": {
+          "bytesInOutput": 418
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/li.js": {
+          "bytesInOutput": 911
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/html.js": {
+          "bytesInOutput": 1493
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/strong.js": {
+          "bytesInOutput": 151
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/emphesis.js": {
+          "bytesInOutput": 149
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/blockquote.js": {
+          "bytesInOutput": 506
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/img.js": {
+          "bytesInOutput": 150
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/del.js": {
+          "bytesInOutput": 151
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/mdc.js": {
+          "bytesInOutput": 974
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/br.js": {
+          "bytesInOutput": 29
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/template.js": {
+          "bytesInOutput": 284
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/table.js": {
+          "bytesInOutput": 1985
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/comment.js": {
+          "bytesInOutput": 81
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/math.js": {
+          "bytesInOutput": 236
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/mermaid.js": {
+          "bytesInOutput": 167
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/index.js": {
+          "bytesInOutput": 240
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/state.js": {
+          "bytesInOutput": 2963
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/render.js": {
+          "bytesInOutput": 135
+        },
+        "node_modules/.pnpm/@comark+html@0.8.1/node_modules/@comark/html/dist/render.js": {
+          "bytesInOutput": 95
+        },
+        "node_modules/.pnpm/@comark+html@0.8.1/node_modules/@comark/html/dist/index.js": {
+          "bytesInOutput": 0
+        },
+        "entry.js": {
+          "bytesInOutput": 0
+        }
+      },
+      "bytes": 75766
+    }
+  },
+  "diagnostic": {
+    "entry.js": {
+      "imports": [],
+      "exports": [
+        "renderHtmlFromDocument"
+      ],
+      "entryPoint": "entry.js",
+      "inputs": {
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/sanitize.js": {
+          "bytesInOutput": 1169
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/attributes.js": {
+          "bytesInOutput": 1008
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/utils/index.js": {
+          "bytesInOutput": 1308
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/html.js": {
+          "bytesInOutput": 1485
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/comment.js": {
+          "bytesInOutput": 80
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/index.js": {
+          "bytesInOutput": 25
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/state.js": {
+          "bytesInOutput": 2952
+        },
+        "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/render.js": {
+          "bytesInOutput": 132
+        },
+        "node_modules/.pnpm/@comark+html@0.8.1/node_modules/@comark/html/dist/render.js": {
+          "bytesInOutput": 93
+        },
+        "node_modules/.pnpm/@comark+html@0.8.1/node_modules/@comark/html/dist/index.js": {
+          "bytesInOutput": 0
+        },
+        "entry.js": {
+          "bytesInOutput": 0
+        }
+      },
+      "bytes": 8289
+    }
+  }
+}

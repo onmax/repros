@@ -1,0 +1,19 @@
+{
+  "name": "comark-html-ast-bundle-repro",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.18.0",
+  "engines": {
+    "node": "24.21.0"
+  },
+  "scripts": {
+    "verify": "node verify.mjs",
+    "check": "node verify.mjs --desired"
+  },
+  "dependencies": {
+    "@comark/html": "0.8.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

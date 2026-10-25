@@ -1,0 +1,34 @@
+Command: bash comark-html-ast-bundle/reproduce.sh --offline
+Initial node_modules: absent
+
+heavy: waiting because 10 job(s) arrived first (up to 0s, 0 = no limit). See `heavy status`.
+heavy: got slimbook-heavy.lock after 211s
+✓ Lockfile passes supply-chain policies (verified 4m ago)
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +15
++++++++++++++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: <home>/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 15, reused 15, downloaded 0, added 15, done
+
+dependencies:
++ @comark/html 0.8.1
+
+devDependencies:
++ esbuild 0.28.2
+
+Done in 875ms using pnpm v11.18.0
+$ node verify.mjs
+baseline: raw=75766 gzip=32951 bytes; build=105.423 ms; corpus=7/7
+baseline: retained YAML inputs=2; Markdown handlers=20
+diagnostic-html-registry: raw=8289 gzip=3576 bytes; build=21.325 ms; corpus=7/7
+diagnostic-html-registry: retained YAML inputs=0; Markdown handlers=0
+diagnostic delta: raw=67477 gzip=29375 bytes
+contract caveats: format override and custom Markdown handler both throw in diagnostic
+PASS: bug reproduced; diagnostic isolated one registry; HTML corpus matched; package unchanged
+
+exit_code=0
+
+Local home-directory prefix replaced with <home> for publication.

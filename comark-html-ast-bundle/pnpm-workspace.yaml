@@ -1,0 +1,6 @@
+packages: []
+autoInstallPeers: false
+overrides:
+  js-yaml: 5.4.3
+allowBuilds:
+  esbuild: false

@@ -1,0 +1,14 @@
+{
+  "baseline": {
+    "firstSha256": "af6069ff511bffd620e0da6d139f8a8e0d98d67f46c9bff8e4ffd3f60aaafe65",
+    "cleanInstallSha256": "af6069ff511bffd620e0da6d139f8a8e0d98d67f46c9bff8e4ffd3f60aaafe65",
+    "rawBytes": 75766,
+    "gzipBytes": 32951
+  },
+  "diagnostic": {
+    "firstSha256": "97a619cfcd96787005f9de5fb6762025030a0157711ccb5cadd54b52bcd5f891",
+    "cleanInstallSha256": "97a619cfcd96787005f9de5fb6762025030a0157711ccb5cadd54b52bcd5f891",
+    "rawBytes": 8289,
+    "gzipBytes": 3576
+  }
+}

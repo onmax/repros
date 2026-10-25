@@ -1,0 +1,389 @@
+{
+  "environment": {
+    "node": "v24.21.0",
+    "platform": "linux",
+    "arch": "x64",
+    "esbuild": "0.28.2"
+  },
+  "packages": {
+    "html": "0.8.1",
+    "comark": "0.8.1"
+  },
+  "registrySha256": "c9623a7212335adda9b177b4bf597613e2729827c2f560743a325b6513cb9da7",
+  "baseline": {
+    "rawBytes": 75766,
+    "gzipBytes": 32951,
+    "sha256": "af6069ff511bffd620e0da6d139f8a8e0d98d67f46c9bff8e4ffd3f60aaafe65",
+    "buildMs": 105.423,
+    "retained": [
+      {
+        "input": "node_modules/.pnpm/@comark+html@0.8.1/node_modules/@comark/html/dist/render.js",
+        "bytes": 95
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/heading-id.js",
+        "bytes": 741
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/sanitize.js",
+        "bytes": 1187
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/attributes.js",
+        "bytes": 2560
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/fence.js",
+        "bytes": 235
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/a.js",
+        "bytes": 149
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/blockquote.js",
+        "bytes": 506
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/br.js",
+        "bytes": 29
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/code.js",
+        "bytes": 135
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/comment.js",
+        "bytes": 81
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/del.js",
+        "bytes": 151
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/emphesis.js",
+        "bytes": 149
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/heading.js",
+        "bytes": 404
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/hr.js",
+        "bytes": 76
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/html.js",
+        "bytes": 1493
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/img.js",
+        "bytes": 150
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/index.js",
+        "bytes": 240
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/li.js",
+        "bytes": 911
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/math.js",
+        "bytes": 236
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/mdc.js",
+        "bytes": 974
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/mermaid.js",
+        "bytes": 167
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/ol.js",
+        "bytes": 418
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/p.js",
+        "bytes": 213
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/pre.js",
+        "bytes": 666
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/strong.js",
+        "bytes": 151
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/table.js",
+        "bytes": 1985
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/template.js",
+        "bytes": 284
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/ul.js",
+        "bytes": 366
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/state.js",
+        "bytes": 2963
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/yaml.js",
+        "bytes": 311
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/render.js",
+        "bytes": 135
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/utils/index.js",
+        "bytes": 1453
+      },
+      {
+        "input": "node_modules/.pnpm/entities@8.1.0/node_modules/entities/dist/decode-codepoint.js",
+        "bytes": 368
+      },
+      {
+        "input": "node_modules/.pnpm/entities@8.1.0/node_modules/entities/dist/decode.js",
+        "bytes": 3278
+      },
+      {
+        "input": "node_modules/.pnpm/entities@8.1.0/node_modules/entities/dist/generated/decode-data-html.js",
+        "bytes": 18562
+      },
+      {
+        "input": "node_modules/.pnpm/entities@8.1.0/node_modules/entities/dist/index.js",
+        "bytes": 223
+      },
+      {
+        "input": "node_modules/.pnpm/entities@8.1.0/node_modules/entities/dist/internal/bin-trie-flags.js",
+        "bytes": 204
+      },
+      {
+        "input": "node_modules/.pnpm/entities@8.1.0/node_modules/entities/dist/internal/decode-shared.js",
+        "bytes": 1223
+      },
+      {
+        "input": "node_modules/.pnpm/js-yaml@5.4.3/node_modules/js-yaml/dist/js-yaml.mjs",
+        "bytes": 32123
+      }
+    ],
+    "yaml": [
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/yaml.js",
+        "bytes": 311
+      },
+      {
+        "input": "node_modules/.pnpm/js-yaml@5.4.3/node_modules/js-yaml/dist/js-yaml.mjs",
+        "bytes": 32123
+      }
+    ],
+    "markdownHandlers": [
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/a.js",
+        "bytes": 149
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/blockquote.js",
+        "bytes": 506
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/br.js",
+        "bytes": 29
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/code.js",
+        "bytes": 135
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/del.js",
+        "bytes": 151
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/emphesis.js",
+        "bytes": 149
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/heading.js",
+        "bytes": 404
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/hr.js",
+        "bytes": 76
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/img.js",
+        "bytes": 150
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/li.js",
+        "bytes": 911
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/math.js",
+        "bytes": 236
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/mdc.js",
+        "bytes": 974
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/mermaid.js",
+        "bytes": 167
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/ol.js",
+        "bytes": 418
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/p.js",
+        "bytes": 213
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/pre.js",
+        "bytes": 666
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/strong.js",
+        "bytes": 151
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/table.js",
+        "bytes": 1985
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/template.js",
+        "bytes": 284
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/ul.js",
+        "bytes": 366
+      }
+    ],
+    "html": [
+      {
+        "name": "empty document",
+        "actual": ""
+      },
+      {
+        "name": "inline HTML and escaped text",
+        "actual": "<p>Hello <strong>world</strong> &lt;tag&gt;.</p>"
+      },
+      {
+        "name": "block separators and explicit HTML format",
+        "actual": "<h2>Title</h2>\n<p>Text</p>"
+      },
+      {
+        "name": "comment and void element",
+        "actual": "<!--note-->\n<img src=\"/image.png\" alt=\"sample\">"
+      },
+      {
+        "name": "attribute binding and escaping",
+        "actual": "<a href=\"https://example.test/\" title=\"A &quot;title&quot;\">go</a>"
+      },
+      {
+        "name": "async custom component with child rendering and data",
+        "actual": "<aside data-note=\"ok\"><strong>body</strong></aside>"
+      },
+      {
+        "name": "conditional custom handler delegating to HTML handler",
+        "actual": "<p class=\"marked\">kept</p>"
+      }
+    ]
+  },
+  "diagnostic": {
+    "rawBytes": 8289,
+    "gzipBytes": 3576,
+    "sha256": "97a619cfcd96787005f9de5fb6762025030a0157711ccb5cadd54b52bcd5f891",
+    "buildMs": 21.325,
+    "retained": [
+      {
+        "input": "node_modules/.pnpm/@comark+html@0.8.1/node_modules/@comark/html/dist/render.js",
+        "bytes": 93
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/sanitize.js",
+        "bytes": 1169
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/attributes.js",
+        "bytes": 1008
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/comment.js",
+        "bytes": 80
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/html.js",
+        "bytes": 1485
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/index.js",
+        "bytes": 25
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/state.js",
+        "bytes": 2952
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/render.js",
+        "bytes": 132
+      },
+      {
+        "input": "node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/utils/index.js",
+        "bytes": 1308
+      }
+    ],
+    "yaml": [],
+    "markdownHandlers": [],
+    "html": [
+      {
+        "name": "empty document",
+        "actual": ""
+      },
+      {
+        "name": "inline HTML and escaped text",
+        "actual": "<p>Hello <strong>world</strong> &lt;tag&gt;.</p>"
+      },
+      {
+        "name": "block separators and explicit HTML format",
+        "actual": "<h2>Title</h2>\n<p>Text</p>"
+      },
+      {
+        "name": "comment and void element",
+        "actual": "<!--note-->\n<img src=\"/image.png\" alt=\"sample\">"
+      },
+      {
+        "name": "attribute binding and escaping",
+        "actual": "<a href=\"https://example.test/\" title=\"A &quot;title&quot;\">go</a>"
+      },
+      {
+        "name": "async custom component with child rendering and data",
+        "actual": "<aside data-note=\"ok\"><strong>body</strong></aside>"
+      },
+      {
+        "name": "conditional custom handler delegating to HTML handler",
+        "actual": "<p class=\"marked\">kept</p>"
+      }
+    ]
+  },
+  "delta": {
+    "rawBytes": 67477,
+    "gzipBytes": 29375
+  },
+  "compatibilityCounterexamples": {
+    "formatOverride": {
+      "baseline": "# Title",
+      "diagnostic": "TypeError"
+    },
+    "customMarkdownHandler": {
+      "baseline": "**value**",
+      "diagnostic": "TypeError"
+    }
+  }
+}

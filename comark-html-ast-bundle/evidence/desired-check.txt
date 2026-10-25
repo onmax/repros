@@ -1,0 +1,32 @@
+Command: HEAVY_WAIT=0 heavy --light pnpm check
+Cwd: comark-html-ast-bundle
+
+$ node verify.mjs --desired
+baseline: raw=75766 gzip=32951 bytes; build=65.676 ms; corpus=7/7
+baseline: retained YAML inputs=2; Markdown handlers=20
+FAIL: expected 0 unrelated YAML/Markdown inputs; actual 22
+  311 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/yaml.js
+  32123 bytes: node_modules/.pnpm/js-yaml@5.4.3/node_modules/js-yaml/dist/js-yaml.mjs
+  149 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/a.js
+  506 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/blockquote.js
+  29 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/br.js
+  135 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/code.js
+  151 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/del.js
+  149 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/emphesis.js
+  404 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/heading.js
+  76 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/hr.js
+  150 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/img.js
+  911 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/li.js
+  236 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/math.js
+  974 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/mdc.js
+  167 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/mermaid.js
+  418 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/ol.js
+  213 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/p.js
+  666 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/pre.js
+  151 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/strong.js
+  1985 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/table.js
+  284 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/template.js
+  366 bytes: node_modules/.pnpm/comark@0.8.1/node_modules/comark/dist/internal/stringify/handlers/ul.js
+[ELIFECYCLE] Command failed with exit code 1.
+
+exit_code=1
