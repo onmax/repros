@@ -9,6 +9,8 @@ This branch compares H3 **2.0.8** with the same release plus one annotation. The
 Use Node **24.21.0** and pnpm **11.28.5**, then run from this branch's root:
 
 ```sh
+git clone --depth 1 --branch repro/h3-pure-lazy https://github.com/onmax/repros.git h3-repro
+cd h3-repro
 node verify.mjs
 ```
 
