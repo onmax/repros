@@ -1,0 +1,5 @@
+packages:
+  - .
+
+patchedDependencies:
+  ofetch@2.0.0-alpha.3: patches/ofetch@2.0.0-alpha.3.patch

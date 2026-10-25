@@ -1,0 +1,44 @@
+{
+  "raw": 364,
+  "gzip": 262,
+  "controlsRaw": 6520,
+  "controlsGzip": 2596,
+  "controlsHash": "b249d03a1a9d7984d901a07cd9e5dd35bfef28dd0c6bf5d1be07c047411a03ff",
+  "observations": {
+    "defined": {
+      "fetch": 1,
+      "Headers": 0,
+      "AbortController": 0
+    },
+    "undefined": {
+      "fetch": 1,
+      "Headers": 0,
+      "AbortController": 0
+    },
+    "throws": {
+      "fetch": 1,
+      "Headers": 0,
+      "AbortController": 0
+    },
+    "controls": {
+      "events": [
+        [
+          "request",
+          "POST",
+          "{\"item\":1}"
+        ],
+        "argument",
+        "options getter",
+        "options getter failed",
+        "TypeError"
+      ],
+      "result": {
+        "ok": true
+      },
+      "defaultCalls": 1,
+      "fallbackReads": 1,
+      "missingFetchRejection": true
+    }
+  },
+  "unusedClientRetained": false
+}

@@ -1,0 +1,15 @@
+{
+  "name": "ofetch-pure-initializers-fix",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.28.6",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "ofetch": "2.0.0-alpha.3"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}

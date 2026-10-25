@@ -1,0 +1,92 @@
+{
+  "original": {
+    "raw": 6116,
+    "gzip": 2428,
+    "controlsRaw": 6566,
+    "controlsGzip": 2623,
+    "controlsHash": "06173f405ed56eb0b1eaadc6d4ce87d257a008d5fc14a0bda863eb0b1cfe4668",
+    "observations": {
+      "defined": {
+        "fetch": 1,
+        "Headers": 0,
+        "AbortController": 0
+      },
+      "undefined": {
+        "fetch": 1,
+        "Headers": 0,
+        "AbortController": 0
+      },
+      "throws": {
+        "fetch": 1,
+        "Headers": 0,
+        "AbortController": 0
+      },
+      "controls": {
+        "events": [
+          [
+            "request",
+            "POST",
+            "{\"item\":1}"
+          ],
+          "argument",
+          "options getter",
+          "options getter failed",
+          "TypeError"
+        ],
+        "result": {
+          "ok": true
+        },
+        "defaultCalls": 1,
+        "fallbackReads": 1,
+        "missingFetchRejection": true
+      }
+    },
+    "unusedClientRetained": true,
+    "emittedAnnotation": false
+  },
+  "modified": {
+    "raw": 364,
+    "gzip": 262,
+    "controlsRaw": 6566,
+    "controlsGzip": 2623,
+    "controlsHash": "06173f405ed56eb0b1eaadc6d4ce87d257a008d5fc14a0bda863eb0b1cfe4668",
+    "observations": {
+      "defined": {
+        "fetch": 1,
+        "Headers": 0,
+        "AbortController": 0
+      },
+      "undefined": {
+        "fetch": 1,
+        "Headers": 0,
+        "AbortController": 0
+      },
+      "throws": {
+        "fetch": 1,
+        "Headers": 0,
+        "AbortController": 0
+      },
+      "controls": {
+        "events": [
+          [
+            "request",
+            "POST",
+            "{\"item\":1}"
+          ],
+          "argument",
+          "options getter",
+          "options getter failed",
+          "TypeError"
+        ],
+        "result": {
+          "ok": true
+        },
+        "defaultCalls": 1,
+        "fallbackReads": 1,
+        "missingFetchRejection": true
+      }
+    },
+    "unusedClientRetained": false,
+    "emittedAnnotation": true
+  }
+}

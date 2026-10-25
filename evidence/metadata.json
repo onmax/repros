@@ -1,0 +1,170 @@
+{
+  "repository": "unjs/ofetch",
+  "baseBranch": "main",
+  "baseSha": "1dbc37fd1ceab832fc7c90cad81b1091c95ba563",
+  "sourceVersion": "2.0.0-alpha.3",
+  "publishedVersion": "2.0.0-alpha.3",
+  "v1": {
+    "branchSha": "1a4ce48ea02c6ddbe6abd1f39aea2dfc0631f487",
+    "branchPackageVersion": "1.5.0",
+    "publishedComparisonVersion": "1.5.1",
+    "sourceReadIncomplete": true
+  },
+  "sourceFiles": {
+    "original/package.json": {
+      "sha256": "7d66e8866b1fa63adea67c6ce8e7fa45b1b1c2ba9a0fa3bf443567f76f5a6ff3",
+      "gitBlob": "f6608bd50501c41c0f500d3768bb583c25568f6a"
+    },
+    "original/src/base.ts": {
+      "sha256": "9967ec86fa02bcd89eaedcff91bb50fa4258c6212a6a80e8dbc06f8e57eb70c6",
+      "gitBlob": "0196c685aa8a7d7a9929ca6d27629c4e68a2524d"
+    },
+    "original/src/error.ts": {
+      "sha256": "2e558626c8a32931b7371b2a3654f2c055f06060a0449690bda855c761d71185",
+      "gitBlob": "f1625f6024942904ab7be6c612cfcb9c259846d6"
+    },
+    "original/src/fetch.ts": {
+      "sha256": "683f1f63d432260f15fceaeda7d1c87008ff706afc9bf114c225c4b2e89a8555",
+      "gitBlob": "10c91583adfeb9355b32e6acfee48371101e5ad6"
+    },
+    "original/src/index.ts": {
+      "sha256": "706549000b3ed1c626c9fb5280fd6aa9104ca88eed6c481052cd0b45a261c8c1",
+      "gitBlob": "1b091e0fad5ccb6b977da1eb621df1b6d1195226"
+    },
+    "original/src/types.ts": {
+      "sha256": "8963d24b8d776704c045a45948e76b4c6c9f021d63c303c38842d08315faf207",
+      "gitBlob": "66a84fafce49fe0e983bf8bf9dfddb91b58ba3e1"
+    },
+    "original/src/utils.ts": {
+      "sha256": "408ef7b96101c2ddc6d0459ab17d2212370ee799f85da39c1a0acdf8fba555a8",
+      "gitBlob": "3bc0dbf5b6fbbb06de543b423ac44743743d58df"
+    },
+    "original/src/utils.url.ts": {
+      "sha256": "6e0ec5c2dab25c5145d8d85270a3cc23c420d0f5959631a8e163b0c29cfcb7d3",
+      "gitBlob": "5a725353f9b01034260090bca3b6ef71a575c382"
+    },
+    "modified/package.json": {
+      "sha256": "7d66e8866b1fa63adea67c6ce8e7fa45b1b1c2ba9a0fa3bf443567f76f5a6ff3",
+      "gitBlob": "f6608bd50501c41c0f500d3768bb583c25568f6a"
+    },
+    "modified/src/base.ts": {
+      "sha256": "9967ec86fa02bcd89eaedcff91bb50fa4258c6212a6a80e8dbc06f8e57eb70c6",
+      "gitBlob": "0196c685aa8a7d7a9929ca6d27629c4e68a2524d"
+    },
+    "modified/src/error.ts": {
+      "sha256": "2e558626c8a32931b7371b2a3654f2c055f06060a0449690bda855c761d71185",
+      "gitBlob": "f1625f6024942904ab7be6c612cfcb9c259846d6"
+    },
+    "modified/src/fetch.ts": {
+      "sha256": "683f1f63d432260f15fceaeda7d1c87008ff706afc9bf114c225c4b2e89a8555",
+      "gitBlob": "10c91583adfeb9355b32e6acfee48371101e5ad6"
+    },
+    "modified/src/index.ts": {
+      "sha256": "91212414fbaa204466fb46522bb474258c17871c1f999ded9cf6bd242884acd1",
+      "gitBlob": "fb2509f17b9cd23e276b1edb5866608c84257556"
+    },
+    "modified/src/types.ts": {
+      "sha256": "8963d24b8d776704c045a45948e76b4c6c9f021d63c303c38842d08315faf207",
+      "gitBlob": "66a84fafce49fe0e983bf8bf9dfddb91b58ba3e1"
+    },
+    "modified/src/utils.ts": {
+      "sha256": "408ef7b96101c2ddc6d0459ab17d2212370ee799f85da39c1a0acdf8fba555a8",
+      "gitBlob": "3bc0dbf5b6fbbb06de543b423ac44743743d58df"
+    },
+    "modified/src/utils.url.ts": {
+      "sha256": "6e0ec5c2dab25c5145d8d85270a3cc23c420d0f5959631a8e163b0c29cfcb7d3",
+      "gitBlob": "5a725353f9b01034260090bca3b6ef71a575c382"
+    }
+  },
+  "upstreamPatch": "upstream.patch",
+  "modifiedUpstreamFiles": [
+    "src/index.ts"
+  ],
+  "publishedPatchedFiles": [
+    "dist/index.mjs"
+  ],
+  "publicEntry": "ofetch -> ./dist/index.mjs",
+  "runtime": {
+    "node": "24.21.0",
+    "pnpm": "11.28.6",
+    "platform": "linux",
+    "arch": "x64"
+  },
+  "bundlers": {
+    "esbuild": "0.28.2",
+    "rollup": "4.64.12",
+    "nodeResolve": "16.0.3"
+  },
+  "repro": {
+    "path": "/home/maxi/.t3/worktrees/repros-ofetch-pure-initializers",
+    "branch": "repro/ofetch-pure-initializers",
+    "baseSha": "b4f238c6bb321e315264c2748ab600354ebd60e8",
+    "command": "node verify.mjs",
+    "localOfflineCommand": "HEAVY_WAIT=0 heavy env GOMAXPROCS=2 node verify.mjs --offline",
+    "remotePublished": false
+  },
+  "releaseBuild": {
+    "verified": false,
+    "reason": "Exact upstream lock pins obuild@0.3.2(magicast@0.3.5)(typescript@5.9.3); obuild@0.3.2 is absent from offline cache.",
+    "sourceEmissionVerifiedWith": "esbuild@0.28.2, non-minified ESM, treeShaking:false"
+  },
+  "duplicateCheck": "Parent verified all 79 open PR titles and targeted repo:unjs/ofetch \"createFetch\" \"pure\" search; no matching duplicate. Delegated earlier queries in research.md.",
+  "remainingBeforePublication": [
+    "Parent confirms or creates issue required by organization PR template",
+    "Actual obuild release build remains unrun because exact tool missing from cache; report limitation"
+  ],
+  "remoteWrites": [],
+  "verification": {
+    "cleanInstallCommand": "HEAVY_WAIT=0 heavy env GOMAXPROCS=2 node verify.mjs --offline",
+    "passed": true,
+    "published": {
+      "raw": [
+        6070,
+        364
+      ],
+      "gzip": [
+        2405,
+        262
+      ],
+      "controlsRaw": [
+        6520,
+        6520
+      ],
+      "controlsGzip": [
+        2596,
+        2596
+      ]
+    },
+    "currentSource": {
+      "raw": [
+        6116,
+        364
+      ],
+      "gzip": [
+        2428,
+        262
+      ],
+      "controlsRaw": [
+        6566,
+        6566
+      ],
+      "controlsGzip": [
+        2623,
+        2623
+      ],
+      "emittedAnnotation": [
+        false,
+        true
+      ]
+    },
+    "expectedBaselineFailure": "UNUSED_CLIENT_RETAINED",
+    "allGetterArgumentAndErrorControlsPassed": true
+  },
+  "remainingJobSessions": [],
+  "contributionGuides": {
+    "parentVerified": true,
+    "localGuides": "No root AGENTS.md/CONTRIBUTING, .github only banner/workflows, no nested src guides",
+    "organizationTemplate": "Issue first; minimal change; minimal reproduction. Captured template included in evidence.",
+    "issueCoverage": "Parent owns check and issue/PR publication."
+  }
+}

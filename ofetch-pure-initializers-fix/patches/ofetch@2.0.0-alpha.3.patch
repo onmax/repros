@@ -1,0 +1,11 @@
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -271,7 +271,7 @@
+ //#endregion
+ //#region src/index.ts
+ const fetch = globalThis.fetch ? (...args) => globalThis.fetch(...args) : () => Promise.reject(/* @__PURE__ */ new Error("[ofetch] global.fetch is not supported!"));
+-const ofetch = createFetch({ fetch });
++const ofetch = /* @__PURE__ */ createFetch({ fetch });
+ const $fetch = ofetch;
+ 
+ //#endregion

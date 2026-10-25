@@ -1,0 +1,41 @@
+heavy: waiting because 1 job(s) arrived first (up to 0s, 0 = no limit). See `heavy status`.
+heavy: got slimbook-heavy-2.lock after 30s
+✓ Lockfile passes supply-chain policies (verified 6m ago)
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +3
++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: /home/maxi/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 3, reused 3, downloaded 0, added 3, done
+
+dependencies:
++ ofetch 2.0.0-alpha.3
+
+devDependencies:
++ esbuild 0.28.2
+
+Done in 533ms using pnpm v11.28.6
+{"raw":6070,"gzip":2405,"controlsRaw":6520,"controlsGzip":2596,"controlsHash":"b249d03a1a9d7984d901a07cd9e5dd35bfef28dd0c6bf5d1be07c047411a03ff","observations":{"defined":{"fetch":1,"Headers":0,"AbortController":0},"undefined":{"fetch":1,"Headers":0,"AbortController":0},"throws":{"fetch":1,"Headers":0,"AbortController":0},"controls":{"events":[["request","POST","{\"item\":1}"],"argument","options getter","options getter failed","TypeError"],"result":{"ok":true},"defaultCalls":1,"fallbackReads":1,"missingFetchRejection":true}},"unusedClientRetained":true}
+Expected baseline failure: UNUSED_CLIENT_RETAINED
+✓ Lockfile passes supply-chain policies (verified 5m ago)
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +3
++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: /home/maxi/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 3, reused 3, downloaded 0, added 3, done
+
+dependencies:
++ ofetch 2.0.0-alpha.3
+
+devDependencies:
++ esbuild 0.28.2
+
+Done in 515ms using pnpm v11.28.6
+{"raw":364,"gzip":262,"controlsRaw":6520,"controlsGzip":2596,"controlsHash":"b249d03a1a9d7984d901a07cd9e5dd35bfef28dd0c6bf5d1be07c047411a03ff","observations":{"defined":{"fetch":1,"Headers":0,"AbortController":0},"undefined":{"fetch":1,"Headers":0,"AbortController":0},"throws":{"fetch":1,"Headers":0,"AbortController":0},"controls":{"events":[["request","POST","{\"item\":1}"],"argument","options getter","options getter failed","TypeError"],"result":{"ok":true},"defaultCalls":1,"fallbackReads":1,"missingFetchRejection":true}},"unusedClientRetained":false}
+PASS: 6070 -> 364 minified bytes; gzip 2405 -> 262. Fetching control byte-identical; getter, argument and error checks passed.
+PASS current main source: 6116 -> 364 raw; gzip 2428 -> 262. Emitted annotation verified; retained controls identical.

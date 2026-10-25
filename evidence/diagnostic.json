@@ -1,0 +1,258 @@
+[
+  {
+    "version": "v2",
+    "variant": "baseline",
+    "input": "error",
+    "bundler": "esbuild",
+    "raw": 6070,
+    "gzip": 2405
+  },
+  {
+    "version": "v2",
+    "variant": "baseline",
+    "input": "error",
+    "bundler": "rollup",
+    "raw": 6138,
+    "gzip": 2412
+  },
+  {
+    "version": "v2",
+    "variant": "baseline",
+    "input": "fetch",
+    "bundler": "esbuild",
+    "raw": 6177,
+    "gzip": 2451
+  },
+  {
+    "version": "v2",
+    "variant": "baseline",
+    "input": "fetch",
+    "bundler": "rollup",
+    "raw": 6241,
+    "gzip": 2458
+  },
+  {
+    "version": "v2",
+    "variant": "call",
+    "input": "error",
+    "bundler": "esbuild",
+    "raw": 364,
+    "gzip": 262
+  },
+  {
+    "version": "v2",
+    "variant": "call",
+    "input": "error",
+    "bundler": "rollup",
+    "raw": 233,
+    "gzip": 194
+  },
+  {
+    "version": "v2",
+    "variant": "call",
+    "input": "fetch",
+    "bundler": "esbuild",
+    "raw": 6177,
+    "gzip": 2451
+  },
+  {
+    "version": "v2",
+    "variant": "call",
+    "input": "fetch",
+    "bundler": "rollup",
+    "raw": 6241,
+    "gzip": 2458
+  },
+  {
+    "version": "v2",
+    "variant": "set",
+    "input": "error",
+    "bundler": "esbuild",
+    "raw": 6070,
+    "gzip": 2405
+  },
+  {
+    "version": "v2",
+    "variant": "set",
+    "input": "error",
+    "bundler": "rollup",
+    "raw": 6138,
+    "gzip": 2412
+  },
+  {
+    "version": "v2",
+    "variant": "set",
+    "input": "fetch",
+    "bundler": "esbuild",
+    "raw": 6177,
+    "gzip": 2451
+  },
+  {
+    "version": "v2",
+    "variant": "set",
+    "input": "fetch",
+    "bundler": "rollup",
+    "raw": 6241,
+    "gzip": 2458
+  },
+  {
+    "version": "v2",
+    "variant": "both",
+    "input": "error",
+    "bundler": "esbuild",
+    "raw": 364,
+    "gzip": 262
+  },
+  {
+    "version": "v2",
+    "variant": "both",
+    "input": "error",
+    "bundler": "rollup",
+    "raw": 177,
+    "gzip": 151
+  },
+  {
+    "version": "v2",
+    "variant": "both",
+    "input": "fetch",
+    "bundler": "esbuild",
+    "raw": 6177,
+    "gzip": 2451
+  },
+  {
+    "version": "v2",
+    "variant": "both",
+    "input": "fetch",
+    "bundler": "rollup",
+    "raw": 6241,
+    "gzip": 2458
+  },
+  {
+    "version": "v1",
+    "variant": "baseline",
+    "input": "error",
+    "bundler": "esbuild",
+    "raw": 10112,
+    "gzip": 4058
+  },
+  {
+    "version": "v1",
+    "variant": "baseline",
+    "input": "error",
+    "bundler": "rollup",
+    "raw": 228,
+    "gzip": 190
+  },
+  {
+    "version": "v1",
+    "variant": "baseline",
+    "input": "fetch",
+    "bundler": "esbuild",
+    "raw": 10224,
+    "gzip": 4106
+  },
+  {
+    "version": "v1",
+    "variant": "baseline",
+    "input": "fetch",
+    "bundler": "rollup",
+    "raw": 9835,
+    "gzip": 3958
+  },
+  {
+    "version": "v1",
+    "variant": "call",
+    "input": "error",
+    "bundler": "esbuild",
+    "raw": 590,
+    "gzip": 362
+  },
+  {
+    "version": "v1",
+    "variant": "call",
+    "input": "error",
+    "bundler": "rollup",
+    "raw": 228,
+    "gzip": 190
+  },
+  {
+    "version": "v1",
+    "variant": "call",
+    "input": "fetch",
+    "bundler": "esbuild",
+    "raw": 10224,
+    "gzip": 4106
+  },
+  {
+    "version": "v1",
+    "variant": "call",
+    "input": "fetch",
+    "bundler": "rollup",
+    "raw": 9835,
+    "gzip": 3958
+  },
+  {
+    "version": "v1",
+    "variant": "set",
+    "input": "error",
+    "bundler": "esbuild",
+    "raw": 10112,
+    "gzip": 4058
+  },
+  {
+    "version": "v1",
+    "variant": "set",
+    "input": "error",
+    "bundler": "rollup",
+    "raw": 172,
+    "gzip": 146
+  },
+  {
+    "version": "v1",
+    "variant": "set",
+    "input": "fetch",
+    "bundler": "esbuild",
+    "raw": 10224,
+    "gzip": 4106
+  },
+  {
+    "version": "v1",
+    "variant": "set",
+    "input": "fetch",
+    "bundler": "rollup",
+    "raw": 9835,
+    "gzip": 3958
+  },
+  {
+    "version": "v1",
+    "variant": "both",
+    "input": "error",
+    "bundler": "esbuild",
+    "raw": 590,
+    "gzip": 362
+  },
+  {
+    "version": "v1",
+    "variant": "both",
+    "input": "error",
+    "bundler": "rollup",
+    "raw": 172,
+    "gzip": 146
+  },
+  {
+    "version": "v1",
+    "variant": "both",
+    "input": "fetch",
+    "bundler": "esbuild",
+    "raw": 10224,
+    "gzip": 4106
+  },
+  {
+    "version": "v1",
+    "variant": "both",
+    "input": "fetch",
+    "bundler": "rollup",
+    "raw": 9835,
+    "gzip": 3958
+  }
+]
