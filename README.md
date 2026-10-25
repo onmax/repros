@@ -30,7 +30,7 @@ Median milliseconds per complete `createUnimport().injectImports()` call:
 | 5,000 imports, 20 references to the first import | 0.0417 | 0.0380 |
 | 5,000 imports, 300 references, half missing | 4.8980 | 1.4323 |
 
-Seven full-batch warmups precede eleven alternating before/after repetitions. `recorded-results.json` contains the original samples. A new run writes `benchmark-results.json`. These are synthetic transform fixtures, not full Nuxt build timings. The small and medium cases have overlapping timing ranges. Medium transforms were about 10% slower and 300 repeated early hits were about 7% slower in this run. The index is most useful when lookups scan many imports.
+Seven full-batch warmups precede eleven alternating before/after repetitions. `recorded-results.json` contains the original samples. A new run writes `benchmark-results.json`. These are synthetic transform fixtures, not full Nuxt build timings. Medium transforms were about 10% slower and 300 repeated early hits were about 7% slower in this run. The index is most useful when lookups scan many imports.
 
 Both states use `unimport@7.0.2`. The addon source comes from [`unjs/unimport@bbd07768`](https://github.com/unjs/unimport/blob/bbd07768ddb4919205bcb5a3cbc06c3a2791981a/src/addons/vue-template.ts). Each fixture passes its source addon through the public addon API. The only adaptation outside the proposed change replaces relative utility and type imports with the package's public exports. Node strips the TypeScript types directly.
 
