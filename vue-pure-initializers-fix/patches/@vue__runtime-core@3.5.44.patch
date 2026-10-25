@@ -1,0 +1,11 @@
+--- a/dist/runtime-core.esm-bundler.js
++++ b/dist/runtime-core.esm-bundler.js
+@@ -8199,7 +8199,7 @@
+   ]);
+ }
+ 
+-const emptyAppContext = createAppContext();
++const emptyAppContext = /*@__PURE__*/ createAppContext();
+ let uid = 0;
+ function getNextUid() {
+   return uid;

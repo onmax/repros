@@ -1,0 +1,8 @@
+packages:
+  - '.'
+allowBuilds:
+  esbuild: true
+patchedDependencies:
+  '@vue/shared@3.5.44': patches/@vue__shared@3.5.44.patch
+  '@vue/reactivity@3.5.44': patches/@vue__reactivity@3.5.44.patch
+  '@vue/runtime-core@3.5.44': patches/@vue__runtime-core@3.5.44.patch

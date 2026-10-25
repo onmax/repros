@@ -1,9 +1,15 @@
-# Reproductions
+# Vue PURE initializer reproduction
 
-Each `repro/<library>-<issue-or-slug>` branch contains one bug reproduction and any fixed control. Older branches may use different names.
+This branch contains the [Vue 3.5.44 baseline](vue-pure-initializers/README.md) and [fixed control](vue-pure-initializers-fix/README.md). The same production bundle inputs and verifier run against both.
 
-Choose the branch for the bug, then follow the README in its fixture directory. Failing and fixed examples stay together on that branch.
+With Node 24.21.0 and pnpm 11.28.5, run:
 
-Start new reproduction branches from `main`. Keep source, required inputs, lockfiles, and patches in Git; leave dependencies and build output out.
+```sh
+git clone --depth 1 --branch repro/vue-pure-initializers https://github.com/onmax/repros.git vue-repro
+cd vue-repro
+node verify.mjs
+```
 
-`main` contains only this README and the agent instructions. Reproduction branches are never merged into it.
+The command performs clean installs, asserts the exact baseline failure and patched pass, and executes runtime controls. For a populated pnpm cache, add `--offline`. See [recorded results](EVIDENCE.md).
+
+This reproduction stays on `repro/vue-pure-initializers`; it is not merged into `main`.

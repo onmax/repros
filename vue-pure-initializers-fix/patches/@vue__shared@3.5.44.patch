@@ -1,0 +1,26 @@
+--- a/dist/shared.esm-bundler.js
++++ b/dist/shared.esm-bundler.js
+@@ -61,19 +61,19 @@
+   });
+ };
+ const camelizeRE = /-\w/g;
+-const camelize = cacheStringFunction(
++const camelize = /*@__PURE__*/ cacheStringFunction(
+   (str) => {
+     return str.replace(camelizeRE, (c) => c.slice(1).toUpperCase());
+   }
+ );
+ const hyphenateRE = /\B([A-Z])/g;
+-const hyphenate = cacheStringFunction(
++const hyphenate = /*@__PURE__*/ cacheStringFunction(
+   (str) => str.replace(hyphenateRE, "-$1").toLowerCase()
+ );
+-const capitalize = cacheStringFunction((str) => {
++const capitalize = /*@__PURE__*/ cacheStringFunction((str) => {
+   return str.charAt(0).toUpperCase() + str.slice(1);
+ });
+-const toHandlerKey = cacheStringFunction(
++const toHandlerKey = /*@__PURE__*/ cacheStringFunction(
+   (str) => {
+     const s = str ? `on${capitalize(str)}` : ``;
+     return s;
