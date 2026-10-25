@@ -1,0 +1,119 @@
+heavy: waiting because 8 job(s) arrived first (up to 0s, 0 = no limit). See `heavy status`.
+heavy: got slimbook-heavy.lock after 117s
+✓ Lockfile passes supply-chain policies (verified 3m ago)
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +23
++++++++++++++++++++++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: <home>/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 23, reused 23, downloaded 0, added 23, done
+
+dependencies:
++ @comark/react 0.8.1
++ comark 0.8.1
++ happy-dom 20.9.0
++ react 19.3.1
++ react-dom 19.3.1
+
+Done in 1.3s using pnpm v11.18.0
+heavy: waiting because 1 job(s) arrived first (up to 240s, 0 = no limit). See `heavy status`.
+heavy: got slimbook-heavy-light.lock after 3s
+$ node verify.mjs
+{
+  "case": "three values, two paragraphs",
+  "boundary": "react-dom/client createRoot in Happy DOM, development React, no StrictMode",
+  "committedValues": 3,
+  "contentUpdatesAfterMount": 2,
+  "finalSourceCharacters": 20,
+  "fullPrefixCharacters": 48,
+  "reactStreaming": {
+    "tokenizerCalls": 3,
+    "tokenizerInputCharacters": 48,
+    "firstInputLengths": [
+      12,
+      16,
+      20
+    ],
+    "lastInputLength": 20,
+    "elapsedMs": 39.88
+  },
+  "reactNonStreaming": {
+    "tokenizerCalls": 3,
+    "tokenizerInputCharacters": 48,
+    "firstInputLengths": [
+      12,
+      16,
+      20
+    ],
+    "lastInputLength": 20,
+    "elapsedMs": 4.42
+  },
+  "retainedParserDiagnostic": {
+    "tokenizerCalls": 3,
+    "tokenizerInputCharacters": 36,
+    "firstInputLengths": [
+      12,
+      10,
+      14
+    ],
+    "lastInputLength": 14,
+    "elapsedMs": 0.65
+  },
+  "inputVolumeRatio": 1.33,
+  "dom": "exact HTML verified after every React value; retained final document verified",
+  "timing": "descriptive only; React includes DOM assertions, retained timing measures parser calls only"
+}
+CONFIRMED: streaming=true and streaming=false tokenize every full content value.
+heavy: waiting because 2 job(s) arrived first (up to 240s, 0 = no limit). See `heavy status`.
+heavy: got slimbook-heavy-light.lock after 25s
+$ node verify.mjs --large
+{
+  "case": "400 paragraph values",
+  "boundary": "react-dom/client createRoot in Happy DOM, development React, no StrictMode",
+  "committedValues": 400,
+  "contentUpdatesAfterMount": 399,
+  "finalSourceCharacters": 18000,
+  "fullPrefixCharacters": 3609000,
+  "reactStreaming": {
+    "tokenizerCalls": 400,
+    "tokenizerInputCharacters": 3609000,
+    "firstInputLengths": [
+      45,
+      90,
+      135,
+      180
+    ],
+    "lastInputLength": 18000,
+    "elapsedMs": 5324.59
+  },
+  "reactNonStreaming": {
+    "tokenizerCalls": 400,
+    "tokenizerInputCharacters": 3609000,
+    "firstInputLengths": [
+      45,
+      90,
+      135,
+      180
+    ],
+    "lastInputLength": 18000,
+    "elapsedMs": 6760.74
+  },
+  "retainedParserDiagnostic": {
+    "tokenizerCalls": 400,
+    "tokenizerInputCharacters": 36353,
+    "firstInputLengths": [
+      45,
+      90,
+      91,
+      91
+    ],
+    "lastInputLength": 91,
+    "elapsedMs": 13.28
+  },
+  "inputVolumeRatio": 99.28,
+  "dom": "exact HTML verified after every React value; retained final document verified",
+  "timing": "descriptive only; React includes DOM assertions, retained timing measures parser calls only"
+}
+CONFIRMED: streaming=true and streaming=false tokenize every full content value.

@@ -1,0 +1,61 @@
+$ node verify.mjs --check
+{
+  "case": "three values, two paragraphs",
+  "boundary": "react-dom/client createRoot in Happy DOM, development React, no StrictMode",
+  "committedValues": 3,
+  "contentUpdatesAfterMount": 2,
+  "finalSourceCharacters": 20,
+  "fullPrefixCharacters": 48,
+  "reactStreaming": {
+    "tokenizerCalls": 3,
+    "tokenizerInputCharacters": 48,
+    "firstInputLengths": [
+      12,
+      16,
+      20
+    ],
+    "lastInputLength": 20,
+    "elapsedMs": 28.94
+  },
+  "reactNonStreaming": {
+    "tokenizerCalls": 3,
+    "tokenizerInputCharacters": 48,
+    "firstInputLengths": [
+      12,
+      16,
+      20
+    ],
+    "lastInputLength": 20,
+    "elapsedMs": 3.84
+  },
+  "retainedParserDiagnostic": {
+    "tokenizerCalls": 3,
+    "tokenizerInputCharacters": 36,
+    "firstInputLengths": [
+      12,
+      10,
+      14
+    ],
+    "lastInputLength": 14,
+    "elapsedMs": 0.48
+  },
+  "inputVolumeRatio": 1.33,
+  "dom": "exact HTML verified after every React value; retained final document verified",
+  "timing": "descriptive only; React includes DOM assertions, retained timing measures parser calls only"
+}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: streaming=true value 2 tokenized all 16 characters; the retained parser tokenized 10
+    at file://<fixture>/verify.mjs:138:14 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.21.0
+[ELIFECYCLE] Command failed with exit code 1.
