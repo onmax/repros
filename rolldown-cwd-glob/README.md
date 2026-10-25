@@ -1,8 +1,8 @@
-# Rolldown: relative globs ignore files when `cwd` contains `[` or `{`, or is relative
+# Rolldown: relative globs miss files when `cwd` has `[` or `{`, or is relative
 
-A relative glob such as `filter: { id: 'src/**' }` should match `<cwd>/src/main.js`. Rolldown joins the raw `cwd` onto the glob, so glob characters in the folder name become part of the pattern. A folder named `my[app]` turns `src/**` into `/…/my[app]/src/**`, where `[app]` is a character class. A relative `cwd` gives a relative pattern that never matches the absolute module ids.
+`filter: { id: 'src/**' }` should match `<cwd>/src/main.js` whatever the project folder is called. Rolldown puts `cwd` in front of the glob without escaping it. In a folder named `my[app]` the pattern becomes `.../my[app]/src/**`, and `[app]` turns into a character class that matches a single letter. A relative `cwd` gives a relative pattern, and module ids are always absolute, so nothing matches.
 
-Rollup's `createFilter` escapes the base path and resolves it first, so it matches in every case.
+Rollup's `createFilter` makes the folder absolute and escapes it first. The script runs the same glob through both and compares them.
 
 ## Run
 
@@ -13,13 +13,13 @@ pnpm install
 pnpm repro
 ```
 
-Exit code 1 means the bug is present. To test a local Rolldown build:
+It exits with 1 while the bug is there. To try a local Rolldown build, point `ROLLDOWN` at it:
 
 ```sh
 ROLLDOWN=/path/to/rolldown/packages/rolldown/dist/index.mjs node repro.mjs
 ```
 
-## Expected and actual (rolldown 1.2.15, Node 24, Linux)
+## Output with rolldown 1.2.15 (Node 24, Linux)
 
 ```text
 PASS  rolldown=true  rollup=true  cwd=".../fixtures/my-app"
@@ -30,17 +30,10 @@ FAIL  rolldown=false  rollup=true  cwd="fixtures/relative-cwd"
 FAIL  rolldown=false  rollup=true  cwd=(default) process.cwd()=".../fixtures/default[cwd]"
 ```
 
-Every row should be `rolldown=true`.
+Every row should say `rolldown=true`. `my-app` and `app (1)` are controls, since parentheses aren't glob syntax for Rolldown. The last case sets no `cwd` at all. Running Rolldown from a folder with `[` in its name is enough.
 
-## What each case shows
-
-- `my-app` and `app (1)` are controls. Parentheses are not glob syntax in Rolldown's matcher, so they pass.
-- `my[app]` and `{client}` pass `cwd` explicitly.
-- `relative-cwd` passes a relative `cwd`.
-- `default[cwd]` passes no `cwd`. Running Rolldown from a folder with `[` in its name is enough.
-
-The script writes its fixture folders at run time, because the folder names are the input. `@rollup/pluginutils` is the reference behavior.
+The script creates the fixture folders when it runs, because their names are the input.
 
 ## Cause
 
-`get_matcher_string` in `crates/rolldown_utils/src/pattern_filter.rs` returns `Path::new(cwd).join(glob)` without escaping `cwd` or making it absolute. Plugin hook filters (`filter.id`, `filter.importerId`), `watch.include`/`watch.exclude`, and the include/exclude options of the native Vite plugins all use it.
+`get_matcher_string` in `crates/rolldown_utils/src/pattern_filter.rs` joins `cwd` and the glob with `Path::join`. Plugin hook filters, `watch.include`/`watch.exclude` and the native Vite plugins all go through it. Fix: rolldown/rolldown#11291.
