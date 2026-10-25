@@ -9,8 +9,12 @@ const root = fileURLToPath(new URL('.', import.meta.url))
 const offline = process.argv.includes('--offline')
 assert.ok(process.argv.slice(2).every(arg => arg === '--offline'), 'Usage: node verify.mjs [--offline]')
 assert.equal(process.versions.node, '24.21.0', 'Use Node 24.21.0 from .node-version')
-const pnpm = process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm'
-const version = spawnSync(pnpm, ['--version'], {
+const pnpm = process.platform === 'win32' ? 'cmd.exe' : 'pnpm'
+// All arguments are fixed below; cmd.exe is required to launch pnpm.cmd.
+const pnpmArgs = args => process.platform === 'win32'
+  ? ['/d', '/s', '/c', `pnpm.cmd ${args.join(' ')}`]
+  : args
+const version = spawnSync(pnpm, pnpmArgs(['--version']), {
   cwd: path.join(root, 'vue-pure-initializers'), encoding: 'utf8',
 })
 assert.equal(version.status, 0, 'Install pnpm 11.28.5 before running the repro')
@@ -27,7 +31,7 @@ for (const name of ['vue-pure-initializers', 'vue-pure-initializers-fix']) {
   const fixture = path.join(root, name)
   await rm(path.join(fixture, 'node_modules'), { recursive: true, force: true })
   await rm(path.join(fixture, 'dist'), { recursive: true, force: true })
-  run(pnpm, ['install', '--frozen-lockfile', ...(offline ? ['--offline'] : [])], fixture)
+  run(pnpm, pnpmArgs(['install', '--frozen-lockfile', ...(offline ? ['--offline'] : [])]), fixture)
   run(process.execPath, [path.join(root, 'scripts/verify.mjs'), fixture], root)
   results.push(JSON.parse(await readFile(path.join(fixture, 'dist/result.json'), 'utf8')))
 }
