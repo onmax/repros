@@ -1,0 +1,112 @@
+{
+  "package": "pathe",
+  "annotated": true,
+  "bundlers": {
+    "rollup": {
+      "input": {
+        "raw": 311,
+        "gzip": 245,
+        "sha256": "f66add5cc6fa6f25dbdff2f2933bce2cc4e12be63e9d2fb6cbc912a4353518ae",
+        "exports": {
+          "result": "index.ts"
+        }
+      },
+      "helper": {
+        "raw": 311,
+        "gzip": 245,
+        "sha256": "f66add5cc6fa6f25dbdff2f2933bce2cc4e12be63e9d2fb6cbc912a4353518ae",
+        "exports": {
+          "result": "index.ts"
+        }
+      },
+      "live": {
+        "raw": 825,
+        "gzip": 479,
+        "sha256": "7f1383ca478ae1abed78dec3e49b11546ad12a2935d437ac68d578b0fe14fad9",
+        "exports": {
+          "result": {
+            "root": "/",
+            "dir": "/app/src",
+            "base": "index.ts",
+            "ext": ".ts",
+            "name": "index"
+          }
+        }
+      },
+      "arguments": {
+        "raw": 909,
+        "gzip": 525,
+        "sha256": "2fba45e465f3c2bd40065199ba395d662439d57e01d019cfcc9956319764a8cb",
+        "exports": {
+          "result": [
+            "argument",
+            "argument-throw"
+          ]
+        }
+      },
+      "regexp": {
+        "raw": 106,
+        "gzip": 109,
+        "sha256": "954c4f33810613b296288808cc7b08bf48c318a0156f79e6e31731a9f6d1e064",
+        "exports": {
+          "capture": "seed",
+          "match": "seed",
+          "seeded": true
+        }
+      }
+    },
+    "rolldown": {
+      "input": {
+        "raw": 298,
+        "gzip": 237,
+        "sha256": "0f872062ee1896ec170e09b974b7b338ec451f5b4f865bb39dd7ae292c4c0f9a",
+        "exports": {
+          "result": "index.ts"
+        }
+      },
+      "helper": {
+        "raw": 298,
+        "gzip": 237,
+        "sha256": "0f872062ee1896ec170e09b974b7b338ec451f5b4f865bb39dd7ae292c4c0f9a",
+        "exports": {
+          "result": "index.ts"
+        }
+      },
+      "live": {
+        "raw": 806,
+        "gzip": 463,
+        "sha256": "458827f0ece5bb258e6cd18d9f06f6a68c27ca1cfd1aaf3d001f5c9e90b4b606",
+        "exports": {
+          "result": {
+            "root": "/",
+            "dir": "/app/src",
+            "base": "index.ts",
+            "ext": ".ts",
+            "name": "index"
+          }
+        }
+      },
+      "arguments": {
+        "raw": 131,
+        "gzip": 124,
+        "sha256": "2134314fa430d5a85b4bf58de720388ab1e139e90369834ef192380bd3cad1f4",
+        "exports": {
+          "result": [
+            "argument",
+            "argument-throw"
+          ]
+        }
+      },
+      "regexp": {
+        "raw": 105,
+        "gzip": 108,
+        "sha256": "8d7897473a5fcd742d9e17106866d5b3683ec7989f47c55886be09b258cd995f",
+        "exports": {
+          "capture": "seed",
+          "match": "seed",
+          "seeded": true
+        }
+      }
+    }
+  }
+}

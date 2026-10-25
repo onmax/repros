@@ -1,0 +1,22 @@
+--- a/dist/shared/pathe.BSlhyZSM.cjs
++++ b/dist/shared/pathe.BSlhyZSM.cjs
+@@ -214,7 +214,7 @@
+   }
+   return extension && lastSegment.endsWith(extension) ? lastSegment.slice(0, -extension.length) : lastSegment;
+ };
+-const parse = function(p) {
++const parse = /* @__NO_SIDE_EFFECTS__ */ function(p) {
+   const root = _PATH_ROOT_RE.exec(p)?.[0]?.replace(/\\/g, "/") || "";
+   const base = basename(p);
+   const extension = extname(base);
+--- a/dist/shared/pathe.M-eThtNZ.mjs
++++ b/dist/shared/pathe.M-eThtNZ.mjs
+@@ -212,7 +212,7 @@
+   }
+   return extension && lastSegment.endsWith(extension) ? lastSegment.slice(0, -extension.length) : lastSegment;
+ };
+-const parse = function(p) {
++const parse = /* @__NO_SIDE_EFFECTS__ */ function(p) {
+   const root = _PATH_ROOT_RE.exec(p)?.[0]?.replace(/\\/g, "/") || "";
+   const base = basename(p);
+   const extension = extname(base);

@@ -1,0 +1,127 @@
+{
+  "package": "pathe",
+  "annotated": false,
+  "bundlers": {
+    "rollup": {
+      "input": {
+        "raw": 854,
+        "gzip": 483,
+        "sha256": "74e59b66c508904c74ca06bf46c634a43f9f35dfe85b149d2fdefa3585ec10d7",
+        "exports": {
+          "result": "index.ts"
+        }
+      },
+      "helper": {
+        "raw": 311,
+        "gzip": 245,
+        "sha256": "f66add5cc6fa6f25dbdff2f2933bce2cc4e12be63e9d2fb6cbc912a4353518ae",
+        "exports": {
+          "result": "index.ts"
+        }
+      },
+      "live": {
+        "raw": 825,
+        "gzip": 479,
+        "sha256": "7f1383ca478ae1abed78dec3e49b11546ad12a2935d437ac68d578b0fe14fad9",
+        "exports": {
+          "result": {
+            "root": "/",
+            "dir": "/app/src",
+            "base": "index.ts",
+            "ext": ".ts",
+            "name": "index"
+          }
+        }
+      },
+      "arguments": {
+        "raw": 937,
+        "gzip": 541,
+        "sha256": "9154a3b3e40a7b0ea92b168a00366ba4497e70f25b59a9374e8a6ebaad7ffc2e",
+        "exports": {
+          "result": [
+            "argument",
+            "argument-throw"
+          ]
+        }
+      },
+      "regexp": {
+        "raw": 908,
+        "gzip": 524,
+        "sha256": "96c29f49773d786cdab2d2499df83962d2aa4822619f3718e4a69530e151e6b7",
+        "exports": {
+          "capture": ".ts",
+          "match": "x.ts",
+          "seeded": true
+        }
+      }
+    },
+    "rolldown": {
+      "input": {
+        "raw": 837,
+        "gzip": 470,
+        "sha256": "d207157a8083f2a01426926e6c788fe61413bb15d73128c7df3790c4dff5e527",
+        "exports": {
+          "result": "index.ts"
+        }
+      },
+      "helper": {
+        "raw": 298,
+        "gzip": 237,
+        "sha256": "0f872062ee1896ec170e09b974b7b338ec451f5b4f865bb39dd7ae292c4c0f9a",
+        "exports": {
+          "result": "index.ts"
+        }
+      },
+      "live": {
+        "raw": 806,
+        "gzip": 463,
+        "sha256": "458827f0ece5bb258e6cd18d9f06f6a68c27ca1cfd1aaf3d001f5c9e90b4b606",
+        "exports": {
+          "result": {
+            "root": "/",
+            "dir": "/app/src",
+            "base": "index.ts",
+            "ext": ".ts",
+            "name": "index"
+          }
+        }
+      },
+      "arguments": {
+        "raw": 918,
+        "gzip": 526,
+        "sha256": "27d0c6d822a46d001bfd830b861420d78d0389cfad0d3780ac8631d451f1c05c",
+        "exports": {
+          "result": [
+            "argument",
+            "argument-throw"
+          ]
+        }
+      },
+      "regexp": {
+        "raw": 893,
+        "gzip": 512,
+        "sha256": "759912a5dd22658cc1f7da582e0f7424fe154ed5f52f62ce9a1a293ffe00c5aa",
+        "exports": {
+          "capture": ".ts",
+          "match": "x.ts",
+          "seeded": true
+        }
+      }
+    }
+  }
+}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: UNUSED_PARSE_RETAINED: expected removal of the unused call
+    at file:///home/maxi/.t3/worktrees/repros-pathe-pure-parse/pathe-pure-parse/verify.mjs:86:8 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.21.0

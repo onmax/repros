@@ -1,0 +1,10 @@
+{
+  "package": "pathe",
+  "version": "2.0.3",
+  "function": "parse",
+  "annotationFiles": [
+    "dist/shared/pathe.BSlhyZSM.cjs",
+    "dist/shared/pathe.M-eThtNZ.mjs"
+  ],
+  "slug": "pathe-pure-parse"
+}

@@ -1,0 +1,18 @@
+{
+  "name": "pathe-pure-parse",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.28.6",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "pathe": "2.0.3"
+  },
+  "devDependencies": {
+    "rollup": "4.64.12",
+    "@rollup/plugin-node-resolve": "16.0.3",
+    "esbuild": "0.28.2",
+    "rolldown": "1.2.14"
+  }
+}

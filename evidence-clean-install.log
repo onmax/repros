@@ -1,0 +1,47 @@
+heavy: waiting because 3 job(s) arrived first (up to 0s, 0 = no limit). See `heavy status`.
+heavy: got slimbook-heavy-2.lock after 95s
+✓ Lockfile passes supply-chain policies (verified 6m ago)
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +25
++++++++++++++++++++++++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: /home/maxi/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 25, reused 25, downloaded 0, added 25, done
+
+dependencies:
++ pathe 2.0.3
+
+devDependencies:
++ @rollup/plugin-node-resolve 16.0.3
++ esbuild 0.28.2
++ rolldown 1.2.14
++ rollup 4.64.12
+
+Done in 828ms using pnpm v11.28.6
+pathe-pure-parse: expected failure UNUSED_PARSE_RETAINED
+✓ Lockfile passes supply-chain policies (verified 5m ago)
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +25
++++++++++++++++++++++++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: /home/maxi/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 25, reused 25, downloaded 0, added 25, done
+
+dependencies:
++ pathe 2.0.3
+
+devDependencies:
++ @rollup/plugin-node-resolve 16.0.3
++ esbuild 0.28.2
++ rolldown 1.2.14
++ rollup 4.64.12
+
+Done in 1.3s using pnpm v11.28.6
+pathe-pure-parse-fix: optimization check passes
+rollup: unused-call fixture 854 -> 311 bytes, gzip 483 -> 245; live-only unchanged; legacy RegExp exports DIFFER
+rolldown: unused-call fixture 837 -> 298 bytes, gzip 470 -> 237; live-only unchanged; legacy RegExp exports DIFFER
+PASS: reproduced optimization and legacy RegExp behavior change. Candidate is not an unconditional behavior-preserving fix.
