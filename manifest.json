@@ -1,0 +1,42 @@
+{
+  "upstream": {
+    "repository": "unjs/unimport",
+    "commit": "bbd07768ddb4919205bcb5a3cbc06c3a2791981a",
+    "path": "src/addons/vue-template.ts",
+    "sha256": "a1bc033e4b25039a6febe60c71cf65369197f2fb298f2b6373cd608d40594774"
+  },
+  "candidateSourceSha256": "2e22c97198158bd216511a330d80fad5b0cee1c842dfa540d68d93c3e32df617",
+  "adaptation": "Only utility and type imports point at the pinned public unimport package; addon implementation is unchanged.",
+  "variants": {
+    "unimport-vue-template-lookup": {
+      "path": "unimport-vue-template-lookup/vue-template.ts",
+      "sha256": "bb7472a0e440c5fff952bca987ee8b3004f6ea4d70bb09473e14c840e962abf3"
+    },
+    "unimport-vue-template-lookup-fix": {
+      "path": "unimport-vue-template-lookup-fix/vue-template.ts",
+      "sha256": "c8d763747ae63e923228989fa999834b583fc3fd7e401fa4f7aee1996eaefece"
+    }
+  },
+  "recordedBenchmark": "recorded-results.json",
+  "verification": {
+    "baselineExit": 42,
+    "candidateExit": 0,
+    "baselinePredicateVisits": 745200,
+    "candidatePredicateVisits": 21024,
+    "predicateVisitBudget": 25000,
+    "outputAndSourceMapComparisons": 40,
+    "getterControls": "passed",
+    "installStatus": "Passed a clean offline install, removed dependencies, then passed a frozen offline reinstall and the documented verifier.",
+    "packageManager": "pnpm@11.28.6",
+    "node": "24.21.0",
+    "packagesInstalled": 30,
+    "downloads": 0,
+    "directDependencyVersionsMatchBenchmark": true,
+    "focusedSourceTests": 11,
+    "focusedTypecheck": "passed",
+    "fileLint": "passed",
+    "fullUpstreamBuildAndCI": "not run"
+  },
+  "candidateCommit": "5cf376902f03342ccce8e3e1d4322c4beecf223a",
+  "lockfileSha256": "fe5a6efbca8ebdf5a032ce7a995f1b040dc5ab3bef4f24413d84338aa0629362"
+}

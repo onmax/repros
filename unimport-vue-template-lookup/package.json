@@ -1,0 +1,8 @@
+{
+  "name": "unimport-vue-template-lookup",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "node verify.mjs"
+  }
+}

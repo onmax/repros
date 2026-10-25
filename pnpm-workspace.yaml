@@ -1,0 +1,5 @@
+packages:
+  - unimport-vue-template-lookup
+  - unimport-vue-template-lookup-fix
+
+autoInstallPeers: false
