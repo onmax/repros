@@ -1,0 +1,11 @@
+diff --git a/dist/cache.mjs b/dist/cache.mjs
+--- a/dist/cache.mjs
++++ b/dist/cache.mjs
+@@ -342,6 +342,7 @@ function dynamicEventHandler(initial) {
+ 		current = toEventHandler(handler);
+ 	} });
+ }
++/* @__NO_SIDE_EFFECTS__ */
+ function defineLazyEventHandler(loader) {
+ 	let handler;
+ 	let promise;

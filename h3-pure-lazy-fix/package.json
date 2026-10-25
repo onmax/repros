@@ -1,0 +1,19 @@
+{
+  "name": "h3-pure-lazy-fix",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.28.5",
+  "engines": {
+    "node": "24.21.0"
+  },
+  "scripts": {
+    "verify": "node ../scripts/verify-fixture.mjs"
+  },
+  "dependencies": {
+    "h3": "2.0.8"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "rolldown": "1.2.14"
+  }
+}

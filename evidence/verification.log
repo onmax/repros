@@ -1,0 +1,27 @@
+Command: node verify.mjs --offline
+Clean node_modules reinstall for both fixtures; frozen lockfiles; zero downloads.
+
+h3-pure-lazy: install
+generic/rolldown/mixed: 14140 raw, 5107 gzip; unused=true
+generic/rolldown/live-only: 847 raw, 516 gzip; unused=false
+generic/esbuild/mixed: 14231 raw, 5219 gzip; unused=true
+generic/esbuild/live-only: 1340 raw, 764 gzip; unused=false
+node/rolldown/mixed: 14140 raw, 5107 gzip; unused=true
+node/rolldown/live-only: 847 raw, 516 gzip; unused=false
+node/esbuild/mixed: 14231 raw, 5219 gzip; unused=true
+node/esbuild/live-only: 1340 raw, 764 gzip; unused=false
+Runtime controls passed: 10
+FAIL_UNUSED_LAZY_HANDLER: Rolldown retains the unconsumed defineLazyEventHandler call.
+h3-pure-lazy-fix: install
+generic/rolldown/mixed: 1214 raw, 714 gzip; unused=false
+generic/rolldown/live-only: 847 raw, 516 gzip; unused=false
+generic/esbuild/mixed: 14231 raw, 5219 gzip; unused=true
+generic/esbuild/live-only: 1340 raw, 764 gzip; unused=false
+node/rolldown/mixed: 1214 raw, 714 gzip; unused=false
+node/rolldown/live-only: 847 raw, 516 gzip; unused=false
+node/esbuild/mixed: 14231 raw, 5219 gzip; unused=true
+node/esbuild/live-only: 1340 raw, 764 gzip; unused=false
+Runtime controls passed: 10
+PASS: Rolldown removes the unconsumed defineLazyEventHandler call.
+Verified: baseline fails the exact dead-handler assertion; patched package passes.
+Live-only output and all esbuild output are byte-identical. Runtime controls pass.

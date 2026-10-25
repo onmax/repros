@@ -1,0 +1,368 @@
+{
+  "baseline": {
+    "h3": "2.0.8",
+    "installedAnnotation": false,
+    "node": "v24.21.0",
+    "platform": "linux-x64",
+    "rolldown": "1.2.14",
+    "esbuild": "0.28.2",
+    "measurements": [
+      {
+        "entry": "generic",
+        "bundler": "rolldown",
+        "fixture": "mixed",
+        "raw": 14140,
+        "gzip": 5107,
+        "sha256": "6ee0db7469cd900b645c2b65b3dacbe14635f44b59e0fe86e92f9ec2e25c3528",
+        "unusedHandlerRetained": true,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "generic",
+        "bundler": "rolldown",
+        "fixture": "live-only",
+        "raw": 847,
+        "gzip": 516,
+        "sha256": "bc3866fd648394c222a56cd3fdc4c525490d86fa0028125ee498f3b67e98cbcb",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "generic",
+        "bundler": "rolldown",
+        "fixture": "dead-argument",
+        "raw": 14191,
+        "gzip": 5134,
+        "sha256": "86ef8ce245c147691af36eb8641f511a723b2961b25d543b31bee1937b2c8247",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": true
+      },
+      {
+        "entry": "generic",
+        "bundler": "rolldown",
+        "fixture": "runtime",
+        "raw": 14115,
+        "gzip": 5089,
+        "sha256": "040b9a17b01c05c28791cdb8f802846627e0465737a882efb7c379ad7918ae1d",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "generic",
+        "bundler": "esbuild",
+        "fixture": "mixed",
+        "raw": 14231,
+        "gzip": 5219,
+        "sha256": "042feff816ed833e5b4ca84476a750ffc5b7bbd1f50fd5b492f42381a367bbb6",
+        "unusedHandlerRetained": true,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "generic",
+        "bundler": "esbuild",
+        "fixture": "live-only",
+        "raw": 1340,
+        "gzip": 764,
+        "sha256": "c06b2c16601ff39238d87bfa8dbb73a9258ccd3daa69cf33b21c029e0c4a965f",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "generic",
+        "bundler": "esbuild",
+        "fixture": "dead-argument",
+        "raw": 14282,
+        "gzip": 5247,
+        "sha256": "d07167ee1360837154528cc2c4249244b4705b9c4f25ed06d8e2a94be8a42cfe",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": true
+      },
+      {
+        "entry": "generic",
+        "bundler": "esbuild",
+        "fixture": "runtime",
+        "raw": 14198,
+        "gzip": 5197,
+        "sha256": "43cde33e6e32257a620e4d59576ba1f9b3ce1f16d7c9a557d72736936abbee6b",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "node",
+        "bundler": "rolldown",
+        "fixture": "mixed",
+        "raw": 14140,
+        "gzip": 5107,
+        "sha256": "6ee0db7469cd900b645c2b65b3dacbe14635f44b59e0fe86e92f9ec2e25c3528",
+        "unusedHandlerRetained": true,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "node",
+        "bundler": "rolldown",
+        "fixture": "live-only",
+        "raw": 847,
+        "gzip": 516,
+        "sha256": "bc3866fd648394c222a56cd3fdc4c525490d86fa0028125ee498f3b67e98cbcb",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "node",
+        "bundler": "rolldown",
+        "fixture": "dead-argument",
+        "raw": 14191,
+        "gzip": 5134,
+        "sha256": "86ef8ce245c147691af36eb8641f511a723b2961b25d543b31bee1937b2c8247",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": true
+      },
+      {
+        "entry": "node",
+        "bundler": "rolldown",
+        "fixture": "runtime",
+        "raw": 14115,
+        "gzip": 5089,
+        "sha256": "040b9a17b01c05c28791cdb8f802846627e0465737a882efb7c379ad7918ae1d",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "node",
+        "bundler": "esbuild",
+        "fixture": "mixed",
+        "raw": 14231,
+        "gzip": 5219,
+        "sha256": "042feff816ed833e5b4ca84476a750ffc5b7bbd1f50fd5b492f42381a367bbb6",
+        "unusedHandlerRetained": true,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "node",
+        "bundler": "esbuild",
+        "fixture": "live-only",
+        "raw": 1340,
+        "gzip": 764,
+        "sha256": "c06b2c16601ff39238d87bfa8dbb73a9258ccd3daa69cf33b21c029e0c4a965f",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "node",
+        "bundler": "esbuild",
+        "fixture": "dead-argument",
+        "raw": 14282,
+        "gzip": 5247,
+        "sha256": "d07167ee1360837154528cc2c4249244b4705b9c4f25ed06d8e2a94be8a42cfe",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": true
+      },
+      {
+        "entry": "node",
+        "bundler": "esbuild",
+        "fixture": "runtime",
+        "raw": 14198,
+        "gzip": 5197,
+        "sha256": "43cde33e6e32257a620e4d59576ba1f9b3ce1f16d7c9a557d72736936abbee6b",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      }
+    ],
+    "runtimeChecks": [
+      "generic: unbundled lazy loading, concurrent reuse, cached reuse, fetch",
+      "generic/rolldown: dead argument executes once; unused loader never runs",
+      "generic/rolldown: lazy loading, concurrent reuse, cached reuse, fetch",
+      "generic/esbuild: dead argument executes once; unused loader never runs",
+      "generic/esbuild: lazy loading, concurrent reuse, cached reuse, fetch",
+      "node: unbundled lazy loading, concurrent reuse, cached reuse, fetch",
+      "node/rolldown: dead argument executes once; unused loader never runs",
+      "node/rolldown: lazy loading, concurrent reuse, cached reuse, fetch",
+      "node/esbuild: dead argument executes once; unused loader never runs",
+      "node/esbuild: lazy loading, concurrent reuse, cached reuse, fetch"
+    ],
+    "acceptance": "FAIL_UNUSED_LAZY_HANDLER"
+  },
+  "fixed": {
+    "h3": "2.0.8",
+    "installedAnnotation": true,
+    "node": "v24.21.0",
+    "platform": "linux-x64",
+    "rolldown": "1.2.14",
+    "esbuild": "0.28.2",
+    "measurements": [
+      {
+        "entry": "generic",
+        "bundler": "rolldown",
+        "fixture": "mixed",
+        "raw": 1214,
+        "gzip": 714,
+        "sha256": "de1bd8b340656fe7bf24bdaeec5fd520dd2a7420f268f3588f5d9d67fb725d03",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "generic",
+        "bundler": "rolldown",
+        "fixture": "live-only",
+        "raw": 847,
+        "gzip": 516,
+        "sha256": "bc3866fd648394c222a56cd3fdc4c525490d86fa0028125ee498f3b67e98cbcb",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "generic",
+        "bundler": "rolldown",
+        "fixture": "dead-argument",
+        "raw": 1246,
+        "gzip": 738,
+        "sha256": "04a01d406d79f2844250158ac8d9bc678fa103795565df617468725d285d979f",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "generic",
+        "bundler": "rolldown",
+        "fixture": "runtime",
+        "raw": 14115,
+        "gzip": 5089,
+        "sha256": "040b9a17b01c05c28791cdb8f802846627e0465737a882efb7c379ad7918ae1d",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "generic",
+        "bundler": "esbuild",
+        "fixture": "mixed",
+        "raw": 14231,
+        "gzip": 5219,
+        "sha256": "042feff816ed833e5b4ca84476a750ffc5b7bbd1f50fd5b492f42381a367bbb6",
+        "unusedHandlerRetained": true,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "generic",
+        "bundler": "esbuild",
+        "fixture": "live-only",
+        "raw": 1340,
+        "gzip": 764,
+        "sha256": "c06b2c16601ff39238d87bfa8dbb73a9258ccd3daa69cf33b21c029e0c4a965f",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "generic",
+        "bundler": "esbuild",
+        "fixture": "dead-argument",
+        "raw": 14282,
+        "gzip": 5247,
+        "sha256": "d07167ee1360837154528cc2c4249244b4705b9c4f25ed06d8e2a94be8a42cfe",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": true
+      },
+      {
+        "entry": "generic",
+        "bundler": "esbuild",
+        "fixture": "runtime",
+        "raw": 14198,
+        "gzip": 5197,
+        "sha256": "43cde33e6e32257a620e4d59576ba1f9b3ce1f16d7c9a557d72736936abbee6b",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "node",
+        "bundler": "rolldown",
+        "fixture": "mixed",
+        "raw": 1214,
+        "gzip": 714,
+        "sha256": "de1bd8b340656fe7bf24bdaeec5fd520dd2a7420f268f3588f5d9d67fb725d03",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "node",
+        "bundler": "rolldown",
+        "fixture": "live-only",
+        "raw": 847,
+        "gzip": 516,
+        "sha256": "bc3866fd648394c222a56cd3fdc4c525490d86fa0028125ee498f3b67e98cbcb",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "node",
+        "bundler": "rolldown",
+        "fixture": "dead-argument",
+        "raw": 1246,
+        "gzip": 738,
+        "sha256": "04a01d406d79f2844250158ac8d9bc678fa103795565df617468725d285d979f",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "node",
+        "bundler": "rolldown",
+        "fixture": "runtime",
+        "raw": 14115,
+        "gzip": 5089,
+        "sha256": "040b9a17b01c05c28791cdb8f802846627e0465737a882efb7c379ad7918ae1d",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "node",
+        "bundler": "esbuild",
+        "fixture": "mixed",
+        "raw": 14231,
+        "gzip": 5219,
+        "sha256": "042feff816ed833e5b4ca84476a750ffc5b7bbd1f50fd5b492f42381a367bbb6",
+        "unusedHandlerRetained": true,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "node",
+        "bundler": "esbuild",
+        "fixture": "live-only",
+        "raw": 1340,
+        "gzip": 764,
+        "sha256": "c06b2c16601ff39238d87bfa8dbb73a9258ccd3daa69cf33b21c029e0c4a965f",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      },
+      {
+        "entry": "node",
+        "bundler": "esbuild",
+        "fixture": "dead-argument",
+        "raw": 14282,
+        "gzip": 5247,
+        "sha256": "d07167ee1360837154528cc2c4249244b4705b9c4f25ed06d8e2a94be8a42cfe",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": true
+      },
+      {
+        "entry": "node",
+        "bundler": "esbuild",
+        "fixture": "runtime",
+        "raw": 14198,
+        "gzip": 5197,
+        "sha256": "43cde33e6e32257a620e4d59576ba1f9b3ce1f16d7c9a557d72736936abbee6b",
+        "unusedHandlerRetained": false,
+        "deadEffectHandlerRetained": false
+      }
+    ],
+    "runtimeChecks": [
+      "generic: unbundled lazy loading, concurrent reuse, cached reuse, fetch",
+      "generic/rolldown: dead argument executes once; unused loader never runs",
+      "generic/rolldown: lazy loading, concurrent reuse, cached reuse, fetch",
+      "generic/esbuild: dead argument executes once; unused loader never runs",
+      "generic/esbuild: lazy loading, concurrent reuse, cached reuse, fetch",
+      "node: unbundled lazy loading, concurrent reuse, cached reuse, fetch",
+      "node/rolldown: dead argument executes once; unused loader never runs",
+      "node/rolldown: lazy loading, concurrent reuse, cached reuse, fetch",
+      "node/esbuild: dead argument executes once; unused loader never runs",
+      "node/esbuild: lazy loading, concurrent reuse, cached reuse, fetch"
+    ],
+    "acceptance": "PASS"
+  }
+}

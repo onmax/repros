@@ -1,0 +1,5 @@
+packages:
+  - '.'
+
+patchedDependencies:
+  h3@2.0.8: patches/h3.patch
