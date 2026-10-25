@@ -1,0 +1,10 @@
+{
+  "name": "defu-pure-initializers-repro",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.28.5",
+  "scripts": {
+    "verify": "node verify.mjs"
+  }
+}
+

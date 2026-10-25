@@ -1,0 +1,5 @@
+packages:
+  - .
+
+patchedDependencies:
+  defu@6.1.7: patches/defu@6.1.7.patch

@@ -1,0 +1,15 @@
+{
+  "name": "defu-pure-initializers-fix",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.28.5",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "defu": "6.1.7"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
+  }
+}
