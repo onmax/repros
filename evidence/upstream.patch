@@ -1,0 +1,10 @@
+--- a/src/query.ts
++++ b/src/query.ts
+@@ -44,6 +44,7 @@
+  *
+  * @group Query_utils
+  */
++/* @__NO_SIDE_EFFECTS__ */
+ export function parseQuery<T extends ParsedQuery = ParsedQuery>(
+   parametersString = "",
+ ): T {

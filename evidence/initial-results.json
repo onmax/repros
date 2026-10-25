@@ -1,0 +1,234 @@
+{
+  "before": {
+    "node": "v24.21.0",
+    "package": "ufo",
+    "version": "1.6.4",
+    "entry": "dist/index.mjs",
+    "annotated": false,
+    "bundlers": {
+      "rollup": {
+        "input": {
+          "raw": 776,
+          "gzip": 466,
+          "sha256": "854abd7c207854c0d85bb937e1ebe72c455062ac4d6912d9e8a9d5435f881527",
+          "exports": {
+            "result": "/api/users"
+          }
+        },
+        "helper": {
+          "raw": 263,
+          "gzip": 200,
+          "sha256": "89f08758918fdd3e8703e7062b47e1929ce307691a4c11789959c9f0bee642e1",
+          "exports": {
+            "result": "/api/users"
+          }
+        },
+        "live": {
+          "raw": 542,
+          "gzip": 349,
+          "sha256": "23dd9b17225f1a479588a563dd507822657cdcad9f14e6b6cd90b68383efb28b",
+          "exports": {
+            "result": {
+              "page": "2",
+              "tag": [
+                "a",
+                "b"
+              ]
+            }
+          }
+        },
+        "arguments": {
+          "raw": 654,
+          "gzip": 412,
+          "sha256": "82e98fc5015b993d939d66286c5b3c2095b2a61e8a26d5f21e7a9357cb4d40b3",
+          "exports": {
+            "result": [
+              "argument",
+              "argument-throw"
+            ]
+          }
+        },
+        "regexp": {
+          "raw": 625,
+          "gzip": 398,
+          "sha256": "86a1b571d0296643d873469984876738faf49f109f9c3095404f893d30ec9af5",
+          "exports": {
+            "capture": "tag",
+            "match": "tag=b",
+            "seeded": true
+          }
+        }
+      },
+      "rolldown": {
+        "input": {
+          "raw": 1044,
+          "gzip": 602,
+          "sha256": "4b80c6ab905e498f77c33b15d15993ab5b215e11f92673018d16dbab5b7a34cb",
+          "exports": {
+            "result": "/api/users"
+          }
+        },
+        "helper": {
+          "raw": 541,
+          "gzip": 359,
+          "sha256": "03704ade66fd6dae44b2cc58b8a48c8f7792b5c0a46fdeb8cbaa5fba4b76a7d8",
+          "exports": {
+            "result": "/api/users"
+          }
+        },
+        "live": {
+          "raw": 551,
+          "gzip": 362,
+          "sha256": "0c18178a168669ad36aaf4c5aa4fd9a3c48b4937719d19c56bf06a7e073e79ba",
+          "exports": {
+            "result": {
+              "page": "2",
+              "tag": [
+                "a",
+                "b"
+              ]
+            }
+          }
+        },
+        "arguments": {
+          "raw": 659,
+          "gzip": 417,
+          "sha256": "be53b8b91790c669a602b96d42c5154e5a8f82b541dfd2f8b70e35bea2552a31",
+          "exports": {
+            "result": [
+              "argument",
+              "argument-throw"
+            ]
+          }
+        },
+        "regexp": {
+          "raw": 634,
+          "gzip": 408,
+          "sha256": "16f7370f7922f561f81bb287328dbed209718fc0755c2f108dba20f91c5af109",
+          "exports": {
+            "capture": "tag",
+            "match": "tag=b",
+            "seeded": true
+          }
+        }
+      }
+    },
+    "runtimeControls": "used outputs, empty/edge strings, argument mutation and throw, no logging: passed"
+  },
+  "after": {
+    "node": "v24.21.0",
+    "package": "ufo",
+    "version": "1.6.4",
+    "entry": "dist/index.mjs",
+    "annotated": true,
+    "bundlers": {
+      "rollup": {
+        "input": {
+          "raw": 263,
+          "gzip": 200,
+          "sha256": "89f08758918fdd3e8703e7062b47e1929ce307691a4c11789959c9f0bee642e1",
+          "exports": {
+            "result": "/api/users"
+          }
+        },
+        "helper": {
+          "raw": 263,
+          "gzip": 200,
+          "sha256": "89f08758918fdd3e8703e7062b47e1929ce307691a4c11789959c9f0bee642e1",
+          "exports": {
+            "result": "/api/users"
+          }
+        },
+        "live": {
+          "raw": 542,
+          "gzip": 349,
+          "sha256": "23dd9b17225f1a479588a563dd507822657cdcad9f14e6b6cd90b68383efb28b",
+          "exports": {
+            "result": {
+              "page": "2",
+              "tag": [
+                "a",
+                "b"
+              ]
+            }
+          }
+        },
+        "arguments": {
+          "raw": 624,
+          "gzip": 394,
+          "sha256": "afc79aeb81250ae68d10c2053f0c3d1c4356892f2e12a0cc6f693d88154b9042",
+          "exports": {
+            "result": [
+              "argument",
+              "argument-throw"
+            ]
+          }
+        },
+        "regexp": {
+          "raw": 106,
+          "gzip": 109,
+          "sha256": "954c4f33810613b296288808cc7b08bf48c318a0156f79e6e31731a9f6d1e064",
+          "exports": {
+            "capture": "seed",
+            "match": "seed",
+            "seeded": true
+          }
+        }
+      },
+      "rolldown": {
+        "input": {
+          "raw": 541,
+          "gzip": 359,
+          "sha256": "03704ade66fd6dae44b2cc58b8a48c8f7792b5c0a46fdeb8cbaa5fba4b76a7d8",
+          "exports": {
+            "result": "/api/users"
+          }
+        },
+        "helper": {
+          "raw": 541,
+          "gzip": 359,
+          "sha256": "03704ade66fd6dae44b2cc58b8a48c8f7792b5c0a46fdeb8cbaa5fba4b76a7d8",
+          "exports": {
+            "result": "/api/users"
+          }
+        },
+        "live": {
+          "raw": 551,
+          "gzip": 362,
+          "sha256": "0c18178a168669ad36aaf4c5aa4fd9a3c48b4937719d19c56bf06a7e073e79ba",
+          "exports": {
+            "result": {
+              "page": "2",
+              "tag": [
+                "a",
+                "b"
+              ]
+            }
+          }
+        },
+        "arguments": {
+          "raw": 151,
+          "gzip": 138,
+          "sha256": "ddd862d278511d623e2980d88f726a89036c7e664955440c1f00a81f2d3a1d02",
+          "exports": {
+            "result": [
+              "argument",
+              "argument-throw"
+            ]
+          }
+        },
+        "regexp": {
+          "raw": 125,
+          "gzip": 127,
+          "sha256": "e521f47da48d7e0aba16561cdbee76104b326c5adddea5b4d42778eef018507e",
+          "exports": {
+            "capture": "seed",
+            "match": "seed",
+            "seeded": true
+          }
+        }
+      }
+    },
+    "runtimeControls": "used outputs, empty/edge strings, argument mutation and throw, no logging: passed"
+  }
+}

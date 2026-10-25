@@ -1,0 +1,20 @@
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -141,6 +141,7 @@
+   return toASCII(name);
+ }
+ 
++/* @__NO_SIDE_EFFECTS__ */
+ function parseQuery(parametersString = "") {
+   const object = /* @__PURE__ */ Object.create(null);
+   if (parametersString[0] === "?") {
+--- a/dist/index.cjs
++++ b/dist/index.cjs
+@@ -143,6 +143,7 @@
+   return toASCII(name);
+ }
+ 
++/* @__NO_SIDE_EFFECTS__ */
+ function parseQuery(parametersString = "") {
+   const object = /* @__PURE__ */ Object.create(null);
+   if (parametersString[0] === "?") {

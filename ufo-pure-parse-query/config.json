@@ -1,0 +1,10 @@
+{
+  "package": "ufo",
+  "version": "1.6.4",
+  "function": "parseQuery",
+  "annotationFiles": [
+    "dist/index.mjs",
+    "dist/index.cjs"
+  ],
+  "slug": "ufo-pure-parse-query"
+}
