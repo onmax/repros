@@ -1,0 +1,13 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 1044dbea4ec6ec1402531b339d6739c8d88645c5..ba7e7e1c6b2c1e72dfde1056133d650256ffc3cd 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -447,7 +447,7 @@ function emitLegacyIndexDeprecation(url, packageJsonUrl, base, main) {
+ }
+ function tryStatSync(path) {
+ 	try {
+-		return statSync(path);
++		return statSync(path, { throwIfNoEntry: false });
+ 	} catch {}
+ }
+ function fileExists(url) {
