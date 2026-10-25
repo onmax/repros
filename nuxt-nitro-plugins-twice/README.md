@@ -18,7 +18,34 @@ cd repros && node verify.mjs
 Output on 2026-10-25 with Node 24.21.0 and pnpm 11.28.6, exit code 1:
 
 ```text
-OUTPUT
+nuxt-nitro-plugins-twice
+  Nuxt 5.0.0-2610221052-8c52432 (with Nitro 3.0.260903-beta, Vite 8.3.5 and Vue 3.5.44); nitro build: 177 modules
+  expected: 1 active copy each of nuxt:nitro-v2-compat and nuxt:nitro-resolve-fallback in the nitro environment
+  nuxt:nitro-v2-compat: 2 active
+    "nuxt:nitro-v2-compat" at position 3, from config.plugins: resolveId 360 calls, 1 answered; transform 177 calls, 1 changed
+    "nuxt:nitro-v2-compat" at position 36, from build.rolldownOptions.plugins: resolveId 359 calls, 0 answered; transform 177 calls, 0 changed
+  nuxt:nitro-resolve-fallback: 2 active
+    "nuxt:nitro-resolve-fallback" at position 38, from build.rolldownOptions.plugins: resolveId 0 calls, 0 answered; transform 0 calls, 0 changed
+    "nuxt:nitro-resolve-fallback" at position 54, from config.plugins: resolveId 0 calls, 0 answered; transform 0 calls, 0 changed
+  import protection (impound): 2 active
+    "nuxt:server-import-protection:impound" at position 2, from config.plugins: resolveId 322 calls, 0 answered; transform 0 calls, 0 changed
+    "impound" at position 37, from build.rolldownOptions.plugins: resolveId 7 calls, 0 answered; transform 0 calls, 0 changed
+  FAIL: 2 copies of nuxt:nitro-v2-compat; 2 copies of nuxt:nitro-resolve-fallback
+
+nuxt-nitro-plugins-twice-fix
+  Nuxt 5.0.0-2610221052-8c52432 (with Nitro 3.0.260903-beta, Vite 8.3.5 and Vue 3.5.44); nitro build: 177 modules
+  expected: 1 active copy each of nuxt:nitro-v2-compat and nuxt:nitro-resolve-fallback in the nitro environment
+  nuxt:nitro-v2-compat: 1 active
+    "nuxt:nitro-v2-compat" at position 35, from build.rolldownOptions.plugins: resolveId 360 calls, 1 answered; transform 177 calls, 1 changed
+  nuxt:nitro-resolve-fallback: 1 active
+    "nuxt:nitro-resolve-fallback" at position 37, from build.rolldownOptions.plugins: resolveId 0 calls, 0 answered; transform 0 calls, 0 changed
+  import protection (impound): 2 active
+    "nuxt:server-import-protection:impound" at position 2, from config.plugins: resolveId 322 calls, 0 answered; transform 0 calls, 0 changed
+    "impound" at position 36, from build.rolldownOptions.plugins: resolveId 7 calls, 0 answered; transform 0 calls, 0 changed
+  PASS
+
+.output of nuxt-nitro-plugins-twice vs nuxt-nitro-plugins-twice-fix, after normalizing
+files 55 | normalized-equal 55 | different 0
 ```
 
 ## What each part is for
