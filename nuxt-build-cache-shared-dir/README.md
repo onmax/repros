@@ -1,8 +1,10 @@
 # Nuxt build cache ships a stale client after a `shared/` edit
 
-Given `nuxt-nightly@5.0.0-2610241346-9f02a3d` (nuxt/nuxt main at `9f02a3d`, with the same `packages/nuxt/src/core/cache.ts` as main at `bf4220d6e`) with Nitro 3.0.260903-beta, Vite 8.3.5 and Vue 3.5.44, on Node 24 with `experimental.buildCache: true`: editing a file in `shared/` and building again should rebuild the client. Instead the second build logs `Restored Vue client and server builds from cache`. The client bundle still has the old value and the server bundle has the new one, so the server renders `shared-v2` and the client hydrates with `shared-v1`.
+With `experimental.buildCache: true`, editing a file in `shared/` doesn't rebuild the client. The second build logs `Restored Vue client and server builds from cache`. The client bundle keeps the old value, but the server bundle gets the new one. So the server renders `shared-v2`, and the client hydrates with `shared-v1`.
 
-Fixed by [nuxt/nuxt#36704](https://github.com/nuxt/nuxt/pull/36704). No issue was filed.
+Fixed by [nuxt/nuxt#36704](https://github.com/nuxt/nuxt/pull/36704). There is no issue for it.
+
+The fixture uses `nuxt-nightly@5.0.0-2610241346-9f02a3d`, built from nuxt/nuxt main at `9f02a3d`. Its `packages/nuxt/src/core/cache.ts` matches main at `bf4220d6e`. The rest of the stack is Nitro 3.0.260903-beta, Vite 8.3.5 and Vue 3.5.44 on Node 24.
 
 ## Run it
 
@@ -12,7 +14,16 @@ From the branch root, with Node 24 and pnpm:
 node verify.mjs
 ```
 
-`verify.mjs` installs the fixture from its lockfile when `node_modules` is missing and clears `.nuxt` and the build cache in `node_modules/.cache/nuxt`. It sets `shared/utils/message.ts` to `'shared-v1'` and runs `nuxt build`, then sets it to `'shared-v2'` and runs `nuxt build` again. After each build it lists which markers appear in `.output/public/_nuxt` (client) and `.output/server` (server), and after the second build it fetches `/` from the built server. It puts `message.ts` back at the end. It exits 1 while the bug is present and 2 when a check is inconclusive.
+The script:
+
+1. Installs the fixture from its lockfile if `node_modules` is missing.
+2. Clears `.nuxt` and the build cache in `node_modules/.cache/nuxt`.
+3. Sets `shared/utils/message.ts` to `'shared-v1'` and runs `nuxt build`.
+4. Sets it to `'shared-v2'` and runs `nuxt build` again.
+5. After each build, lists the markers it finds in the client bundle, `.output/public/_nuxt`, and in the server bundle, `.output/server`. After the second build, it also fetches `/` from the built server.
+6. Puts `message.ts` back to `'shared-v1'`.
+
+It exits 1 while the bug is present and 2 when a check is inconclusive.
 
 Output on 2026-10-24 with Node 24.21.0 and pnpm 11.28.5, exit code 1:
 
@@ -24,15 +35,15 @@ nuxt-build-cache-shared-dir
   FAIL: the client bundle ships shared-v1 instead of shared-v2
 ```
 
-Expected: the second build misses the cache and both bundles ship `shared-v2`.
+The second build should miss the cache and ship `shared-v2` in both bundles.
 
-## What each part is for
+## Why each file is here
 
-- `shared/utils/message.ts` is the edited file. `shared/utils` is auto-imported in both the app and the server.
-- `app/app.vue` renders the value. It has to be in `app/`. The cache key hashes each layer's `srcDir`, and with `app/` present `srcDir` is `app/`, so `shared/` at the root is outside it. With `app.vue` at the root instead, `srcDir` is the root, `shared/` is hashed, and the second build misses the cache as it should.
-- `nuxt.config.ts` turns on `experimental.buildCache`, the variable. A config file also matters: without one, Nuxt adds a fallback layer whose `srcDir` is the root.
-- `pnpm-workspace.yaml` lets pnpm install the nightly packages. pnpm 11 refuses packages younger than a day by default, and they were less than a day old when this was written.
+- `shared/utils/message.ts` is the file the script edits. Nuxt auto-imports `shared/utils` in both the app and the server.
+- `app/app.vue` renders the value, and it has to live in `app/`. The cache key hashes each layer's `srcDir`. When `app/` exists, `srcDir` is `app/`, so the root `shared/` falls outside it. Move `app.vue` to the root and `srcDir` becomes the root. Then `shared/` gets hashed, and the second build misses the cache as it should.
+- `nuxt.config.ts` turns on `experimental.buildCache`, the one setting under test. The file itself matters too. Without a config file, Nuxt adds a fallback layer whose `srcDir` is the root, and that hides the bug.
+- `pnpm-workspace.yaml` lets pnpm install the nightly packages. pnpm 11 refuses packages younger than a day by default, and these were that new on 2026-10-24.
 
 ## Cause
 
-`getVueHash` in `packages/nuxt/src/core/cache.ts` hashes each local layer's `srcDir` and a fixed list of root files such as `package.json` and the lockfiles. `shared/` is resolved from the layer root (`dir.shared`), so with an `app/` directory it is in neither. A cache hit then skips the client build and restores the old client, while Nitro and the ssr environment still build from the edited source.
+`getVueHash` in `packages/nuxt/src/core/cache.ts` builds the cache key from each local layer's `srcDir` and a fixed list of root files, such as `package.json` and the lockfiles. Nuxt resolves `shared/` from the layer root through `dir.shared`. With an `app/` directory, that puts it in neither. On a cache hit, Nuxt skips the client build and restores the old client. Nitro and the ssr environment still build from the edited source.
