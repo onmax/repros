@@ -1,0 +1,12 @@
+{
+  "name": "rolldown-cwd-glob",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.28.5",
+  "engines": { "node": ">=22" },
+  "scripts": { "repro": "node repro.mjs" },
+  "dependencies": {
+    "@rollup/pluginutils": "5.4.0",
+    "rolldown": "1.2.15"
+  }
+}
