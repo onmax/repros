@@ -1,0 +1,58 @@
+diff --git a/dist/runtime/components/SwitchLocalePathLink.js b/dist/runtime/components/SwitchLocalePathLink.js
+index 259203d1cdc8879e25a302275bc6064fa2303eec..d9ea60fcfc7a3b1a2c2c9c953b89621cc88ee040 100644
+--- a/dist/runtime/components/SwitchLocalePathLink.js
++++ b/dist/runtime/components/SwitchLocalePathLink.js
+@@ -5,6 +5,7 @@ import { hasProtocol } from "ufo";
+ import { nuxtLinkDefaults } from "#build/nuxt.config.mjs";
+ import { useComposableContext } from "../composable-context.js";
+ import { useNuxtI18nContext } from "../context.js";
++import { markSwitchLocalePathLink } from "../shared/switch-locale-path.js";
+ const NuxtLink = defineNuxtLink({ ...nuxtLinkDefaults, componentName: "NuxtLink" });
+ const SlpComponent = defineComponent({
+   name: "SwitchLocalePathLink",
+@@ -48,6 +49,9 @@ export default defineComponent({
+   },
+   inheritAttrs: false,
+   setup(props, { slots, attrs }) {
++    if (import.meta.server) {
++      markSwitchLocalePathLink(useNuxtApp().ssrContext);
++    }
+     return () => [
+       h(Comment, `${__SWITCH_LOCALE_PATH_LINK_IDENTIFIER__}-[${props.locale}]`),
+       h(SlpComponent, { ...attrs, ...props }, slots.default),
+diff --git a/dist/runtime/plugins/switch-locale-path-ssr.js b/dist/runtime/plugins/switch-locale-path-ssr.js
+index 3533eee87fe438e693282c7955f08d909deb3c30..4f94b5376dc6a9e6fd51e7aed5c8e537f9b37fe9 100644
+--- a/dist/runtime/plugins/switch-locale-path-ssr.js
++++ b/dist/runtime/plugins/switch-locale-path-ssr.js
+@@ -1,6 +1,7 @@
+ import { defineNuxtPlugin, useNuxtApp } from "#imports";
+ import { useSwitchLocalePath } from "#i18n";
+ import { escapeHtmlAttr } from "../shared/utils.js";
++import { hasSwitchLocalePathLink } from "../shared/switch-locale-path.js";
+ const identifier = __SWITCH_LOCALE_PATH_LINK_IDENTIFIER__;
+ const switchLocalePathLinkWrapperExpr = new RegExp(
+   [`<!--${identifier}-\\[(\\w+)\\]-->`, `.+?`, `<!--/${identifier}-->`].join(""),
+@@ -13,7 +14,7 @@ export default defineNuxtPlugin({
+     const nuxt = useNuxtApp(_nuxt._id);
+     const switchLocalePath = useSwitchLocalePath(nuxt);
+     nuxt.hook("app:rendered", (ctx) => {
+-      if (ctx.renderResult?.html == null) {
++      if (ctx.renderResult?.html == null || !hasSwitchLocalePathLink(ctx.ssrContext)) {
+         return;
+       }
+       ctx.renderResult.html = ctx.renderResult.html.replaceAll(
+diff --git a/dist/runtime/shared/switch-locale-path.js b/dist/runtime/shared/switch-locale-path.js
+new file mode 100644
+index 0000000000000000000000000000000000000000..87ef1e4111296001b42e8758eab5fb47600f2e23
+--- /dev/null
++++ b/dist/runtime/shared/switch-locale-path.js
+@@ -0,0 +1,9 @@
++const renders = /* @__PURE__ */ new WeakSet();
++export function markSwitchLocalePathLink(ssrContext) {
++  if (ssrContext) {
++    renders.add(ssrContext);
++  }
++}
++export function hasSwitchLocalePathLink(ssrContext) {
++  return !!ssrContext && renders.has(ssrContext);
++}
