@@ -24,3 +24,9 @@ node verify.mjs
 ```
 
 Files: input.mjs is the unused call plus live helper; helper.mjs isolates the live helper; live.mjs uses the parsing result; arguments.mjs verifies mutation and throwing argument evaluation; regexp.mjs proves the conditional safety boundary. Evidence records both actual outputs and sizes.
+
+## Source validation
+
+The annotation was checked against upstream main `bc7477a01f0bd60ada017add8142c9f9d69ccdc5`. The local source-emission check used cached obuild `0.4.45` with declarations disabled, rather than the exact locked toolchain. It confirmed that the annotation survives in `dist/_chunks/_path.mjs`; it did not constitute a full upstream build or test run. The size measurements above use the published `2.0.3` package.
+
+After resolving the fork conflict, [Pathe PR #277](https://github.com/unjs/pathe/pull/277) at head `664f8268077d7f4d4f3c84a39eb2b126e91f0b17` passed the upstream [CI job](https://github.com/unjs/pathe/actions/runs/40191320938/job/121162735298), including lint, build, typechecking and coverage tests. The final source matches the locally verified annotation. Codecov's patch check passed; its project check compares against a baseline 56 commits behind main.
