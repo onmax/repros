@@ -1,0 +1,34 @@
+heavy: waiting because 11 job(s) arrived first (up to 0s, 0 = no limit). See `heavy status`.
+heavy: got slimbook-heavy.lock after 212s
+✓ Lockfile passes supply-chain policies (verified 4m ago)
+Lockfile is up to date, resolution step is skipped
+Progress: resolved 1, reused 0, downloaded 0, added 0
+Packages: +12
+++++++++++++
+Packages are hard linked from the content-addressable store to the virtual store.
+  Content-addressable store is at: <home>/.local/share/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 12, reused 12, downloaded 0, added 11
+Progress: resolved 12, reused 12, downloaded 0, added 12, done
+
+dependencies:
++ comark 0.8.1
+
+Done in 2.4s using pnpm v11.18.0
+ENV node=v24.21.0 comark=0.8.1 platform=linux/x64
+PASS real [!NOTE] alert: one-shot and 4 streamed chunks retain as=note and text
+COUNT seed_paragraphs=2 seed_characters=64 stable_paragraphs=1 stable_elements=2 alert_reads_per_append=2 appends=40 total_alert_reads=80 tokenizer_characters=892
+  PASS identity reuse, every stable element read exactly once per alert span, no-alert control AST equal, disabled-alert reads=0
+COUNT seed_paragraphs=1000 seed_characters=32000 stable_paragraphs=999 stable_elements=1998 alert_reads_per_append=1998 appends=40 total_alert_reads=79920 tokenizer_characters=892
+  PASS identity reuse, every stable element read exactly once per alert span, no-alert control AST equal, disabled-alert reads=0
+COUNT seed_paragraphs=4000 seed_characters=128000 stable_paragraphs=3999 stable_elements=7998 alert_reads_per_append=7998 appends=40 total_alert_reads=319920 tokenizer_characters=892
+  PASS identity reuse, every stable element read exactly once per alert span, no-alert control AST equal, disabled-alert reads=0
+COUNT seed_paragraphs=8000 seed_characters=256000 stable_paragraphs=7999 stable_elements=15998 alert_reads_per_append=15998 appends=40 total_alert_reads=639920 tokenizer_characters=892
+  PASS identity reuse, every stable element read exactly once per alert span, no-alert control AST equal, disabled-alert reads=0
+TOKENIZER per append: [34, 3, 4, ..., 41], total=892 at every prefix size; initial parse excluded
+TIMING descriptive only: 8000 seed paragraphs, 40 appends, 2 warm-up pairs, 5 measured pairs, alternating order, no AST getters
+  defaultTotal: median=158.418 ms samples=[164.320, 153.560, 152.536, 158.418, 164.414]
+  defaultAlert: median=135.286 ms samples=[140.416, 126.183, 129.615, 135.286, 140.858]
+  disabledTotal: median=21.935 ms samples=[21.935, 19.398, 24.827, 23.239, 21.676]
+  default/disabled median ratio=7.22x; no timing threshold
+CONFIRMED default alert revisits all instrumented stable prefix elements on every append

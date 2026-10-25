@@ -1,0 +1,12 @@
+{
+  "name": "repro-comark-stream-alert",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.18.0",
+  "engines": { "node": "24.21.0" },
+  "scripts": {
+    "verify": "node verify.mjs --confirm",
+    "check": "node verify.mjs --check"
+  },
+  "dependencies": { "comark": "0.8.1" }
+}

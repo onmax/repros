@@ -1,0 +1,25 @@
+$ node verify.mjs --check
+ENV node=v24.21.0 comark=0.8.1 platform=linux/x64
+PASS real [!NOTE] alert: one-shot and 4 streamed chunks retain as=note and text
+CHECK stable_element_nodes=2 appends=1 actual_alert_revisits=2 expected=0
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Default alert must not revisit unchanged stable nodes on an incremental append
+
+2 !== 0
+
+    at file://<fixture>/verify.mjs:195:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 2,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0
+[ELIFECYCLE] Command failed with exit code 1.
+
+exit_code=1
