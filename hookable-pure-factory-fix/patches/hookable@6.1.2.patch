@@ -1,0 +1,10 @@
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -189,6 +189,7 @@
+ 		};
+ 	}
+ };
++/*#__NO_SIDE_EFFECTS__*/
+ function createHooks() {
+ 	return new Hookable();
+ }

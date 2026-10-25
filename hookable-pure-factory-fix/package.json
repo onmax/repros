@@ -1,0 +1,13 @@
+{
+  "name": "hookable-purity-safety-control",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.28.6",
+  "engines": { "node": "24.21.0" },
+  "dependencies": {
+    "hookable": "6.1.2",
+    "rollup": "4.64.12",
+    "@rollup/plugin-node-resolve": "16.0.3",
+    "esbuild": "0.28.2"
+  }
+}

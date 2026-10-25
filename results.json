@@ -1,0 +1,237 @@
+{
+  "verdict": "bounded-candidate-with-explicit-prototype-mutation-limitation",
+  "node": "v24.21.0",
+  "hookable": "6.1.2",
+  "rollup": "4.64.12",
+  "esbuild": "0.28.2",
+  "upstreamHead": "6815e4fed0411f3e2f91a31bdb107d8aeac0a266",
+  "config": {
+    "treeshake": true,
+    "format": "esm",
+    "minifierTreeShaking": false,
+    "target": "es2022",
+    "gzipLevel": 9
+  },
+  "measurements": {
+    "hookable-pure-factory": {
+      "packageSha256": "377b65805bb3ae06066a557acb72834d753053199ab1af8ec719492006992c51",
+      "publicEntry": "./dist/index.mjs",
+      "fixtures": {
+        "arguments.mjs": {
+          "inputSha256": "de2c122020a4b4429a5041cb77ffa68353bf1d63f71863ac3d3978442edb1b1e",
+          "direct": {
+            "argumentEffects": [
+              "argument"
+            ],
+            "result": 7
+          },
+          "bundled": {
+            "argumentEffects": [
+              "argument"
+            ],
+            "result": 7
+          },
+          "raw": 3615,
+          "gzip": 1325
+        },
+        "effectful-controls.mjs": {
+          "inputSha256": "ed654674ea8d93594f3102d15f9d8d599b9326433fbc7c255fb786a4c43703c4",
+          "direct": {
+            "flatOutputWritten": true,
+            "registrations": 2,
+            "unregistrations": 2
+          },
+          "bundled": {
+            "flatOutputWritten": true,
+            "registrations": 2,
+            "unregistrations": 2
+          },
+          "raw": 916,
+          "gzip": 521
+        },
+        "live.mjs": {
+          "inputSha256": "a22eb307b5ab34b1a972d461d1edd93ffed91eb666ee5ccf7a6ecdb9fe7db7da",
+          "direct": {
+            "result": 7
+          },
+          "bundled": {
+            "result": 7
+          },
+          "raw": 3138,
+          "gzip": 1238
+        },
+        "mixed.mjs": {
+          "inputSha256": "738259b5f76086f78dd20e25455bb61a82562f8a25a0602bfbdef6079f02adfb",
+          "direct": {
+            "result": 7
+          },
+          "bundled": {
+            "result": 7
+          },
+          "raw": 3556,
+          "gzip": 1295
+        },
+        "own-bind.mjs": {
+          "inputSha256": "30050001ead987131df2806bd0f2d3c39a1828a3a82551be2ac3e55b20c69067",
+          "direct": {
+            "binds": 1
+          },
+          "bundled": {
+            "binds": 1
+          },
+          "raw": 3210,
+          "gzip": 1260
+        },
+        "prototype.mjs": {
+          "inputSha256": "8470d7e24f62ffa9e2323182989e42aa29fbc66a43c44aa89449cb926f730cca",
+          "direct": {
+            "reads": 3
+          },
+          "bundled": {
+            "reads": 3
+          },
+          "raw": 3413,
+          "gzip": 1323
+        },
+        "retained-prototype.mjs": {
+          "inputSha256": "c93f8b3357a7c05697c59db79e7940adccbbaefbc69516a78f0ebd721a454f4e",
+          "direct": {
+            "reads": 3,
+            "result": 7
+          },
+          "bundled": {
+            "reads": 3,
+            "result": 7
+          },
+          "raw": 3504,
+          "gzip": 1369
+        },
+        "subclass.mjs": {
+          "inputSha256": "f084bfae19abdbc83ab5668230bb62b71afd6437a9f2c7d1577c43aa9194b87d",
+          "direct": {
+            "constructions": 2,
+            "registrations": 1,
+            "result": 7
+          },
+          "bundled": {
+            "constructions": 2,
+            "registrations": 1,
+            "result": 7
+          },
+          "raw": 3284,
+          "gzip": 1304
+        }
+      }
+    },
+    "hookable-pure-factory-fix": {
+      "packageSha256": "10f464b56b244f3551ff77554e89a50f1945d8587fc152488c6935a6b117a14e",
+      "publicEntry": "./dist/index.mjs",
+      "fixtures": {
+        "arguments.mjs": {
+          "inputSha256": "de2c122020a4b4429a5041cb77ffa68353bf1d63f71863ac3d3978442edb1b1e",
+          "direct": {
+            "argumentEffects": [
+              "argument"
+            ],
+            "result": 7
+          },
+          "bundled": {
+            "argumentEffects": [
+              "argument"
+            ],
+            "result": 7
+          },
+          "raw": 3603,
+          "gzip": 1320
+        },
+        "effectful-controls.mjs": {
+          "inputSha256": "ed654674ea8d93594f3102d15f9d8d599b9326433fbc7c255fb786a4c43703c4",
+          "direct": {
+            "flatOutputWritten": true,
+            "registrations": 2,
+            "unregistrations": 2
+          },
+          "bundled": {
+            "flatOutputWritten": true,
+            "registrations": 2,
+            "unregistrations": 2
+          },
+          "raw": 916,
+          "gzip": 521
+        },
+        "live.mjs": {
+          "inputSha256": "a22eb307b5ab34b1a972d461d1edd93ffed91eb666ee5ccf7a6ecdb9fe7db7da",
+          "direct": {
+            "result": 7
+          },
+          "bundled": {
+            "result": 7
+          },
+          "raw": 3138,
+          "gzip": 1238
+        },
+        "mixed.mjs": {
+          "inputSha256": "738259b5f76086f78dd20e25455bb61a82562f8a25a0602bfbdef6079f02adfb",
+          "direct": {
+            "result": 7
+          },
+          "bundled": {
+            "result": 7
+          },
+          "raw": 729,
+          "gzip": 407
+        },
+        "own-bind.mjs": {
+          "inputSha256": "30050001ead987131df2806bd0f2d3c39a1828a3a82551be2ac3e55b20c69067",
+          "direct": {
+            "binds": 1
+          },
+          "bundled": {
+            "binds": 0
+          },
+          "raw": 3180,
+          "gzip": 1247
+        },
+        "prototype.mjs": {
+          "inputSha256": "8470d7e24f62ffa9e2323182989e42aa29fbc66a43c44aa89449cb926f730cca",
+          "direct": {
+            "reads": 3
+          },
+          "bundled": {
+            "reads": 0
+          },
+          "raw": 3383,
+          "gzip": 1311
+        },
+        "retained-prototype.mjs": {
+          "inputSha256": "c93f8b3357a7c05697c59db79e7940adccbbaefbc69516a78f0ebd721a454f4e",
+          "direct": {
+            "reads": 3,
+            "result": 7
+          },
+          "bundled": {
+            "reads": 3,
+            "result": 7
+          },
+          "raw": 3504,
+          "gzip": 1369
+        },
+        "subclass.mjs": {
+          "inputSha256": "f084bfae19abdbc83ab5668230bb62b71afd6437a9f2c7d1577c43aa9194b87d",
+          "direct": {
+            "constructions": 2,
+            "registrations": 1,
+            "result": 7
+          },
+          "bundled": {
+            "constructions": 2,
+            "registrations": 1,
+            "result": 7
+          },
+          "raw": 3254,
+          "gzip": 1291
+        }
+      }
+    }
+  }
+}

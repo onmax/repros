@@ -1,0 +1,4 @@
+packages: []
+onlyBuiltDependencies: []
+patchedDependencies:
+  hookable@6.1.2: patches/hookable@6.1.2.patch
