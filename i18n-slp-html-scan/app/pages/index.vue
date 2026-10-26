@@ -1,8 +1,6 @@
-<!-- A page without SwitchLocalePathLink. The list only makes the scanned HTML large. -->
+<!-- A page without SwitchLocalePathLink. The rows make the scanned HTML large and full of `<!--[-->` comments. -->
 <template>
-  <ul>
-    <li v-for="n in 2000" :key="n">
-      Row {{ n }}
-    </li>
-  </ul>
+  <dl>
+    <ReportRow v-for="n in 2000" :key="n" :n="n" />
+  </dl>
 </template>
