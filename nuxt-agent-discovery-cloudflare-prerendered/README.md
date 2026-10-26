@@ -2,7 +2,9 @@
 
 No upstream issue yet. The module documents the gap in [Deployment > Other hosts](https://github.com/benjamincanac/nuxt-agent-discovery/blob/v0.8.1/README.md#other-hosts): on a host whose CDN serves the prerendered files, "like Netlify or Cloudflare, those requests never reach Nitro, so the pages stay HTML and carry no `Vary`".
 
-On a `cloudflare-module` build, a prerendered page requested with `Accept: text/markdown` should return the page's markdown with `Vary: Accept, User-Agent`, the same answer the Worker gives for a page it renders on demand. Instead, Workers Static Assets redirects it to `/docs/prerendered/` and serves the prerendered HTML, with no `Vary`.
+On a `cloudflare-module` build, a prerendered page requested with `Accept: text/markdown` should return the page's markdown with `Vary: Accept, User-Agent`, the same answer the Worker gives for a page it renders on demand. Instead, Workers Static Assets redirects it to `/docs/prerendered/` and serves the prerendered HTML, with no `Vary`. Browsers get that file too, also without `Vary`.
+
+The fixed control in [`../nuxt-agent-discovery-cloudflare-prerendered-fix`](../nuxt-agent-discovery-cloudflare-prerendered-fix) runs the same app and the same `verify.mjs` against a patched module.
 
 ## Run
 
@@ -13,7 +15,7 @@ pnpm install
 pnpm verify
 ```
 
-`verify.mjs` runs `nuxt build`, then serves `.output/server/wrangler.json` with `wrangler dev` on port 8797 (`PORT` overrides it) and requests both pages with `Accept: text/markdown`, following redirects by hand so every hop is printed. It exits 1 when the prerendered page does not negotiate, 2 when the on-demand control does not either, and 0 when both negotiate. `pnpm verify --no-build` reuses the last build.
+`verify.mjs` runs `nuxt build`, then serves `.output/server/wrangler.json` with `wrangler dev` on port 8797 (`PORT` overrides it). It requests both pages with `Accept: text/markdown` and the prerendered page with `Accept: text/html`, and follows redirects by hand so every hop is printed. The HTML check needs the prerendered file (its asset `ETag`) with `Vary`, so a fix that renders the page in the Worker fails it. The script exits 1 when a prerendered check fails, 2 when the on-demand control fails, and 0 when every check passes. `pnpm verify --no-build` reuses the last build.
 
 ## Expected
 
@@ -26,9 +28,15 @@ GET /docs/prerendered (Accept: text/markdown)
   expected: 200 text/markdown, Vary: Accept, User-Agent
   actual:   200 text/markdown; charset=utf-8, Vary: Accept, User-Agent
   body:     # Prerendered
+GET /docs/prerendered (Accept: text/html)
+  expected: 200 text/html from the prerendered file (ETag), Vary: Accept, User-Agent
+  actual:   307 -> /docs/prerendered/, then 200 text/html; charset=utf-8, ETag, Vary: Accept, User-Agent
+  body:     <main>HTML for /docs/prerendered</main>
 
 PASS
 ```
+
+This is the output of the fixed control.
 
 ## Actual
 
@@ -39,13 +47,18 @@ GET /docs/on-demand (Accept: text/markdown)
   body:     # On demand
 GET /docs/prerendered (Accept: text/markdown)
   expected: 200 text/markdown, Vary: Accept, User-Agent
-  actual:   307 -> /docs/prerendered/, then 200 text/html; charset=utf-8, Vary: (none)
+  actual:   307 -> /docs/prerendered/, then 200 text/html; charset=utf-8, ETag, Vary: (none)
+  body:     <main>HTML for /docs/prerendered</main>
+GET /docs/prerendered (Accept: text/html)
+  expected: 200 text/html from the prerendered file (ETag), Vary: Accept, User-Agent
+  actual:   307 -> /docs/prerendered/, then 200 text/html; charset=utf-8, ETag, Vary: (none)
   body:     <main>HTML for /docs/prerendered</main>
 
 FAIL: the prerendered page answers HTML to an agent; Workers Static Assets serves it before the Worker runs
+FAIL: the HTML half of the prerendered page is missing `Vary`, or the Worker rendered it instead of serving the file
 ```
 
-The HTML response carries the asset server's headers (`ETag`, `Cache-Control: public, max-age=0, must-revalidate`), which shows that the Worker never handled it.
+The markdown request gets the asset server's answer (`ETag`, `Cache-Control: public, max-age=0, must-revalidate`), which shows that the Worker never handled it.
 
 ## Environment
 

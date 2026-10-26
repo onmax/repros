@@ -1,0 +1,231 @@
+diff --git a/dist/module.d.mts b/dist/module.d.mts
+index 60861197cb6b6825a7ff1ddb8b31bf36ae9fd1de..e67a68dd63f62ccc566f9c8dc31d4ec0a976449e 100644
+--- a/dist/module.d.mts
++++ b/dist/module.d.mts
+@@ -113,6 +113,15 @@ interface ModuleOptions {
+         /** Directory holding one subdirectory per skill, relative to the root. */
+         dir?: string;
+     };
++    cloudflare?: {
++        /**
++         * Send the negotiated routes to the Worker ahead of Workers Static Assets
++         * (`assets.run_worker_first`), so a prerendered page negotiates too. Off by
++         * default: Cloudflare bills every request the Worker sees, where static
++         * assets are free.
++         */
++        runWorkerFirst?: boolean;
++    };
+ }
+ /** What this module puts in `runtimeConfig`. */
+ interface AgentDiscoveryRuntimeConfig {
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 29c82ee3e10c50e587d40962c7f233072b5123aa..cb4f33c4af70bac11e832f7eefab98c60c17253b 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -2,12 +2,12 @@ import { existsSync, readdirSync, statSync } from 'node:fs';
+ import { useLogger, tryResolveModule, defineNuxtModule, createResolver, hasNuxtModule, resolvePath, resolveServerVariant, addServerHandler, addNitroPlugin, addImports, addTypeTemplate, addPrerenderRoutes } from '@nuxt/kit';
+ import { defu } from 'defu';
+ import { join, resolve } from 'pathe';
+-import { withoutTrailingSlash, withLeadingSlash, decodePath } from 'ufo';
++import { joinURL, withoutTrailingSlash, withLeadingSlash, decodePath } from 'ufo';
+ import { mcpExcludedGroups } from '../dist/runtime/shared/defaults.js';
+ import { appBase, SKILLS_INDEX, SKILLS_PREFIX, withAppBase } from '../dist/runtime/shared/paths.js';
+ import { readdir, lstat, readFile, writeFile } from 'node:fs/promises';
+ import { parse } from 'yaml';
+-import { formatLinkHeader, compilePattern, encodeAgentRoute, MARKDOWN_VARY, patternsOverlap, matchRoute, isNegotiablePath, rawDestination, ruleCoversPattern, isRawPath, normalizePathname, createFenceTracker, siteServesRaw, hasFileExtension, staticPrefix } from '../dist/runtime/shared/negotiation.js';
++import { encodeAgentRoute, formatLinkHeader, compilePattern, MARKDOWN_VARY, patternsOverlap, matchRoute, isNegotiablePath, rawDestination, ruleCoversPattern, isRawPath, normalizePathname, createFenceTracker, siteServesRaw, hasFileExtension, staticPrefix } from '../dist/runtime/shared/negotiation.js';
+ 
+ const AGENT_USER_AGENTS = [
+   "ClaudeBot",
+@@ -308,6 +308,74 @@ function dropContentLlmsFeature(nuxt) {
+   });
+ }
+ 
++const MAX_RULES = 100;
++const MAX_RULE_LENGTH = 100;
++function isCloudflareWorkerPreset(preset) {
++  return /^cloudflare[-_](?:module|durable)$/.test(preset);
++}
++function withoutCovered(rules) {
++  const unique = [...new Set(rules)];
++  return unique.filter((rule) => !unique.some((other) => other !== rule && other.endsWith("*") && rule.startsWith(other.slice(0, -1))));
++}
++function cloudflareRunWorkerFirst(config, options = {}) {
++  const base = appBase(options.baseURL);
++  const rules = [...options.current || []];
++  for (const route of config.routes) {
++    const segments = route.path.split("/");
++    const wildcard = segments.findIndex((segment) => segment.includes("*"));
++    if (wildcard !== -1) {
++      rules.push(`${base}${encodeAgentRoute(segments.slice(0, wildcard).join("/"))}/*`);
++      continue;
++    }
++    const path = `${base}${route.path === "/" ? "" : encodeAgentRoute(route.path.replace(/\/+$/, ""))}`;
++    rules.push(...path ? [path, `${path}/`] : ["/"]);
++  }
++  const positive = withoutCovered(rules.filter((rule) => !rule.startsWith("!")));
++  const negative = withoutCovered([
++    ...rules.filter((rule) => rule.startsWith("!")),
++    ...(options.assetBases || []).filter((assetBase) => positive.some((rule) => rule.endsWith("*") && assetBase.startsWith(rule.slice(0, -1)))).map((assetBase) => `!${assetBase.replace(/\/?$/, "/")}*`)
++  ]);
++  return [...positive, ...negative];
++}
++function setupCloudflarePreset(nitro, config, options) {
++  if (nitro.options.dev || nitro.options.static || !isCloudflareWorkerPreset(nitro.options.preset)) {
++    return;
++  }
++  const logger = useLogger("nuxt-agent-discovery");
++  nitro.hooks.hook("compiled", async () => {
++    const file = resolve(nitro.options.output.serverDir, "wrangler.json");
++    const wrangler = existsSync(file) ? JSON.parse(await readFile(file, "utf8")) : void 0;
++    if (!options.runWorkerFirst) {
++      if (options.prerendered() && !wrangler?.assets?.run_worker_first) {
++        logger.info("Workers Static Assets answers the prerendered pages before the Worker runs, so they stay HTML for agents. `agentDiscovery.cloudflare.runWorkerFirst` sends the negotiated routes to the Worker first, as requests Cloudflare bills.");
++      }
++      return;
++    }
++    const assetBases = nitro.options.publicAssets.filter((dir) => !dir.fallthrough && dir.baseURL && dir.baseURL !== "/").map((dir) => joinURL(nitro.options.baseURL, dir.baseURL));
++    if (!wrangler) {
++      const rules2 = cloudflareRunWorkerFirst(config, { baseURL: nitro.options.baseURL, assetBases });
++      logger.warn(`Nitro wrote no wrangler config (\`cloudflare.deployConfig\` is off), so the prerendered pages stay HTML for agents until \`"run_worker_first": ${JSON.stringify(rules2)}\` is added under \`assets\` in yours.`);
++      return;
++    }
++    const assets = wrangler.assets ||= {};
++    if (assets.run_worker_first === true) {
++      return;
++    }
++    const rules = cloudflareRunWorkerFirst(config, {
++      baseURL: nitro.options.baseURL,
++      assetBases,
++      current: Array.isArray(assets.run_worker_first) ? assets.run_worker_first : []
++    });
++    const tooLong = rules.filter((rule) => rule.length > MAX_RULE_LENGTH);
++    if (rules.length > MAX_RULES || tooLong.length) {
++      logger.warn(`\`run_worker_first\` would need ${rules.length} rules${tooLong.length ? `, ${tooLong.length} of them over ${MAX_RULE_LENGTH} characters` : ""}, past what wrangler accepts (${MAX_RULES} rules of ${MAX_RULE_LENGTH} characters), so it is left as it is and the prerendered pages stay HTML for agents. Fewer or shorter \`routes\` patterns fix it.`);
++      return;
++    }
++    assets.run_worker_first = rules;
++    await writeFile(file, JSON.stringify(wrangler, null, 2), "utf8");
++  });
++}
++
+ const METHODS = ["GET", "HEAD"];
+ const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+ const escapeEncoded = (path) => escapeRegExp(encodeAgentRoute(path));
+@@ -726,11 +794,12 @@ const module$1 = defineNuxtModule({
+     if (!negotiates) {
+       logger.warn("No content source resolved, so markdown negotiation is off. Install `@nuxt/content`, point `agentDiscovery.source` at a file exporting an `AgentContentSource`, or set `source: false` if another route already serves the raw markdown.");
+     }
++    const prerenderedPages = /* @__PURE__ */ new Set();
+     if (negotiates) {
+       addServerHandler({ middleware: true, handler: serverVariant("middleware/negotiate") });
+       addNitroPlugin(serverVariant("plugins/prerendered", "nitro3"));
+-      const prerenderedPages = /* @__PURE__ */ new Set();
+       let serveStatic = false;
++      let cloudflare = false;
+       nuxt.hook("nitro:config", (nitroConfig) => {
+         nitroConfig.virtual ||= {};
+         nitroConfig.virtual["#agent-discovery-virtual/prerendered"] = () => {
+@@ -738,13 +807,14 @@ const module$1 = defineNuxtModule({
+         };
+       });
+       nuxt.hook("nitro:init", (nitro) => {
+-        serveStatic = Boolean(nitro.options.serveStatic);
++        cloudflare = isCloudflareWorkerPreset(nitro.options.preset);
++        serveStatic = Boolean(nitro.options.serveStatic) || cloudflare;
+         nitro.hooks.hook("prerender:route", (route) => {
+           if (route.skip || route.error || !route.contentType?.includes("text/html") || !route.fileName?.endsWith(".html")) {
+             return;
+           }
+           const page = route.fileName.replace(/(?:\/index)?\.html$/, "") || "/";
+-          if (isNegotiablePath(config, page)) {
++          if (cloudflare || isNegotiablePath(config, page)) {
+             prerenderedPages.add(normalizePathname(decodePath(page)));
+           }
+         });
+@@ -1140,6 +1210,10 @@ export {}
+       });
+       nuxt.hook("nitro:init", (nitro) => {
+         setupVercelPreset(nitro, config, collectCachedRoutes);
++        setupCloudflarePreset(nitro, config, {
++          runWorkerFirst: options.cloudflare?.runWorkerFirst === true,
++          prerendered: () => prerenderedPages.size
++        });
+         nitro.hooks.hook("prerender:generate", (route) => {
+           if (!isRawPath(config, route.route)) {
+             return;
+diff --git a/dist/runtime/server/plugins/prerendered.js b/dist/runtime/server/plugins/prerendered.js
+index 54e1b8f949379c7bdcabbc9c65ab0bfc57d81b47..4d27bb86ff4e79cbcd0cbbafe52bea39a46ae609 100644
+--- a/dist/runtime/server/plugins/prerendered.js
++++ b/dist/runtime/server/plugins/prerendered.js
+@@ -4,13 +4,23 @@ import prerendered from "#agent-discovery-virtual/prerendered";
+ import negotiate from "../middleware/negotiate.js";
+ import { getRequestPath } from "../utils/server.js";
+ import { normalizePathname } from "../../shared/negotiation.js";
++async function negotiateOrServe(event) {
++  const negotiated = await negotiate(event);
++  const request = event.req;
++  const assets = request.runtime?.cloudflare?.env?.ASSETS;
++  if (negotiated !== void 0 || !assets || request.method !== "GET" && request.method !== "HEAD") {
++    return negotiated;
++  }
++  const response = await assets.fetch(request);
++  return response.status === 404 ? void 0 : response;
++}
+ export default definePlugin((nitroApp) => {
+   if (import.meta.dev || import.meta.prerender || !prerendered.size || !nitroApp.h3) {
+     return;
+   }
+   const middleware = (event) => {
+     if (prerendered.has(normalizePathname(decodePath(getRequestPath(event))))) {
+-      return negotiate(event);
++      return negotiateOrServe(event);
+     }
+   };
+   const stack = nitroApp.h3["~middleware"];
+diff --git a/dist/runtime/server/plugins/prerendered.legacy.js b/dist/runtime/server/plugins/prerendered.legacy.js
+index 53390d74158713577bcfd55d33104f7872fe4849..cb81a83fc18bf328f15851159084acfb456febd6 100644
+--- a/dist/runtime/server/plugins/prerendered.legacy.js
++++ b/dist/runtime/server/plugins/prerendered.legacy.js
+@@ -4,6 +4,15 @@ import { defineNitroPlugin, useRuntimeConfig } from "nitropack/runtime";
+ import prerendered from "#agent-discovery-virtual/prerendered";
+ import negotiate from "../middleware/negotiate.legacy.js";
+ import { normalizePathname } from "../../shared/negotiation.js";
++async function negotiateOrServe(event) {
++  const negotiated = await negotiate(event);
++  const { request, env } = event.context.cloudflare || {};
++  if (negotiated !== void 0 || event.handled || !env?.ASSETS || !request || event.method !== "GET" && event.method !== "HEAD") {
++    return negotiated;
++  }
++  const response = await env.ASSETS.fetch(request);
++  return response.status === 404 ? void 0 : response;
++}
+ export default defineNitroPlugin((nitroApp) => {
+   if (import.meta.dev || import.meta.prerender || !prerendered.size) {
+     return;
+@@ -11,7 +20,7 @@ export default defineNitroPlugin((nitroApp) => {
+   const base = `${useRuntimeConfig().app.baseURL}/`.replace(/\/+/g, "/");
+   nitroApp.h3App.use(base, defineEventHandler((event) => {
+     if (prerendered.has(normalizePathname(decodePath(event.path)))) {
+-      return negotiate(event);
++      return negotiateOrServe(event);
+     }
+   }));
+   const stack = nitroApp.h3App.stack;
+diff --git a/dist/runtime/virtual.d.ts b/dist/runtime/virtual.d.ts
+index 6da4fcab10e5f1da0beb3961fdef3047b50ea8d4..3874d21791adc21f7fea664a728a7dcf425e8760 100644
+--- a/dist/runtime/virtual.d.ts
++++ b/dist/runtime/virtual.d.ts
+@@ -13,8 +13,10 @@ declare module '#agent-discovery/source' {
+ }
+ 
+ /**
+- * Pages written at prerender that the host's Nitro serves from disk, as
+- * normalized paths below `app.baseURL`. Empty in dev and on CDN presets.
++ * Pages written at prerender that the host's Nitro serves from disk, or a
++ * Cloudflare Worker from its assets binding, as normalized paths below
++ * `app.baseURL`. Every page on Cloudflare, the negotiable ones elsewhere.
++ * Empty in dev and on the other CDN presets.
+  */
+ declare module '#agent-discovery-virtual/prerendered' {
+   const pages: Set<string>
