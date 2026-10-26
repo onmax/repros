@@ -1,6 +1,6 @@
 # srvx: an empty Node stream body never responds
 
-When a srvx `FastResponse` gets an empty Node `IncomingMessage` as its body, the request never gets a response. A one-byte body works.
+When a srvx `FastResponse` gets an empty Node `IncomingMessage` as its body, the request never gets a response. A one-byte body works. Reported in h3js/srvx#338.
 
 ```sh
 git clone --branch repro/srvx-empty-node-stream https://github.com/onmax/repros
