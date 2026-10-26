@@ -2,7 +2,7 @@
 
 This is the fixed control for [`../nuxt-agent-discovery-cloudflare-prerendered`](../nuxt-agent-discovery-cloudflare-prerendered). It runs the same app and the same `verify.mjs`, with two differences:
 
-- `patches/nuxt-agent-discovery@0.8.1.patch` replaces the module's `dist/` with a build of the fix: commit `709bb0e` on `feat/cloudflare`, on top of v0.8.1 (`489b680`). The patch touches only the five files the commit changes.
+- `patches/nuxt-agent-discovery@0.8.1.patch` replaces the module's `dist/` with a build of the fix: commit [`709bb0e`](https://github.com/onmax/nuxt-agent-discovery/commit/709bb0e6bffdbe6f9faa9f489ccd98571ac062a1) from [benjamincanac/nuxt-agent-discovery#65](https://github.com/benjamincanac/nuxt-agent-discovery/pull/65), on top of v0.8.1 (`489b680`). The patch touches only the five files the commit changes.
 - `nuxt.config.ts` sets `agentDiscovery.cloudflare.runWorkerFirst: true`, the opt-in that the fix adds.
 
 With the option on, the build writes `"run_worker_first": ["/*", "!/_nuxt/*"]` into `.output/server/wrangler.json`. Every page reaches the Worker first, and Nitro's fingerprinted `/_nuxt/` files stay with Workers Static Assets. In the Worker, the prerendered page is negotiated like any other page, and its HTML half comes from the assets binding.
