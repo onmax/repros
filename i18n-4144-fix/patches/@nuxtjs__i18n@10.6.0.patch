@@ -1,0 +1,53 @@
+diff --git a/dist/runtime/server/plugin.js b/dist/runtime/server/plugin.js
+index 134697e..7272ab5 100644
+--- a/dist/runtime/server/plugin.js
++++ b/dist/runtime/server/plugin.js
+@@ -75,15 +75,12 @@ export default defineNitroPlugin(async (nitro) => {
+     }
+     return { path: relocated, code: runtimeI18n.redirectStatusCode ?? 302, locale, origin };
+   };
+-  nitro.hooks.hook("request", async (event) => {
+-    await initializeI18nContext(event);
+-  });
+   nitro.hooks.hook("render:before", async (context) => {
++    const { event } = context;
++    const ctx = tryUseI18nContext(event) || await initializeI18nContext(event);
+     if (!__I18N_SERVER_REDIRECT__) {
+       return;
+     }
+-    const { event } = context;
+-    const ctx = import.meta.prerender && !event.context.nuxtI18n ? await initializeI18nContext(event) : useI18nContext(event);
+     const url = getRequestURL(event);
+     const detector = useDetectors(event, detection);
+     const localeSegment = detector.route(event.path);
+diff --git a/dist/runtime/server/routes/messages.js b/dist/runtime/server/routes/messages.js
+index 8200858..e4410ff 100644
+--- a/dist/runtime/server/routes/messages.js
++++ b/dist/runtime/server/routes/messages.js
+@@ -7,7 +7,7 @@ const _messagesHandler = defineEventHandler(async (event) => {
+   if (!locale) {
+     throw createError({ status: 400, message: "Locale not specified." });
+   }
+-  const ctx = useI18nContext(event);
++  const ctx = tryUseI18nContext(event) || await initializeI18nContext(event);
+   if (ctx.localeConfigs && locale in ctx.localeConfigs === false) {
+     throw createError({ status: 404, message: `Locale '${locale}' not found.` });
+   }
+diff --git a/dist/runtime/server/utils/locale-detector.js b/dist/runtime/server/utils/locale-detector.js
+index 8de023a..3b57ef9 100644
+--- a/dist/runtime/server/utils/locale-detector.js
++++ b/dist/runtime/server/utils/locale-detector.js
+@@ -1,10 +1,11 @@
+-import { fetchMessages, tryUseI18nContext } from "../context.js";
++import { initializeI18nContext, tryUseI18nContext } from "../context.js";
+ import { deepCopy } from "@intlify/shared";
+ import { localeDetector } from "#internal/i18n-locale-detector.mjs";
+ export function createUserLocaleDetector(defaultLocale, fallbackLocale) {
+   return async (event, i18nCtx) => {
+     const locale = localeDetector(event, { defaultLocale, fallbackLocale });
+-    const messages = await (tryUseI18nContext(event)?.loadMessages(locale) ?? fetchMessages(locale));
++    const ctx = tryUseI18nContext(event) || await initializeI18nContext(event);
++    const messages = await ctx.loadMessages(locale);
+     for (const locale2 of Object.keys(messages)) {
+       i18nCtx.messages[locale2] ??= {};
+       deepCopy(messages[locale2], i18nCtx.messages[locale2]);
