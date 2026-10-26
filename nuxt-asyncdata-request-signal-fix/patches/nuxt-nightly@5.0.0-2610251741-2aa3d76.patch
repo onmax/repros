@@ -1,0 +1,22 @@
+diff --git a/dist/app/composables/asyncData.js b/dist/app/composables/asyncData.js
+index 86241d32e4abe8667405ecdebc3afae79ec113d6..f5699d14f2a86e42bbec75be66e57d9ddb763d8a 100644
+--- a/dist/app/composables/asyncData.js
++++ b/dist/app/composables/asyncData.js
+@@ -378,13 +378,12 @@ function buildAsyncData(nuxtApp, key, _handler, options, initialCachedData) {
+ 						reject(reason instanceof Error ? reason : new DOMException(String(reason ?? "Aborted"), "AbortError"));
+ 						return;
+ 					}
+-					mergedSignal.addEventListener("abort", () => {
++					const onAbort = () => {
+ 						const reason = mergedSignal.reason;
+ 						reject(reason instanceof Error ? reason : new DOMException(String(reason ?? "Aborted"), "AbortError"));
+-					}, {
+-						once: true,
+-						signal: cleanupController.signal
+-					});
++					};
++					mergedSignal.addEventListener("abort", onAbort, { once: true });
++					cleanupController.signal.addEventListener("abort", () => mergedSignal.removeEventListener("abort", onAbort), { once: true });
+ 					const ctx = { signal: mergedSignal };
+ 					let run = () => Promise.resolve(handler(nuxtApp, ctx));
+ 					if (options.middleware?.length) for (let i = options.middleware.length - 1; i >= 0; i--) {

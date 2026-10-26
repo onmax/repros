@@ -1,0 +1,3 @@
+minimumReleaseAge: 0
+patchedDependencies:
+  nuxt-nightly@5.0.0-2610251741-2aa3d76: patches/nuxt-nightly@5.0.0-2610251741-2aa3d76.patch
