@@ -1,0 +1,6 @@
+allowBuilds:
+  esbuild: true
+  workerd: true
+  sharp: false
+minimumReleaseAgeExclude:
+  - 'nuxt-agent-discovery@0.8.1'
