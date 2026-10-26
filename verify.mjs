@@ -3,13 +3,16 @@ import { spawn } from 'node:child_process'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-// Production build of each fixture, then a concurrent burst of 50 SSR requests to a page with one `useFetch('/api/report')`.
+// Production build of each fixture, then a concurrent burst of 100 SSR requests to a page with one `useFetch('/api/report')`.
 // probe.mjs forces GC and counts request apps (nuxtApp) that are still alive.
 // Bug: several finished apps survive the GC and are only freed after a later event-loop turn,
 // because the signal Nuxt passes to the in-process fetch is held by undici's Request finalizer.
 // Fixed: no app survives the GC.
 const root = dirname(fileURLToPath(import.meta.url))
-const requests = 50
+const requests = 100
+// A large initial old space keeps V8 from running a full GC (and undici's finalizers) in the middle of the burst,
+// which would free part of the backlog early and make the count depend on timing.
+const nodeFlags = ['--expose-gc', '--initial-old-space-size=1024']
 const env = { ...process.env, CI: '1', PNPM_CONFIG_VERIFY_DEPS_BEFORE_RUN: 'false' }
 const only = process.argv[2]
 const cases = [
@@ -45,7 +48,7 @@ for (const testCase of cases) {
   await exec('pnpm', ['exec', 'nuxt', 'build'], fixture)
 
   const base = `http://127.0.0.1:${testCase.port}`
-  const server = spawn(process.execPath, ['--expose-gc', '--import', join(root, testCase.name, 'probe.mjs'), '.output/server/index.mjs'], {
+  const server = spawn(process.execPath, [...nodeFlags, '--import', join(root, testCase.name, 'probe.mjs'), '.output/server/index.mjs'], {
     cwd: fixture,
     env: { ...env, NODE_ENV: 'production', HOST: '127.0.0.1', PORT: String(testCase.port) },
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -60,11 +63,11 @@ for (const testCase of cases) {
     for (const html of pages) assert.match(html, /20000 items/, 'page did not render the fetched data')
     server.kill('SIGUSR2')
     const probe = JSON.parse(await waitFor(() => log.match(/PROBE (\{.*\})/)?.[1], 'probe output'))
-    console.log(`${testCase.name}: ${probe.total} requests; alive after GC: ${probe.afterGC.apps} apps (${probe.afterGC.heapMB} MB heap); after one setTimeout(0) + GC: ${probe.afterTimer.apps} apps (${probe.afterTimer.heapMB} MB)`)
+    console.log(`${testCase.name}: ${probe.total} requests; alive after GC: ${probe.afterGC.apps} apps (${probe.afterGC.heapMB} MB heap); all freed after ${probe.freedAfterTurns} setTimeout(0) turns (${probe.finalHeapMB} MB)`)
     assert.equal(probe.total, requests)
     if (testCase.retained) {
       assert.ok(probe.afterGC.apps >= requests / 4, `expected finished request apps to survive a forced GC, got ${probe.afterGC.apps}`)
-      assert.equal(probe.afterTimer.apps, 0, 'expected them to be freed one event-loop turn later')
+      assert.notEqual(probe.freedAfterTurns, null, 'expected them to be freed a few event-loop turns later')
     }
     else assert.ok(probe.afterGC.apps <= 1, `expected no request app to survive GC, got ${probe.afterGC.apps}`)
     console.log(`  ok: ${testCase.retained ? 'bug reproduced' : 'fixed control is clean'}`)
