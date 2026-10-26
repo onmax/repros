@@ -1,17 +1,18 @@
 diff --git a/dist/module.d.mts b/dist/module.d.mts
-index 60861197cb6b6825a7ff1ddb8b31bf36ae9fd1de..e67a68dd63f62ccc566f9c8dc31d4ec0a976449e 100644
+index 60861197cb6b6825a7ff1ddb8b31bf36ae9fd1de..9296f6f077aa8eeae6fbbe5bb5596a6dbd8091c2 100644
 --- a/dist/module.d.mts
 +++ b/dist/module.d.mts
-@@ -113,6 +113,15 @@ interface ModuleOptions {
+@@ -113,6 +113,16 @@ interface ModuleOptions {
          /** Directory holding one subdirectory per skill, relative to the root. */
          dir?: string;
      };
 +    cloudflare?: {
 +        /**
 +         * Send the negotiated routes to the Worker ahead of Workers Static Assets
-+         * (`assets.run_worker_first`), so a prerendered page negotiates too. Off by
-+         * default: Cloudflare bills every request the Worker sees, where static
-+         * assets are free.
++         * (`assets.run_worker_first`) once a page is prerendered, so it negotiates
++         * too. Each of those requests then runs the Worker, which Cloudflare bills
++         * and the Free plan caps at 100,000 a day. `false` leaves prerendered pages
++         * to the assets, as HTML.
 +         */
 +        runWorkerFirst?: boolean;
 +    };
@@ -19,7 +20,7 @@ index 60861197cb6b6825a7ff1ddb8b31bf36ae9fd1de..e67a68dd63f62ccc566f9c8dc31d4ec0
  /** What this module puts in `runtimeConfig`. */
  interface AgentDiscoveryRuntimeConfig {
 diff --git a/dist/module.mjs b/dist/module.mjs
-index 29c82ee3e10c50e587d40962c7f233072b5123aa..cb4f33c4af70bac11e832f7eefab98c60c17253b 100644
+index 29c82ee3e10c50e587d40962c7f233072b5123aa..60affc0c8f4e430de115bdcd7209d6bca4aa103e 100644
 --- a/dist/module.mjs
 +++ b/dist/module.mjs
 @@ -2,12 +2,12 @@ import { existsSync, readdirSync, statSync } from 'node:fs';
@@ -37,7 +38,7 @@ index 29c82ee3e10c50e587d40962c7f233072b5123aa..cb4f33c4af70bac11e832f7eefab98c6
  
  const AGENT_USER_AGENTS = [
    "ClaudeBot",
-@@ -308,6 +308,74 @@ function dropContentLlmsFeature(nuxt) {
+@@ -308,6 +308,72 @@ function dropContentLlmsFeature(nuxt) {
    });
  }
  
@@ -71,19 +72,16 @@ index 29c82ee3e10c50e587d40962c7f233072b5123aa..cb4f33c4af70bac11e832f7eefab98c6
 +  return [...positive, ...negative];
 +}
 +function setupCloudflarePreset(nitro, config, options) {
-+  if (nitro.options.dev || nitro.options.static || !isCloudflareWorkerPreset(nitro.options.preset)) {
++  if (nitro.options.dev || nitro.options.static || !options.runWorkerFirst || !isCloudflareWorkerPreset(nitro.options.preset)) {
 +    return;
 +  }
 +  const logger = useLogger("nuxt-agent-discovery");
 +  nitro.hooks.hook("compiled", async () => {
-+    const file = resolve(nitro.options.output.serverDir, "wrangler.json");
-+    const wrangler = existsSync(file) ? JSON.parse(await readFile(file, "utf8")) : void 0;
-+    if (!options.runWorkerFirst) {
-+      if (options.prerendered() && !wrangler?.assets?.run_worker_first) {
-+        logger.info("Workers Static Assets answers the prerendered pages before the Worker runs, so they stay HTML for agents. `agentDiscovery.cloudflare.runWorkerFirst` sends the negotiated routes to the Worker first, as requests Cloudflare bills.");
-+      }
++    if (!options.prerendered()) {
 +      return;
 +    }
++    const file = resolve(nitro.options.output.serverDir, "wrangler.json");
++    const wrangler = existsSync(file) ? JSON.parse(await readFile(file, "utf8")) : void 0;
 +    const assetBases = nitro.options.publicAssets.filter((dir) => !dir.fallthrough && dir.baseURL && dir.baseURL !== "/").map((dir) => joinURL(nitro.options.baseURL, dir.baseURL));
 +    if (!wrangler) {
 +      const rules2 = cloudflareRunWorkerFirst(config, { baseURL: nitro.options.baseURL, assetBases });
@@ -106,13 +104,14 @@ index 29c82ee3e10c50e587d40962c7f233072b5123aa..cb4f33c4af70bac11e832f7eefab98c6
 +    }
 +    assets.run_worker_first = rules;
 +    await writeFile(file, JSON.stringify(wrangler, null, 2), "utf8");
++    logger.info(`Prerendered pages run the Worker first now (\`run_worker_first\`), so they negotiate. Cloudflare bills those requests, and on the Free plan answers 429 past 100,000 a day. \`agentDiscovery.cloudflare.runWorkerFirst: false\` leaves them to the assets.`);
 +  });
 +}
 +
  const METHODS = ["GET", "HEAD"];
  const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
  const escapeEncoded = (path) => escapeRegExp(encodeAgentRoute(path));
-@@ -726,11 +794,12 @@ const module$1 = defineNuxtModule({
+@@ -726,11 +792,12 @@ const module$1 = defineNuxtModule({
      if (!negotiates) {
        logger.warn("No content source resolved, so markdown negotiation is off. Install `@nuxt/content`, point `agentDiscovery.source` at a file exporting an `AgentContentSource`, or set `source: false` if another route already serves the raw markdown.");
      }
@@ -126,7 +125,7 @@ index 29c82ee3e10c50e587d40962c7f233072b5123aa..cb4f33c4af70bac11e832f7eefab98c6
        nuxt.hook("nitro:config", (nitroConfig) => {
          nitroConfig.virtual ||= {};
          nitroConfig.virtual["#agent-discovery-virtual/prerendered"] = () => {
-@@ -738,13 +807,14 @@ const module$1 = defineNuxtModule({
+@@ -738,13 +805,14 @@ const module$1 = defineNuxtModule({
          };
        });
        nuxt.hook("nitro:init", (nitro) => {
@@ -143,13 +142,13 @@ index 29c82ee3e10c50e587d40962c7f233072b5123aa..cb4f33c4af70bac11e832f7eefab98c6
              prerenderedPages.add(normalizePathname(decodePath(page)));
            }
          });
-@@ -1140,6 +1210,10 @@ export {}
+@@ -1140,6 +1208,10 @@ export {}
        });
        nuxt.hook("nitro:init", (nitro) => {
          setupVercelPreset(nitro, config, collectCachedRoutes);
 +        setupCloudflarePreset(nitro, config, {
-+          runWorkerFirst: options.cloudflare?.runWorkerFirst === true,
-+          prerendered: () => prerenderedPages.size
++          runWorkerFirst: options.cloudflare?.runWorkerFirst !== false,
++          prerendered: () => [...prerenderedPages].some((page) => isNegotiablePath(config, page))
 +        });
          nitro.hooks.hook("prerender:generate", (route) => {
            if (!isRawPath(config, route.route)) {

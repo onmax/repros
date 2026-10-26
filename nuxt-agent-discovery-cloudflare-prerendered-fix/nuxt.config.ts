@@ -2,8 +2,7 @@ export default defineNuxtConfig({
   modules: ['nuxt-agent-discovery'],
   compatibilityDate: '2026-10-01',
   agentDiscovery: {
-    source: '~~/server/agent-source',
-    cloudflare: { runWorkerFirst: true }
+    source: '~~/server/agent-source'
   },
   nitro: {
     preset: 'cloudflare-module',
