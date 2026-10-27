@@ -1,33 +1,35 @@
-# Vite stops watching a file outside the root after `git checkout` replaces it
+# Vite does not see changes to a file outside the root after `git checkout` replaces it
 
-A Vite dev server serves a module from outside its root through `/@fs/`. `git checkout` replaces that file. The server sees the first checkout. After that it never sees the file change again: not on a second checkout, and not on an in-place edit. It keeps serving the old transform result until it restarts.
+A Vite dev server serves a file from outside its root through `/@fs/`. When `git checkout` replaces that file, Vite sees the change. After that, Vite does not see changes to the file. A second checkout and an edit in place have no effect. The server sends the old module until you restart it.
 
-Source: found in the ViteHub Console playground on 2026-10-27. The playground serves Console components from `packages/vite-hub/src/console/runtime/components/`, outside its Vite root. It runs `@voidzero-dev/vite-plus-core` 0.3.3, which bundles Vite 8.3.0.
-
-## Cause
-
-- Vite watches its root with chokidar 3.6.0, bundled into `dist/node/chunks/node.js`. For a module outside the root, [`ensureWatchedFile`](https://github.com/vitejs/vite/blob/v8.3.5/packages/vite/src/node/utils.ts#L785-L801) calls `watcher.add(file)`. chokidar then puts an `fs.watch` (inotify) on that one file, not on its folder.
-- `git checkout` unlinks the old file and creates a new one. inotify drops the watch on the old file (`IN_DELETE_SELF`, `IN_IGNORED`). On ext4 the new file gets the same inode number back.
-- chokidar stats the file, emits `change`, and makes a new watch only [`if (isLinux && prevStats.ino !== newStats.ino)`](https://github.com/paulmillr/chokidar/blob/3.6.0/lib/nodefs-handler.js#L372) (vite 8.3.5 `dist/node/chunks/node.js:11189`). The numbers are equal, so chokidar keeps the dead watch. Node documents that a watch stays on the [original inode](https://nodejs.org/api/fs.html#inodes).
-- Files inside the root are not affected. chokidar also watches their folder and passes its events to the file listener.
+The problem occurred in the ViteHub Console playground on 2026-10-27. The playground serves Vue components from a folder outside its Vite root. It uses `@voidzero-dev/vite-plus-core` 0.3.3, which contains Vite 8.3.0.
 
 ## Run
+
+Run these commands on Linux with an ext4 file system:
 
 ```sh
 git clone --branch repro/vite-outside-root-inode-reuse https://github.com/onmax/repros.git
 cd repros/vite-outside-root-inode-reuse
 pnpm install --frozen-lockfile
-pnpm verify            # node verify.mjs, about 5 s
-PIN=1 pnpm verify      # control
+pnpm verify          # fails with exit code 1
+PIN=1 pnpm verify    # control, passes with exit code 0
 ```
 
-`verify.mjs` makes a Git repository in `work/` with `app/` (the Vite root, empty) and `shared/a.js`. It starts a dev server, fetches `/@fs/<abs>/work/shared/a.js`, then runs `git checkout v2 -- shared/a.js`, `git checkout HEAD -- shared/a.js`, and an in-place edit. After each step it compares the served module with the file on disk. It exits 1 when the server serves an old version. It exits 2 when the new file got a new inode number, because then the run did not test this bug.
+`verify.mjs` does these steps:
 
-## Expected and actual
+1. It makes a Git repository in `work/`. The Vite root is `work/app/`. The file `work/shared/a.js` is outside the root.
+2. It starts a dev server and loads `/@fs/<path>/work/shared/a.js` from it.
+3. It runs `git checkout v2 -- shared/a.js`, then `git checkout HEAD -- shared/a.js`. Then it edits the file in place.
+4. After each step, it compares the module from the server with the file on disk.
 
-Expected: after each step the server serves the file on disk.
+If the server sends an old version, the script exits with code 1. If the new file gets a new inode number, the script exits with code 2. That run does not test this problem.
 
-Actual, vite 8.3.5, Node 24.21.0, git 2.53.0, Linux 7.0.0 x64, ext4:
+## Result
+
+Expected: after each step, the server sends the file that is on disk.
+
+Actual, with Vite 8.3.5, Node.js 24.21.0, Git 2.53.0, Linux 7.0.0 x64 and ext4:
 
 ```
 vite 8.3.5, node v24.21.0, git version 2.53.0, ext4
@@ -40,32 +42,23 @@ edit shared/a.js in place          disk v1 edit served v2      inode same  log: 
 FAIL: the dev server served an old version 2 time(s) after the file changed on disk
 ```
 
-Control: `PIN=1` holds the old file open during each checkout. The old inode cannot be freed, so the new file gets a new number, and every step passes:
+With `PIN=1`, the script keeps the old file open during each checkout. The kernel cannot free the old inode, so the new file gets a new inode number. Then all steps pass.
 
-```
-git checkout v2 -- shared/a.js     disk v2      served v2      inode new   log: page reload
-git checkout HEAD -- shared/a.js   disk v1      served v1      inode new   log: page reload
-edit shared/a.js in place          disk v1 edit served v1 edit inode same  log: page reload
+## Cause
 
-PASS: the dev server served the current file after every change
-```
+1. For a file outside the root, Vite's [`ensureWatchedFile`](https://github.com/vitejs/vite/blob/v8.3.5/packages/vite/src/node/utils.ts#L785-L801) calls `watcher.add(file)`. chokidar 3.6.0 then watches only that file, not its folder.
+2. `git checkout` removes the old file and creates a new file. The kernel removes the watch on the old file. On ext4, the new file usually gets the same inode number.
+3. chokidar [makes a new watch only if the inode number changes](https://github.com/paulmillr/chokidar/blob/3.6.0/lib/nodefs-handler.js#L372). The number is the same, so chokidar keeps the old watch. The old watch does not receive events.
+
+Files inside the root do not have this problem, because chokidar also watches their folder.
 
 ## Why each part is here
 
-- `git checkout`: it replaces the file with unlink and create, not rename. A rename-based save keeps the old file until the rename, so the new file always gets a new inode number. In a chokidar-only test, `unlink` followed by `writeFile` fails the same way.
-- `shared/` outside `app/`: makes Vite watch the file by itself. The same steps on `app/a.js`, inside the root, pass even when the inode number is reused.
-- The in-place edit: shows that the watch is dead. The bug is not a timing problem in the checkout.
-- ext4: tmpfs gives the new file a new inode number, so the bug does not occur there (the script exits 2).
+- `git checkout` removes the file and then creates a new file with the same name. A save with a rename writes the new file first. The old file stays until the rename, so the new file always gets a new inode number.
+- `shared/` is outside `app/`, so Vite watches `shared/a.js` without its folder. The same steps on `app/a.js` pass.
+- The edit in place shows that the watch does not work. The cause is not the speed of the checkout.
+- On tmpfs, the new file gets a new inode number. The problem does not occur, and the script exits with code 2.
 
-## Same result elsewhere
+## Other versions
 
-Checked with the same steps outside this fixture:
-
-- Vite 8.3.0, and `@voidzero-dev/vite-plus-core` 0.3.3 and 1.4.0 (which bundle Vite 8.3.0 and 8.3.5), fail the same way, with `.js` and with `.vue` files through `@vitejs/plugin-vue`.
-- chokidar alone, with Vite's options and two files added through `watcher.add()`: 3.6.0, 4.0.3, and 5.0.0 fail. 6.0.0 passes, because it watches the parent folder of a watched file.
-- chokidar 3.6.0 passes when the file's folder is also watched, when `usePolling` is on, and with this one-line change in `lib/nodefs-handler.js`:
-
-  ```diff
-  -        if (isLinux && prevStats.ino !== newStats.ino) {
-  +        if (isLinux && (prevStats.ino !== newStats.ino || prevStats.birthtimeMs !== newStats.birthtimeMs)) {
-  ```
+The same steps fail with Vite 8.3.0 and with `@voidzero-dev/vite-plus-core` 0.3.3 and 1.4.0. In a test with chokidar only, versions 3.6.0, 4.0.3 and 5.0.0 fail. Version 6.0.0 passes, because it watches the folder of each watched file.
