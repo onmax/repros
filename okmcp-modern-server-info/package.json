@@ -1,0 +1,23 @@
+{
+  "name": "okmcp-modern-server-info",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.28.6",
+  "engines": {
+    "node": "24.21.0"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.21.0",
+      "onFail": "download"
+    }
+  },
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "okmcp": "file:vendor/okmcp-0.2.1-main.2239349.tgz",
+    "h3": "2.0.8"
+  }
+}

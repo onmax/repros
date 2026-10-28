@@ -1,0 +1,23 @@
+Verified 2026-10-28 on Linux x86_64 after clean install and fixture reduction.
+Command: pnpm install --frozen-lockfile --ignore-scripts && pnpm verify
+
+Pinned okmcp 223934913eb929051df6116e0b58a4b67072d106, Node 24.21.0, h3 2.0.8
+Expected identity for both eras: {
+  "name": "identity-repro",
+  "version": "1.0.0",
+  "title": "Example server",
+  "description": "An example server description",
+  "websiteUrl": "https://example.com",
+  "icons": [
+    {
+      "src": "https://example.com/icon.png"
+    }
+  ]
+}
+Actual modern server/discover identity: {
+  "name": "identity-repro",
+  "version": "1.0.0",
+  "title": "Example server"
+}
+Control: the identical handler emits every configured field through legacy initialize.
+PASS: modern serverInfo drops description, websiteUrl, and icons.
