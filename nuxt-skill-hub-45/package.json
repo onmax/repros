@@ -1,0 +1,9 @@
+{
+  "name": "nuxt-skill-hub-45-repro",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.15.0",
+  "engines": { "node": "24.22.1" },
+  "scripts": { "verify": "node verify.mjs" },
+  "dependencies": { "nuxt-skill-hub": "0.3.0" }
+}
