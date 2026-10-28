@@ -1,0 +1,25 @@
+{
+  "name": "okmcp-schema-diagnostics",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.28.6",
+  "engines": {
+    "node": "24.21.0"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.21.0",
+      "onFail": "download"
+    }
+  },
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "okmcp": "file:vendor/okmcp-0.2.1-main.2239349.tgz",
+    "h3": "2.0.8",
+    "valibot": "1.5.0",
+    "@valibot/to-json-schema": "1.8.0"
+  }
+}

@@ -1,0 +1,54 @@
+Verified 2026-10-28 on Linux x86_64.
+Command: pnpm install --frozen-lockfile --ignore-scripts && pnpm verify
+
+Pinned okmcp 223934913eb929051df6116e0b58a4b67072d106, Node 24.21.0, h3 2.0.8
+Expected: a server-side diagnostic identifying the tool, schema side, and conversion cause.
+Actual: [
+  {
+    "version": "2025-11-25",
+    "side": "inputSchema",
+    "status": 200,
+    "error": {
+      "code": -32603,
+      "message": "Internal error"
+    },
+    "consoleDiagnostics": 0,
+    "healthyToolCallable": true
+  },
+  {
+    "version": "2026-07-28",
+    "side": "inputSchema",
+    "status": 500,
+    "error": {
+      "code": -32603,
+      "message": "Internal error"
+    },
+    "consoleDiagnostics": 0,
+    "healthyToolCallable": true
+  },
+  {
+    "version": "2025-11-25",
+    "side": "outputSchema",
+    "status": 200,
+    "error": {
+      "code": -32603,
+      "message": "Internal error"
+    },
+    "consoleDiagnostics": 0,
+    "healthyToolCallable": true
+  },
+  {
+    "version": "2026-07-28",
+    "side": "outputSchema",
+    "status": 500,
+    "error": {
+      "code": -32603,
+      "message": "Internal error"
+    },
+    "consoleDiagnostics": 0,
+    "healthyToolCallable": true
+  }
+]
+Direct converter cause: The "check" action cannot be converted to JSON Schema.
+Control: removing only v.check makes both tools appear in tools/list in both eras.
+PASS: reproduced missing server-side diagnostics for input/output conversion in both eras.
