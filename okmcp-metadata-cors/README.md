@@ -1,26 +1,8 @@
-# okmcp browser OAuth discovery CORS
+# Browser discovery needs CORS setup
 
-Given the unmodified `protectedResourceMetadata` handler and a Chromium page on another origin, when the page fetches its public discovery document, the browser should be able to read it with host CORS configuration, but the standalone helper supplies no CORS headers and the browser rejects the fetch.
+A browser on another origin cannot read the public document returned by `protectedResourceMetadata`. The handler returns HTTP 200 without `Access-Control-Allow-Origin`, so Chromium blocks access to the response.
 
-Source issue: [h3js/okmcp#38](https://github.com/h3js/okmcp/issues/38). See [verification.txt](verification.txt) for the test results.
-
-## Expected and actual
-
-Expected: document how the hosting app enables cross-origin browser discovery, or explicitly define this as the host's responsibility.
-
-Actual: Node receives HTTP 200 and valid metadata, while the cross-origin Chromium fetch throws `TypeError: Failed to fetch` with an `Access-Control-Allow-Origin` CORS diagnostic. The same Chromium page can read the same unmodified endpoint after navigating to its origin.
-
-The verifier starts one local HTTP server on fixed port `49328`, uses `localhost` for the client page and `127.0.0.1` for the discovery origin, and closes Chromium and the server in `finally`. Loopback HTTP is explicitly supported by okmcp. It installs the exact Playwright-managed Chromium build into this fixture's ignored `.cache` directory before running.
-
-Neither RFC 9728 nor the checked MCP revisions requires the helper to emit CORS. This is a browser integration/documentation request, not OAuth noncompliance. A simple GET needs no OPTIONS preflight.
-
-## Pinned environment
-
-- okmcp source [223934913eb929051df6116e0b58a4b67072d106](https://github.com/h3js/okmcp/commit/223934913eb929051df6116e0b58a4b67072d106).
-- The committed `vendor/okmcp-0.2.1-main.2239349.tgz` is an unpatched build of that source, with only its package version changed. It includes no Joxi application code or pnpm patch.
-- SHA-256 `86c79ef96d39aaf8a8479d39867e584ab6f26f959900fdde53a501b0fa8f0485`.
-- Node `24.21.0`, pnpm `11.28.6`, h3 `2.0.8`, Linux x86_64. pnpm's `devEngines.runtime` prepares the pinned Node runtime.
-- Every run checks the runtime and archive checksum. Transitive packages are pinned in `pnpm-lock.yaml`.
+Reproduces [h3js/okmcp#38](https://github.com/h3js/okmcp/issues/38).
 
 ## Run
 
@@ -30,15 +12,25 @@ cd repros/okmcp-metadata-cors
 pnpm install --frozen-lockfile --ignore-scripts && pnpm verify
 ```
 
-The last line is the unattended install-and-verify command. Use pnpm `11.28.6`; Corepack reads the exact `packageManager` pin. It needs registry access on the first install. A successful exit means the reported symptom was reproduced; the verifier exits nonzero if the claim is false or a prerequisite fails.
+Use pnpm `11.28.6`. It prepares Node `24.21.0` automatically. The verifier downloads Chromium and needs port `49328` free. `PASS` means the reported failure was reproduced.
 
-Verification output is recorded in [verification.txt](verification.txt). This fixture has no deployed URL and makes no claim about platform-specific Workers behavior.
+## What the test shows
 
-## Why these elements remain
+Node and a browser on the same origin can read the document. A browser on another origin receives `TypeError: Failed to fetch`, with a CORS error in its console.
 
-- Playwright `1.64.1` pins Chromium and exercises actual browser enforcement; Node fetch alone would hide the failure.
-- Distinct loopback hostnames create two real origins with only one listener. Node and same-origin browser controls rule out an unavailable server or invalid metadata.
-- Only GET is tested. No access tokens, credentials, auth server, MCP endpoint, Nuxt, or Cloudflare deployment is needed.
-- Port `49328` is fixed so cleanup can be inspected. If it is occupied, the run fails rather than selecting a hidden port.
+The test uses `localhost` and `127.0.0.1` as separate origins, with one local server. It sends GET requests without credentials and closes Chromium and the server afterward. Full output is in [verification.txt](verification.txt).
 
-The fixture adds no CORS fix or fixed package. It needs Chromium's normal Linux system dependencies. `pnpm exec playwright install-deps chromium` can prepare those on a machine that lacks them; OS provisioning is outside the verifier.
+This is a request to document CORS setup in the host app. The checked specifications do not require the helper itself to add these headers.
+
+<details>
+<summary>Versions and prerequisites</summary>
+
+Unpatched okmcp `223934913eb929051df6116e0b58a4b67072d106`, h3 `2.0.8`, Playwright `1.64.1`, and Chromium `156.0.8078.4`. Verified on Linux x86_64.
+
+The first run needs registry and browser-download access. Chromium also needs its Linux system dependencies. If they are missing, prepare them with `pnpm exec playwright install-deps chromium`.
+
+The committed `vendor/okmcp-0.2.1-main.2239349.tgz` is built from that commit, with only its package version changed. The verifier checks the runtime and archive checksum on every run. Dependencies are pinned in `pnpm-lock.yaml`.
+
+SHA-256: `86c79ef96d39aaf8a8479d39867e584ab6f26f959900fdde53a501b0fa8f0485`.
+
+</details>
