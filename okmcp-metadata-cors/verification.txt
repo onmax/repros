@@ -1,0 +1,20 @@
+Verified 2026-10-28 on Linux x86_64 after clean install.
+Command: pnpm install --frozen-lockfile --ignore-scripts && pnpm verify
+
+Pinned okmcp 223934913eb929051df6116e0b58a4b67072d106, Node 24.21.0, h3 2.0.8
+Chromium 156.0.8078.4
+Expected: a browser client on another origin can read the public discovery document, or the docs explain required host CORS.
+Actual: {
+  "nodeStatus": 200,
+  "allowOrigin": null,
+  "crossOrigin": {
+    "readable": false,
+    "name": "TypeError",
+    "message": "Failed to fetch"
+  },
+  "sameOriginStatus": 200,
+  "discoveryGets": 3
+}
+Browser diagnostic: Access to fetch at 'http://127.0.0.1:49328/.well-known/oauth-protected-resource' from origin 'http://localhost:49328' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+Control: the identical unpatched endpoint is readable by Node and by the same browser on the same origin.
+PASS: browser cross-origin OAuth discovery is blocked by missing CORS headers.

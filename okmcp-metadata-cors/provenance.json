@@ -1,0 +1,12 @@
+{
+  "source": "https://github.com/h3js/okmcp",
+  "commit": "223934913eb929051df6116e0b58a4b67072d106",
+  "upstreamPackageVersion": "0.2.0",
+  "localPackageVersion": "0.2.1-main.2239349",
+  "artifact": "vendor/okmcp-0.2.1-main.2239349.tgz",
+  "sha256": "86c79ef96d39aaf8a8479d39867e584ab6f26f959900fdde53a501b0fa8f0485",
+  "changes": "Built distribution from the pinned source; only package version changed. No Joxi pnpm patches are applied.",
+  "node": "24.21.0",
+  "h3": "2.0.8",
+  "platform": "Linux x86_64"
+}
