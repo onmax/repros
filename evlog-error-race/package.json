@@ -1,0 +1,19 @@
+{
+  "name": "evlog-error-race",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.28.6",
+  "engines": {
+    "node": ">=24.21.0"
+  },
+  "scripts": {
+    "verify": "node verify.mjs",
+    "check": "node case.mjs"
+  },
+  "dependencies": {
+    "evlog": "2.33.1",
+    "evlog-next": "npm:evlog@2.34.0",
+    "h3": "2.0.1-rc.22",
+    "hookable": "6.1.2"
+  }
+}

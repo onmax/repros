@@ -1,0 +1,200 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      evlog:
+        specifier: 2.33.1
+        version: 2.33.1(h3@2.0.1-rc.22)
+      evlog-next:
+        specifier: npm:evlog@2.34.0
+        version: evlog@2.34.0(h3@2.0.1-rc.22)
+      h3:
+        specifier: 2.0.1-rc.22
+        version: 2.0.1-rc.22
+      hookable:
+        specifier: 6.1.2
+        version: 6.1.2
+
+packages:
+
+  evlog@2.33.1:
+    resolution: {integrity: sha512-raahjdFBFXWBYRD/SMuBs/pBAcarTlV/YzuIk/iWH/Snieo5mqh1a9epfo7DOKXq1OWpHqH4xXhVxWv1JIIg+w==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
+    peerDependencies:
+      '@nestjs/common': '>=11.2.7'
+      '@nestjs/core': '>=11.2.7'
+      '@nuxt/kit': ^4.4.2
+      '@orpc/server': '>=1.15.4'
+      '@tanstack/start-client-core': ^1.170.34
+      ai: '>=6.0.168 <8.0.0'
+      effect: ^4.0.0
+      elysia: '>=1.4.30'
+      eve: '>=0.30.0'
+      express: '>=5.2.1'
+      fastify: '>=5.12.5'
+      h3: ^1.15.11
+      hono: '>=4.13.12'
+      next: '>=16.3.8'
+      nitro: ^3.0.260311-beta
+      nitropack: ^2.13.4
+      ofetch: ^1.5.1
+      react: '>=19.3.0'
+      react-router: '>=7.18.4'
+      vite: ^7.0.0 || ^8.0.0
+    peerDependenciesMeta:
+      '@nestjs/common':
+        optional: true
+      '@nestjs/core':
+        optional: true
+      '@nuxt/kit':
+        optional: true
+      '@orpc/server':
+        optional: true
+      '@tanstack/start-client-core':
+        optional: true
+      ai:
+        optional: true
+      effect:
+        optional: true
+      elysia:
+        optional: true
+      eve:
+        optional: true
+      express:
+        optional: true
+      fastify:
+        optional: true
+      h3:
+        optional: true
+      hono:
+        optional: true
+      next:
+        optional: true
+      nitro:
+        optional: true
+      nitropack:
+        optional: true
+      ofetch:
+        optional: true
+      react:
+        optional: true
+      react-router:
+        optional: true
+      vite:
+        optional: true
+
+  evlog@2.34.0:
+    resolution: {integrity: sha512-d1ETZ1Sk8cDCTKz++jIpyANqE2wnbfG2AzaR+HiVm/zppTxeGkoV62/gtnH5RyuaeMVR58NebYiXrDDyXWt8mQ==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
+    peerDependencies:
+      '@nestjs/common': '>=11.2.8'
+      '@nestjs/core': '>=11.2.8'
+      '@nuxt/kit': ^4.4.2
+      '@orpc/server': '>=1.16.1'
+      '@tanstack/start-client-core': ^1.170.39
+      ai: '>=6.0.168 <8.0.0'
+      effect: ^4.0.6
+      elysia: '>=1.4.30'
+      eve: '>=0.30.0'
+      express: '>=5.3.0'
+      fastify: '>=5.12.7'
+      h3: ^1.15.11
+      hono: '>=4.13.13'
+      next: '>=16.4.3'
+      nitro: ^3.0.260311-beta
+      nitropack: ^2.13.5
+      ofetch: ^1.5.1
+      react: '>=19.3.1'
+      react-router: '>=7.18.4'
+      vite: ^7.0.0 || ^8.0.0
+    peerDependenciesMeta:
+      '@nestjs/common':
+        optional: true
+      '@nestjs/core':
+        optional: true
+      '@nuxt/kit':
+        optional: true
+      '@orpc/server':
+        optional: true
+      '@tanstack/start-client-core':
+        optional: true
+      ai:
+        optional: true
+      effect:
+        optional: true
+      elysia:
+        optional: true
+      eve:
+        optional: true
+      express:
+        optional: true
+      fastify:
+        optional: true
+      h3:
+        optional: true
+      hono:
+        optional: true
+      next:
+        optional: true
+      nitro:
+        optional: true
+      nitropack:
+        optional: true
+      ofetch:
+        optional: true
+      react:
+        optional: true
+      react-router:
+        optional: true
+      vite:
+        optional: true
+
+  h3@2.0.1-rc.22:
+    resolution: {integrity: sha512-Esv0DMIuPkCTSWCA0vO73vcTqwzH1wjSrAO1TXNu/K3up1sZHa9EKMapbmxCDYBeymC3fVTk4qxp7ogQWQ+KgA==}
+    engines: {node: '>=20.11.1'}
+    hasBin: true
+    peerDependencies:
+      crossws: ^0.4.1
+    peerDependenciesMeta:
+      crossws:
+        optional: true
+
+  hookable@6.1.2:
+    resolution: {integrity: sha512-+abwxtiEA52GCVIsQqut3S/uKTbUwYIp4Pe/vv+6py5XiXBCqMZHg6pA6Y5qhgLSEys0/cYuPbO0z1QFj5ZCmg==}
+
+  rou3@0.8.1:
+    resolution: {integrity: sha512-ePa+XGk00/3HuCqrEnK3LxJW7I0SdNg6EFzKUJG73hMAdDcOUC/i/aSz7LSDwLrGr33kal/rqOGydzwl6U7zBA==}
+
+  srvx@0.11.22:
+    resolution: {integrity: sha512-LqZxxBDMKuMAZzFzJnDCkFOrs9MZQZr0LvHiO/SuSZVdQaXD7xQ5UWTUxheJrQPve1qk9MG2B/yttUvJxw8egQ==}
+    engines: {node: '>=20.16.0'}
+    hasBin: true
+
+snapshots:
+
+  evlog@2.33.1(h3@2.0.1-rc.22):
+    optionalDependencies:
+      h3: 2.0.1-rc.22
+
+  evlog@2.34.0(h3@2.0.1-rc.22):
+    optionalDependencies:
+      h3: 2.0.1-rc.22
+
+  h3@2.0.1-rc.22:
+    dependencies:
+      rou3: 0.8.1
+      srvx: 0.11.22
+
+  hookable@6.1.2: {}
+
+  rou3@0.8.1: {}
+
+  srvx@0.11.22: {}
