@@ -2,7 +2,7 @@
 
 Given pinned okmcp and a tool whose Valibot `check` cannot convert to JSON Schema, when a client calls `tools/list`, the server should provide an actionable server-side diagnostic, but it returns only `-32603 "Internal error"` and emits no console diagnostic.
 
-Source report: prepared from the upstream source at the pinned commit. The upstream issue and explanation are linked in `REPORT.md` once published.
+Source issue: [h3js/okmcp#36](https://github.com/h3js/okmcp/issues/36). See [REPORT.md](REPORT.md) for the Drop explanation and evidence.
 
 ## Expected and actual
 
