@@ -2,7 +2,7 @@
 
 Given one handler configured with `description`, `icons`, and `websiteUrl`, when a modern client calls `server/discover`, the documented identity should include those configured fields, but only `name`, `version`, and `title` are emitted.
 
-Source issue: [h3js/okmcp#37](https://github.com/h3js/okmcp/issues/37). See [REPORT.md](REPORT.md) for the Drop explanation and evidence.
+Source issue: [h3js/okmcp#37](https://github.com/h3js/okmcp/issues/37). See [verification.txt](verification.txt) for the test results.
 
 ## Expected and actual
 
