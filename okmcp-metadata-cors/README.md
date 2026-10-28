@@ -2,7 +2,7 @@
 
 Given the unmodified `protectedResourceMetadata` handler and a Chromium page on another origin, when the page fetches its public discovery document, the browser should be able to read it with host CORS configuration, but the standalone helper supplies no CORS headers and the browser rejects the fetch.
 
-Source issue: [h3js/okmcp#38](https://github.com/h3js/okmcp/issues/38). See [REPORT.md](REPORT.md) for the Drop explanation and evidence.
+Source issue: [h3js/okmcp#38](https://github.com/h3js/okmcp/issues/38). See [verification.txt](verification.txt) for the test results.
 
 ## Expected and actual
 
