@@ -1,72 +1,41 @@
-# Reproduce the false Vue slot warning
+# False Vue slot warning after a setup error
 
-This example reproduces a false slot warning after an uncaught `setup()` error. It uses Vue alone.
+Vue 3.5.44 leaves `currentInstance` set after an uncaught `setup()` error in development.
+A later sibling then gets this warning, although it calls the slot inside its render function:
 
-## Run the verification
+```text
+Slot "default" invoked outside of the render function: this will not track dependencies used in the slot. Invoke the slot function inside the render function instead.
+```
 
-Use Node 24.21.0 and pnpm 11.28.6 on Linux. The lockfile fixes Vue at 3.5.44 and records each dependency version.
-
-Clone the reproduction branch:
+Tested on Linux with Node 24.21.0 and pnpm 11.28.6. The lockfile pins all dependencies.
 
 ```sh
 git clone --single-branch --branch repro/vue-setup-cleanup https://github.com/onmax/repros.git
 cd repros/vue-setup-cleanup
-```
-
-Run the verification:
-
-```sh
 bash verify.sh
 ```
 
-The script installs the dependencies in this directory. If `heavy` is available, the script uses it for installation and verification.
+Verification exits with code 0 when the bug appears and the control stays clean.
+It also confirms that the regression check below fails on the bug.
 
-The script starts no server and needs no credentials. Each child process has a 15-second timeout.
+```sh
+node case.mjs           # Exits 1: the false warning appears.
+node case.mjs --control # Exits 0: skip the setup error.
+```
 
-## Read the result
+The example uses Vue's custom renderer with nodes stored in memory.
+Two sibling components let the healthy component update after the other component fails.
+Each case runs in a separate process because the failed setup leaves shared Vue state behind.
+No browser or server is needed.
 
-The script exits with code 0 when all three checks produce the expected result:
+In [Vue's setup code](https://github.com/vuejs/core/blob/ca034820b8288ab6da3a033626a7857401ee64a5/packages/runtime-core/src/component.ts#L870),
+cleanup follows the call to `setup()` without a `finally` block. The development exception skips cleanup.
+This example was reduced from a Nuxt development failure on 2026-10-28. It establishes no production failure.
 
-1. The example produces the exact slot warning after the setup error.
-2. The control omits the failed update and produces no slot warning.
-3. The regression check requires correct behavior and exits with code 1 because the bug is present.
-
-The last output line is:
+Verified on 2026-10-29 from a clean install:
 
 ```text
-VERIFIED: exact bug reproduced, clean control passed, desired-behavior check failed as expected
+repro: exit 0
+control: exit 0
+regression: exit 1
 ```
-
-The failing example also prints these values:
-
-```json
-{"before": 0, "leaked": "Broken", "after": 1}
-```
-
-The control prints zero warnings before and after the update. The control has no leaked component instance.
-
-## Run each case separately
-
-To run the regression check, use:
-
-```sh
-NODE_ENV=development node case.mjs
-```
-
-The command currently exits with code 1. It requires Vue to restore its current component after the error and produce no false warning.
-
-To omit the failed update, use:
-
-```sh
-NODE_ENV=development CONTROL=1 node case.mjs
-```
-
-The control exits with code 0.
-
-## Check the scope
-
-The example needs no Nuxt, Nuxt UI, browser, or database. The example does not contain a fix.
-
-See [the cause and evidence](DETAILS.md) for the source revision, the original trigger, and the reason for each component.
-
-See [the recorded verification result](VERIFICATION.md) for the tested environment and exit codes.

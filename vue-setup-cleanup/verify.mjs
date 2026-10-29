@@ -1,22 +1,23 @@
 import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
-import { fileURLToPath } from 'node:url'
-const cwd = fileURLToPath(new URL('.', import.meta.url))
-const variants = ["vue"]
-const control = {"CONTROL": "1"}
-for (const variant of variants) {
-  for (const mode of ['repro', 'control', 'regression']) {
-    const env = { ...process.env, NODE_ENV: 'development', EVLOG_PACKAGE: variant,
-      CONTROL: '', NO_ASYNC_HOOK: '', ASSERT_REPRO: '',
-      ...(mode === 'control' ? control : {}),
-      ...(mode === 'repro' ? { ASSERT_REPRO: '1' } : {}) }
-    const result = spawnSync(process.execPath, ['case.mjs'], { cwd, env, encoding: 'utf8', timeout: 15000 })
-    assert.ifError(result.error)
-    process.stdout.write(result.stdout)
-    const expected = mode === 'regression' ? 1 : 0
-    if (result.status !== expected) process.stderr.write(result.stderr)
-    assert.equal(result.status, expected, `${variant} ${mode}: expected exit ${expected}`)
-    console.log(`${variant} ${mode}: expected exit ${expected}, observed ${result.status}`)
-  }
+
+const cases = [
+  ['repro', ['--expect-bug'], 0],
+  ['control', ['--control'], 0],
+  ['regression', [], 1],
+]
+for (const [name, flags, expected] of cases) {
+  const result = spawnSync(process.execPath, ['case.mjs', ...flags], {
+    cwd: new URL('.', import.meta.url),
+    env: { ...process.env, NODE_ENV: 'development' },
+    encoding: 'utf8',
+    timeout: 15000,
+  })
+  assert.ifError(result.error)
+  if (name === 'repro' || result.status !== expected) process.stdout.write(result.stdout)
+  if (result.status !== expected) process.stderr.write(result.stderr)
+  assert.equal(result.status, expected, `${name}: unexpected exit code`)
+  if (name === 'regression') assert.match(result.stderr, /a slot called inside render must not warn/)
+  console.log(`${name}: exit ${result.status}`)
 }
-console.log('VERIFIED: exact bug reproduced, clean control passed, desired-behavior check failed as expected')
+console.log('Verified the bug and the control.')
