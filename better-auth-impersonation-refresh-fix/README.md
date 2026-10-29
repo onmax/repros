@@ -2,7 +2,7 @@
 
 [Failing fixture](../better-auth-impersonation-refresh/README.md).
 
-This control is identical to the failing fixture except for `patches/better-auth@1.7.14.patch` and `patches/better-auth@1.8.0-beta.3.patch`. Both patches change one condition in `dist/api/routes/session.mjs`. `getSession` skips the sliding refresh when the stored session has `impersonatedBy`, as it already does when the `dont_remember` cookie is present. This is the same change as the upstream pull request, applied to the published `dist`.
+This control is identical to the failing fixture except for `patches/better-auth@1.7.14.patch` and `patches/better-auth@1.8.0-beta.3.patch`. Both patches change one condition in `dist/api/routes/session.mjs`. When the admin plugin is installed, `getSession` skips the sliding refresh for a stored session that has `impersonatedBy`, as it already does when the `dont_remember` cookie is present. This is the same change as the upstream pull request, applied to the published `dist`.
 
 ## Run
 
