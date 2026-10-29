@@ -1,45 +1,8 @@
-# Reproduce the evlog Nitro 3 event race
+# evlog emits before its error hook runs
 
-This example reproduces three warnings after evlog emits a request event before its error hook runs.
-The event loses the exception details.
-
-## Run the verification
-
-Use Node 24.21.0 and pnpm 11.28.6 on Linux.
-The lockfile fixes these package versions:
-
-- evlog 2.33.1.
-- evlog 2.34.0, installed under the comparison name `evlog-next`.
-- H3 2.0.1-rc.22.
-- Hookable 6.1.2.
-
-Clone the reproduction branch:
-
-```sh
-git clone --single-branch --branch repro/evlog-error-race https://github.com/onmax/repros.git
-cd repros/evlog-error-race
-```
-
-Run the verification:
-
-```sh
-bash verify.sh
-```
-
-The script installs the dependencies in this directory.
-If `heavy` is available, the script uses it for installation and verification.
-Each child process has a 15-second timeout.
-The script starts no server and needs no credentials or database.
-
-## Read the result
-
-For each evlog version, the script confirms these results:
-
-1. The request returns HTTP 409. The event has level `info` and no error details. All three late-write warnings appear.
-2. The control removes the earlier asynchronous hook. One event retains the error, and no late-write warnings appear.
-3. The regression check requires correct behavior and exits with code 1 because the bug is present.
-
-The warnings contain these exact messages:
+An earlier asynchronous error hook delays evlog's Nitro 3 error hook.
+The response hook emits first, so the event loses the exception and stays at level `info`.
+The later error hook produces these warnings:
 
 ```text
 log.error() called after the wide event was emitted — Keys dropped: error
@@ -47,44 +10,41 @@ log.set() called after the wide event was emitted — Keys dropped: status
 log.emit() called after the wide event was emitted — Ignoring duplicate emit
 ```
 
-The script exits with code 0 when all checks produce the expected result. The last output line is:
+Tested on Linux with Node 24.21.0 and pnpm 11.28.6.
+The lockfile pins evlog 2.33.1, evlog 2.34.0 as `evlog-next`, H3 2.0.1-rc.22, and Hookable 6.1.2.
+
+```sh
+git clone --single-branch --branch repro/evlog-error-race https://github.com/onmax/repros.git
+cd repros/evlog-error-race
+bash verify.sh
+```
+
+Verification exits with code 0 when both versions reproduce the bug and their controls pass.
+It also confirms that the regression checks below fail on the bug.
+
+```sh
+node case.mjs           # Exits 1: three warnings and lost error details.
+node case.mjs --control # Exits 0: remove the earlier asynchronous hook.
+node case.mjs --next    # Exits 1: the same bug on evlog 2.34.0.
+```
+
+The example runs the published evlog plugin with H3 and Hookable, without a server or database.
+It replaces Nitro's `definePlugin` wrapper with `fn => fn` so the plugin can load outside Nitro.
+It models Nitro 3.0.260610-beta's error-hook order, with one `setImmediate` wait for Nuxt development's stacktrace hook.
+Each case uses a separate process to isolate logger state. Every response remains HTTP 409.
+
+This example was reduced from a Nuxt development failure on 2026-10-28.
+An actual Nuxt route also reproduced the warnings without the application observability plugin.
+The reduction does not start Nitro or establish a production failure.
+See [evlog's hook code](https://github.com/evloghq/evlog/blob/785279e1c52c7486b51e642a8e2bf2091d38b764/packages/evlog/src/nitro-v3/plugin.ts#L271).
+
+Verified on 2026-10-29 from a clean install:
 
 ```text
-VERIFIED: exact bug reproduced, clean control passed, desired-behavior check failed as expected
+default repro: exit 0
+default control: exit 0
+default regression: exit 1
+--next repro: exit 0
+--next control: exit 0
+--next regression: exit 1
 ```
-
-## Run each case separately
-
-To run the regression check with evlog 2.33.1, use:
-
-```sh
-node case.mjs
-```
-
-The command currently exits with code 1.
-
-To remove the earlier asynchronous hook, use:
-
-```sh
-NO_ASYNC_HOOK=1 node case.mjs
-```
-
-The control exits with code 0 and retains the error details.
-
-To run the regression check with evlog 2.34.0, use:
-
-```sh
-EVLOG_PACKAGE=evlog-next node case.mjs
-```
-
-The command currently exits with code 1.
-
-## Check the scope
-
-The example runs the published evlog adapter with H3 and Hookable.
-It models the installed Nitro lifecycle but does not start Nitro.
-The example does not contain a fix.
-
-See [the cause and evidence](DETAILS.md) for the modeled hook order, the original Nuxt evidence, and the limits.
-
-See [the recorded verification result](VERIFICATION.md) for the tested environment and exit codes.
