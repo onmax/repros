@@ -9,6 +9,12 @@ import { fileURLToPath } from 'node:url'
 // because the signal Nuxt passes to the in-process fetch is held by undici's Request finalizer.
 // Fixed: no app survives the GC.
 const root = dirname(fileURLToPath(import.meta.url))
+// nodejs/node#64024 (Node 24.22.0, 26.9.0) drops removed `{ signal }` listeners, which hides the bug.
+const [major, minor] = process.versions.node.split('.').map(Number)
+if ((major === 24 && minor >= 22) || (major === 26 && minor >= 9) || major > 26) {
+  console.error(`Node ${process.version} is not affected; run with Node 22 or Node 24 before 24.22`)
+  process.exit(1)
+}
 const requests = 100
 // A large initial old space keeps V8 from running a full GC (and undici's finalizers) in the middle of the burst,
 // which would free part of the backlog early and make the count depend on timing.

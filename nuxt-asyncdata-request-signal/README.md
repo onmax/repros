@@ -17,7 +17,19 @@ Same result in 5 of 5 runs. Expected is 0, as on Nuxt 4.6.2.
 
 The server runs with `--initial-old-space-size=1024`. Without it, V8 may run a full GC during the burst, the finalizer runs, and part of the backlog is freed early. Runs then kept anywhere from 3 to 48 apps.
 
-Pinned: `nuxt-nightly@5.0.0-2610251741-2aa3d76`, Node 24.21.0 with undici 7.29.1.
+Pinned: `nuxt-nightly@5.0.0-2610251741-2aa3d76`, Node 24.21.0 with undici 7.29.1. `nuxt-nightly@5.0.0-2610291819-5b6d59e` (2026-10-29) still has it.
+
+## Node versions
+
+It depends on Node. nodejs/node#64024 (in Node 24.22.0 and 26.9.0) makes `EventTarget` drop a removed `{ signal }` listener, which also ends this retention. `node-only.mjs 20 request`, heap after GC:
+
+| Node | retained |
+|---|---|
+| 22.23.4 (latest 22) | 98 MB |
+| 24.21.0 | 106 MB |
+| 24.22.2 | 7 MB (none) |
+
+Nuxt 5 supports `^22.21.0 || ^24.11.0 || >=26.0.0`, so most supported versions are affected. Run `verify.mjs` with Node 22 or Node 24 before 24.22.
 
 ## Cause
 
