@@ -1,5 +1,7 @@
 # evlog emits before its error hook runs
 
+Reported in [evlog #962](https://github.com/evloghq/evlog/issues/962).
+
 An earlier asynchronous error hook delays evlog's Nitro 3 error hook.
 The response hook emits first, so the event loses the exception and stays at level `info`.
 The later error hook produces these warnings:

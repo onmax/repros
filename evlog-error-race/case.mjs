@@ -36,11 +36,16 @@ hooks.hook('evlog:drain', ({ event }) => events.push(event))
 
 const pending = []
 const app = new H3Core({
-  onRequest(event) { return hooks.callHook('request', event) },
+  onRequest(event) {
+    event.req.context ||= {}
+    event.req.context.nitro = { errors: [] }
+    return hooks.callHook('request', event)
+  },
   onResponse(response, event) { return hooks.callHook('response', response, event) },
   onError(error, event) {
     // Nitro 3.0.260610-beta starts these hooks without awaiting them.
     pending.push(hooks.callHook('error', error, { event }))
+    event.req.context.nitro.errors.push({ error, context: { event } })
     return new Response(null, { status: error.status })
   },
 })
