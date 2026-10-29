@@ -1,0 +1,74 @@
+$ pnpm verify --expect-bug
+$ node verify.mjs --expect-bug
+
+better-auth 1.7.14 (better-auth), impersonationSessionDuration: 2s, session.expiresIn: 7 days
+┌─────────┬───────────────────────────────────────────────────┬──────────────────────────┬────────────────┬───────────────────────────┐
+│ (index) │ scenario                                          │ expiry moved by          │ valid after 3s │ session_token Max-Age set │
+├─────────┼───────────────────────────────────────────────────┼──────────────────────────┼────────────────┼───────────────────────────┤
+│ 0       │ 'browser, all cookies (control)'                  │ '0 ms'                   │ false          │ '-'                       │
+│ 1       │ 'session_token cookie only'                       │ '604798009 ms (~7 days)' │ true           │ '604800'                  │
+│ 2       │ 'bearer() with set-auth-token'                    │ '604798014 ms (~7 days)' │ true           │ '604800'                  │
+│ 3       │ 'session_token only, via /list-sessions'          │ '604798009 ms (~7 days)' │ true           │ '604800'                  │
+│ 4       │ 'deferSessionRefresh, POST /get-session'          │ '604798004 ms (~7 days)' │ true           │ '604800'                  │
+│ 5       │ 'secondaryStorage, session_token only'            │ '604798003 ms (~7 days)' │ true           │ '604800'                  │
+│ 6       │ 'no database, cookieCache.refreshCache (control)' │ '0 ms'                   │ false          │ '604800'                  │
+└─────────┴───────────────────────────────────────────────────┴──────────────────────────┴────────────────┴───────────────────────────┘
+
+better-auth 1.8.0-beta.3 (better-auth-beta), impersonationSessionDuration: 2s, session.expiresIn: 7 days
+┌─────────┬───────────────────────────────────────────────────┬──────────────────────────┬────────────────┬───────────────────────────┐
+│ (index) │ scenario                                          │ expiry moved by          │ valid after 3s │ session_token Max-Age set │
+├─────────┼───────────────────────────────────────────────────┼──────────────────────────┼────────────────┼───────────────────────────┤
+│ 0       │ 'browser, all cookies (control)'                  │ '0 ms'                   │ false          │ '-'                       │
+│ 1       │ 'session_token cookie only'                       │ '604798011 ms (~7 days)' │ true           │ '604800'                  │
+│ 2       │ 'bearer() with set-auth-token'                    │ '604798014 ms (~7 days)' │ true           │ '604800'                  │
+│ 3       │ 'session_token only, via /list-sessions'          │ '604798011 ms (~7 days)' │ true           │ '604800'                  │
+│ 4       │ 'deferSessionRefresh, POST /get-session'          │ '604798003 ms (~7 days)' │ true           │ '604800'                  │
+│ 5       │ 'secondaryStorage, session_token only'            │ '604798005 ms (~7 days)' │ true           │ '604800'                  │
+│ 6       │ 'no database, cookieCache.refreshCache (control)' │ '0 ms'                   │ false          │ '604800'                  │
+└─────────┴───────────────────────────────────────────────────┴──────────────────────────┴────────────────┴───────────────────────────┘
+
+Reproduced: without the dont_remember cookie, every affected path refreshes the impersonation session to session.expiresIn, and it stays valid after impersonationSessionDuration.
+exit: 0
+
+$ pnpm verify
+$ node verify.mjs
+
+better-auth 1.7.14 (better-auth), impersonationSessionDuration: 2s, session.expiresIn: 7 days
+┌─────────┬───────────────────────────────────────────────────┬──────────────────────────┬────────────────┬───────────────────────────┐
+│ (index) │ scenario                                          │ expiry moved by          │ valid after 3s │ session_token Max-Age set │
+├─────────┼───────────────────────────────────────────────────┼──────────────────────────┼────────────────┼───────────────────────────┤
+│ 0       │ 'browser, all cookies (control)'                  │ '0 ms'                   │ false          │ '-'                       │
+│ 1       │ 'session_token cookie only'                       │ '604798015 ms (~7 days)' │ true           │ '604800'                  │
+│ 2       │ 'bearer() with set-auth-token'                    │ '604798017 ms (~7 days)' │ true           │ '604800'                  │
+│ 3       │ 'session_token only, via /list-sessions'          │ '604798013 ms (~7 days)' │ true           │ '604800'                  │
+│ 4       │ 'deferSessionRefresh, POST /get-session'          │ '604798005 ms (~7 days)' │ true           │ '604800'                  │
+│ 5       │ 'secondaryStorage, session_token only'            │ '604798004 ms (~7 days)' │ true           │ '604800'                  │
+│ 6       │ 'no database, cookieCache.refreshCache (control)' │ '0 ms'                   │ false          │ '604800'                  │
+└─────────┴───────────────────────────────────────────────────┴──────────────────────────┴────────────────┴───────────────────────────┘
+
+better-auth 1.8.0-beta.3 (better-auth-beta), impersonationSessionDuration: 2s, session.expiresIn: 7 days
+┌─────────┬───────────────────────────────────────────────────┬──────────────────────────┬────────────────┬───────────────────────────┐
+│ (index) │ scenario                                          │ expiry moved by          │ valid after 3s │ session_token Max-Age set │
+├─────────┼───────────────────────────────────────────────────┼──────────────────────────┼────────────────┼───────────────────────────┤
+│ 0       │ 'browser, all cookies (control)'                  │ '0 ms'                   │ false          │ '-'                       │
+│ 1       │ 'session_token cookie only'                       │ '604798010 ms (~7 days)' │ true           │ '604800'                  │
+│ 2       │ 'bearer() with set-auth-token'                    │ '604798011 ms (~7 days)' │ true           │ '604800'                  │
+│ 3       │ 'session_token only, via /list-sessions'          │ '604798009 ms (~7 days)' │ true           │ '604800'                  │
+│ 4       │ 'deferSessionRefresh, POST /get-session'          │ '604798003 ms (~7 days)' │ true           │ '604800'                  │
+│ 5       │ 'secondaryStorage, session_token only'            │ '604798003 ms (~7 days)' │ true           │ '604800'                  │
+│ 6       │ 'no database, cookieCache.refreshCache (control)' │ '0 ms'                   │ false          │ '604800'                  │
+└─────────┴───────────────────────────────────────────────────┴──────────────────────────┴────────────────┴───────────────────────────┘
+
+Impersonation sessions outlive impersonationSessionDuration:
+- 1.7.14 session_token cookie only: expiry moved by 604798015 ms, valid after the duration: true
+- 1.7.14 bearer() with set-auth-token: expiry moved by 604798017 ms, valid after the duration: true
+- 1.7.14 session_token only, via /list-sessions: expiry moved by 604798013 ms, valid after the duration: true
+- 1.7.14 deferSessionRefresh, POST /get-session: expiry moved by 604798005 ms, valid after the duration: true
+- 1.7.14 secondaryStorage, session_token only: expiry moved by 604798004 ms, valid after the duration: true
+- 1.8.0-beta.3 session_token cookie only: expiry moved by 604798010 ms, valid after the duration: true
+- 1.8.0-beta.3 bearer() with set-auth-token: expiry moved by 604798011 ms, valid after the duration: true
+- 1.8.0-beta.3 session_token only, via /list-sessions: expiry moved by 604798009 ms, valid after the duration: true
+- 1.8.0-beta.3 deferSessionRefresh, POST /get-session: expiry moved by 604798003 ms, valid after the duration: true
+- 1.8.0-beta.3 secondaryStorage, session_token only: expiry moved by 604798003 ms, valid after the duration: true
+[ELIFECYCLE] Command failed with exit code 1.
+exit: 1

@@ -1,0 +1,16 @@
+{
+  "name": "better-auth-impersonation-refresh-fix",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.28.5",
+  "engines": {
+    "node": "24.21.0"
+  },
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "better-auth": "1.7.14",
+    "better-auth-beta": "npm:better-auth@1.8.0-beta.3"
+  }
+}
