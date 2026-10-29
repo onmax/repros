@@ -1,22 +1,12 @@
 diff --git a/dist/api/routes/session.mjs b/dist/api/routes/session.mjs
-index 073580d38e977702c3ea51d73a61ab1138807ea5..4601630a0b7933e152eceafefa6a6880e249a6f0 100644
+index 073580d38e977702c3ea51d73a61ab1138807ea5..dbabf6c3f9d99b7170aba95e8b690af76050ebd4 100644
 --- a/dist/api/routes/session.mjs
 +++ b/dist/api/routes/session.mjs
-@@ -104,7 +104,7 @@ const getSession = () => createAuthEndpoint("/get-session", {
- 					};
- 					await setCookieCache(ctx, refreshedSession, false);
- 					const sessionTokenOptions = ctx.context.authCookies.sessionToken.attributes;
--					const sessionTokenMaxAge = dontRememberMe ? void 0 : ctx.context.sessionConfig.expiresIn;
-+					const sessionTokenMaxAge = dontRememberMe || session.session.impersonatedBy ? void 0 : ctx.context.sessionConfig.expiresIn;
- 					await ctx.setSignedCookie(ctx.context.authCookies.sessionToken.name, session.session.token, ctx.context.secret, {
- 						...sessionTokenOptions,
- 						maxAge: sessionTokenMaxAge
-@@ -167,7 +167,8 @@ const getSession = () => createAuthEndpoint("/get-session", {
+@@ -167,7 +167,7 @@ const getSession = () => createAuthEndpoint("/get-session", {
  		* We don't need to update the session if the user doesn't want to be remembered
  		* or if the session refresh is disabled
  		*/
 -		if (dontRememberMe || ctx.query?.disableRefresh) {
-+		// An admin impersonation session keeps the expiry the admin plugin set, with or without the dont_remember cookie.
 +		if (dontRememberMe || ctx.query?.disableRefresh || session.session.impersonatedBy) {
  			const parsedSession = parseSessionOutput(ctx.context.options, session.session);
  			const parsedUser = parseUserOutput(ctx.context.options, session.user);
