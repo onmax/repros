@@ -1,0 +1,806 @@
+[
+  {
+    "number": 8,
+    "title": "Inline HTML inside emphasis, strong, a link, or a heading loses its text",
+    "kind": "bug",
+    "markdown": "**a <b>B</b>**\n\n# a <b>B</b>",
+    "expected": "<p><strong>a <b>B</b></strong></p><h1>a <b>B</b></h1>",
+    "comark": "<p><strong>a B<b></b></strong></p><h1 id=\"a-b\">a B<b></b></h1>",
+    "nodes": [
+      [
+        "p",
+        {},
+        [
+          "strong",
+          {},
+          "a B",
+          [
+            "b",
+            {
+              "$": {
+                "html": 1,
+                "block": 0
+              }
+            }
+          ]
+        ]
+      ],
+      [
+        "h1",
+        {
+          "id": "a-b"
+        },
+        "a B",
+        [
+          "b",
+          {
+            "$": {
+              "html": 1,
+              "block": 0
+            }
+          }
+        ]
+      ]
+    ]
+  },
+  {
+    "number": 9,
+    "title": "A line break inside HTML is dropped, gluing words and code lines together",
+    "kind": "bug",
+    "markdown": "<div>\na\nb</div>\n\nx <script>\na()\nb()</script>",
+    "expected": "<div>a\nb</div><p>x <script>a()\nb()</script></p>",
+    "comark": "<div>ab</div><p>x <script>a()b()</script></p>",
+    "nodes": [
+      [
+        "div",
+        {
+          "$": {
+            "html": 1,
+            "block": 1
+          }
+        },
+        "a",
+        "b"
+      ],
+      [
+        "p",
+        {},
+        "x ",
+        [
+          "script",
+          {
+            "$": {
+              "html": 1,
+              "block": 0
+            }
+          },
+          "a()",
+          "b()"
+        ]
+      ]
+    ]
+  },
+  {
+    "number": 10,
+    "title": "A tag with JSX-style attributes becomes literal text",
+    "kind": "bug",
+    "markdown": "<div style={{a: 1}}>\n\nx",
+    "expected": "<div style=\"{{a:\" 1}}=\"\"><p>x</p></div>",
+    "comark": "<p>&lt;div style={{a: 1}}&gt;</p><p>x</p>",
+    "nodes": [
+      [
+        "p",
+        {},
+        "<div style={{a: 1}}>"
+      ],
+      [
+        "p",
+        {},
+        "x"
+      ]
+    ]
+  },
+  {
+    "number": 11,
+    "title": "A tight list item with a sublist keeps a `<p>`",
+    "kind": "bug",
+    "markdown": "- a\n  - b",
+    "expected": "<ul><li>a<ul><li>b</li></ul></li></ul>",
+    "comark": "<ul><li><p>a</p><ul><li>b</li></ul></li></ul>",
+    "nodes": [
+      [
+        "ul",
+        {},
+        [
+          "li",
+          {},
+          [
+            "p",
+            {},
+            "a"
+          ],
+          [
+            "ul",
+            {},
+            [
+              "li",
+              {},
+              "b"
+            ]
+          ]
+        ]
+      ]
+    ]
+  },
+  {
+    "number": 12,
+    "title": "An inline tag left open in a paragraph stays open across blocks",
+    "kind": "bug",
+    "markdown": "GET /apps/<id>\n\nNext paragraph.",
+    "expected": "<p>GET /apps/<id></id></p><p>Next paragraph.</p>",
+    "comark": "GET /apps/<id>Next paragraph.</id>",
+    "nodes": [
+      "GET /apps/",
+      [
+        "id",
+        {
+          "$": {
+            "html": 1,
+            "block": 1
+          }
+        },
+        "Next paragraph."
+      ]
+    ]
+  },
+  {
+    "number": 13,
+    "title": "A Markdown image with empty alt text loses `alt=\"\"`",
+    "kind": "bug",
+    "markdown": "![](a.png)",
+    "expected": "<p><img src=\"a.png\" alt=\"\"></p>",
+    "comark": "<p><img src=\"a.png\"></p>",
+    "nodes": [
+      [
+        "p",
+        {},
+        [
+          "img",
+          {
+            "src": "a.png"
+          }
+        ]
+      ]
+    ]
+  },
+  {
+    "number": 14,
+    "title": "Image alt text keeps its Markdown",
+    "kind": "bug",
+    "markdown": "![a `b` [c](u)](x.png)",
+    "expected": "<p><img src=\"x.png\" alt=\"a b c\"></p>",
+    "comark": "<p><img src=\"x.png\" alt=\"a `b` [c](u)\"></p>",
+    "nodes": [
+      [
+        "p",
+        {},
+        [
+          "img",
+          {
+            "src": "x.png",
+            "alt": "a `b` [c](u)"
+          }
+        ]
+      ]
+    ]
+  },
+  {
+    "number": 15,
+    "title": "An empty ATX heading disappears",
+    "kind": "bug",
+    "markdown": "#\n\n## ",
+    "expected": "<h1></h1><h2></h2>",
+    "comark": "",
+    "nodes": []
+  },
+  {
+    "number": 16,
+    "title": "`</br>` is dropped",
+    "kind": "bug",
+    "markdown": "a</br>b",
+    "expected": "<p>a<br>b</p>",
+    "comark": "<p>ab</p>",
+    "nodes": [
+      [
+        "p",
+        {},
+        "ab"
+      ]
+    ]
+  },
+  {
+    "number": 17,
+    "title": "A second `<p>` doesn't close the first",
+    "kind": "bug",
+    "markdown": "<p>\none\n<p>\ntwo",
+    "expected": "<p>one</p><p>two</p>",
+    "comark": "<p>one<p>two</p></p>",
+    "nodes": [
+      [
+        "p",
+        {
+          "$": {
+            "html": 1,
+            "block": 1
+          }
+        },
+        "one",
+        [
+          "p",
+          {
+            "$": {
+              "html": 1,
+              "block": 1
+            }
+          },
+          "two"
+        ]
+      ]
+    ]
+  },
+  {
+    "number": 18,
+    "title": "Inside an open HTML element, a paragraph is rebuilt from a list of inline tags",
+    "kind": "bug",
+    "markdown": "<div>\n\n![](x.png)\n\na  \nb\n\n</div>",
+    "expected": "<div><p><img src=\"x.png\" alt=\"\"></p><p>a<br>b</p></div>",
+    "comark": "<div><img src=\"x.png\"><p>a</p><br><p>b</p></div>",
+    "nodes": [
+      [
+        "div",
+        {
+          "$": {
+            "html": 1,
+            "block": 1
+          }
+        },
+        [
+          "img",
+          {
+            "src": "x.png"
+          }
+        ],
+        [
+          "p",
+          {},
+          "a"
+        ],
+        [
+          "br",
+          {}
+        ],
+        [
+          "p",
+          {},
+          "b"
+        ]
+      ]
+    ]
+  },
+  {
+    "number": 19,
+    "title": "In a list item, an open inline tag reorders the text and leaks a `<fragment>` element",
+    "kind": "bug",
+    "markdown": "- **a** <b>c",
+    "expected": "<ul><li><strong>a</strong> <b>c</b></li><b></b></ul>",
+    "comark": "<ul><li><b>c<fragment><strong>a</strong> </fragment></b></li></ul>",
+    "nodes": [
+      [
+        "ul",
+        {},
+        [
+          "li",
+          {},
+          [
+            "b",
+            {
+              "$": {
+                "html": 1,
+                "block": 1
+              }
+            },
+            "c",
+            [
+              "fragment",
+              {},
+              [
+                "strong",
+                {},
+                "a"
+              ],
+              " "
+            ]
+          ]
+        ]
+      ]
+    ]
+  },
+  {
+    "number": 20,
+    "title": "An HTML block holding only a comment gets a `<p>`, and `<!--- --->` isn't a comment",
+    "kind": "bug",
+    "markdown": "  <!-- a -->\n\n<!--- b --->",
+    "expected": "<!-- a --><!--- b --->",
+    "comark": "<p>  <!-- a --></p><p><!--- b ---></p>",
+    "nodes": [
+      [
+        "p",
+        {},
+        "  ",
+        [
+          null,
+          {},
+          " a "
+        ]
+      ],
+      [
+        "p",
+        {},
+        [
+          null,
+          {},
+          "- b -"
+        ]
+      ]
+    ]
+  },
+  {
+    "number": 21,
+    "title": "Tags inside a raw `<pre>` stay as text, and entities stay encoded",
+    "kind": "bug",
+    "markdown": "<pre><code>x &lt; y</code></pre>",
+    "expected": "<pre><code>x &#x3C; y</code></pre>",
+    "comark": "<pre>&lt;code&gt;x &amp;lt; y&lt;/code&gt;</pre>",
+    "nodes": [
+      [
+        "pre",
+        {
+          "$": {
+            "html": 1,
+            "block": 1
+          }
+        },
+        "<code>x &lt; y</code>"
+      ]
+    ]
+  },
+  {
+    "number": 22,
+    "title": "An unclosed `{` swallows the rest of the line as attributes",
+    "kind": "bug",
+    "markdown": "a {b c",
+    "expected": "<p>a {b c</p>",
+    "comark": "<p b c>a</p>",
+    "nodes": [
+      [
+        "p",
+        {
+          ":b": "true",
+          ":c": "true"
+        },
+        "a"
+      ]
+    ]
+  },
+  {
+    "number": 23,
+    "title": "A fence info string made of a non-numeric `{…}` disappears",
+    "kind": "bug",
+    "markdown": "```{x}\ncode\n```",
+    "expected": "<pre><code class=\"language-{x}\">code</code></pre>",
+    "comark": "<pre><code>code</code></pre>",
+    "nodes": [
+      [
+        "pre",
+        {},
+        [
+          "code",
+          {},
+          "code"
+        ]
+      ]
+    ]
+  },
+  {
+    "number": 24,
+    "title": "A bare `[label]` with a matching definition becomes a span instead of the link",
+    "kind": "bug",
+    "markdown": "[a]\n\n[a]: https://example.com",
+    "expected": "<p><a href=\"https://example.com\">a</a></p>",
+    "comark": "<p><span>a</span></p>",
+    "nodes": [
+      [
+        "p",
+        {},
+        [
+          "span",
+          {},
+          "a"
+        ]
+      ]
+    ]
+  },
+  {
+    "number": 25,
+    "title": "`autoUnwrap` unwraps an author-written `<p>` and moves its attributes onto the parent",
+    "kind": "bug",
+    "markdown": "<section><p class=\"c\">Check</p></section>",
+    "expected": "<section><p class=\"c\">Check</p></section>",
+    "comark": "<section class=\"c\">Check</section>",
+    "nodes": [
+      [
+        "section",
+        {
+          "$": {
+            "html": 1,
+            "block": 1
+          },
+          "class": "c"
+        },
+        "Check"
+      ]
+    ]
+  },
+  {
+    "number": 26,
+    "title": "Auto-close, on by default, changes complete documents",
+    "kind": "bug",
+    "markdown": "x [y",
+    "expected": "<p>x [y</p>",
+    "comark": "<p>x <a href=\"comark:incomplete-link\">y</a></p>",
+    "nodes": [
+      [
+        "p",
+        {},
+        "x ",
+        [
+          "a",
+          {
+            "href": "comark:incomplete-link"
+          },
+          "y"
+        ]
+      ]
+    ]
+  },
+  {
+    "number": 27,
+    "title": "Linkify differs from GFM autolinks",
+    "kind": "bug",
+    "markdown": "a@b.dev and (http://a:port)",
+    "expected": "<p><a href=\"mailto:a@b.dev\">a@b.dev</a> and (<a href=\"http://a:port\">http://a:port</a>)</p>",
+    "comark": "<p>a@b.dev and (<a href=\"http://a\">http://a</a>:port)</p>",
+    "nodes": [
+      [
+        "p",
+        {},
+        "a@b.dev and (",
+        [
+          "a",
+          {
+            "href": "http://a"
+          },
+          "http://a"
+        ],
+        ":port)"
+      ]
+    ]
+  },
+  {
+    "number": 28,
+    "title": "Frontmatter ends at any line that starts with `---`, and isn't found after a byte order mark",
+    "kind": "bug",
+    "markdown": "---\na: 1\n--- x\n---\n\nBody",
+    "expected": "<p>Body</p>",
+    "comark": "<h2 id=\"x\">x</h2><p>Body</p>",
+    "nodes": [
+      [
+        "h2",
+        {
+          "id": "x"
+        },
+        "x"
+      ],
+      [
+        "p",
+        {},
+        "Body"
+      ]
+    ]
+  },
+  {
+    "number": 29,
+    "title": "Invalid YAML frontmatter makes `parseMarkdown` throw",
+    "kind": "bug",
+    "markdown": "---\ntitle: [\n---\n\n# Hi",
+    "expected": "<h1>Hi</h1>",
+    "comark": "throws: unexpected end of the stream within a flow collection (1:9)"
+  },
+  {
+    "number": 30,
+    "title": "The footnotes plugin leaves definitions unparsed, deletes lines inside code, and keeps the last duplicate",
+    "kind": "bug",
+    "markdown": "a[^1]\n\n[^1]: *b*",
+    "expected": "<p>a<sup><a href=\"#user-content-fn-1\" id=\"user-content-fnref-1\" data-footnote-ref=\"\" aria-describedby=\"footnote-label\">1</a></sup></p><section data-footnotes=\"\" class=\"footnotes\"><h2 class=\"sr-only\" id=\"footnote-label\">Footnotes</h2><ol><li id=\"user-content-fn-1\"><p><em>b</em> <a href=\"#user-content-fnref-1\" data-footnote-backref=\"\" aria-label=\"Back to reference 1\" class=\"data-footnote-backref\">↩</a></p></li></ol></section>",
+    "comark": "<p>a<sup class=\"footnote-ref\"><a href=\"#fn-1\" id=\"fnref-1\">[1]</a></sup></p><section class=\"footnotes\"><hr><h2 id=\"footnotes\">Footnotes</h2><ol class=\"footnotes-list\"><li id=\"fn-1\">*b* <a href=\"#fnref-1\" class=\"footnote-backref\">↩</a></li></ol></section>",
+    "nodes": [
+      [
+        "p",
+        {},
+        "a",
+        [
+          "sup",
+          {
+            "class": "footnote-ref"
+          },
+          [
+            "a",
+            {
+              "href": "#fn-1",
+              "id": "fnref-1"
+            },
+            "[1]"
+          ]
+        ]
+      ],
+      [
+        "section",
+        {
+          "class": "footnotes"
+        },
+        [
+          "hr",
+          {}
+        ],
+        [
+          "h2",
+          {
+            "id": "footnotes"
+          },
+          "Footnotes"
+        ],
+        [
+          "ol",
+          {
+            "class": "footnotes-list"
+          },
+          [
+            "li",
+            {
+              "id": "fn-1"
+            },
+            "*b*",
+            " ",
+            [
+              "a",
+              {
+                "href": "#fnref-1",
+                "class": "footnote-backref"
+              },
+              "↩"
+            ]
+          ]
+        ]
+      ]
+    ]
+  },
+  {
+    "number": 31,
+    "title": "A duplicated attribute keeps the last value",
+    "kind": "bug",
+    "markdown": "<img alt=\"first\" alt=\"second\">",
+    "expected": "<img alt=\"first\">",
+    "comark": "<img alt=\"second\">",
+    "nodes": [
+      [
+        "img",
+        {
+          "$": {
+            "html": 1,
+            "block": 1
+          },
+          "alt": "second"
+        }
+      ]
+    ]
+  },
+  {
+    "number": 32,
+    "title": "Block rules inherited from markdown-exit differ from CommonMark",
+    "kind": "bug",
+    "markdown": "> a\n    > b",
+    "expected": "<blockquote><p>a\n> b</p></blockquote>",
+    "comark": "<blockquote>a\nb</blockquote>",
+    "nodes": [
+      [
+        "blockquote",
+        {},
+        "a\nb"
+      ]
+    ]
+  },
+  {
+    "number": 33,
+    "title": "`@comark/html` indents code nested in a block, and escapes `>` in `<style>` and `<script>`",
+    "kind": "bug",
+    "code": "import { parseMarkdown } from \"comark\";\nimport { renderHtmlFromDocument } from \"@comark/html\";\n\nconsole.log(await renderHtmlFromDocument(await parseMarkdown(\"- x\\n\\n  ```\\n  a\\n    b\\n  ```\\n\\n<style>\\na > b {}\\n</style>\")));\n// <pre><code>a\\n      b</code></pre> (expected a\\n  b) and <style>a &gt; b {}</style>"
+  },
+  {
+    "number": 34,
+    "title": "With `html({ markdown: false })`, character references in HTML blocks stay encoded",
+    "kind": "bug",
+    "code": "import { parseMarkdown } from \"comark\";\nimport html from \"comark/plugins/html\";\n\nconsole.log(JSON.stringify((await parseMarkdown(\"<div>\\n&lt;b&gt; &amp; x\\n</div>\", { plugins: [html({ markdown: false })] })).nodes));\n// [[\"div\",{…},\"&lt;b&gt; &amp; x\"]]  (expected \"<b> & x\")"
+  },
+  {
+    "number": 35,
+    "title": "A paragraph with about 65,000 children overflows the stack",
+    "kind": "bug",
+    "code": "import { parseMarkdown } from \"comark\";\n\nawait parseMarkdown(\"https://x.com/a \".repeat(65536));\n// RangeError: Maximum call stack size exceeded"
+  },
+  {
+    "number": 36,
+    "title": "`autoUnwrap` is on by default, so `> a` loses its `<p>`",
+    "kind": "default",
+    "markdown": "> a",
+    "expected": "<blockquote><p>a</p></blockquote>",
+    "comark": "<blockquote>a</blockquote>",
+    "nodes": [
+      [
+        "blockquote",
+        {},
+        "a"
+      ]
+    ]
+  },
+  {
+    "number": 37,
+    "title": "Markdown is parsed inside HTML blocks, which CommonMark keeps raw",
+    "kind": "default",
+    "markdown": "<table><tr><td>\n<code>[a] *b*</code>\n</td></tr></table>\n\n</div>\n```",
+    "expected": "<table><tbody><tr><td><code>[a] *b*</code></td></tr></tbody></table>\n```",
+    "comark": "<table><tr><td><code><span>a</span> <em>b</em></code></td></tr></table><pre><code></code></pre>",
+    "nodes": [
+      [
+        "table",
+        {
+          "$": {
+            "html": 1,
+            "block": 1
+          }
+        },
+        [
+          "tr",
+          {
+            "$": {
+              "html": 1,
+              "block": 0
+            }
+          },
+          [
+            "td",
+            {
+              "$": {
+                "html": 1,
+                "block": 0
+              }
+            },
+            [
+              "code",
+              {
+                "$": {
+                  "html": 1,
+                  "block": 0
+                }
+              },
+              [
+                "span",
+                {},
+                "a"
+              ],
+              " ",
+              [
+                "em",
+                {},
+                "b"
+              ]
+            ]
+          ]
+        ]
+      ],
+      [
+        "pre",
+        {},
+        [
+          "code",
+          {},
+          ""
+        ]
+      ]
+    ]
+  },
+  {
+    "number": 38,
+    "title": "Linkify links bare domains (`example.com`) and keeps a trailing `_`",
+    "kind": "default",
+    "markdown": "see example.com and https://example.com/a_",
+    "expected": "<p>see example.com and <a href=\"https://example.com/a\">https://example.com/a</a>_</p>",
+    "comark": "<p>see <a href=\"http://example.com\">example.com</a> and <a href=\"https://example.com/a_\">https://example.com/a_</a></p>",
+    "nodes": [
+      [
+        "p",
+        {},
+        "see ",
+        [
+          "a",
+          {
+            "href": "http://example.com"
+          },
+          "example.com"
+        ],
+        " and ",
+        [
+          "a",
+          {
+            "href": "https://example.com/a_"
+          },
+          "https://example.com/a_"
+        ]
+      ]
+    ]
+  },
+  {
+    "number": 39,
+    "title": "A paragraph holding only inline HTML loses its `<p>`",
+    "kind": "default",
+    "markdown": "<video src=\"a.mp4\"></video>",
+    "expected": "<p><video src=\"a.mp4\"></video></p>",
+    "comark": "<video src=\"a.mp4\"></video>",
+    "nodes": [
+      [
+        "video",
+        {
+          "$": {
+            "html": 1,
+            "block": 1
+          },
+          "src": "a.mp4"
+        }
+      ]
+    ]
+  },
+  {
+    "number": 40,
+    "title": "The fence meta syntax cuts Gatsby-style info strings",
+    "kind": "default",
+    "markdown": "```jsx:title=src/pages/app/[...].js\nx\n```",
+    "expected": "<pre><code class=\"language-jsx:title=src/pages/app/[...].js\">x</code></pre>",
+    "comark": "<pre language=\"jsx:title=src/pages/app/\" filename=\"...\" meta=\".js\"><code class=\"language-jsx:title=src/pages/app/\">x</code></pre>",
+    "nodes": [
+      [
+        "pre",
+        {
+          "language": "jsx:title=src/pages/app/",
+          "filename": "...",
+          "meta": ".js"
+        },
+        [
+          "code",
+          {
+            "class": "language-jsx:title=src/pages/app/"
+          },
+          "x"
+        ]
+      ]
+    ]
+  }
+]

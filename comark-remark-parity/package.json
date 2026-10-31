@@ -2,7 +2,9 @@
   "name": "comark-remark-parity",
   "private": true,
   "type": "module",
-  "scripts": { "verify": "node verify.mjs" },
+  "scripts": {
+    "verify": "node verify.mjs && node verify-cases.mjs"
+  },
   "dependencies": {
     "@comark/html": "0.8.1",
     "comark": "0.8.1"

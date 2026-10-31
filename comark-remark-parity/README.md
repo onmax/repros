@@ -11,7 +11,12 @@ pnpm install
 pnpm verify
 ```
 
-`verify.mjs` prints the input, the expected result, and the actual result for every case. It exits 0 only when all 14 reproduce. To test a source checkout instead of npm, build `packages/comark` and run `COMARK_ROOT=/path/to/comark pnpm verify`.
+`pnpm verify` runs two checks:
+
+- `verify.mjs` holds the first 14 cases and prints each one's input, expected result, and actual result.
+- `verify-cases.mjs` checks every case reported in comarkdown/comark#525 (cases 8 to 40), against the exact tree Comark gave when the report was written (`cases.json`, which also holds the CommonMark/GFM output from remark).
+
+Each exits 0 only when every case still reproduces. To test a source checkout instead of npm, build `packages/comark` and run `COMARK_ROOT=/path/to/comark pnpm verify`.
 
 | case | problem | cause |
 | --- | --- | --- |
