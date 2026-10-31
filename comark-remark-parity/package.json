@@ -1,0 +1,11 @@
+{
+  "name": "comark-remark-parity",
+  "private": true,
+  "type": "module",
+  "scripts": { "verify": "node verify.mjs" },
+  "dependencies": {
+    "@comark/html": "0.8.1",
+    "comark": "0.8.1"
+  },
+  "packageManager": "pnpm@12.16.1"
+}
