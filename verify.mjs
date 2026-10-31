@@ -4,9 +4,11 @@
 // busy-waits 700 ms. app/modules/stop.ts stops the build at `build:before`, after generateApp
 // has compiled every template and before Vite or Nitro start.
 // Nuxt prints "Compiled <template> in <ms>ms" for each template it timed at more than 500 ms.
-// Exits 1 when it prints that line for any template other than repro/slow.mjs, 0 when it prints
-// it only for repro/slow.mjs, and 2 when setup or the build fails, the build doesn't reach
-// build:before, or repro/slow.mjs isn't reported. Builds run through `heavy` when it is installed.
+// A fixed Nuxt may instead print one "Generating templates took <ms>ms" line for the whole batch.
+// Exits 1 when it prints a "Compiled" line for any template other than repro/slow.mjs, 0 when it
+// prints none for other templates and reports the 700 ms block (a line for repro/slow.mjs or a batch
+// line of at least 700 ms), and 2 when setup or the build fails, the build doesn't reach
+// build:before, or the block isn't reported at all. Builds run through `heavy` when it is installed.
 import { spawnSync } from 'node:child_process'
 import { existsSync, mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { join, relative, resolve } from 'node:path'
@@ -55,20 +57,22 @@ if (!stopped) fail('the build did not reach build:before')
 const lines = [...output.matchAll(/Compiled `?([^`\s]+)`? in ([\d.]+)ms/g)].map(m => ({ template: m[1], ms: Number(m[2]) }))
 const slow = lines.find(l => l.template === SLOW)
 const others = lines.filter(l => l.template !== SLOW)
+const batch = output.match(/Generating templates took ([\d.]+)ms/)
 
 console.log(`\n\`nuxt build\` to build:before compiled ${stopped[1]} templates. Nuxt printed ${lines.length} "Compiled ... in" line${lines.length === 1 ? '' : 's'}:`)
 console.log(`  ${SLOW.padEnd(36)} ${slow ? `${slow.ms} ms` : 'not reported'}`)
+if (batch) console.log(`and one line for the whole batch: "Generating templates took ${batch[1]}ms"`)
 if (others.length) {
   const ms = others.map(l => l.ms)
   console.log(`  ${`${others.length} other templates`.padEnd(36)} ${Math.min(...ms)} to ${Math.max(...ms)} ms`)
   for (const l of others) console.log(`    ${l.template.padEnd(34)} ${l.ms} ms`)
 }
 
-console.log(`\nexpected: one line, for ${SLOW}, the only template whose own work takes more than 500 ms (a 700 ms busy-wait)`)
-if (!slow) fail(`${SLOW} was not reported; the stand-in did not block`)
+console.log(`\nexpected: no line for a template that only waited; one line for ${SLOW}, the only template whose own work takes more than 500 ms (a 700 ms busy-wait), or one line for the whole batch`)
+if (!slow && !(batch && Number(batch[1]) >= 700)) fail(`neither ${SLOW} nor a batch of at least 700 ms was reported; the stand-in did not block`)
 if (others.length) {
   const fast = others.filter(l => l.template.startsWith('#build/repro/fast-')).map(l => l.template)
   console.log(`actual:   ${lines.length} lines; ${others.length} for templates that only waited while ${SLOW} blocked the event loop, including ${fast.join(', ') || 'none of the repro/fast-* templates'}`)
   process.exit(1)
 }
-console.log(`actual:   one line, for ${SLOW}`)
+console.log(slow ? `actual:   one line, for ${SLOW}` : `actual:   no per-template lines; one batch line of ${batch[1]} ms`)

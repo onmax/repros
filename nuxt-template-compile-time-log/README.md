@@ -45,7 +45,7 @@ node verify.mjs nuxt-template-compile-time-log
 
 The verifier installs `app/` from its lockfile and runs `nuxt build` once. `app/modules/templates.ts` adds `repro/fast-a.mjs`, `repro/fast-b.mjs`, `repro/fast-c.mjs` and `repro/slow.mjs`. `app/modules/stop.ts` stops the build at `build:before`, after `generateApp` has compiled every template and before Vite and Nitro start, so a run takes a few seconds. The verifier reads the `Compiled ... in` lines from the build output.
 
-It exits 1 when Nuxt reports any template other than `repro/slow.mjs`, 0 when it reports only `repro/slow.mjs`, and 2 when setup or the build fails, the build doesn't reach `build:before`, or `repro/slow.mjs` isn't reported. On Slimbook the install and build run through `heavy`.
+It exits 1 when Nuxt prints a `Compiled` line for any template other than `repro/slow.mjs`. It exits 0 when no other template gets a line and the 700 ms block is still reported, either as a line for `repro/slow.mjs` or as one `Generating templates took <ms>ms` line of at least 700 ms for the whole batch, which is what the proposed upstream fix prints. It exits 2 when setup or the build fails, the build doesn't reach `build:before`, or the block isn't reported at all. On Slimbook the install and build run through `heavy`.
 
 ## Expected and actual
 
