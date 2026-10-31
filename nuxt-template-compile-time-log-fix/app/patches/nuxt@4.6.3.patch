@@ -1,0 +1,75 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 95c36cb4aa6868398557945bce4dffe7c0da1c83..c71e7f4c28f09b84cf79a6e92d2553bcebb758d5 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -2,7 +2,7 @@ import process from "node:process";
+ import fs, { existsSync, mkdirSync, promises, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+ import { mkdir, open, readFile, readdir, rm, stat, unlink, writeFile } from "node:fs/promises";
+ import { createHash, randomUUID } from "node:crypto";
+-import { AsyncLocalStorage } from "node:async_hooks";
++import { AsyncLocalStorage, createHook, executionAsyncId } from "node:async_hooks";
+ import { basename, dirname, extname, isAbsolute, join, normalize, parse, relative, resolve } from "pathe";
+ import { createDebugger, createHooks } from "hookable";
+ import ignore from "ignore";
+@@ -4509,11 +4509,39 @@ async function generateApp(nuxt, app, options = {}) {
+ 	const dirs = /* @__PURE__ */ new Set();
+ 	const changedTemplates = [];
+ 	const FORWARD_SLASH_RE = /\//g;
++	// Templates compile concurrently, so the wall-clock time of one template includes the time the
++	// event loop spent on the others. Count only the time spent running each template's own code:
++	// its synchronous call, plus every callback that runs in an async resource it created.
++	const ownTime = /* @__PURE__ */ new Map();
++	const owners = /* @__PURE__ */ new Map();
++	const running = [];
++	let starting;
++	const addOwnTime = (template, ms) => ownTime.set(template, (ownTime.get(template) ?? 0) + ms);
++	const timing = createHook({
++		init(asyncId) {
++			const owner = starting ?? owners.get(executionAsyncId());
++			if (owner) owners.set(asyncId, owner);
++		},
++		before(asyncId) {
++			running.push({
++				owner: owners.get(asyncId),
++				since: performance.now()
++			});
++		},
++		after() {
++			const frame = running.pop();
++			if (frame?.owner && !running.some((f) => f.owner)) addOwnTime(frame.owner, performance.now() - frame.since);
++		}
++	});
+ 	async function processTemplate(template) {
+ 		const fullPath = template.dst || resolve(nuxt.options.buildDir, template.filename);
+ 		const start = performance.now();
+ 		const oldContents = nuxt.vfs[fullPath];
+-		const contents = await trackPendingTemplate(template.filename, () => compileTemplate(template, templateContext)).catch((e) => {
++		starting = template;
++		const compiling = trackPendingTemplate(template.filename, () => compileTemplate(template, templateContext));
++		starting = void 0;
++		addOwnTime(template, performance.now() - start);
++		const contents = await compiling.catch((e) => {
+ 			if (!(e instanceof Diagnostic)) buildDiagnostics.NUXT_B1001({
+ 				filename: template.filename,
+ 				src: template.src,
+@@ -4529,7 +4557,7 @@ async function generateApp(nuxt, app, options = {}) {
+ 			if (process.platform === "win32") nuxt.vfs[fullPath.replace(FORWARD_SLASH_RE, "\\")] = contents;
+ 			changedTemplates.push(template);
+ 		}
+-		const perf = performance.now() - start;
++		const perf = ownTime.get(template);
+ 		const compileTime = Math.round(perf * 100) / 100;
+ 		if (nuxt.options.debug && nuxt.options.debug.templates || compileTime > 500) logger.info(`Compiled \`${linkToAlias(fullPath, nuxt)}\` in ${compileTime}ms`);
+ 		if (template.modified && template.write && !matchesDisk(fullPath, contents)) {
+@@ -4538,8 +4566,11 @@ async function generateApp(nuxt, app, options = {}) {
+ 			if (nuxt.options.debug && nuxt.options.debug.templates) logger.info(`Writing \`${template.filename}\` to \`${linkToAlias(fullPath, nuxt)}\``);
+ 		}
+ 	}
++	timing.enable();
+ 	await Promise.allSettled(filteredTemplates.pre.map(processTemplate));
+ 	await Promise.allSettled(filteredTemplates.post.map(processTemplate));
++	timing.disable();
++	owners.clear();
+ 	for (const dir of dirs) mkdirSync(dir, { recursive: true });
+ 	for (const write of writes) write();
+ 	if (nuxt.options.debug && nuxt.options.debug.templates) logger.info(`Generated app in ${Math.round(performance.now() - generateStart)}ms (resolve ${Math.round(resolvedAt - generateStart)}ms, scan ${Math.round(scannedAt - resolvedAt)}ms, compile ${Math.round(performance.now() - scannedAt)}ms), ${changedTemplates.length} template(s) changed`);

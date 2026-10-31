@@ -1,0 +1,5 @@
+# Makes this directory the pnpm workspace root, so installs stay inside the fixture.
+packages:
+  - .
+patchedDependencies:
+  nuxt@4.6.3: patches/nuxt@4.6.3.patch

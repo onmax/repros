@@ -1,0 +1,13 @@
+{
+  "name": "nuxt-template-compile-time-log-fix",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "nuxt": "4.6.3",
+    "vue": "3.5.44",
+    "vue-router": "5.4.0"
+  }
+}

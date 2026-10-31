@@ -1,0 +1,3 @@
+# Makes this directory the pnpm workspace root, so installs stay inside the fixture.
+packages:
+  - .
