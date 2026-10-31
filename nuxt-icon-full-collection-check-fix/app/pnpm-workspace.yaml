@@ -1,0 +1,5 @@
+# Makes this directory Nuxt's `workspaceDir`, so ../layers is outside it, as in a monorepo.
+packages:
+  - .
+patchedDependencies:
+  '@nuxt/icon@2.6.2': patches/@nuxt__icon@2.6.2.patch

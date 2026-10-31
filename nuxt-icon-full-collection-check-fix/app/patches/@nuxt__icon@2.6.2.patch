@@ -1,0 +1,21 @@
+diff --git a/dist/shared/icon.sP0tVXUq.mjs b/dist/shared/icon.sP0tVXUq.mjs
+index 0b42906076a94e6cf89c036ec45f2f8ae92250ed..4871392750f0f7b44823cf8d7fffc7960a416be1 100644
+--- a/dist/shared/icon.sP0tVXUq.mjs
++++ b/dist/shared/icon.sP0tVXUq.mjs
+@@ -230,8 +230,15 @@ const collectionNames = [
+ ];
+ 
+ const logger$1 = consola.withTag("nuxt:icon");
++const fullCollectionCache = /* @__PURE__ */ new Map();
+ function hasFullCollection(resolvePaths) {
+-  return isPackageExists("@iconify/json", { paths: resolvePaths });
++  const key = resolvePaths.join("\0");
++  let found = fullCollectionCache.get(key);
++  if (found === void 0) {
++    found = isPackageExists("@iconify/json", { paths: resolvePaths });
++    fullCollectionCache.set(key, found);
++  }
++  return found;
+ }
+ async function resolveCollection(collection, rootDir) {
+   if (typeof collection === "string")

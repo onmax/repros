@@ -1,0 +1,3 @@
+# Makes this directory Nuxt's `workspaceDir`, so ../layers is outside it, as in a monorepo.
+packages:
+  - .
