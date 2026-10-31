@@ -1,0 +1,125 @@
+diff --git a/dist/index.cjs b/dist/index.cjs
+index bb619c779d490ccbcc8b4c08201e67f5177e6d1e..5f0a19bc6c3bcec1ddda8b72a97cd1fefc0a3764 100644
+--- a/dist/index.cjs
++++ b/dist/index.cjs
+@@ -134,7 +134,54 @@ const getPackageInfo = macro.quansync(function* (name, options = {}) {
+   };
+ });
+ const getPackageInfoSync = getPackageInfo.sync;
++const PROTOCOL_RE = /^[a-z][a-z\d+.-]*:/i;
++// The directory a `paths` entry names, or undefined when it is not a file path.
++function toDir(p) {
++  const s = p instanceof URL ? p.href : String(p);
++  if (s.startsWith('file:')) return node_url.fileURLToPath(s);
++  if (PROTOCOL_RE.test(s) && !path__default.isAbsolute(s)) return;
++  return path__default.resolve(s);
++}
++// Package names mlly could resolve `name` to. It also tries `name` plus each default extension,
++// so `foo` resolves when a package named `foo.js` is installed. Undefined for relative, absolute,
++// protocol and builtin specifiers, which need no node_modules.
++function candidatePackages(name) {
++  if (name.startsWith('.') || path__default.isAbsolute(name) || PROTOCOL_RE.test(name) || node_module.builtinModules.includes(name)) return;
++  const parts = name.split('/');
++  const pkg = name.startsWith('@') ? parts.slice(0, 2).join('/') : parts[0];
++  return name === pkg ? [pkg, ...['.mjs', '.cjs', '.js', '.json'].map(ext => pkg + ext)] : [pkg];
++}
++// False only when `name` cannot resolve from any of `paths`: no ancestor directory has it in
++// node_modules, and no ancestor package.json is that package (self-reference). Each distinct
++// ancestor is checked once, however many paths share it.
++function mayBeInstalled(name, paths) {
++  const candidates = candidatePackages(name);
++  if (!candidates || process__default.versions.pnp) return true;
++  const dirs = new Set();
++  for (const p of paths?.length ? paths : [process__default.cwd()]) {
++    let dir = toDir(p);
++    if (!dir) return true;
++    while (!dirs.has(dir)) {
++      dirs.add(dir);
++      const parent = path.dirname(dir);
++      if (parent === dir) break;
++      dir = parent;
++    }
++  }
++  for (const dir of dirs) {
++    const modules = path.join(dir, 'node_modules');
++    if (fs__default.existsSync(modules) && candidates.some(pkg => fs__default.existsSync(path.join(modules, pkg)))) return true;
++    const pkgJson = path.join(dir, 'package.json');
++    if (fs__default.existsSync(pkgJson)) {
++      try {
++        if (candidates.includes(JSON.parse(fs__default.readFileSync(pkgJson, 'utf8')).name)) return true;
++      } catch {}
++    }
++  }
++  return false;
++}
+ function resolvePackage(name, options = {}) {
++  if (!mayBeInstalled(name, options.paths)) return false;
+   try {
+     return _resolve(`${name}/package.json`, options);
+   } catch {
+diff --git a/dist/index.mjs b/dist/index.mjs
+index a1ee38d578aac4008ecb166a14dd2f803a1112cb..e0216eebd65b7fe846fa9352053fbaa352cfcd1d 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -1,5 +1,5 @@
+ import fs from 'node:fs';
+-import { createRequire } from 'node:module';
++import { builtinModules, createRequire } from 'node:module';
+ import path, { dirname, join, win32 } from 'node:path';
+ import process from 'node:process';
+ import fsPromises from 'node:fs/promises';
+@@ -124,7 +124,54 @@ const getPackageInfo = quansync(function* (name, options = {}) {
+   };
+ });
+ const getPackageInfoSync = getPackageInfo.sync;
++const PROTOCOL_RE = /^[a-z][a-z\d+.-]*:/i;
++// The directory a `paths` entry names, or undefined when it is not a file path.
++function toDir(p) {
++  const s = p instanceof URL ? p.href : String(p);
++  if (s.startsWith('file:')) return fileURLToPath(s);
++  if (PROTOCOL_RE.test(s) && !path.isAbsolute(s)) return;
++  return path.resolve(s);
++}
++// Package names mlly could resolve `name` to. It also tries `name` plus each default extension,
++// so `foo` resolves when a package named `foo.js` is installed. Undefined for relative, absolute,
++// protocol and builtin specifiers, which need no node_modules.
++function candidatePackages(name) {
++  if (name.startsWith('.') || path.isAbsolute(name) || PROTOCOL_RE.test(name) || builtinModules.includes(name)) return;
++  const parts = name.split('/');
++  const pkg = name.startsWith('@') ? parts.slice(0, 2).join('/') : parts[0];
++  return name === pkg ? [pkg, ...['.mjs', '.cjs', '.js', '.json'].map(ext => pkg + ext)] : [pkg];
++}
++// False only when `name` cannot resolve from any of `paths`: no ancestor directory has it in
++// node_modules, and no ancestor package.json is that package (self-reference). Each distinct
++// ancestor is checked once, however many paths share it.
++function mayBeInstalled(name, paths) {
++  const candidates = candidatePackages(name);
++  if (!candidates || process.versions.pnp) return true;
++  const dirs = new Set();
++  for (const p of paths?.length ? paths : [process.cwd()]) {
++    let dir = toDir(p);
++    if (!dir) return true;
++    while (!dirs.has(dir)) {
++      dirs.add(dir);
++      const parent = dirname(dir);
++      if (parent === dir) break;
++      dir = parent;
++    }
++  }
++  for (const dir of dirs) {
++    const modules = join(dir, 'node_modules');
++    if (fs.existsSync(modules) && candidates.some(pkg => fs.existsSync(join(modules, pkg)))) return true;
++    const pkgJson = join(dir, 'package.json');
++    if (fs.existsSync(pkgJson)) {
++      try {
++        if (candidates.includes(JSON.parse(fs.readFileSync(pkgJson, 'utf8')).name)) return true;
++      } catch {}
++    }
++  }
++  return false;
++}
+ function resolvePackage(name, options = {}) {
++  if (!mayBeInstalled(name, options.paths)) return false;
+   try {
+     return _resolve(`${name}/package.json`, options);
+   } catch {

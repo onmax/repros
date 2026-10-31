@@ -1,0 +1,13 @@
+{
+  "name": "local-pkg-is-package-exists-paths",
+  "private": true,
+  "type": "module",
+  "exports": "./check.mjs",
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "local-pkg": "1.2.1",
+    "mlly": "1.8.2"
+  }
+}

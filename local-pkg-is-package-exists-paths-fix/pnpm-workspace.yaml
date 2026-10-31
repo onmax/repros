@@ -1,0 +1,3 @@
+packages: []
+patchedDependencies:
+  local-pkg@1.2.1: patches/local-pkg@1.2.1.patch
