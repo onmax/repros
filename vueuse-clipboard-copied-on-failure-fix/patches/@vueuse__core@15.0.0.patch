@@ -1,0 +1,71 @@
+diff --git a/dist/index.iife.js b/dist/index.iife.js
+index 0b8f798c941990c1ffccffe878f84cba64ee8b08..c5b162a03c3e1eaac4135d80bf7d06d070a28255 100644
+--- a/dist/index.iife.js
++++ b/dist/index.iife.js
+@@ -1659,6 +1659,7 @@
+ 		const text = (0, vue.shallowRef)("");
+ 		const copied = (0, vue.shallowRef)(false);
+ 		const copyPending = (0, vue.shallowRef)(false);
++		const error = (0, vue.shallowRef)();
+ 		const timeout = (0, _vueuse_shared.useTimeoutFn)(() => copied.value = false, copiedDuring, { immediate: false });
+ 		let lastLegacyId = 0;
+ 		async function updateText() {
+@@ -1675,28 +1676,34 @@
+ 			const resolvedValue = value !== null && value !== void 0 ? value : (0, vue.toValue)(source);
+ 			if (isSupported.value && resolvedValue != null) {
+ 				copyPending.value = true;
++				error.value = void 0;
+ 				let useLegacy = !(isClipboardApiSupported.value && isAllowed(permissionWrite.value));
++				let writeError;
++				let succeeded = true;
+ 				if (!useLegacy) try {
+ 					const clipboardItem = createClipboardItem(resolvedValue);
+ 					await navigator.clipboard.write([clipboardItem]);
+-				} catch (_unused2) {
++				} catch (e) {
+ 					useLegacy = true;
++					writeError = e;
+ 				}
+ 				if (useLegacy) {
+ 					if (typeof resolvedValue === "string") {
+ 						text.value = resolvedValue;
+-						legacyCopy(resolvedValue);
++						succeeded = legacyCopy(resolvedValue);
+ 					} else {
+ 						const currentId = ++lastLegacyId;
+ 						const resolvedText = await resolvedValue();
+ 						if (resolvedText != null && currentId === lastLegacyId) {
+ 							text.value = resolvedText;
+-							legacyCopy(resolvedText);
++							succeeded = legacyCopy(resolvedText);
+ 						}
+ 					}
+ 				}
+-				copied.value = true;
+-				timeout.start();
++				if (succeeded) {
++					copied.value = true;
++					timeout.start();
++				} else error.value = writeError !== null && writeError !== void 0 ? writeError : new Error("document.execCommand('copy') failed");
+ 				copyPending.value = false;
+ 			}
+ 		}
+@@ -1717,8 +1724,9 @@
+ 			ta.setAttribute("readonly", "");
+ 			document.body.appendChild(ta);
+ 			ta.select();
+-			document.execCommand("copy");
++			const succeeded = document.execCommand("copy");
+ 			ta.remove();
++			return succeeded;
+ 		}
+ 		function legacyRead() {
+ 			var _document$getSelectio, _document, _document$getSelectio2;
+@@ -1732,6 +1740,7 @@
+ 			isSupported,
+ 			text: (0, vue.shallowReadonly)(text),
+ 			copied: (0, vue.shallowReadonly)(copied),
++			error: (0, vue.shallowReadonly)(error),
+ 			copy
+ 		};
+ 	}

@@ -1,0 +1,16 @@
+{
+  "name": "vueuse-clipboard-copied-on-failure",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "playwright install chromium && node verify.mjs"
+  },
+  "dependencies": {
+    "@vueuse/core": "15.0.0",
+    "@vueuse/shared": "15.0.0",
+    "vue": "3.5.44"
+  },
+  "devDependencies": {
+    "playwright": "1.64.1"
+  }
+}

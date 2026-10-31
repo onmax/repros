@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <body>
+    <div id="app">
+      <button id="share" @click="share">{{ copied ? 'Copied' : 'Share' }}</button>
+    </div>
+    <script src="/vue.js"></script>
+    <script src="/vueuse-shared.js"></script>
+    <script src="/vueuse-core.js"></script>
+    <script>
+      Vue.createApp({
+        setup() {
+          const { copy, copied } = VueUse.useClipboard()
+          const share = () => copy('COPIED TEXT')
+          // Called by verify.mjs without a click, so the browser refuses the copy.
+          window.share = share
+          return { share, copied }
+        },
+      }).mount('#app')
+    </script>
+  </body>
+</html>
