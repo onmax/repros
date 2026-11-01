@@ -1,0 +1,8 @@
+# The nightly is newer than pnpm's default minimum release age.
+minimumReleaseAge: 0
+allowBuilds:
+  '@parcel/watcher': false
+  esbuild: false
+  unrs-resolver: false
+patchedDependencies:
+  '@nuxt/vite-builder-nightly@5.0.0-2611010234-c709ec8': patches/@nuxt__vite-builder-nightly@5.0.0-2611010234-c709ec8.patch

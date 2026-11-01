@@ -32,3 +32,7 @@ FAIL: the same app gives a different server depending on load order
 ## Cause
 
 `paths.mjs` imports ufo by absolute path. `nuxt:resolve-externals` makes bare `ufo` imports external with that same path, but skips absolute ids. One file ends up both external and a normal module, and Rolldown keeps whichever it sees first.
+
+## Fixed control
+
+[`../nuxt-36795-fix`](../nuxt-36795-fix) runs the same app and verifier with the fix patched in, and passes.
