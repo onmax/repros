@@ -1,0 +1,9 @@
+{
+  "name": "nuxt-profiler-nitro-object-hooks",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "nuxt": "npm:nuxt-nightly@5.0.0-2611010234-c709ec8",
+    "vue": "3.5.44"
+  }
+}
