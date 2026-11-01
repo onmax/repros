@@ -2,7 +2,7 @@ diff --git a/dist/index.mjs b/dist/index.mjs
 index bc846aeb980c7ae76ad6dc19bd38797a31f21d47..c6cb78563486e558dd88236df9002ce5df5bd12e 100644
 --- a/dist/index.mjs
 +++ b/dist/index.mjs
-@@ -3136,9 +3136,18 @@ function ResolveExternalsPlugin(nuxt) {
+@@ -3136,9 +3136,20 @@ function ResolveExternalsPlugin(nuxt) {
  			return {
  				name: "nuxt:resolve-externals:external",
  				resolveId: {
@@ -10,15 +10,17 @@ index bc846aeb980c7ae76ad6dc19bd38797a31f21d47..c6cb78563486e558dd88236df9002ce5
 +					filter: { id: [BARE_ID_RE, /[/\\]node_modules[/\\]/] },
  					async handler(id, importer) {
 -						if (!importer || isBuiltin(id) || deduped.has(pkgName(id)) || localImporterRE?.test(importer)) return;
-+						if (!importer || isBuiltin(id) || localImporterRE?.test(importer)) return;
++						if (!importer || isBuiltin(id)) return;
 +						if (!BARE_ID_RE.test(id)) {
 +							const { dir, name } = parseNodeModulePath(id);
 +							if (!dir || !name || deduped.has(name)) return;
-+							if (resolveModulePath(name, { try: true, from: `${dir}${name}/`, conditions, extensions: nuxt.options.extensions }) !== id) return;
-+							const res = await this.resolve?.(name, importer, { skipSelf: true });
++							const path = resolveModulePath(name, { try: true, from: `${dir}${name}/`, conditions, extensions: nuxt.options.extensions });
++							if (!path || normalize(path) !== normalize(id)) return;
++							const res = await this.resolve?.(name, path, { skipSelf: true });
 +							if (!res || res.external !== true || res.id !== name) return;
-+							return { ...res, id, external: "absolute" };
++							return { ...res, id: path, external: "absolute" };
 +						}
++						if (localImporterRE?.test(importer)) return;
 +						if (deduped.has(pkgName(id))) return;
  						const res = await this.resolve?.(id, importer, { skipSelf: true });
  						if (!res || res.external !== true || res.id !== id) return res;
