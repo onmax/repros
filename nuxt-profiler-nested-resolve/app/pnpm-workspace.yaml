@@ -1,0 +1,11 @@
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+
+minimumReleaseAgeExclude:
+  - '@nuxt/kit-nightly@5.0.0-2611010234-c709ec8'
+  - '@nuxt/nitro-server-nightly@5.0.0-2611010234-c709ec8'
+  - '@nuxt/schema-nightly@5.0.0-2611010234-c709ec8'
+  - '@nuxt/vite-builder-nightly@5.0.0-2611010234-c709ec8'
+  - '@nuxt/vite-server-nightly@5.0.0-2611010234-c709ec8'
+  - nuxt-nightly@5.0.0-2611010234-c709ec8
