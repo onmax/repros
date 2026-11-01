@@ -1,0 +1,6 @@
+# The nightly is newer than pnpm's default minimum release age.
+minimumReleaseAge: 0
+allowBuilds:
+  '@parcel/watcher': false
+  esbuild: false
+  unrs-resolver: false
