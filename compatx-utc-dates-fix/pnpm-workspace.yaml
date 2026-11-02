@@ -1,0 +1,2 @@
+patchedDependencies:
+  compatx@0.2.0: patches/compatx@0.2.0.patch

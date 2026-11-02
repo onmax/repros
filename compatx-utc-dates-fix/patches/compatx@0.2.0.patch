@@ -1,0 +1,17 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index f22338409beb72b9fc00ed90bf12a31c7a34054f..e962057efbc253c4c26cc98ba683f53bc6d4ead1 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -58,9 +58,9 @@ function formatDate(date) {
+   if (Number.isNaN(d.getDate())) {
+     return "";
+   }
+-  const year = d.getFullYear().toString();
+-  const month = (d.getMonth() + 1).toString().padStart(2, "0");
+-  const day = d.getDate().toString().padStart(2, "0");
++  const year = d.getUTCFullYear().toString();
++  const month = (d.getUTCMonth() + 1).toString().padStart(2, "0");
++  const day = d.getUTCDate().toString().padStart(2, "0");
+   return `${year}-${month}-${day}`;
+ }
+ function normalizeDate(date) {

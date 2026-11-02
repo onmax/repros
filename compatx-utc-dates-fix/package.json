@@ -1,0 +1,11 @@
+{
+  "name": "compatx-utc-dates-fix",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "devDependencies": {
+    "compatx": "0.2.0"
+  }
+}
