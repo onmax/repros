@@ -12,8 +12,9 @@ export default defineNuxtConfig({
       name: 'log-builds',
       applyToEnvironment: env => env.name === 'client' || env.name === 'ssr',
       buildStart () {
-        const restored = existsSync(join(import.meta.dirname, '.nuxt/vite/services/ssr/index.mjs'))
-        appendFileSync(join(import.meta.dirname, 'builds.log'), `${this.environment.name} build started, restored SSR output present: ${restored}\n`)
+        const { name, config } = this.environment
+        const detail = name === 'ssr' ? `, SSR output already on disk: ${existsSync(join(config.build.outDir, 'index.mjs'))}` : ''
+        appendFileSync(join(import.meta.dirname, 'builds.log'), `${name} build started${detail}\n`)
       },
     }],
   },

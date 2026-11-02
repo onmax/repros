@@ -9,6 +9,9 @@ const root = import.meta.dirname
 const log = join(root, 'builds.log')
 
 for (const path of ['.nuxt', '.output', 'node_modules/.cache']) rmSync(join(root, path), { recursive: true, force: true })
+// Creates `.nuxt`, as `pnpm install` does in a real project. With `.nuxt` present, every
+// `nuxt build` writes to `node_modules/.cache/nuxt/.nuxt`, so both builds use the same dir.
+execFileSync('pnpm', ['exec', 'nuxt', 'prepare'], { cwd: root, stdio: 'ignore' })
 
 function build (name) {
   rmSync(log, { force: true })
