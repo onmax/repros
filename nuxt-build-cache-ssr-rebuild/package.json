@@ -1,0 +1,12 @@
+{
+  "name": "nuxt-build-cache-ssr-rebuild",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.16.1",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "nuxt": "npm:nuxt-nightly@5.0.0-2611010234-c709ec8"
+  }
+}
