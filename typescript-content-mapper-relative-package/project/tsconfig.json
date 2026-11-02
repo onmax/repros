@@ -1,0 +1,5 @@
+{
+  "compilerOptions": { "strict": true, "module": "preserve", "noEmit": true, "types": [] },
+  "contentMappers": [{ "package": "../mapper", "extensions": [".txt"] }],
+  "files": ["index.ts"]
+}

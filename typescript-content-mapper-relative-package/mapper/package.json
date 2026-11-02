@@ -1,0 +1,4 @@
+{
+  "name": "txt-mapper",
+  "typescript": { "contentMapper": { "exec": ["node", "./mapper.mjs"] } }
+}

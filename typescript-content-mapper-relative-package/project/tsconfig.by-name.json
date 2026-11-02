@@ -1,0 +1,4 @@
+{
+  "extends": "./tsconfig.json",
+  "contentMappers": [{ "package": "txt-mapper", "extensions": [".txt"] }]
+}
