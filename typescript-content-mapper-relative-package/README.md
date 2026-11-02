@@ -20,4 +20,4 @@ pnpm verify
 ## Environment
 
 - `typescript` 7.1.0-dev.20261101.1. 7.1.0-beta behaves the same.
-- Node 24.21.0, pnpm 10, Linux
+- Node 24.21.0, pnpm 12.16.1, Linux
