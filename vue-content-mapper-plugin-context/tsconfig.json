@@ -1,0 +1,9 @@
+{
+  "contentMappers": [
+    {
+      "package": "@vue/content-mapper",
+      "extensions": [".vue"],
+      "options": { "plugins": [{ "name": "./plugin.cjs", "options": { "rootDir": "src" } }] }
+    }
+  ]
+}

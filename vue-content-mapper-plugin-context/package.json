@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "devDependencies": {
+    "@vue/content-mapper": "4.0.0-alpha.3",
+    "typescript": "7.1.0-beta"
+  }
+}
