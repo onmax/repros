@@ -1,0 +1,13 @@
+{
+  "name": "one-ini-wasm-memory",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "node verify.mjs",
+    "verify:limit": "node verify.mjs --limit"
+  },
+  "dependencies": {
+    "@one-ini/wasm": "0.2.2",
+    "one-ini-0.2.1": "npm:@one-ini/wasm@0.2.1"
+  }
+}

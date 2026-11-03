@@ -1,0 +1,30 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@one-ini/wasm':
+        specifier: 0.2.2
+        version: 0.2.2
+      one-ini-0.2.1:
+        specifier: npm:@one-ini/wasm@0.2.1
+        version: '@one-ini/wasm@0.2.1'
+
+packages:
+
+  '@one-ini/wasm@0.2.1':
+    resolution: {integrity: sha512-TUqERXGNTifZ9y2g3wPxQrw3HpHv/02DsW3D90T9x0hhonrL1ZqpSmNrU2XkoIq0fP1N6gZfVQzy2Fw1ZvGBNg==}
+
+  '@one-ini/wasm@0.2.2':
+    resolution: {integrity: sha512-zDYAKD+//+H5TANBg0YMZgrc84uxnv8jWFEf3lN8cYHr/nt5cxrr6cz0QFtUEK2Y0W6gb9aS1bu9JiQaKN2qpA==}
+
+snapshots:
+
+  '@one-ini/wasm@0.2.1': {}
+
+  '@one-ini/wasm@0.2.2': {}

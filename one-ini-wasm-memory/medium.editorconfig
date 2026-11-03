@@ -1,0 +1,54 @@
+root = true
+
+[packages/p0/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p1/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p2/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p3/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p4/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p5/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p6/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p7/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p8/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p9/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p10/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p11/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p12/**.{js,ts}]
+indent_style = space
+indent_size = 2
+

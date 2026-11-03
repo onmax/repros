@@ -1,0 +1,402 @@
+root = true
+
+[packages/p0/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p1/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p2/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p3/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p4/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p5/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p6/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p7/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p8/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p9/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p10/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p11/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p12/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p13/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p14/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p15/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p16/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p17/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p18/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p19/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p20/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p21/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p22/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p23/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p24/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p25/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p26/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p27/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p28/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p29/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p30/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p31/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p32/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p33/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p34/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p35/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p36/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p37/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p38/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p39/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p40/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p41/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p42/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p43/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p44/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p45/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p46/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p47/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p48/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p49/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p50/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p51/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p52/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p53/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p54/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p55/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p56/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p57/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p58/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p59/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p60/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p61/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p62/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p63/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p64/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p65/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p66/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p67/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p68/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p69/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p70/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p71/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p72/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p73/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p74/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p75/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p76/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p77/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p78/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p79/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p80/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p81/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p82/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p83/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p84/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p85/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p86/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p87/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p88/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p89/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p90/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p91/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p92/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p93/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p94/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p95/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p96/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p97/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p98/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
+[packages/p99/**.{js,ts}]
+indent_style = space
+indent_size = 2
+
