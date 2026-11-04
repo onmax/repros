@@ -1,0 +1,17 @@
+{
+  "name": "posthog-anonymous-async-stack",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.16.1",
+  "engines": {
+    "node": ">=24.21.0"
+  },
+  "scripts": {
+    "verify": "node verify.mjs",
+    "check": "node --enable-source-maps case.mjs"
+  },
+  "dependencies": {
+    "posthog-node": "5.57.1",
+    "posthog-node-next": "npm:posthog-node@5.61.2"
+  }
+}
