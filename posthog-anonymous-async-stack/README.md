@@ -30,9 +30,9 @@ node --enable-source-maps case.mjs --next  # Exits 1 on posthog-node 5.61.2.
 
 ## How it works
 
-`dist/handler.mjs` is a five-line bundle with a source map back to `src/handler.ts`.
+`dist/handler.mjs` is a six-line bundle with a source map back to `src/handler.ts`.
 `build-map.mjs` wrote both files.
-The map attaches the name `async` to each `async e=>` arrow function.
+The map attaches the name `async` to each `async e=>` arrow function, and `(work)` to the method that calls them.
 Nitro's minified production build emitted the same names, which show up in its logs as `at async (...)` for synchronous frames and `at async async (...)` for awaiting ones.
 Node's formatter (`lib/internal/source_map/prepare_stack_trace.js`) prints `${prefix}${mappedName} (`, so a sync frame named `async` prints as `at async (`.
 
@@ -47,6 +47,7 @@ No network, account, or server is involved.
 | `at dispatch (/…/src/handler.ts:3:1)` | control: named sync | `src/handler.ts`, `in_app: true` |
 | `at async (/…/src/handler.ts:4:1)` | **bug** | `(/…/src/handler.ts`, `in_app: false` |
 | `at async async (/…/src/handler.ts:5:1)` | control: awaiting frame named `async` | `src/handler.ts`, `in_app: true` |
+| `at async (work) (/…/src/handler.ts:6:1)` | control: awaiting method named `(work)` | `src/handler.ts`, `function: "(work)"` |
 | `at async file:///…/case.mjs:16:3` | control: anonymous async frame | `case.mjs`, `in_app: true` |
 
 ## Cause

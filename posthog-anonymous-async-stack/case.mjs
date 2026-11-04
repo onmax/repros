@@ -4,14 +4,14 @@ import assert from 'node:assert/strict'
 import { createRequire } from 'node:module'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath, pathToFileURL } from 'node:url'
-import { outer } from './dist/handler.mjs'
+import { work } from './dist/handler.mjs'
 
 const pkg = process.argv.includes('--next') ? 'posthog-node-next' : 'posthog-node'
 const { PostHog } = await import(pkg)
 const appSource = fileURLToPath(new URL('./src/handler.ts', import.meta.url))
 
 let error
-const run = outer
+const run = work
 try {
   await run({ query: { limit: 0 } })
 } catch (caught) {
@@ -53,6 +53,7 @@ const expected = [
   { line: `at dispatch (${appSource}:3:1)`, filename: 'src/handler.ts', function: 'dispatch', in_app: true },
   { line: `at async (${appSource}:4:1)`, filename: 'src/handler.ts', in_app: true, target: true },
   { line: `at async async (${appSource}:5:1)`, filename: 'src/handler.ts', function: 'async', in_app: true },
+  { line: `at async (work) (${appSource}:6:1)`, filename: 'src/handler.ts', function: '(work)', in_app: true },
 ]
 // The caller's own frame: an anonymous async frame without parentheses.
 const callerLine = lines[expected.length]

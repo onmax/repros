@@ -1,0 +1,38 @@
+diff --git a/dist/error-tracking/parsers/node.js b/dist/error-tracking/parsers/node.js
+index a21cf9661bc71286a44cd580a5fa9451ddc447ce..25753a097762d44df4c83a94b8341e0feeacaa36 100644
+--- a/dist/error-tracking/parsers/node.js
++++ b/dist/error-tracking/parsers/node.js
+@@ -32,7 +32,7 @@ __webpack_require__.d(__webpack_exports__, {
+ });
+ const external_base_js_namespaceObject = require("./base.js");
+ const FILENAME_MATCH = /^\s*[-]{4,}$/;
+-const FULL_MATCH = /at (?:async )?(?:(.+?)\s+\()?(?:(.+):(\d+):(\d+)?|([^)]+))\)?/;
++const FULL_MATCH = /at (?:async (?!\((?!.*\)\s+\()))?(?:(.+?)\s+\()?(?:(.+):(\d+):(\d+)?|([^)]+))\)?/;
+ const PROMISE_COMBINATOR = /^Promise\.(?:all|any)$/;
+ const PROMISE_INDEX = /^index \d+$/;
+ const PROMISE_FRAME_FILENAME = 'node:internal/promise';
+diff --git a/dist/error-tracking/parsers/node.mjs b/dist/error-tracking/parsers/node.mjs
+index 5ccb7beaf91e336fe652f51cfdb96c44ca61ce74..8fb401dc80c445dfa9f600033d65830b89630e67 100644
+--- a/dist/error-tracking/parsers/node.mjs
++++ b/dist/error-tracking/parsers/node.mjs
+@@ -1,6 +1,6 @@
+ import { UNKNOWN_FUNCTION } from "./base.mjs";
+ const FILENAME_MATCH = /^\s*[-]{4,}$/;
+-const FULL_MATCH = /at (?:async )?(?:(.+?)\s+\()?(?:(.+):(\d+):(\d+)?|([^)]+))\)?/;
++const FULL_MATCH = /at (?:async (?!\((?!.*\)\s+\()))?(?:(.+?)\s+\()?(?:(.+):(\d+):(\d+)?|([^)]+))\)?/;
+ const PROMISE_COMBINATOR = /^Promise\.(?:all|any)$/;
+ const PROMISE_INDEX = /^index \d+$/;
+ const PROMISE_FRAME_FILENAME = 'node:internal/promise';
+diff --git a/src/error-tracking/parsers/node.ts b/src/error-tracking/parsers/node.ts
+index 8d74efa1cf437028b59216514c78c4259f084b8a..d26918d87738349b7749f57e424a4cc54e9504cc 100644
+--- a/src/error-tracking/parsers/node.ts
++++ b/src/error-tracking/parsers/node.ts
+@@ -7,7 +7,7 @@ import { UNKNOWN_FUNCTION } from './base'
+ 
+ /** Node Stack line parser */
+ const FILENAME_MATCH = /^\s*[-]{4,}$/
+-const FULL_MATCH = /at (?:async )?(?:(.+?)\s+\()?(?:(.+):(\d+):(\d+)?|([^)]+))\)?/
++const FULL_MATCH = /at (?:async (?!\((?!.*\)\s+\()))?(?:(.+?)\s+\()?(?:(.+):(\d+):(\d+)?|([^)]+))\)?/
+ const PROMISE_COMBINATOR = /^Promise\.(?:all|any)$/
+ const PROMISE_INDEX = /^index \d+$/
+ const PROMISE_FRAME_FILENAME = 'node:internal/promise'

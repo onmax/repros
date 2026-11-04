@@ -1,5 +1,6 @@
 // Writes dist/handler.mjs and a source map back to src/handler.ts.
 // Each arrow function gets the source-map name "async", as Nitro's minified build emitted.
+// The method keeps its own name, "(work)".
 import { writeFileSync } from 'node:fs'
 
 const js = [
@@ -7,7 +8,8 @@ const js = [
   'const handler=async e=>validateQuery(e);',
   'function dispatch(e){return handler(e)}',
   'const route=async e=>{await null;return dispatch(e)};',
-  'export const outer=async e=>await route(e);',
+  'const outer=async e=>await route(e);',
+  "export const work={async['(work)'](e){return await outer(e)}}['(work)'];",
 ]
 const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
 const vlq = n => {
@@ -42,6 +44,11 @@ const mappings = js.map((code, line) => {
     segments.push(segment(arrow, 0))
     segments.push(segment(arrow + 'async e=>'.length))
   }
+  const method = code.indexOf("async['(work)']")
+  if (method !== -1) {
+    segments.push(segment(method, 1))
+    segments.push(segment(code.indexOf('{return')))
+  }
   return segments.join(',')
 }).join(';')
 
@@ -50,6 +57,6 @@ writeFileSync('dist/handler.mjs.map', JSON.stringify({
   version: 3,
   file: 'handler.mjs',
   sources: ['../src/handler.ts'],
-  names: ['async'],
+  names: ['async', '(work)'],
   mappings,
 }) + '\n')
