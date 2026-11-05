@@ -1,0 +1,4 @@
+minimumReleaseAgeExclude:
+  - vite@8.3.6
+patchedDependencies:
+  nitro@3.0.261103-rc: patches/nitro@3.0.261103-rc.patch

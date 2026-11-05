@@ -1,0 +1,30 @@
+diff --git a/dist/cli/_chunks/deploy.mjs b/dist/cli/_chunks/deploy.mjs
+index a5849ec467136c4a1fc0739f24c00741f7abede8..78a466fb2dbd9f31793d9dbd36f26a7c4cb4e643 100644
+--- a/dist/cli/_chunks/deploy.mjs
++++ b/dist/cli/_chunks/deploy.mjs
+@@ -19,6 +19,7 @@ var deploy_default = defineCommand({
+ 		let preset = args.preset;
+ 		let envName = args.envName;
+ 		let outputDir;
++		let savedDeployCommand;
+ 		if (args.prebuilt) {
+ 			const lastBuild = await getBuildInfo({ rootDir });
+ 			if (!lastBuild.buildInfo) {
+@@ -32,6 +33,7 @@ var deploy_default = defineCommand({
+ 				envName = lastBuild.buildInfo.envName;
+ 			}
+ 			outputDir = lastBuild.outputDir;
++			savedDeployCommand = lastBuild.buildInfo.commands?.deploy;
+ 		}
+ 		const nitro = await createNitro({
+ 			rootDir,
+@@ -39,7 +41,8 @@ var deploy_default = defineCommand({
+ 			minify: args.minify,
+ 			preset,
+ 			builder: args.builder,
+-			output: outputDir ? { dir: outputDir } : void 0
++			output: outputDir ? { dir: outputDir } : void 0,
++			commands: savedDeployCommand ? { deploy: savedDeployCommand } : void 0
+ 		}, {
+ 			compatibilityDate: args.compatibilityDate,
+ 			c12: { envName }
