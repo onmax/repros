@@ -1,0 +1,7 @@
+{
+  "name": "nuxt-stale-auto-imports-after-stash-main",
+  "private": true,
+  "type": "module",
+  "scripts": { "dev": "nuxt dev", "verify": "node verify.mjs" },
+  "dependencies": { "nuxt": "https://pkg.pr.new/nuxt@d67ad2c1c", "vue": "latest" }
+}

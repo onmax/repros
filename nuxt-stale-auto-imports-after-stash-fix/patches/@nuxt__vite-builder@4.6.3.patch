@@ -1,0 +1,12 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index f67b2109a1e90219cdde9e782cc16a97920463cb..df45cc04c62f1e9d065b2d20b66775abf605c055 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -3835,6 +3835,7 @@ const setupWatcher = (nuxt) => {
+ 	for (const layer of getLayerDirectories(nuxt)) {
+ 		extraPaths.add(layer.app);
+ 		if (!layer.server.startsWith(layer.app.replace(/\/?$/, "/"))) extraPaths.add(layer.server);
++		if (!layer.shared.startsWith(layer.app.replace(/\/?$/, "/"))) extraPaths.add(layer.shared);
+ 	}
+ 	const srcDir = nuxt.options.srcDir.replace(/\/?$/, "/");
+ 	for (const pattern of nuxt.options.watch) {

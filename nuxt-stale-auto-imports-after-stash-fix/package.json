@@ -1,0 +1,7 @@
+{
+  "name": "nuxt-stale-auto-imports-after-stash-fix",
+  "private": true,
+  "type": "module",
+  "scripts": { "dev": "nuxt dev", "verify": "node verify.mjs" },
+  "dependencies": { "nuxt": "4.6.3", "vue": "latest" }
+}

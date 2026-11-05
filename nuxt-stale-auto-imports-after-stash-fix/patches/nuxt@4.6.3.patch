@@ -1,0 +1,12 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 95c36cb4aa6868398557945bce4dffe7c0da1c83..06b60b22686b245b99e06c1bc5762ed957ff2134 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -10339,6 +10339,7 @@ function createWatcher() {
+ 	for (const layer of layerDirs) {
+ 		paths.push(layer.app);
+ 		if (!layer.server.startsWith(layer.app.replace(/\/?$/, "/"))) paths.push(layer.server);
++		if (!layer.shared.startsWith(layer.app.replace(/\/?$/, "/"))) paths.push(layer.shared);
+ 	}
+ 	const watcher = watch(paths, {
+ 		...nuxt.options.watchers.chokidar,
