@@ -1,0 +1,22 @@
+diff --git a/dist/_chunks/nitro.mjs b/dist/_chunks/nitro.mjs
+index 271f8ded67f9604b38c4434bee427eb83faefc53..5d5bbf39cfefabb56738a43796ab859649bc114d 100644
+--- a/dist/_chunks/nitro.mjs
++++ b/dist/_chunks/nitro.mjs
+@@ -269,6 +269,7 @@ async function resolvePathOptions(options) {
+ 		else {
+ 			const detected = resolveModulePath("./server", {
+ 				try: true,
++				cache: false,
+ 				from: options.serverDir && options.serverDir !== options.rootDir ? [options.serverDir, options.rootDir] : options.rootDir,
+ 				extensions: RESOLVE_EXTENSIONS.flatMap((ext) => [ext, `.node${ext}`])
+ 			});
+@@ -297,7 +298,8 @@ async function resolvePathOptions(options) {
+ 			const defaultIndex = resolveModulePath("./index.html", {
+ 				from: [options.rootDir, ...options.scanDirs],
+ 				extensions: [".html"],
+-				try: true
++				try: true,
++				cache: false
+ 			});
+ 			if (defaultIndex) {
+ 				options.renderer ??= {};
