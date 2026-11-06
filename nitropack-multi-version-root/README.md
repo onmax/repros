@@ -8,7 +8,7 @@ Cannot find module '.output/server/node_modules/zod/index.js'
 
 With several traced versions, Nitro links the first one to the top level. It ranks a version with no package parents first, otherwise the newest version. The app's own import doesn't count as a parent, so once `peer-user` also imports 4.6.5, the newer 4.6.7 wins even though the app imports 4.6.5 by bare id. Without the `peer-user` import the build works. Nitro v3 is not affected: it rewrites the app's import to the exact traced version.
 
-Tested on Linux with Node 24.21.0 and pnpm 12.16.1. The lockfile pins nitropack 2.13.6 (the same happens on 2.13.4). `deps/` has the two local packages and the tarballs the app installs.
+Tested on Linux with Node 24.21.0 and pnpm 12.16.1. The lockfile pins nitropack 2.13.6 (the same happens on 2.13.4). `deps/` has the two local packages and the tarballs the app installs. `pnpm-workspace.yaml` declines esbuild's install script, which pnpm 12 otherwise stops on.
 
 ```sh
 git clone --single-branch --branch repro/nitropack-multi-version-root https://github.com/onmax/repros.git
