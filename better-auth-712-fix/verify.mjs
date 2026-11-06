@@ -20,7 +20,8 @@ dev.stderr.on('data', chunk => (log += chunk))
 try {
   let response
   let text
-  // Nuxt answers with an HTML loading page until the Nitro dev server is ready.
+  // Until the Nitro dev server is ready, Nuxt answers with an HTML loading page
+  // or a JSON 503.
   for (let attempt = 0; attempt < 240 && !response; attempt++) {
     try {
       const res = await fetch(`${baseURL}/api/auth/sign-in/email`, {
@@ -29,7 +30,7 @@ try {
         body: JSON.stringify({ email: 'nobody@example.com', password: 'password-1234' }),
       })
       const body = await res.text()
-      if (res.headers.get('content-type')?.includes('application/json')) {
+      if (res.status !== 503 && res.headers.get('content-type')?.includes('application/json')) {
         response = res
         text = body
       }
