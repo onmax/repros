@@ -22,6 +22,6 @@ decoded segments:      131780
 AssertionError [ERR_ASSERTION]: expected no sourcemap for a module the plugin did not change
 ```
 
-`../rollup-plugin-inject-sourcemap-fix` runs the same script with a `pnpm patch` that returns `map: null` in that branch. It passes, and the output sourcemap has the same mappings (162000 chars) in both.
+`../rollup-plugin-inject-sourcemap-fix` runs the same script with a `pnpm patch` that returns `map: null` in that branch. It passes, and the output sourcemap has identical mappings in both (162000 chars, sha1 `aeb3df34b9fa`).
 
 Pinned: `@rollup/plugin-inject` 5.0.5, `rollup` 4.67.5, Node 24.21.0, Linux.

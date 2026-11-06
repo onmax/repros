@@ -1,6 +1,7 @@
 // Builds one module twice with a shared cache, as `rollup --watch` does, and checks
 // what @rollup/plugin-inject leaves on the cached module when it injects nothing.
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -48,7 +49,9 @@ const segments = cached.sourcemapChain
 console.log(`code length:          ${code.length} chars`);
 console.log(`maps on cached module: ${cached.sourcemapChain.length}`);
 console.log(`decoded segments:      ${segments}`);
-console.log(`output map mappings:   ${outputMap.mappings.length} chars`);
+console.log(
+  `output map mappings:   ${outputMap.mappings.length} chars, sha1 ${createHash('sha1').update(outputMap.mappings).digest('hex').slice(0, 12)}`
+);
 
 assert.deepEqual(warnings, [], 'no sourcemap warnings');
 assert.equal(outputMap.sources.length, 1);
