@@ -1,0 +1,15 @@
+{
+  "name": "nitropack-multi-version-root",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nitropack build",
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "nitropack": "2.13.6",
+    "peer-user": "file:./deps/peer-user-1.0.0.tgz",
+    "pinned-user": "file:./deps/pinned-user-1.0.0.tgz",
+    "zod": "4.6.5"
+  }
+}

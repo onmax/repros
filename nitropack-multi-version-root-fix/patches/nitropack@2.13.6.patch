@@ -1,0 +1,28 @@
+diff --git a/dist/rollup/index.mjs b/dist/rollup/index.mjs
+index e0a5f42857b5bf0ffa57d4fb994566c69d10ed25..2acb4cdb7f4a7ba800fea0436afdce089054a70e 100644
+--- a/dist/rollup/index.mjs
++++ b/dist/rollup/index.mjs
+@@ -485,6 +485,7 @@ function externals$1(opts) {
+             const tracedFile = {
+               path,
+               parents,
++              initial: reasons.type.includes("initial"),
+               subpath,
+               pkgName,
+               pkgPath
+@@ -625,8 +626,15 @@ function externals$1(opts) {
+         })
+       );
+       for (const [pkgName, pkgVersions] of Object.entries(multiVersionPkgs)) {
++        const isBundleImport = (version) => tracedPackages[pkgName].versions[version].files.some(
++          (file) => tracedFiles[file].initial
++        );
+         const versionEntries = Object.entries(pkgVersions).sort(
+           ([v1, p1], [v2, p2]) => {
++            const b1 = isBundleImport(v1);
++            if (b1 !== isBundleImport(v2)) {
++              return b1 ? -1 : 1;
++            }
+             if (p1.length === 0) {
+               return -1;
+             }
