@@ -1,0 +1,13 @@
+diff --git a/dist/runtime/server/internal/nitro2.js b/dist/runtime/server/internal/nitro2.js
+index 629d8e6a520caa9d4b3ae381436b73de2832a850..bd604739242cfc5a387fd833396412ba294b9bcd 100644
+--- a/dist/runtime/server/internal/nitro2.js
++++ b/dist/runtime/server/internal/nitro2.js
+@@ -97,7 +97,7 @@ function requestBody(req) {
+   }
+   const body = req.rawBody ?? req.body;
+   if (body === void 0 || body === null)
+-    return "__unenv__" in req ? void 0 : req;
++    return req.readable ? req : void 0;
+   if (body.constructor === Object)
+     return JSON.stringify(body);
+   return body;

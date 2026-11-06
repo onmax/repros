@@ -1,0 +1,13 @@
+$ pnpm verify
+$ node verify.mjs
+POST /api/auth/sign-in/email -> 401 {"message":"Invalid email or password","code":"INVALID_EMAIL_OR_PASSWORD"}
+Expected: {"status":401,"code":"INVALID_EMAIL_OR_PASSWORD"}
+Actual:   {"status":401,"code":"INVALID_EMAIL_OR_PASSWORD"}
+
+PASS: Better Auth received the body and rejected the unknown user
+$ pnpm verify --expect-bug
+POST /api/auth/sign-in/email -> 401 {"message":"Invalid email or password","code":"INVALID_EMAIL_OR_PASSWORD"}
+Expected: {"status":401,"code":"INVALID_EMAIL_OR_PASSWORD"}
+Actual:   {"status":401,"code":"INVALID_EMAIL_OR_PASSWORD"}
+AssertionError [ERR_ASSERTION]: Better Auth received the body; the bug did not reproduce
+[ELIFECYCLE] Command failed with exit code 1.

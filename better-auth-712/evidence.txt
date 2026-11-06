@@ -1,0 +1,13 @@
+$ pnpm verify --expect-bug
+$ node verify.mjs --expect-bug
+POST /api/auth/sign-in/email -> 400 {"message":"[body] Invalid input: expected object, received undefined","code":"VALIDATION_ERROR"}
+Expected: {"status":401,"code":"INVALID_EMAIL_OR_PASSWORD"}
+Actual:   {"status":400,"code":"VALIDATION_ERROR"}
+
+PASS: reproduced #712, Better Auth received the POST without its body
+$ pnpm verify
+POST /api/auth/sign-in/email -> 400 {"message":"[body] Invalid input: expected object, received undefined","code":"VALIDATION_ERROR"}
+Expected: {"status":401,"code":"INVALID_EMAIL_OR_PASSWORD"}
+Actual:   {"status":400,"code":"VALIDATION_ERROR"}
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+[ELIFECYCLE] Command failed with exit code 1.
