@@ -1,0 +1,26 @@
+diff --git a/dist/cjs/index.js b/dist/cjs/index.js
+index 84d823ae0009f3007aa059154e65f0141896724c..0265bb7fe8ac7c1a883569e927f9eabe37f6c359 100644
+--- a/dist/cjs/index.js
++++ b/dist/cjs/index.js
+@@ -198,7 +198,7 @@ function inject(options) {
+         return {
+           code: code,
+           ast: ast,
+-          map: sourceMap ? magicString.generateMap({ hires: true }) : null
++          map: null
+         };
+       }
+       var importBlock = Array.from(newImports.values()).join('\n\n');
+diff --git a/dist/es/index.js b/dist/es/index.js
+index 5c7cfab57a043234cfbe2af4aa4b7058e5977073..454b87db4c9cf73f6eba2ea7ef8eb3f6166d5a48 100644
+--- a/dist/es/index.js
++++ b/dist/es/index.js
+@@ -194,7 +194,7 @@ function inject(options) {
+         return {
+           code: code,
+           ast: ast,
+-          map: sourceMap ? magicString.generateMap({ hires: true }) : null
++          map: null
+         };
+       }
+       var importBlock = Array.from(newImports.values()).join('\n\n');

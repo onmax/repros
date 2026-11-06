@@ -1,0 +1,2 @@
+patchedDependencies:
+  '@rollup/plugin-inject@5.0.5': patches/@rollup__plugin-inject@5.0.5.patch
