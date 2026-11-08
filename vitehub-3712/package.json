@@ -1,0 +1,23 @@
+{
+  "name": "vitehub-3712",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.2",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "@libsql/client": "0.18.0",
+    "@vite-hub/database": "https://pkg.pr.new/vite-hub/vitehub/@vite-hub/database@9cff002",
+    "drizzle-orm": "0.45.3",
+    "evlog": "2.28.1",
+    "nuxt": "npm:nuxt-nightly@5.0.0-2611071848-2d8337c",
+    "vite-hub": "https://pkg.pr.new/vite-hub/vitehub/vite-hub@9cff002",
+    "vue": "3.5.24"
+  },
+  "pnpm": {
+    "overrides": {
+      "@vite-hub/database": "https://pkg.pr.new/vite-hub/vitehub/@vite-hub/database@9cff002"
+    }
+  }
+}
