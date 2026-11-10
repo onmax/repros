@@ -45,3 +45,7 @@ The number changes with timing. Runs here gave between 50 and 125px.
 The browser starts a smooth scroll to `#target` as soon as it parses the page. When the app starts, Nuxt's default `scrollBehavior` (`packages/nuxt/src/pages/runtime/router.options.ts`) returns `{ el: '#target', behavior: 'instant' }` for the first navigation, and Vue Router calls `window.scrollTo` with it. Chromium adds the rest of its running smooth scroll on top of that jump.
 
 Nuxt is not needed for the Chromium part. A static page with the same CSS that calls `window.scrollTo({ top, behavior: 'instant' })` 100 ms into that scroll stops 53px past the target. With `behavior: 'auto'` it stops on it.
+
+## Fixed control
+
+[`../nuxt-first-load-hash-scroll-fix`](../nuxt-first-load-hash-scroll-fix) runs the same app and verifier with a one-line patch on Nuxt, and passes.

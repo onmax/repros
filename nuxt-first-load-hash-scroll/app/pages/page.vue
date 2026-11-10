@@ -1,15 +1,25 @@
 <template>
   <main>
-    <div class="filler" />
+    <p
+      v-for="n in 100"
+      :key="n"
+    >
+      Line {{ n }}
+    </p>
     <h2 id="target">
       Target
     </h2>
-    <div class="filler" />
+    <p
+      v-for="n in 100"
+      :key="n"
+    >
+      Line {{ n + 100 }}
+    </p>
   </main>
 </template>
 
 <style>
 html { scroll-behavior: smooth; }
-body, h2 { margin: 0; }
-.filler { height: 3000px; }
+body, h2, p { margin: 0; }
+p { height: 30px; }
 </style>

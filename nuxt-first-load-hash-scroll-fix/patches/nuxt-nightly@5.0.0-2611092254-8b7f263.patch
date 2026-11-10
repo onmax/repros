@@ -1,0 +1,13 @@
+diff --git a/dist/pages/runtime/router.options.js b/dist/pages/runtime/router.options.js
+index 5f44c6d3f540ec6d67a70844f5a0813e796ab45d..526bf73eec4a8311e5dbcbc7526e0c89bc0f11ac 100644
+--- a/dist/pages/runtime/router.options.js
++++ b/dist/pages/runtime/router.options.js
+@@ -48,7 +48,7 @@ function _calculatePosition(to, from, savedPosition, defaultHashScrollBehaviour)
+ 	if (to.hash) return {
+ 		el: to.hash,
+ 		top: _getHashElementScrollMarginTop(to.hash),
+-		behavior: isChangingPage(to, from) ? defaultHashScrollBehaviour : "instant"
++		behavior: from === START_LOCATION || isChangingPage(to, from) ? defaultHashScrollBehaviour : "instant"
+ 	};
+ 	return {
+ 		left: 0,

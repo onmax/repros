@@ -1,0 +1,15 @@
+{
+  "name": "nuxt-first-load-hash-scroll-fix",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.16.1",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "nuxt": "npm:nuxt-nightly@5.0.0-2611092254-8b7f263"
+  },
+  "devDependencies": {
+    "playwright-core": "1.64.0"
+  }
+}
