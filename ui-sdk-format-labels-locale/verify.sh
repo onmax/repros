@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+cd -- "$(dirname -- "$0")"
+if command -v heavy >/dev/null 2>&1; then
+  heavy --light pnpm --ignore-workspace install --frozen-lockfile --ignore-scripts --store-dir .store
+  heavy --light node verify.mjs
+else
+  pnpm --ignore-workspace install --frozen-lockfile --ignore-scripts --store-dir .store
+  node verify.mjs
+fi
