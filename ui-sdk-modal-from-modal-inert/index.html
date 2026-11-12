@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ui-sdk modal from modal</title>
+  </head>
+  <body>
+    <button id="ask-page">Ask from page</button>
+    <ui-dialog>
+      <ui-dialog-trigger><button>Edit</button></ui-dialog-trigger>
+      <ui-dialog-content>
+        <button id="ask-dialog">Ask from dialog</button>
+      </ui-dialog-content>
+    </ui-dialog>
+    <output role="status"></output>
+    <ui-overlay-host></ui-overlay-host>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
