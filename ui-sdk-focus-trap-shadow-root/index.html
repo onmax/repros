@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ui-sdk focus trap and shadow root</title>
+  </head>
+  <body>
+    <ui-dialog>
+      <ui-dialog-trigger><button>Open light</button></ui-dialog-trigger>
+      <ui-dialog-content>
+        <input aria-label="First" />
+        <button>Last</button>
+      </ui-dialog-content>
+    </ui-dialog>
+    <ui-dialog>
+      <ui-dialog-trigger><button>Open shadow</button></ui-dialog-trigger>
+      <ui-dialog-content>
+        <input aria-label="First" />
+        <shadow-button></shadow-button>
+      </ui-dialog-content>
+    </ui-dialog>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
