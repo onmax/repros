@@ -1,0 +1,23 @@
+{
+  "name": "ui-sdk-vue-controlled-input",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.18.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "@ui-sdk/core": "0.1.0-beta.1",
+    "@ui-sdk/react": "0.1.0-beta.1",
+    "@ui-sdk/vue": "0.1.0-beta.1",
+    "@vitejs/plugin-vue": "6.0.11",
+    "playwright": "1.63.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "vite": "8.3.8",
+    "vue": "3.5.45"
+  }
+}

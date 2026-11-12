@@ -1,0 +1,7 @@
+minimumReleaseAgeExclude:
+  - '@ui-sdk/core@0.1.0-beta.1'
+  - '@ui-sdk/react@0.1.0-beta.1'
+  - '@ui-sdk/vue@0.1.0-beta.1'
+  - '@vitejs/plugin-vue@6.0.11'
+allowBuilds:
+  esbuild: false
