@@ -1,0 +1,5 @@
+minimumReleaseAgeExclude:
+  - '@ui-sdk/core@0.1.0-beta.1'
+  - '@ui-sdk/vue@0.1.0-beta.1'
+allowBuilds:
+  esbuild: false
