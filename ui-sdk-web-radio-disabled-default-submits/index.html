@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ui-sdk disabled default radio</title>
+  </head>
+  <body>
+    <form id="component">
+      <ui-radio-group name="plan" default-value="team">
+        <label><ui-radio value="free"></ui-radio> Free</label>
+        <label><ui-radio value="team" disabled></ui-radio> Team</label>
+      </ui-radio-group>
+    </form>
+    <form id="native">
+      <label><input type="radio" name="plan" value="free" /> Free</label>
+      <label><input type="radio" name="plan" value="team" disabled checked /> Team</label>
+    </form>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
