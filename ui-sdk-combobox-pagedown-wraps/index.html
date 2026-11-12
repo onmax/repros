@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ui-sdk PageDown in a combobox</title>
+  </head>
+  <body>
+    <ui-combobox>
+      <ui-combobox-label>Combobox</ui-combobox-label>
+      <ui-combobox-input><input /></ui-combobox-input>
+      <ui-combobox-content hidden>
+        <ui-combobox-list></ui-combobox-list>
+      </ui-combobox-content>
+    </ui-combobox>
+    <ui-select>
+      <ui-select-label>Select</ui-select-label>
+      <ui-select-trigger><button><ui-select-value></ui-select-value></button></ui-select-trigger>
+      <ui-select-content></ui-select-content>
+    </ui-select>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
