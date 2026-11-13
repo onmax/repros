@@ -32,7 +32,7 @@ index 1906c4adf0e84ae64481e8080f98e3db8037a63b..96396fe1c7e92021ad96eed6f214b5ad
                  await checkMutex();
                  return continueWait(true);
              }
-+            const errorOptions = 'error' in response ? { cause: response.cause } : undefined;
++            const errorOptions = 'error' in response && response.cause !== undefined ? { cause: response.cause } : undefined;
              // From here we're sure that response is only fetch Response
              response = response;
              let body = {};

@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
-  '@cubejs-client/core@1.8.22': 1260b406705fddd702d22275848cebf71df08e033088a3386f89e5002dc1fe71
+  '@cubejs-client/core@1.8.22': 529da5f64a46b59a040775981fb65b8dc7e8d4c19b8751557743b87082cd556a
 
 importers:
 
@@ -13,7 +13,7 @@ importers:
     dependencies:
       '@cubejs-client/core':
         specifier: 1.8.22
-        version: 1.8.22(patch_hash=1260b406705fddd702d22275848cebf71df08e033088a3386f89e5002dc1fe71)
+        version: 1.8.22(patch_hash=529da5f64a46b59a040775981fb65b8dc7e8d4c19b8751557743b87082cd556a)
 
 packages:
 
@@ -59,7 +59,7 @@ packages:
 
 snapshots:
 
-  '@cubejs-client/core@1.8.22(patch_hash=1260b406705fddd702d22275848cebf71df08e033088a3386f89e5002dc1fe71)':
+  '@cubejs-client/core@1.8.22(patch_hash=529da5f64a46b59a040775981fb65b8dc7e8d4c19b8751557743b87082cd556a)':
     dependencies:
       core-js: 3.51.0
       d3-format: 3.1.3
