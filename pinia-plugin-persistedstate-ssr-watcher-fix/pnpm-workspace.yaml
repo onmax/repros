@@ -1,0 +1,2 @@
+patchedDependencies:
+  pinia-plugin-persistedstate@4.7.1: patches/pinia-plugin-persistedstate@4.7.1.patch

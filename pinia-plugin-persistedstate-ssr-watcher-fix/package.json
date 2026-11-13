@@ -1,0 +1,17 @@
+{
+  "name": "pinia-plugin-persistedstate-ssr-watcher-fix",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.14.0",
+  "scripts": {
+    "build": "nuxt build",
+    "verify": "nuxt build && node scripts/verify.mjs --expect fixed"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "0.11.3",
+    "nuxt": "4.6.3",
+    "pinia": "3.0.4",
+    "pinia-plugin-persistedstate": "4.7.1",
+    "vue": "3.5.44"
+  }
+}

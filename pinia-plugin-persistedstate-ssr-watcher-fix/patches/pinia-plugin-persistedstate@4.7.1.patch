@@ -1,0 +1,45 @@
+diff --git a/dist/nuxt/runtime/core.js b/dist/nuxt/runtime/core.js
+index 429ab9f1871821de7bcd6ab61211af7f353e5a37..f431b7545ff950a9f30212e15828efb34c6f63d8 100644
+--- a/dist/nuxt/runtime/core.js
++++ b/dist/nuxt/runtime/core.js
+@@ -70,11 +70,12 @@ export function createPersistence(context, optionsParser, auto) {
+       persistState(store.$state, p);
+     });
+   };
+-  persistences.forEach((p) => {
++  const unsubscribes = persistences.map((p) => {
+     hydrateStore(store, p, context);
+-    store.$subscribe(
++    return store.$subscribe(
+       (_mutation, state) => persistState(state, p),
+       { detached: true }
+     );
+   });
++  return () => unsubscribes.forEach((unsubscribe) => unsubscribe());
+ }
+diff --git a/dist/nuxt/runtime/plugin.js b/dist/nuxt/runtime/plugin.js
+index 1b141f1e2f55dcc08822f3a9353b858941edf8f0..d7e5eb35a96e252b461e5acf5c614027194112ba 100644
+--- a/dist/nuxt/runtime/plugin.js
++++ b/dist/nuxt/runtime/plugin.js
+@@ -1,10 +1,10 @@
+-import { defineNuxtPlugin, useRuntimeConfig } from "#app";
++import { defineNuxtPlugin, useNuxtApp, useRuntimeConfig } from "#app";
+ import { createPersistence, parsePersistKey } from "./core.js";
+ import { storages } from "./storages.js";
+ function piniaPlugin(context) {
+   const config = useRuntimeConfig();
+   const options = config.public.piniaPluginPersistedstate;
+-  createPersistence(
++  const unsubscribe = createPersistence(
+     context,
+     (p) => {
+       const persistKey = parsePersistKey(p.key, context.store.$id);
+@@ -24,6 +24,8 @@ function piniaPlugin(context) {
+     },
+     options.auto ?? false
+   );
++  if (unsubscribe)
++    useNuxtApp().hook("app:rendered", unsubscribe);
+ }
+ export default defineNuxtPlugin({
+   name: "pinia-plugin-persistedstate",
