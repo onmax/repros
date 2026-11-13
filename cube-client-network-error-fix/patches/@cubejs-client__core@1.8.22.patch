@@ -1,0 +1,47 @@
+diff --git a/dist/src/HttpTransport.js b/dist/src/HttpTransport.js
+index 4acaa2990490c853adbc8fcbf240704f9140cd9b..bdda6543023aa46dc61d222b25364501f986b4c9 100644
+--- a/dist/src/HttpTransport.js
++++ b/dist/src/HttpTransport.js
+@@ -66,7 +66,7 @@ export class HttpTransport {
+                             errorMessage = 'aborted';
+                         }
+                     }
+-                    const result = { error: errorMessage };
++                    const result = { error: errorMessage, cause: e };
+                     return callback(result, () => this.subscribe(callback));
+                 }
+             },
+diff --git a/dist/src/RequestError.js b/dist/src/RequestError.js
+index 8b559b866396288ec940f180be0fc1a30b451903..677a74e54bff28a6dd2ea9410375e24166992c49 100644
+--- a/dist/src/RequestError.js
++++ b/dist/src/RequestError.js
+@@ -1,6 +1,6 @@
+ export default class RequestError extends Error {
+-    constructor(message, response, status) {
+-        super(message);
++    constructor(message, response, status, options) {
++        super(message, options);
+         this.response = response;
+         this.status = status;
+     }
+diff --git a/dist/src/index.js b/dist/src/index.js
+index 1906c4adf0e84ae64481e8080f98e3db8037a63b..96396fe1c7e92021ad96eed6f214b5adfce0f928 100644
+--- a/dist/src/index.js
++++ b/dist/src/index.js
+@@ -153,6 +153,7 @@ class CubeApi {
+                 await checkMutex();
+                 return continueWait(true);
+             }
++            const errorOptions = 'error' in response ? { cause: response.cause } : undefined;
+             // From here we're sure that response is only fetch Response
+             response = response;
+             let body = {};
+@@ -178,7 +179,7 @@ class CubeApi {
+             let result;
+             let error = null;
+             if (response.status !== 200) {
+-                error = new RequestError(body.error || response.error || '', body, response.status);
++                error = new RequestError(body.error || response.error || '', body, response.status, errorOptions);
+             }
+             else {
+                 try {

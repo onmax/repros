@@ -1,0 +1,2 @@
+patchedDependencies:
+  '@cubejs-client/core@1.8.22': patches/@cubejs-client__core@1.8.22.patch
