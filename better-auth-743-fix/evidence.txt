@@ -1,0 +1,7 @@
+# pnpm verify (exits 0 with the patch)
+# Node v24.21.0, Linux, 2026-11-14
+
+Control, GET /api/auth/get-session: 200 {"email":"ada@example.com"}
+Expected requireUserSession(): {"status":200,"body":{"email":"ada@example.com","keys":["session","user"]}}
+Actual requireUserSession():   {"status":200,"body":{"email":"ada@example.com","keys":["session","user"]}}
+PASS: requireUserSession() returned the API-key session

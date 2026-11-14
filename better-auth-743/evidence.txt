@@ -1,0 +1,13 @@
+# pnpm verify (exits 1 while the bug exists)
+# Node v24.21.0, Linux, 2026-11-14
+
+Control, GET /api/auth/get-session: 200 {"email":"ada@example.com"}
+Expected requireUserSession(): {"status":200,"body":{"email":"ada@example.com","keys":["session","user"]}}
+Actual requireUserSession():   {"status":200,"body":{"email":null,"keys":["headers","response"]}}
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+
+# pnpm verify --expect-bug (exits 0)
+Control, GET /api/auth/get-session: 200 {"email":"ada@example.com"}
+Expected requireUserSession(): {"status":200,"body":{"email":"ada@example.com","keys":["session","user"]}}
+Actual requireUserSession():   {"status":200,"body":{"email":null,"keys":["headers","response"]}}
+PASS: reproduced #743, requireUserSession() returned the { headers, response } wrapper
