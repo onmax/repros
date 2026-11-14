@@ -1,0 +1,7 @@
+# pnpm verify (exits 0 with the patch)
+# Node v24.21.0, Linux, 2026-11-14
+
+vue-tsc -p .nuxt/tsconfig.server.json exit: 0
+Expected missing plugin endpoints: []
+Actual missing plugin endpoints:   []
+PASS: serverAuth().api has the plugin endpoints

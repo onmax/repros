@@ -1,0 +1,16 @@
+# pnpm verify (exits 1 while the bug exists)
+# Node v24.21.0, Linux, 2026-11-14
+
+vue-tsc -p .nuxt/tsconfig.server.json exit: 2
+server/api/plugin-endpoints.get.ts(5,28): error TS2339: Property 'createUser' does not exist on type '{ getSession: <R extends boolean, H extends boolean = false>(context: { headers: Headers; query?: { disableCookieCache?: boolean | undefined; disableRefresh?: boolean | undefined; } | undefined; asResponse?: R | undefined; returnHeaders?: H | undefined; }) => false extends R ? H extends true ? Promise<...> : Promise...'.
+server/api/plugin-endpoints.get.ts(6,31): error TS2339: Property 'hasPermission' does not exist on type '{ getSession: <R extends boolean, H extends boolean = false>(context: { headers: Headers; query?: { disableCookieCache?: boolean | undefined; disableRefresh?: boolean | undefined; } | undefined; asResponse?: R | undefined; returnHeaders?: H | undefined; }) => false extends R ? H extends true ? Promise<...> : Promise...'.
+server/api/plugin-endpoints.get.ts(7,33): error TS2339: Property 'signInAnonymous' does not exist on type '{ getSession: <R extends boolean, H extends boolean = false>(context: { headers: Headers; query?: { disableCookieCache?: boolean | undefined; disableRefresh?: boolean | undefined; } | undefined; asResponse?: R | undefined; returnHeaders?: H | undefined; }) => false extends R ? H extends true ? Promise<...> : Promise...'.
+Expected missing plugin endpoints: []
+Actual missing plugin endpoints:   ["createUser","hasPermission","signInAnonymous"]
+AssertionError [ERR_ASSERTION]: server typecheck failed
+
+# pnpm verify --expect-bug (exits 0)
+vue-tsc -p .nuxt/tsconfig.server.json exit: 2
+Expected missing plugin endpoints: []
+Actual missing plugin endpoints:   ["createUser","hasPermission","signInAnonymous"]
+PASS: reproduced #742, serverAuth().api lacks the admin, organization and anonymous endpoints

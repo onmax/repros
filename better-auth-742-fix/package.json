@@ -1,0 +1,22 @@
+{
+  "name": "better-auth-742-fix",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.18.0",
+  "engines": {
+    "node": "24.21.0"
+  },
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "@nuxtjs/better-auth": "0.3.16",
+    "better-auth": "1.7.25",
+    "nuxt": "4.6.4",
+    "vue": "3.5.44"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "vue-tsc": "3.3.14"
+  }
+}
