@@ -10,7 +10,9 @@ import { performance } from 'node:perf_hooks'
 const root = import.meta.dirname
 const app = join(root, 'app')
 if (!existsSync(join(root, 'node_modules/nuxt'))) {
-  execFileSync('npm', ['install', '--no-audit', '--no-fund', '--loglevel=error'], { cwd: root, stdio: 'inherit' })
+  // run from `npm run`, the parent's npm_config_* settings would leak into this install
+  const env = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.toLowerCase().startsWith('npm_')))
+  execFileSync('npm', ['ci', '--no-audit', '--no-fund', '--loglevel=error'], { cwd: root, env, stdio: 'inherit' })
 }
 const { createLargeApp } = await import('./generate-app.ts')
 await createLargeApp(app)

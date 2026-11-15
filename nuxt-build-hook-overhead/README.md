@@ -21,6 +21,7 @@ re-resolves the same Vue specifiers once per importer. Each unfiltered `transfor
 ```sh
 git clone --branch repro/nuxt-build-hook-overhead https://github.com/onmax/repros.git
 cd repros/nuxt-build-hook-overhead
+npm ci
 npm run verify
 ```
 
