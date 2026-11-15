@@ -1,0 +1,14 @@
+$ npm run verify   # ServaRICA, 4 cores, Node 24.22.1, 2026-11-15
+
+JS calls per `nuxt build` (expected: few; actual):
+REPRODUCED   1292  nuxt:runtime-paths-dep transform  (acts only on modules containing __VITE_ASSET__)
+REPRODUCED   1292  nuxt:module-preload-polyfill transform  (acts only on the client entry)
+REPRODUCED   1292  nuxt:remove-plugin-metadata:client transform  (acts only on plugin files)
+REPRODUCED   1176  nuxt:build-outputs load  (acts only on its own \0 ids)
+REPRODUCED   1166  nuxt:nitro-virtual-bridge load  (acts only on its own \0 ids)
+REPRODUCED  13162  nitro:server-aliases resolveId  (acts only on ids aliased to node: builtins)
+REPRODUCED   1788  nuxt:vue-packages resolveId  (a handful of distinct specifiers, each re-resolved per importer)
+
+build with 0 no-op transform hooks: min 5.87 s; with 20: min 8.00 s
+=> one unfiltered transform hook costs about 106 ms per build of this app
+exit 0

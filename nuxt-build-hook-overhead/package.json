@@ -1,0 +1,14 @@
+{
+  "name": "nuxt-build-hook-overhead",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "nuxt": "npm:nuxt-nightly@5.0.0-2611142141-73d92c4",
+    "vue": "3.5.45",
+    "vue-router": "5.5.1",
+    "pathe": "2.0.3"
+  }
+}
