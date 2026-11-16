@@ -1,0 +1,8 @@
+# The nightly is newer than pnpm's default minimum release age.
+minimumReleaseAge: 0
+allowBuilds:
+  '@parcel/watcher': false
+  '@tailwindcss/oxide': true
+  esbuild: true
+  unrs-resolver: false
+  vue-demi: false
