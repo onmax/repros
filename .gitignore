@@ -1,0 +1,4 @@
+node_modules/
+*.log
+packages/*/runs.log
+packages/*/*.building

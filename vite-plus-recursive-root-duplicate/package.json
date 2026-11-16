@@ -1,0 +1,13 @@
+{
+  "name": "root",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.21.0",
+  "scripts": {
+    "build": "vp run --filter \"./packages/*\" build",
+    "verify": "node verify.mjs"
+  },
+  "devDependencies": {
+    "vite-plus": "1.6.0"
+  }
+}
