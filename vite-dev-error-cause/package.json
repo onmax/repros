@@ -1,0 +1,7 @@
+{
+  "name": "vite-dev-error-cause",
+  "private": true,
+  "type": "module",
+  "scripts": { "verify": "node verify.mjs" },
+  "devDependencies": { "vite": "8.3.8" }
+}
