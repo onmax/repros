@@ -1,0 +1,10 @@
+{
+  "name": "webcontainer-libsql-client-subpaths",
+  "private": true,
+  "type": "module",
+  "scripts": { "verify": "node run.mjs" },
+  "dependencies": {
+    "@webcontainer/api": "1.6.4",
+    "playwright-core": "1.65.1"
+  }
+}
