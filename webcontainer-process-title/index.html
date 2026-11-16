@@ -1,0 +1,28 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>process.title in a WebContainer</title>
+<script type="module">
+import { boot, run } from "./helpers.js"
+
+window.repro = async () => {
+  const container = await boot()
+  try {
+    await container.mount({
+      "title.js": { file: { contents: "console.log(JSON.stringify({ type: typeof process.title, title: process.title }))" } },
+      // @slack/web-api builds its user agent at load with path.basename(process.title).
+      "basename.js": { file: { contents: "try { console.log(require('node:path').basename(process.title)) } catch (error) { console.log(error.code + ': ' + error.message) }" } },
+    })
+    const version = await run(container, "node", ["--version"])
+    const title = await run(container, "node", ["title.js"])
+    const basename = await run(container, "node", ["basename.js"])
+    const { type } = JSON.parse(title.output)
+    return {
+      lines: [`node ${version.output}`, `$ node title.js\n${title.output}`, `$ node basename.js\n${basename.output}`, "expected: a string, such as \"node\""],
+      bug: type !== "string",
+      summary: `typeof process.title is "${type}"`,
+    }
+  } finally {
+    container.teardown()
+  }
+}
+</script>
