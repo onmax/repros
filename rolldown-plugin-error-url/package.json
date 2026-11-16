@@ -1,0 +1,7 @@
+{
+  "name": "rolldown-plugin-error-url",
+  "private": true,
+  "type": "module",
+  "scripts": { "verify": "node verify.mjs" },
+  "devDependencies": { "rolldown": "1.3.2", "rollup": "4.68.3" }
+}
