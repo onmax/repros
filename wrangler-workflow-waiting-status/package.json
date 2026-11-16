@@ -1,0 +1,12 @@
+{
+  "name": "wrangler-workflow-waiting-status",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.21.0",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "4.163.0"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "workflow-waiting-status",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-11-14",
+  "workflows": [{ "name": "demo", "binding": "WORKFLOW", "class_name": "Demo" }]
+}
