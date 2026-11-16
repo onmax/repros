@@ -1,0 +1,17 @@
+{
+  "name": "nuxt-prerendered-hash-reload",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.16.1",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "nuxt": "npm:nuxt-nightly@5.0.0-2611161229-4959451",
+    "vue": "3.5.45",
+    "vue-router": "5.5.1"
+  },
+  "devDependencies": {
+    "playwright-core": "1.64.0"
+  }
+}

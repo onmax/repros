@@ -1,0 +1,75 @@
+diff --git a/dist/pages/runtime/plugins/router.js b/dist/pages/runtime/plugins/router.js
+index e2b682434b5a125183283868540be3ac77bc667b..0b3efd0f5f81899e022cd613f606bc874beefde2 100644
+--- a/dist/pages/runtime/plugins/router.js
++++ b/dist/pages/runtime/plugins/router.js
+@@ -53,24 +53,25 @@ const plugin = defineNuxtPlugin({
+ 		const history = routerOptions.history?.(routerBase) ?? (import.meta.client ? hashMode ? createWebHashHistory(routerBase) : createWebHistory(routerBase) : createMemoryHistory(routerBase));
+ 		const routes = routerOptions.routes ? await routerOptions.routes(_routes) ?? _routes : _routes;
+ 		let startPosition;
++		const initialScrollBehavior = (to, from, savedPosition) => {
++			if (from === START_LOCATION) {
++				startPosition = savedPosition;
++				return;
++			}
++			if (routerOptions.scrollBehavior) {
++				router.options.scrollBehavior = routerOptions.scrollBehavior;
++				if ("scrollRestoration" in window.history) {
++					const unsub = router.beforeEach(() => {
++						unsub();
++						window.history.scrollRestoration = "manual";
++					});
++				}
++				return routerOptions.scrollBehavior(to, START_LOCATION, startPosition || savedPosition);
++			}
++		};
+ 		const router = createRouter({
+ 			...routerOptions,
+-			scrollBehavior: (to, from, savedPosition) => {
+-				if (from === START_LOCATION) {
+-					startPosition = savedPosition;
+-					return;
+-				}
+-				if (routerOptions.scrollBehavior) {
+-					router.options.scrollBehavior = routerOptions.scrollBehavior;
+-					if ("scrollRestoration" in window.history) {
+-						const unsub = router.beforeEach(() => {
+-							unsub();
+-							window.history.scrollRestoration = "manual";
+-						});
+-					}
+-					return routerOptions.scrollBehavior(to, START_LOCATION, startPosition || savedPosition);
+-				}
+-			},
++			scrollBehavior: initialScrollBehavior,
+ 			history,
+ 			routes,
+ 			matcher: import.meta.server && staticRoutes ? getSharedMatcher(routes) : void 0
+@@ -274,10 +275,13 @@ const plugin = defineNuxtPlugin({
+ 						if (restoredRoute.matched.at(-1) === currentRoute.value.matched.at(-1)) restoredRoute.meta = currentRoute.value.meta;
+ 						currentRoute.value = restoredRoute;
+ 						syncCurrentRoute();
++						router.options.scrollBehavior = (to, from, savedPosition) => to.fullPath === resolvedInitialRoute.fullPath ? initialScrollBehavior(to, from, savedPosition) : routerOptions.scrollBehavior?.(to, from, savedPosition);
+ 						router.replace({
+ 							...resolvedInitialRoute,
+ 							force: true
+-						}).catch(() => {});
++						}).catch(() => {}).finally(() => {
++							router.options.scrollBehavior = routerOptions.scrollBehavior;
++						});
+ 					};
+ 					nuxtApp["~restoreDeferredRoute"] = restoreDeferredRoute;
+ 					nuxtApp.hooks.hookOnce("app:suspense:resolve", restoreDeferredRoute);
+diff --git a/dist/pages/runtime/router.options.js b/dist/pages/runtime/router.options.js
+index 419b4c8d79fc4dc777403f1ea3df72878fd8e77e..afb7c100d173cff45c58fb2d8d0d60b65801cb58 100644
+--- a/dist/pages/runtime/router.options.js
++++ b/dist/pages/runtime/router.options.js
+@@ -7,7 +7,8 @@ var router_options_default = { scrollBehavior(to, from, savedPosition) {
+ 	const nuxtApp = useNuxtApp();
+ 	const router = useRouter$1();
+ 	const hashScrollBehaviour = router.options?.scrollBehaviorType ?? "auto";
+-	if (from === START_LOCATION && !savedPosition && !to.hash) return false;
++	const browserScrolledToHash = !to.redirectedFrom && !router.options.history.base.includes("#");
++	if (from === START_LOCATION && !savedPosition && (!to.hash || browserScrolledToHash)) return false;
+ 	if (to.path.replace(/\/$/, "") === from.path.replace(/\/$/, "")) {
+ 		if (from.hash && !to.hash) return savedPosition ?? {
+ 			left: 0,

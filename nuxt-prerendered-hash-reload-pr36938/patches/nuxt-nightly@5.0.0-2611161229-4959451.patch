@@ -1,0 +1,14 @@
+diff --git a/dist/pages/runtime/router.options.js b/dist/pages/runtime/router.options.js
+index 419b4c8d79fc4dc777403f1ea3df72878fd8e77e..afb7c100d173cff45c58fb2d8d0d60b65801cb58 100644
+--- a/dist/pages/runtime/router.options.js
++++ b/dist/pages/runtime/router.options.js
+@@ -7,7 +7,8 @@ var router_options_default = { scrollBehavior(to, from, savedPosition) {
+ 	const nuxtApp = useNuxtApp();
+ 	const router = useRouter$1();
+ 	const hashScrollBehaviour = router.options?.scrollBehaviorType ?? "auto";
+-	if (from === START_LOCATION && !savedPosition && !to.hash) return false;
++	const browserScrolledToHash = !to.redirectedFrom && !router.options.history.base.includes("#");
++	if (from === START_LOCATION && !savedPosition && (!to.hash || browserScrolledToHash)) return false;
+ 	if (to.path.replace(/\/$/, "") === from.path.replace(/\/$/, "")) {
+ 		if (from.hash && !to.hash) return savedPosition ?? {
+ 			left: 0,
