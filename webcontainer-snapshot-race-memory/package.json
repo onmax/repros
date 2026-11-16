@@ -1,0 +1,7 @@
+{
+  "name": "webcontainer-snapshot-race-memory",
+  "private": true,
+  "type": "module",
+  "scripts": { "verify": "node verify.mjs" },
+  "dependencies": { "@webcontainer/snapshot": "0.1.0" }
+}
