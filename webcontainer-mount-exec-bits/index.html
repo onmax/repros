@@ -1,0 +1,46 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Executable bits through mount() and export()</title>
+<script type="module">
+import { boot, run } from "./helpers.js"
+
+const mode = file => `console.log((require("fs").statSync(${JSON.stringify(file)}).mode & 0o777).toString(8))`
+
+window.repro = async () => {
+  const container = await boot()
+  try {
+    await container.mount({
+      "tool.js": { file: { contents: "#!/usr/bin/env node\nconsole.log('tool ran')\n" } },
+      "package.json": { file: { contents: JSON.stringify({ scripts: { tool: "./tool.js" } }) } },
+    })
+    // 1. A file mounted from a FileSystemTree is 644, and the tree has no field for its mode.
+    const mounted = await run(container, "node", ["-e", mode("tool.js")])
+    const script = await run(container, "npm", ["run", "tool"])
+
+    // 2. chmod works inside the container, but a binary export() mounted elsewhere is 644 again.
+    await run(container, "node", ["-e", "require('fs').chmodSync('tool.js', 0o755)"])
+    const chmodded = await run(container, "node", ["-e", mode("tool.js")])
+    const direct = await run(container, "./tool.js")
+    const snapshot = await container.export(".", { format: "binary" })
+    await container.fs.mkdir("copy")
+    await container.mount(snapshot, { mountPoint: "copy" })
+    const copied = await run(container, "node", ["-e", mode("copy/tool.js")])
+    const copiedDirect = await run(container, "./copy/tool.js")
+
+    return {
+      lines: [
+        `mounted tool.js mode: ${mounted.output}`,
+        `$ npm run tool (exit ${script.exit})\n${script.output}`,
+        `after chmod 755: ${chmodded.output}, ./tool.js exit ${direct.exit}: ${direct.output}`,
+        `after export(".", { format: "binary" }) and mount(): copy/tool.js mode: ${copied.output}`,
+        `$ ./copy/tool.js (exit ${copiedDirect.exit})\n${copiedDirect.output}`,
+        "expected: export() then mount() keeps mode 755, and a FileSystemTree can set it",
+      ],
+      bug: copied.output !== "755",
+      summary: `a 755 file comes back as ${copied.output} after export() and mount()`,
+    }
+  } finally {
+    container.teardown()
+  }
+}
+</script>
