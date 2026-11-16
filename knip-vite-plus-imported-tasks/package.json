@@ -1,0 +1,12 @@
+{
+  "name": "knip-vite-plus-imported-tasks",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "devDependencies": {
+    "knip": "6.45.1",
+    "vite-plus": "1.6.0"
+  }
+}

@@ -1,0 +1,1 @@
+{ "entry": [], "project": ["*.{ts,mjs}", "!verify.mjs"] }
