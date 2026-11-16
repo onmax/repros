@@ -18,7 +18,7 @@ pnpm verify
 `verify.mjs` runs `nuxt build` and exits 1 when `.output/public/manifest.json` exists.
 
 ```
-FAIL: .output/public/manifest.json is in the public output, with 5 entries: [ ... ]
+FAIL: .output/public/manifest.json is in the public output, with 3 entries: [ ... ]
 ```
 
 Expected: no `manifest.json` in `.output/public`, as on Nuxt 4.
