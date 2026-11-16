@@ -1,0 +1,12 @@
+{
+  "name": "nuxt-client-manifest-public",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.21.0",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "nuxt": "npm:nuxt-nightly@5.0.0-2611161628-96caf0e"
+  }
+}
