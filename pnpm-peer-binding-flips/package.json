@@ -1,0 +1,6 @@
+{
+  "name": "pnpm-peer-binding-flips",
+  "private": true,
+  "type": "module",
+  "scripts": { "verify": "node verify.mjs" }
+}
