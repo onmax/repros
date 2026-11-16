@@ -1,0 +1,13 @@
+{
+  "name": "miniflare-5-readme-options",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.21.0",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "devDependencies": {
+    "miniflare": "4.20260730.0",
+    "miniflare-v5": "npm:miniflare@5.20261116.0-beta"
+  }
+}
