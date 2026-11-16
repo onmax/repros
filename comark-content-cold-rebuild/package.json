@@ -1,0 +1,11 @@
+{
+  "name": "comark-content-cold-rebuild",
+  "private": true,
+  "type": "module",
+  "scripts": { "verify": "node verify.mjs" },
+  "dependencies": {
+    "comark": "0.9.2",
+    "comark-content": "0.6.2"
+  },
+  "packageManager": "pnpm@10.33.2"
+}
