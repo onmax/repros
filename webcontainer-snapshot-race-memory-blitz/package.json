@@ -1,0 +1,11 @@
+{
+  "name": "webcontainer-snapshot-race-memory-blitz",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.js 2000 && node index.js 4000"
+  },
+  "dependencies": {
+    "@webcontainer/snapshot": "0.1.0"
+  }
+}
