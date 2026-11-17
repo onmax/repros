@@ -1,0 +1,11 @@
+{
+  "name": "webcontainer-process-title-blitz",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@slack/web-api": "8.4.0"
+  }
+}
