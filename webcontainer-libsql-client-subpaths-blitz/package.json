@@ -1,0 +1,11 @@
+{
+  "name": "webcontainer-libsql-client-subpaths-blitz",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@libsql/client": "0.17.2"
+  }
+}
