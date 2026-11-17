@@ -1,0 +1,3 @@
+overrides:
+  micromark-core-commonmark: 2.0.4
+  micromark-util-edit-map: 1.0.0

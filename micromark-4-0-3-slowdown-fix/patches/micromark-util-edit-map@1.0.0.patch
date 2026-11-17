@@ -1,0 +1,25 @@
+diff --git a/dev/index.js b/dev/index.js
+--- a/dev/index.js
++++ b/dev/index.js
+@@ -129,9 +129,6 @@
+       events.length = this.map[index][0]
+     }
+ 
+-    vecs.push(events.slice())
+-    events.length = 0
+-
+     let slice = vecs.pop()
+ 
+     while (slice) {
+diff --git a/index.js b/index.js
+--- a/index.js
++++ b/index.js
+@@ -124,8 +124,6 @@
+       // Truncate rest.
+       events.length = this.map[index][0];
+     }
+-    vecs.push(events.slice());
+-    events.length = 0;
+     let slice = vecs.pop();
+     while (slice) {
+       for (const element of slice) {

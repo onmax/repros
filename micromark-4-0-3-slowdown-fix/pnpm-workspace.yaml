@@ -1,0 +1,7 @@
+# micromark 4.0.3 with the change from micromark/micromark#249 applied to
+# micromark-util-edit-map 1.0.0.
+overrides:
+  micromark-core-commonmark: 2.0.4
+  micromark-util-edit-map: 1.0.0
+patchedDependencies:
+  micromark-util-edit-map@1.0.0: patches/micromark-util-edit-map@1.0.0.patch

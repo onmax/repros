@@ -1,0 +1,4 @@
+# What a fresh install of micromark 4.0.2 resolves today: its ^2.0.0 range
+# picks core-commonmark 2.0.4, which uses micromark-util-edit-map.
+overrides:
+  micromark-core-commonmark: 2.0.4
