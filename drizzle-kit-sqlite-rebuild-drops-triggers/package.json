@@ -1,0 +1,13 @@
+{
+  "name": "drizzle-kit-sqlite-rebuild-drops-triggers",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "drizzle-kit": "1.0.0-rc.5",
+    "drizzle-orm": "1.0.0-rc.5"
+  },
+  "packageManager": "pnpm@10.30.3"
+}
