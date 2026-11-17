@@ -1,0 +1,14 @@
+{
+  "name": "nitro-vite-service-unwasm",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "devDependencies": {
+    "nitro": "3.0.261103-rc",
+    "shiki": "4.6.0",
+    "vite": "8.3.8",
+    "wrangler": "4.163.0"
+  }
+}
