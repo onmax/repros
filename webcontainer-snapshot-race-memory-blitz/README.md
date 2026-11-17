@@ -1,16 +1,27 @@
-# `@webcontainer/snapshot` heap grows with files squared (blitz)
+# `@webcontainer/snapshot` grows with files squared (blitz)
 
 Open in StackBlitz: https://stackblitz.com/github/onmax/repros/tree/repro/webcontainer-snapshot-race-memory/webcontainer-snapshot-race-memory-blitz
 
-`npm start` writes 2,000 and then 4,000 files of 1 KiB, runs `snapshot()` from `@webcontainer/snapshot` 0.1.0 on each, and prints the heap used after it.
+`npm start` writes 2,000 and then 4,000 files of 1 KiB and runs `snapshot()` from `@webcontainer/snapshot` 0.1.0 on each. Then it runs the same walk with a bounded queue (`control.js`, a copy of `../webcontainer-snapshot-race-memory/patch-control.mjs`). Each run is its own process.
 
-Expected: heap used stays near the content size (2 MB and 4 MB).
+Expected: twice the files take about twice the time and heap, like the control.
 
-Actual on Node 24 on Linux:
+Actual on Node 24.21.0 on Linux:
 
 ```
-files: 2000, content: 2 MB, snapshot: 2 MB, heap used: 521 MB, time: 2916 ms
-files: 4000, content: 4 MB, snapshot: 4 MB, heap used: 2071 MB, time: 14624 ms
+2000 files, snapshot(): 2 MB out, heap used 469 MB, 4162 ms
+4000 files, snapshot(): 4 MB out, heap used 1941 MB, 16742 ms
+2000 files, control  : 2 MB out, heap used 8 MB, 86 ms
+4000 files, control  : 4 MB out, heap used 11 MB, 153 ms
 ```
 
-Twice the files take about four times the heap. The 17,000 file crash and the bounded-queue control are in `../webcontainer-snapshot-race-memory`.
+Actual in StackBlitz:
+
+```
+2000 files, snapshot(): 2 MB out, heap used 0 MB, 2132 ms
+4000 files, snapshot(): 4 MB out, heap used 0 MB, 10305 ms
+2000 files, control  : 2 MB out, heap used 0 MB, 134 ms
+4000 files, control  : 4 MB out, heap used 0 MB, 212 ms
+```
+
+`process.memoryUsage()` reads 0 inside a WebContainer, so StackBlitz shows only the time: `snapshot()` takes about five times longer for twice the files. The heap growth and the 17,000 file crash need host Node: see `../webcontainer-snapshot-race-memory`.
