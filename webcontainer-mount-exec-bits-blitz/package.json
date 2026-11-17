@@ -1,0 +1,8 @@
+{
+  "name": "webcontainer-mount-exec-bits-blitz",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node mode.js; ./tool.js"
+  }
+}
