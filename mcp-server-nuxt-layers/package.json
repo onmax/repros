@@ -1,0 +1,16 @@
+{
+  "name": "mcp-server-nuxt-layers-repro",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.20.0",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "@nuxt/kit": "4.6.4",
+    "nuxt": "4.6.4"
+  },
+  "devDependencies": {
+    "mcp-server-nuxt": "0.8.0"
+  }
+}
