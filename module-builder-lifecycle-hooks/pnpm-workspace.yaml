@@ -1,0 +1,5 @@
+# 2.0.0-alpha.0 was published on 2026-11-19, inside pnpm's default minimum release age.
+minimumReleaseAgeExclude:
+  - '@nuxt/module-builder@2.0.0-alpha.0'
+allowBuilds:
+  esbuild: false

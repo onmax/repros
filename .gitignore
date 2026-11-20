@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.nuxt/
+.output/
+*.log
+# Written by the hook under test; verify.mjs deletes them before each run
+.nuxtrc
+ONINSTALL_RAN
