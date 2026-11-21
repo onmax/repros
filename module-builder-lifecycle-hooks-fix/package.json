@@ -1,0 +1,26 @@
+{
+  "name": "repro-module",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/types.d.mts",
+      "import": "./dist/module.mjs"
+    }
+  },
+  "main": "./dist/module.mjs",
+  "files": ["dist"],
+  "scripts": {
+    "verify": "EXPECT_FIXED=1 node verify.mjs tsdown"
+  },
+  "devDependencies": {
+    "@nuxt/cli": "4.0.3",
+    "@nuxt/kit": "4.6.4",
+    "@nuxt/module-builder": "2.0.0-alpha.1",
+    "@nuxt/schema": "4.6.4",
+    "nuxt": "4.6.4",
+    "tsdown": "0.23.7",
+    "typescript": "5.9.3"
+  }
+}

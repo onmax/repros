@@ -1,0 +1,8 @@
+# 2.0.0-alpha.1 and its dependency vue-sfc-transformer 0.3.5 were published on 2026-11-20, inside pnpm's default minimum release age.
+minimumReleaseAgeExclude:
+  - '@nuxt/module-builder@2.0.0-alpha.1'
+  - vue-sfc-transformer@0.3.5
+allowBuilds:
+  esbuild: false
+patchedDependencies:
+  '@nuxt/module-builder@2.0.0-alpha.1': patches/@nuxt__module-builder@2.0.0-alpha.1.patch

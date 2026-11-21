@@ -1,0 +1,27 @@
+diff --git a/dist/prepare-BMnyxWLA.mjs b/dist/prepare-BMnyxWLA.mjs
+index e5e4bb9239abbad61e3bbb95d5f5e2727f9648f5..5bc53084d23d715035ffec40c974c6531eb874e0 100644
+--- a/dist/prepare-BMnyxWLA.mjs
++++ b/dist/prepare-BMnyxWLA.mjs
+@@ -1489,7 +1489,7 @@ async function prepareModule(cwd, prepareConfig, { declarations = true } = {}) {
+ 	assertLoadableModuleCode(cwd, [entries.module], runtimeDirs, Object.values(entries));
+ 	const entryPath = resolve(cwd, entries.module);
+ 	const moduleExports = await importModule(entryPath, { cwd });
+-	const nuxtModule = moduleExports.default ?? moduleExports;
++	const nuxtModule = withoutLifecycleHooks(moduleExports.default ?? moduleExports);
+ 	const { name } = pkg;
+ 	const useNuxt = name ? await loadUseNuxt(cwd) : void 0;
+ 	const rootConfig = await rootTsconfig(cwd);
+@@ -1694,6 +1694,13 @@ function withTsExtensions(options) {
+ 		allowImportingTsExtensions: true
+ 	} : options;
+ }
++function withoutLifecycleHooks(nuxtModule) {
++	if (!nuxtModule.onInstall && !nuxtModule.onUpgrade) return nuxtModule;
++	return Object.assign((...args) => nuxtModule(...args), nuxtModule, {
++		onInstall: void 0,
++		onUpgrade: void 0
++	});
++}
+ /**
+ * Replaces the entries of `modules` that install the package `name` with `nuxtModule`, keeping
+ * their options, so the module is installed once from its sources whether or not `dist` exists.
