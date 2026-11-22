@@ -1,0 +1,17 @@
+{
+  "name": "comark-vitehub-workarounds",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "node verify.mjs"
+  },
+  "dependencies": {
+    "@comark/html": "0.9.2",
+    "comark": "0.9.2",
+    "comark-main": "https://pkg.pr.new/comarkdown/comark/comark@74ba41bd",
+    "comark-html-main": "https://pkg.pr.new/comarkdown/comark/@comark/html@74ba41bd",
+    "comark-pr530": "https://pkg.pr.new/comarkdown/comark/comark@c7dc995",
+    "comark-html-pr530": "https://pkg.pr.new/comarkdown/comark/@comark/html@c7dc995"
+  },
+  "packageManager": "pnpm@12.16.1"
+}
