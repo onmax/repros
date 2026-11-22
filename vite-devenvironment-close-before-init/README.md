@@ -13,7 +13,7 @@ pnpm install
 pnpm verify
 ```
 
-`pnpm verify` runs `verify.mjs` against two Vite versions installed side by side and exits 1 while the bug is present:
+`pnpm verify` runs `verify.mjs` against both Vite versions installed side by side and exits nonzero while the bug is present in either:
 
 - `vite-latest`: `vite@8.3.8`, the latest release on npm.
 - `vite-main`: `https://pkg.pr.new/vite@3567471`, Vite `main` at commit `3567471998e3da315675086f44368e266c9c0e33` (2026-11-20). It reports `8.4.0-beta.1`.
