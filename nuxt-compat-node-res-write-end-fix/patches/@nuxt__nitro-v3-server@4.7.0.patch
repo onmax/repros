@@ -1,0 +1,71 @@
+diff --git a/dist/runtime/compat/event.mjs b/dist/runtime/compat/event.mjs
+index b3819d17cee1bc0aa56f02c7b005f26c08e97659..88eff04718218a059f478801a03b09e22c672798 100644
+--- a/dist/runtime/compat/event.mjs
++++ b/dist/runtime/compat/event.mjs
+@@ -1,4 +1,4 @@
+-import { takeEndedResponse } from "./ended-response.mjs";
++import { endResponse, takeEndedResponse } from "./ended-response.mjs";
+ import { H3Event, HTTPResponse } from "nitro/h3";
+ import { useRequest } from "nitro/context";
+ // src/runtime/compat/event.ts
+@@ -42,9 +42,10 @@ function prepareLegacyEvent(event, getRouteRules) {
+ 			}
+ 		});
+ 	}
++	if (Object.hasOwn(event, "node")) return event;
+ 	const node = event.req.runtime?.node;
+ 	if (node) {
+-		if (!Object.hasOwn(event, "node")) {
++		{
+ 			const res = node.res;
+ 			let bridge;
+ 			Object.defineProperty(event, "node", {
+@@ -222,7 +223,39 @@ function bridgeNodeResponse(event, res) {
+ 	return proxy;
+ }
+ function createNodeResponseBridge(event) {
++	const chunks = [];
++	let started = false;
++	let ended = false;
++	function push(chunk, encoding) {
++		started = true;
++		if (typeof chunk === "string") chunks.push(typeof encoding === "string" && encoding !== "utf8" && encoding !== "utf-8" ? Buffer.from(chunk, encoding) : chunk);
++		else if (chunk instanceof Uint8Array) chunks.push(chunk);
++	}
++	function body() {
++		if (chunks.every((chunk) => typeof chunk === "string")) return chunks.join("");
++		return Buffer.concat(chunks.map((chunk) => typeof chunk === "string" ? Buffer.from(chunk) : chunk));
++	}
+ 	return {
++		write(chunk, encoding, callback) {
++			if (!ended) push(chunk, encoding);
++			const done = typeof encoding === "function" ? encoding : callback;
++			if (typeof done === "function") queueMicrotask(done);
++			return true;
++		},
++		end(chunk, encoding, callback) {
++			const done = [chunk, encoding, callback].find((arg) => typeof arg === "function");
++			if (!ended) {
++				if (typeof chunk !== "function") push(chunk, encoding);
++				started = true;
++				ended = true;
++				endResponse(event, new HTTPResponse(body()));
++			}
++			if (done) queueMicrotask(done);
++			return this;
++		},
++		get writableEnded() {
++			return ended;
++		},
+ 		get statusCode() {
+ 			return event.res.status;
+ 		},
+@@ -236,7 +269,7 @@ function createNodeResponseBridge(event) {
+ 			event.res.statusText = statusText;
+ 		},
+ 		get headersSent() {
+-			return false;
++			return started;
+ 		},
+ 		setHeader(name, value) {
+ 			replaceHeader(event, name, value);
