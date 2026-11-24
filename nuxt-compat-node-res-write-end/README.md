@@ -36,6 +36,6 @@ AssertionError [ERR_ASSERTION]: expected the request hook to throw no error
 ## Fixtures
 
 - `nuxt-compat-node-res-write-end/`: unpatched. The request hook throws on the `serverFetch` request.
-- `nuxt-compat-node-res-write-end-fix/`: the same app with `patches/@nuxt__nitro-v3-server@4.7.0.patch`. The patch gives the in-process response bridge `write`, `end`, `writableEnded` and a live `headersSent`. What a handler writes is buffered, and `end` makes it the response. The patch also keeps the `event.node` that the request hook saw when a v1 handler prepares the event again. Both requests pass.
+- `nuxt-compat-node-res-write-end-fix/`: the same app with `patches/@nuxt__nitro-v3-server@4.7.0.patch`. The patch gives the in-process response bridge `write` and `end`. What a handler writes is buffered, and `end` makes it the response. The patch also keeps the `event.node` that the request hook saw when a v1 handler prepares the event again. Both requests pass.
 
 `server/plugins/count-bytes.ts` is the trigger. It wraps `write` and `end`, then sets `x-count-bytes: wrapped`, so a response without that header shows the hook stopped early. Its `error` hook prints what Nitro captured. `/api/outer` exists only to make the in-process request.
