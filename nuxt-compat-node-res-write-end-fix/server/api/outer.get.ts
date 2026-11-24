@@ -1,7 +1,7 @@
 import { serverFetch } from 'nitro'
 
-// Calls /api/inner in process, the way an MCP tool calls another route.
+// Requests /api/inner in process, without a Node request or response.
 export default defineEventHandler(async () => {
   const res = await serverFetch('/api/inner')
-  return { status: res.status, wrapped: res.headers.get('x-count-bytes'), body: await res.text() }
+  return { status: res.status, body: await res.text() }
 })
