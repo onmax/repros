@@ -1,0 +1,10 @@
+allowBuilds:
+  esbuild: true
+  better-sqlite3: true
+minimumReleaseAgeExclude:
+  - '@nuxt/*'
+  - nuxt
+  - nitropack
+  - nitro
+patchedDependencies:
+  '@nuxthub/core@0.10.12': patches/@nuxthub__core@0.10.12.patch

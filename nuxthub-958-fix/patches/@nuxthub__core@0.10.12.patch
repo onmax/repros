@@ -1,0 +1,95 @@
+diff --git a/dist/db/runtime/plugins/migrations.dev.nitro3.d.ts b/dist/db/runtime/plugins/migrations.dev.nitro3.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..5298df7f0f673c97fe02c77b016ac9998ade2291
+--- /dev/null
++++ b/dist/db/runtime/plugins/migrations.dev.nitro3.d.ts
+@@ -0,0 +1,2 @@
++declare const _default: any;
++export default _default;
+diff --git a/dist/db/runtime/plugins/migrations.dev.nitro3.mjs b/dist/db/runtime/plugins/migrations.dev.nitro3.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..423bfb5d3092f5fe289d078de7e5f0645531cd64
+--- /dev/null
++++ b/dist/db/runtime/plugins/migrations.dev.nitro3.mjs
+@@ -0,0 +1,21 @@
++import { applyDatabaseMigrations, applyDatabaseQueries } from "../../lib/migrations";
++import { definePlugin } from "nitro";
++import { useRuntimeConfig } from "nitro/runtime-config";
++export default definePlugin(async () => {
++  if (!import.meta.dev) return;
++  const hub = useRuntimeConfig().hub;
++  if (!hub.db) return;
++  if (!hub.db.applyMigrationsDuringDev) return;
++  let db;
++  try {
++    const module = await import("hub:db");
++    db = module.db;
++  } catch (error) {
++    console.error("[nuxt:hub] Failed to import hub:db module:", error instanceof Error ? error.message : error);
++    console.error("[nuxt:hub] This may happen when using remote bindings before the proxy is initialized.");
++    console.error("[nuxt:hub] Migrations will be skipped. Please ensure remote bindings are properly configured.");
++    return;
++  }
++  await applyDatabaseMigrations(hub, db);
++  await applyDatabaseQueries(hub, db);
++});
+diff --git a/dist/db/runtime/plugins/request-context.nitro3.d.ts b/dist/db/runtime/plugins/request-context.nitro3.d.ts
+new file mode 100644
+index 0000000000000000000000000000000000000000..5298df7f0f673c97fe02c77b016ac9998ade2291
+--- /dev/null
++++ b/dist/db/runtime/plugins/request-context.nitro3.d.ts
+@@ -0,0 +1,2 @@
++declare const _default: any;
++export default _default;
+diff --git a/dist/db/runtime/plugins/request-context.nitro3.mjs b/dist/db/runtime/plugins/request-context.nitro3.mjs
+new file mode 100644
+index 0000000000000000000000000000000000000000..82f20fd5ac7c3e5ff9f5edfb96aa1d96e51b5552
+--- /dev/null
++++ b/dist/db/runtime/plugins/request-context.nitro3.mjs
+@@ -0,0 +1,11 @@
++import { definePlugin } from "nitro";
++import { useRequest } from "nitro/context";
++export default definePlugin(() => {
++  globalThis.__nuxthubUseNitroEvent = () => {
++    try {
++      return useRequest();
++    } catch {
++      return void 0;
++    }
++  };
++});
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 933bd290d821d9d63dc432f4e11cf28f3626cd6c..b7316c2f90ae9a5f18f1b1b044de42aec5f19072 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -1,5 +1,5 @@
+ import { readFile, writeFile, mkdir, copyFile, stat } from 'node:fs/promises';
+-import { logger, createResolver, addServerPlugin, getLayerDirectories, updateTemplates, addTemplate, addTypeTemplate, addServerHandler, addServerImports, addImportsDir, defineNuxtModule } from '@nuxt/kit';
++import { logger, createResolver, addNitroPlugin, getLayerDirectories, updateTemplates, addTemplate, addTypeTemplate, addServerHandler, addServerImports, addImportsDir, defineNuxtModule } from '@nuxt/kit';
+ import { join, resolve as resolve$1, relative } from 'pathe';
+ import { defu } from 'defu';
+ import { readPackageJSON, findWorkspaceDir } from 'pkg-types';
+@@ -297,7 +297,10 @@ async function setupDatabase(nuxt, hub, deps) {
+     addWranglerBinding(nuxt, "hyperdrive", { binding, id: connection.hyperdriveId });
+   }
+   if (driver === "postgres-js" && hub.hosting.includes("cloudflare") && connection?.hyperdriveId) {
+-    addServerPlugin(resolve("db/runtime/plugins/request-context"));
++    addNitroPlugin({
++      nitro2: resolve("db/runtime/plugins/request-context"),
++      nitro3: resolve("db/runtime/plugins/request-context.nitro3")
++    });
+   }
+   if (!deps["drizzle-orm"] || !deps["drizzle-kit"]) {
+     logWhenReady(nuxt, "Please run `npx nypm i drizzle-orm drizzle-kit` to properly setup Drizzle ORM with NuxtHub.", "error");
+@@ -315,7 +318,10 @@ async function setupDatabase(nuxt, hub, deps) {
+   } else if (driver === "libsql" && !deps["@libsql/client"]) {
+     logWhenReady(nuxt, "Please run `npx nypm i @libsql/client` to use SQLite as database.", "error");
+   }
+-  addServerPlugin(resolve("db/runtime/plugins/migrations.dev"));
++  addNitroPlugin({
++    nitro2: resolve("db/runtime/plugins/migrations.dev"),
++    nitro3: resolve("db/runtime/plugins/migrations.dev.nitro3")
++  });
+   nuxt.hook("modules:done", async () => {
+     await generateDatabaseSchema(nuxt, hub);
+     await nuxt.callHook("hub:db:migrations:dirs", migrationsDirs);
