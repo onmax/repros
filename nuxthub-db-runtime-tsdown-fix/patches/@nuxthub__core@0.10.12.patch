@@ -1,0 +1,76 @@
+diff --git a/cli/commands/db/generate.mjs b/cli/commands/db/generate.mjs
+index 184ddda97734b7f5cb73ee025d54a3aee7f007ed..6c084ec4f9b085a08de748f54651d4f633e8cb14 100644
+--- a/cli/commands/db/generate.mjs
++++ b/cli/commands/db/generate.mjs
+@@ -2,7 +2,7 @@ import { defineCommand } from 'citty'
+ import { consola } from 'consola'
+ import { execa } from 'execa'
+ import { join, resolve } from 'pathe'
+-import { buildDatabaseSchema } from '@nuxthub/core/db'
++import { buildDatabaseSchema } from '@nuxthub/core/db/build'
+ import { getTsconfigAliases } from '../../utils/db.mjs'
+ 
+ export default defineCommand({
+diff --git a/cli/commands/db/squash.mjs b/cli/commands/db/squash.mjs
+index 92fd9010a201d27b75b9e53da28beb2c625816d8..fa0cf02cac152a03ed64524951869ee866cdf28d 100644
+--- a/cli/commands/db/squash.mjs
++++ b/cli/commands/db/squash.mjs
+@@ -3,7 +3,8 @@ import { consola } from 'consola'
+ import { execa } from 'execa'
+ import { readFile, writeFile, rm } from 'node:fs/promises'
+ import { join, resolve } from 'pathe'
+-import { buildDatabaseSchema, createDrizzleClient } from '@nuxthub/core/db'
++import { createDrizzleClient } from '@nuxthub/core/db'
++import { buildDatabaseSchema } from '@nuxthub/core/db/build'
+ import { sql } from 'drizzle-orm'
+ import { getTsconfigAliases, quoteIdentifier } from '../../utils/db.mjs'
+ 
+diff --git a/dist/db/lib/index.d.ts b/dist/db/lib/index.d.ts
+index aac4107b962b6435e521d8096fe2da3a456f57f0..2e3b3557818f3d4596726c34721c27f34f88479c 100644
+--- a/dist/db/lib/index.d.ts
++++ b/dist/db/lib/index.d.ts
+@@ -1,5 +1,4 @@
+ export * from './migrations';
+-export * from './build';
+ export * from './client';
+ export * from './utils';
+ export * from './storage';
+diff --git a/dist/db/lib/index.mjs b/dist/db/lib/index.mjs
+index 1ff8e6d392febaf355fd9be3a0e31c6a9e7d6a44..a78b7a6035b4ed8895b7924a717f0a9cdfb047a6 100644
+--- a/dist/db/lib/index.mjs
++++ b/dist/db/lib/index.mjs
+@@ -1,5 +1,4 @@
+ export * from "./migrations.mjs";
+-export * from "./build.mjs";
+ export * from "./client.mjs";
+ export * from "./utils.mjs";
+ export * from "./storage.mjs";
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 933bd290d821d9d63dc432f4e11cf28f3626cd6c..f5453034490d26bfa842f9cd64e5eccb2bfc786f 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -6,7 +6,8 @@ import { readPackageJSON, findWorkspaceDir } from 'pkg-types';
+ import { provider } from 'std-env';
+ import chokidar from 'chokidar';
+ import { glob } from 'tinyglobby';
+-import { copyDatabaseMigrationsToHubDir, copyDatabaseQueriesToHubDir, copyDatabaseAssets, applyBuildTimeMigrations, getDatabaseSchemaPathMetadata, buildDatabaseSchema } from '../dist/db/lib/index.mjs';
++import { copyDatabaseMigrationsToHubDir, copyDatabaseQueriesToHubDir, getDatabaseSchemaPathMetadata } from '../dist/db/lib/index.mjs';
++import { copyDatabaseAssets, applyBuildTimeMigrations, buildDatabaseSchema } from '../dist/db/lib/build.mjs';
+ import { existsSync } from 'node:fs';
+ import { createHooks } from 'hookable';
+ import { resolve as resolve$2 } from 'node:path';
+diff --git a/package.json b/package.json
+index 93038a7bb457e3386badea7aebe4fac0ffe87c09..5fd5286773a569c74d4c153e1f72e5791cb07936 100644
+--- a/package.json
++++ b/package.json
+@@ -29,6 +29,10 @@
+       "types": "./dist/db/lib/index.d.ts",
+       "import": "./dist/db/lib/index.mjs"
+     },
++    "./db/build": {
++      "types": "./dist/db/lib/build.d.ts",
++      "import": "./dist/db/lib/build.mjs"
++    },
+     "./kv": {
+       "types": "./dist/kv/runtime/kv.d.ts"
+     },
