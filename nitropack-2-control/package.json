@@ -1,0 +1,12 @@
+{
+  "name": "nitropack-2-control",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nitropack build",
+    "verify": "nitropack build && node ../nitro-openapi-servers/verify.mjs --url-only"
+  },
+  "devDependencies": {
+    "nitropack": "2.14.0"
+  }
+}
