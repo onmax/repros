@@ -1,22 +1,31 @@
 diff --git a/dist/runtime/compat/h3-v1.d.ts b/dist/runtime/compat/h3-v1.d.ts
-index 9c7f63f5a884041dd90cea57bad4dda86edbf34b..a1515012cb6a768b073454b3639c6a0f45a88d21 100644
+index 9c7f63f5a884041dd90cea57bad4dda86edbf34b..43cebca0c3cee30362e078902128d451eef555a7 100644
 --- a/dist/runtime/compat/h3-v1.d.ts
 +++ b/dist/runtime/compat/h3-v1.d.ts
 @@ -1,6 +1,6 @@
  import { H3ErrorInput, createError, toLegacyError, withLegacyErrorShape } from "./error-shape.js";
  import { MIMES, defineRequestMiddleware, defineResponseMiddleware, getBodyStream, getRequestWebStream, handleCacheHeaders, handleCors, isStream, isWebResponse, proxyRequest, readBody, readFormData, readFormDataBody, readMultipartFormData, readRawBody, readValidatedBody, send, sendError, sendIterable, sendNoContent, sendProxy, sendRedirect, sendStream, sendWebResponse, splitCookiesString, toWebRequest } from "./h3-v1-app.js";
 -import { H3Event, defineWebSocket } from "nitro/h3";
-+import { EventHandler, EventHandlerRequest, H3Event, defineWebSocket } from "nitro/h3";
++import { EventHandlerRequest, EventHandlerResponse, EventHandlerWithFetch, H3Event, defineWebSocket } from "nitro/h3";
  import { IncomingMessage, ServerResponse } from "node:http";
  import { $Fetch } from "ofetch";
  export * from "nitro/h3";
-@@ -33,6 +33,8 @@ type LegacyHandlerObject = {
+@@ -16,8 +16,8 @@ export type LegacyH3Event = H3Event & {
+   fetch: typeof globalThis.fetch;
+   $fetch: $Fetch;
+ };
+-type LegacyHandlerObject = {
+-  handler: (event: LegacyH3Event) => any;
++type LegacyHandlerObject<ResponseT = EventHandlerResponse> = {
++  handler: (event: LegacyH3Event) => ResponseT;
+   onRequest?: ((event: LegacyH3Event) => any) | Array<(event: LegacyH3Event) => any>;
+   onBeforeResponse?: ((event: LegacyH3Event, response: {
+     body?: any;
+@@ -33,6 +33,6 @@ type LegacyHandlerObject = {
   * handler prepares the v1 event shape and normalises thrown errors, so it needs no
   * entry-level wrapper. A WebSocket upgrade request gets the `websocket` hooks.
   */
 -export declare function defineEventHandler(input: ((event: LegacyH3Event) => any) | LegacyHandlerObject): any;
-+export declare function defineEventHandler<Response = any>(input: ((event: LegacyH3Event) => Response) | (LegacyHandlerObject & {
-+  handler: (event: LegacyH3Event) => Response;
-+})): EventHandler<EventHandlerRequest, Response>;
++export declare function defineEventHandler<ResponseT = EventHandlerResponse>(input: ((event: LegacyH3Event) => ResponseT) | LegacyHandlerObject<ResponseT>): EventHandlerWithFetch<EventHandlerRequest, ResponseT>;
  export declare const eventHandler: typeof defineEventHandler;
  export { type H3ErrorInput, MIMES, createError, defineRequestMiddleware, defineResponseMiddleware, getBodyStream, getRequestWebStream, handleCacheHeaders, handleCors, isStream, isWebResponse, proxyRequest, readBody, readFormData, readFormDataBody, readMultipartFormData, readRawBody, readValidatedBody, send, sendError, sendIterable, sendNoContent, sendProxy, sendRedirect, sendStream, sendWebResponse, splitCookiesString, toLegacyError, toWebRequest, withLegacyErrorShape };

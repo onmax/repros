@@ -1,6 +1,6 @@
 # Fixed control: compat `defineEventHandler` keeps handler return types
 
-Same app and verifier as `../nuxt-nitro-v3-event-handler-types`, plus a `pnpm patch` against `@nuxt/nitro-v3-server@4.7.0` that makes compat `defineEventHandler` generic over the handler's return value and return h3's `EventHandler<EventHandlerRequest, Response>`.
+Same app and verifier as `../nuxt-nitro-v3-event-handler-types`, plus a `pnpm patch` against `@nuxt/nitro-v3-server@4.7.0` that makes compat `defineEventHandler` generic over the handler's return value and return h3's `EventHandlerWithFetch<EventHandlerRequest, ResponseT>`, the type `defineHandler` returns. It mirrors the source change on the `fix/compat-event-handler-return-type` branch of `onmax/nuxt`.
 
 ```sh
 git clone --branch repro/nuxt-nitro-v3-event-handler-types https://github.com/onmax/repros.git
@@ -17,3 +17,5 @@ expected: $fetch('/api/report') is { count: number, label: string }
 actual:   { count: number, label: string }
 PASS
 ```
+
+Written by an AI agent (Claude Code); not yet reviewed by a human.

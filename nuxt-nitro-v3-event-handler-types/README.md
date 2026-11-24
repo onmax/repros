@@ -48,3 +48,5 @@ export declare function defineEventHandler(input: ((event: LegacyH3Event) => any
 - `app/report-type.ts` holds the type assertion. The `count` line checks the shape after the fix, and the `@ts-expect-error` line fails while the type is `any`.
 
 The fixed control is `../nuxt-nitro-v3-event-handler-types-fix`.
+
+Written by an AI agent (Claude Code); not yet reviewed by a human.
