@@ -25,7 +25,7 @@ pnpm install
 node verify.mjs
 ```
 
-`verify.mjs` runs `nuxt build` and fails when the NUXT_B9003 block names `@nuxthub/core`. It then starts `nuxt dev` on a random port and expects `GET /api/items` to return `[]`. That response shows the dev migrations plugin still created the table. It exits 1 on failure.
+`verify.mjs` runs `nuxt build` and fails when the NUXT_B9003 block names `@nuxthub/core`. It then starts `nuxt dev` on a random port and expects `GET /api/items` to return `[]`. It deletes `.data` between the build and `nuxt dev`, so the `[]` response shows the dev migrations plugin created the table. As a control, setting `hub.db` to `{ dialect: 'sqlite', applyMigrationsDuringDev: false }` in the fixed fixture makes the request fail and the verifier exit 1. It exits 1 on failure.
 
 ## Expected and actual
 

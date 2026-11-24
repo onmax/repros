@@ -22,6 +22,8 @@ console.log('expected: no NUXT_B9003 warning for @nuxthub/core')
 console.log(`actual:   ${compat.length ? compat.join(' ') : 'none'}`)
 if (compat.some(line => line.includes('@nuxthub/core'))) failed = true
 
+rmSync('.data', { recursive: true, force: true })
+
 const port = String(4300 + Math.floor(Math.random() * 500))
 const dev = spawn('node_modules/.bin/nuxt', ['dev', '--host', '127.0.0.1', '--port', port], { detached: true, stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, CI: '1' } })
 let devLog = ''
