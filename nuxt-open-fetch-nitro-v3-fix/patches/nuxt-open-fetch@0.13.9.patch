@@ -1,0 +1,14 @@
+diff --git a/dist/module.mjs b/dist/module.mjs
+index 3fe97b56b51fdf664bd356959e3da8ee07ab039f..e5e1e3f106d06e230bad2e84b25dfafc1901f9ad 100644
+--- a/dist/module.mjs
++++ b/dist/module.mjs
+@@ -117,7 +117,8 @@ const module$1 = defineNuxtModule({
+     }]);
+     addServerImports([{
+       name: "OpenFetchClient",
+-      from: resolve("runtime/fetch")
++      from: resolve("runtime/fetch"),
++      type: true
+     }]);
+     addTypeTemplate({
+       filename: "types/open-fetch-hooks.d.ts",

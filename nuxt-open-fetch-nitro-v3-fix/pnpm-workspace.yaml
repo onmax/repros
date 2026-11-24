@@ -1,0 +1,4 @@
+packages:
+  - .
+patchedDependencies:
+  nuxt-open-fetch@0.13.9: patches/nuxt-open-fetch@0.13.9.patch

@@ -1,0 +1,17 @@
+openapi: 3.0.3
+info:
+  title: report
+  version: 1.0.0
+paths:
+  /report:
+    get:
+      responses:
+        '200':
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
