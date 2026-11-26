@@ -1,0 +1,31 @@
+diff --git a/dist/_build/common.mjs b/dist/_build/common.mjs
+index 80d416a3b7408e8cba7f80a12a4d6a048c5adf95..ee21ec0d40c3714455d1904e38e2941243040bff 100644
+--- a/dist/_build/common.mjs
++++ b/dist/_build/common.mjs
+@@ -11027,7 +11027,7 @@ async function writeBuildInfo(nitro, output) {
+ 	const serverEntryName = resolveNitroServerEntry(nitro, output);
+ 	const buildInfoPath = resolve$2(nitro.options.output.dir, "nitro.json");
+ 	const buildInfo = {
+-		date: (/* @__PURE__ */ new Date()).toJSON(),
++		date: (process.env.SOURCE_DATE_EPOCH ? new Date(Number(process.env.SOURCE_DATE_EPOCH) * 1e3) : /* @__PURE__ */ new Date()).toJSON(),
+ 		preset: nitro.options.preset,
+ 		envName: nitro.options.envName,
+ 		framework: nitro.options.framework,
+@@ -12060,7 +12060,7 @@ function publicAssets(nitro) {
+ 						type: getPrerenderMeta(nitro)[assetId]?.contentType || mimeType,
+ 						encoding,
+ 						etag,
+-						mtime: stat.mtime.toJSON(),
++						mtime: process.env.SOURCE_DATE_EPOCH ? void 0 : stat.mtime.toJSON(),
+ 						size: stat.size,
+ 						path: relative$2(nitro.options.output.serverDir, fullPath),
+ 						data: nitro.options.serveStatic === "inline" ? assetData.toString("base64") : void 0
+@@ -12665,7 +12665,7 @@ function serverAssets(nitro) {
+ 					let type = src_default.getType(id) || "text/plain";
+ 					if (type.startsWith("text")) type += "; charset=utf-8";
+ 					const etag = (0, import_etag.default)(await promises.readFile(fsPath));
+-					const mtime = await promises.stat(fsPath).then((s) => s.mtime.toJSON());
++					const mtime = process.env.SOURCE_DATE_EPOCH ? void 0 : await promises.stat(fsPath).then((s) => s.mtime.toJSON());
+ 					assets[id].meta = {
+ 						type,
+ 						etag,

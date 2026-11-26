@@ -1,0 +1,2 @@
+patchedDependencies:
+  nitro@3.0.261103-rc: patches/nitro@3.0.261103-rc.patch
